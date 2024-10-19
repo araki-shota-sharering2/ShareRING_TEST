@@ -1,76 +1,61 @@
-async function handleRequest(request) {
-    // D1データベースへの接続
-    const db = D1_DATABASE_NAME; // "db2"を指定します
-    const query = `SELECT * FROM numbers`; // "numbers"テーブルから全てのデータを取得
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool Hello World</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(45deg, #ff6b6b, #fbc531, #4cd137);
+            font-family: 'Arial', sans-serif;
+        }
 
-    // データを取得
-    const results = await db.prepare(query).run();
+        h1 {
+            font-size: 4rem;
+            color: white;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+            animation: glow 2s infinite alternate;
+        }
 
-    // 取得したデータをHTML形式に変換
-    let numbersHTML = '<h2>DBの内容:</h2><ul>';
-    results.forEach(row => {
-        numbersHTML += `<li>${row.even ? 'Even: ' : 'Odd: '}${row.number}</li>`;
-    });
-    numbersHTML += '</ul>';
+        h2 {
+            color: white;
+            margin-top: 20px;
+        }
 
-    // HTML全体を返す
-    return new Response(`
-        <!DOCTYPE html>
-        <html lang="ja">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Cool Hello World</title>
-            <style>
-                body {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    margin: 0;
-                    background: linear-gradient(45deg, #ff6b6b, #fbc531, #4cd137);
-                    font-family: 'Arial', sans-serif;
-                }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            color: white;
+        }
 
-                h1 {
-                    font-size: 4rem;
-                    color: white;
-                    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-                    animation: glow 2s infinite alternate;
-                }
+        @keyframes glow {
+            from {
+                text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3), 0 0 10px #ff6b6b, 0 0 20px #fbc531, 0 0 30px #4cd137;
+            }
+            to {
+                text-shadow: 3px 3px 20px rgba(0, 0, 0, 0.5), 0 0 20px #4cd137, 0 0 40px #fbc531, 0 0 60px #ff6b6b;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello World</h1>
+    <div id="db-content"></div>
 
-                h2 {
-                    color: white;
-                    margin-top: 20px;
-                }
+    <script>
+        async function fetchData() {
+            const response = await fetch('YOUR_CLOUDFLARE_WORKER_URL'); // Cloudflare WorkerのURLを指定
+            const data = await response.text();
+            document.getElementById('db-content').innerHTML = data;
+        }
 
-                ul {
-                    list-style-type: none;
-                    padding: 0;
-                    color: white;
-                }
-
-                @keyframes glow {
-                    from {
-                        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3), 0 0 10px #ff6b6b, 0 0 20px #fbc531, 0 0 30px #4cd137;
-                    }
-                    to {
-                        text-shadow: 3px 3px 20px rgba(0, 0, 0, 0.5), 0 0 20px #4cd137, 0 0 40px #fbc531, 0 0 60px #ff6b6b;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <h1>Hello World</h1>
-            ${numbersHTML}
-        </body>
-        </html>
-    `, {
-        headers: { 'Content-Type': 'text/html;charset=UTF-8' },
-    });
-}
-
-addEventListener('fetch', event => {
-    event.respondWith(handleRequest(event.request));
-});
+        fetchData();
+    </script>
+</body>
+</html>
