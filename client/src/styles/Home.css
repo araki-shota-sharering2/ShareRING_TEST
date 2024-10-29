@@ -1,0 +1,40 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .main-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 20px;
+    flex: 1;
+  }
+  
+  .feature-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 10px;
+    color: #333;
+    font-size: 1.2em;
+    text-align: center;
+    transition: background-color 0.3s;
+    cursor: pointer;
+  }
+  
+  .fitness { background-color: #a8e6cf; }
+  .mygroup { background-color: #ff8b94; }
+  .mymap { background-color: #ffecd2; }
+  .myring { background-color: #a8d0e6; }
+  .ring-keeper { background-color: #d4a5a5; }
+  .weather { background-color: #caf7e3; }
+  
+  .icon {
+    font-size: 2em;
+    margin-top: 10px;
+  }
+  
