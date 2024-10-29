@@ -1,0 +1,77 @@
+/* リセットと基本設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* ヘッダー */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #4e5c94;
+    color: white;
+}
+
+.header-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.header-icons img {
+    width: 24px;
+    height: 24px;
+    margin: 0 10px;
+}
+
+/* メインコンテンツ */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.feature-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    color: #333;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+.fitness { background-color: #b3f0c6; }
+.mygroup { background-color: #f5c1c1; }
+.mymap { background-color: #f9e9b8; }
+.myring { background-color: #c1e3f8; }
+.ringkeeper { background-color: #e1c3f5; }
+.weather { background-color: #bdf4e8; }
+
+.feature-icon {
+    font-size: 2.5rem;
+}
+
+/* フッター */
+footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    background-color: #4e5c94;
+}
+
+footer img {
+    width: 30px;
+    height: 30px;
+}
