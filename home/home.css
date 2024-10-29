@@ -7,6 +7,8 @@
 
 body {
     font-family: Arial, sans-serif;
+    max-width: 375px; /* スマートフォンの固定幅 */
+    margin: 0 auto; /* 画面中央に配置 */
 }
 
 /* ヘッダー */
@@ -19,13 +21,12 @@ header {
     color: white;
 }
 
-.header-logo {
-    font-size: 1.5rem;
-    font-weight: bold;
+.header-logo img {
+    width: 120px; /* ロゴ画像のサイズ調整 */
 }
 
 .header-icons img {
-    width: 24px;
+    width: 24px; /* ヘッダーアイコンのサイズ調整 */
     height: 24px;
     margin: 0 10px;
 }
@@ -51,16 +52,17 @@ header {
     text-decoration: none;
 }
 
+.feature-icon img {
+    width: 48px; /* 各機能アイコンのサイズ調整 */
+    height: 48px;
+}
+
 .fitness { background-color: #b3f0c6; }
 .mygroup { background-color: #f5c1c1; }
 .mymap { background-color: #f9e9b8; }
 .myring { background-color: #c1e3f8; }
 .ringkeeper { background-color: #e1c3f5; }
 .weather { background-color: #bdf4e8; }
-
-.feature-icon {
-    font-size: 2.5rem;
-}
 
 /* フッター */
 footer {
@@ -72,6 +74,6 @@ footer {
 }
 
 footer img {
-    width: 30px;
+    width: 30px; /* フッターアイコンのサイズ調整 */
     height: 30px;
 }
