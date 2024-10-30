@@ -9,11 +9,11 @@ body {
     font-family: Arial, sans-serif;
     width: 100%;
     max-width: 375px; /* スマートフォンの固定幅 */
-    margin: 0 auto; /* 画面中央に配置 */
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* ビューポート全体の高さ */
-    overflow-x: hidden; /* 横スクロールを防ぐ */
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 /* ヘッダー */
@@ -27,20 +27,20 @@ header {
     position: fixed;
     top: 0;
     width: 100%;
-    max-width: 375px; /* スマートフォンの固定幅 */
+    max-width: 375px;
     left: 50%;
-    transform: translateX(-50%); /* 中央揃えのため */
-    z-index: 1000; /* 他の要素より上に表示 */
+    transform: translateX(-50%);
+    z-index: 1000;
 }
 
 /* ヘッダーロゴ */
 .header-logo img {
-    width: 80px; /* ロゴ画像のサイズ調整 */
+    width: 80px;
 }
 
 /* ヘッダーアイコン */
 .header-icons img {
-    width: 24px; /* ヘッダーアイコンのサイズ調整 */
+    width: 24px;
     height: 24px;
     margin: 0 10px;
 }
@@ -48,25 +48,26 @@ header {
 /* メインコンテンツ */
 main {
     flex: 1;
-    padding-top: 70px; /* ヘッダーの高さ分の余白を追加 */
-    padding-bottom: 60px; /* フッターの高さ分の余白を追加 */
+    padding-top: 70px;
+    padding-bottom: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 375px; /* スマートフォンの固定幅 */
-    margin: 0 auto; /* PC画面での中央配置を維持 */
+    max-width: 375px;
+    margin: 0 auto;
 }
 
 /* コンテンツのグリッド配置 */
 .feature-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2列レイアウト */
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     padding: 10px 20px;
     width: 100%;
-    max-width: 335px; /* 各機能ボックスがフッターとヘッダーに収まるように調整 */
-    box-sizing: border-box; /* パディングを含めてサイズを計算 */
+    max-width: 335px;
+    height: calc(100vh - 140px);
+    box-sizing: border-box;
 }
 
 /* 各機能のボックス */
@@ -78,34 +79,34 @@ main {
     text-align: center;
     border-radius: 15px;
     color: #ffffff;
-    font-size: 0.9rem; /* テキストサイズを少し小さく */
+    font-size: 0.9rem;
     text-decoration: none;
-    background: linear-gradient(to bottom right, var(--box-color), #ffffff); /* グラデーション追加 */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 軽い影を追加して立体感を出す */
-    transition: transform 0.2s, box-shadow 0.2s; /* ホバー時の変化をスムーズに */
-    width: 100%; /* 横幅いっぱいを使用 */
-    max-width: 160px; /* 各ボックスの最大幅を指定 */
-    height: 160px; /* 正方形にする */
+    background: linear-gradient(to bottom right, var(--box-color), #ffffff);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+    max-width: 160px;
+    height: 120px; /* 少し高さをコンパクトに */
 }
 
 .feature-box:hover {
-    transform: translateY(-3px); /* ホバー時に少し浮かせる */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* ホバー時の影を強める */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 /* グラデーション背景色 */
-.fitness { --box-color: #43e97b; /* 明るいグリーン */ }
-.mygroup { --box-color: #f857a6; /* ピンクのグラデーション */ }
-.mymap { --box-color: #f9d423; /* イエロー */ }
-.myring { --box-color: #30cfd0; /* 明るいブルー */ }
-.ringkeeper { --box-color: #a18cd1; /* パープル */ }
-.weather { --box-color: #1c92d2; /* ブルー */ }
+.fitness { --box-color: #43e97b; }
+.mygroup { --box-color: #f857a6; }
+.mymap { --box-color: #f9d423; }
+.myring { --box-color: #30cfd0; }
+.ringkeeper { --box-color: #a18cd1; }
+.weather { --box-color: #1c92d2; }
 
 /* アイコンのサイズ調整 */
 .feature-icon img {
-    width: 36px; /* アイコンをコンパクトに */
+    width: 36px;
     height: 36px;
-    margin-bottom: 5px; /* アイコンとテキストの間に余白を少し狭く */
+    margin-bottom: 5px;
 }
 
 /* フッター */
@@ -118,11 +119,11 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    max-width: 375px; /* スマートフォンの固定幅 */
+    max-width: 375px;
     left: 50%;
-    transform: translateX(-50%); /* 中央揃えのため */
+    transform: translateX(-50%);
     z-index: 1000;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* フッターのアイコンスタイル */
@@ -133,13 +134,12 @@ footer a {
     text-decoration: none;
 }
 
-/* 現在のページを示すアイコンの強調 */
 footer a.active {
-    background-color: #394575; /* 現在のページにいる場合の色 */
-    border-top: 3px solid #ffffff; /* 視覚的な強調のためのバー */
+    background-color: #394575;
+    border-top: 3px solid #ffffff;
 }
 
 footer img {
-    width: 25px; /* フッターアイコンのサイズ調整 */
+    width: 25px;
     height: 25px;
 }
