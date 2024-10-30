@@ -50,19 +50,21 @@ header {
     color: #333;
     font-size: 1.2rem;
     text-decoration: none;
+    background: linear-gradient(to bottom right, var(--box-color), #ffffff); /* グラデーション追加 */
 }
+
+/* グラデーション背景色 */
+.fitness { --box-color: #b3f0c6; }
+.mygroup { --box-color: #f5c1c1; }
+.mymap { --box-color: #f9e9b8; }
+.myring { --box-color: #c1e3f8; }
+.ringkeeper { --box-color: #e1c3f5; }
+.weather { --box-color: #bdf4e8; }
 
 .feature-icon img {
     width: 48px; /* 各機能アイコンのサイズ調整 */
     height: 48px;
 }
-
-.fitness { background-color: #b3f0c6; }
-.mygroup { background-color: #f5c1c1; }
-.mymap { background-color: #f9e9b8; }
-.myring { background-color: #c1e3f8; }
-.ringkeeper { background-color: #e1c3f5; }
-.weather { background-color: #bdf4e8; }
 
 /* フッター */
 footer {
