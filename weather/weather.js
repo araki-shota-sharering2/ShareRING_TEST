@@ -1,5 +1,6 @@
-const apiKey = '9b28e55e1ae27eecbf9ff7abd481851a';
+const apiKey = '9b28e55e1ae27eecbf9ff7abd481851a'; // OpenWeatherMapのAPIキー
 
+// 現在の位置情報を取得して天気データを取得する
 document.addEventListener("DOMContentLoaded", function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -11,34 +12,71 @@ document.addEventListener("DOMContentLoaded", function() {
 function showPosition(position) {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
-    fetchWeather(lat, lon);
+    fetchCurrentWeather(lat, lon);
+    fetchWeeklyForecast(lat, lon);
 }
 
 function showError(error) {
     document.getElementById('city-name').textContent = `位置情報を取得できません: ${error.message}`;
 }
 
-function fetchWeather(lat, lon) {
+// 現在の天気を取得
+function fetchCurrentWeather(lat, lon) {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=ja`;
 
     fetch(url)
         .then(response => response.json())
-        .then(data => displayWeather(data))
+        .then(data => displayCurrentWeather(data))
         .catch(error => console.error('エラー:', error));
 }
 
-function displayWeather(data) {
+function displayCurrentWeather(data) {
     if (data.cod === 200) {
-        const now = new Date();
-        document.getElementById('date').textContent = now.toLocaleDateString("ja-JP", { year: 'numeric', month: 'long', day: 'numeric' });
-        document.getElementById('time').textContent = `更新: ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
         document.getElementById('city-name').textContent = data.name;
         document.getElementById('temperature').textContent = `${data.main.temp}°C`;
-        document.getElementById('description').textContent = `${data.weather[0].description}`;
+        document.getElementById('description').textContent = `天気:${data.weather[0].description}`;
         document.getElementById('humidity').textContent = `湿度: ${data.main.humidity}%`;
         document.getElementById('wind-speed').textContent = `風速: ${data.wind.speed} m/s`;
         document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
     } else {
         document.getElementById('city-name').textContent = '天気情報を取得できません';
     }
+}
+
+// 週間予報（5日間の3時間ごとのデータ）を取得
+function fetchWeeklyForecast(lat, lon) {
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=ja`;
+
+    fetch(forecastUrl)
+        .then(response => response.json())
+        .then(data => displayWeeklyForecast(data))
+        .catch(error => console.error('エラー:', error));
+}
+
+function displayWeeklyForecast(data) {
+    const forecastContainer = document.getElementById('forecast');
+    forecastContainer.innerHTML = ''; // 一度クリア
+
+    const days = {};
+
+    // 各日の12:00のデータのみを取得して表示
+    data.list.forEach(item => {
+        const date = new Date(item.dt * 1000);
+        const day = date.toLocaleDateString("ja-JP", { weekday: 'short', month: 'numeric', day: 'numeric' });
+        const hour = date.getHours();
+
+        // 12時のデータを各日の予報として使う
+        if (hour === 12 && !days[day]) {
+            days[day] = item;
+
+            const forecastItem = document.createElement('div');
+            forecastItem.classList.add('forecast-item');
+            forecastItem.innerHTML = `
+                <p>${day}</p>
+                <img src="https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png" alt="${item.weather[0].description}">
+                <p>${item.main.temp}°C</p>
+            `;
+            forecastContainer.appendChild(forecastItem);
+        }
+    });
 }
