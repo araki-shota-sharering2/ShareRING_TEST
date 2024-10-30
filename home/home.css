@@ -6,13 +6,14 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
     max-width: 375px; /* スマートフォンの固定幅 */
     margin: 0 auto; /* 画面中央に配置 */
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* ビューポート全体の高さ */
     overflow-x: hidden; /* 横スクロールを防ぐ */
+    background: #f0f4f8; /* 全体の背景色を柔らかいグレーに変更 */
 }
 
 /* ヘッダー */
@@ -25,11 +26,12 @@ header {
     color: white;
     position: fixed;
     top: 0;
-    left: 50%; /* 中央揃えのため */
+    left: 50%;
     transform: translateX(-50%); /* 中央揃えのため */
     width: 100%;
     max-width: 375px; /* スマートフォンの固定幅 */
     z-index: 1000; /* 他の要素より上に表示 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
 }
 
 /* ヘッダーロゴ */
@@ -59,7 +61,7 @@ main {
 .feature-grid {
     display: flex;
     flex-direction: column; /* 縦に配置 */
-    gap: 10px; /* 各要素間のスペースを少し狭める */
+    gap: 15px; /* 各要素間のスペースを設定 */
     padding: 10px 20px;
     width: 100%; /* 親の幅を最大限に使用 */
 }
@@ -71,28 +73,36 @@ main {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 15px; /* 縦の幅を少し狭める */
-    border-radius: 15px;
+    padding: 20px;
+    border-radius: 20px; /* 丸みを強くしてカード状に */
     color: #ffffff;
     font-size: 1.2rem;
     text-decoration: none;
     background: linear-gradient(to bottom right, var(--box-color), #ffffff); /* グラデーション追加 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* ボックスに影を追加して立体感を出す */
     width: 100%; /* 幅いっぱいに広げる */
     margin: 0 auto; /* 中央に配置 */
+    transition: transform 0.3s, box-shadow 0.3s; /* ホバー時の変化をスムーズに */
+}
+
+.feature-box:hover {
+    transform: translateY(-5px); /* ホバー時に少し浮かせる */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* ホバー時の影を強める */
 }
 
 /* グラデーション背景色 */
-.fitness { --box-color: #20e960; }
-.mygroup { --box-color: #ef2323; }
-.mymap { --box-color: #e3b320; }
-.myring { --box-color: #2a9ae0; }
-.ringkeeper { --box-color: #9930df; }
-.weather { --box-color: #1be4b8; }
+.fitness { --box-color: #43e97b; /* 明るいグリーン */ }
+.mygroup { --box-color: #f857a6; /* ピンクのグラデーション */ }
+.mymap { --box-color: #f9d423; /* イエロー */ }
+.myring { --box-color: #30cfd0; /* 明るいブルー */ }
+.ringkeeper { --box-color: #a18cd1; /* パープル */ }
+.weather { --box-color: #1c92d2; /* ブルー */ }
 
 /* アイコンのサイズ調整 */
 .feature-icon img {
-    width: 40px; /* アイコンサイズも少し調整 */
-    height: 40px;
+    width: 50px; /* アイコンを少し大きく */
+    height: 50px;
+    margin-bottom: 10px; /* アイコンとテキストの間に余白を追加 */
 }
 
 /* フッター */
@@ -109,6 +119,7 @@ footer {
     width: 100%;
     max-width: 375px; /* スマートフォンの固定幅 */
     z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
 }
 
 /* フッターのアイコンスタイル */
