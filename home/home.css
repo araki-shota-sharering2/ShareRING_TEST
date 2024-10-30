@@ -47,19 +47,21 @@ header {
 /* メインコンテンツ */
 main {
     flex: 1;
-    padding-top: 70px; /* ヘッダーの高さ分の余白を追加 */
-    padding-bottom: 60px; /* フッターの高さ分の余白を追加 */
+    padding-top: 80px; /* ヘッダーの高さ分の余白を追加 */
+    padding-bottom: 70px; /* フッターの高さ分の余白を追加 */
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* 上から順に並べる */
+    width: 100%;
 }
 
-/* コンテンツのグリッド配置 */
+/* コンテンツの縦配置 */
 .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 20px;
+    display: flex;
+    flex-direction: column; /* 縦に配置 */
+    gap: 10px; /* 各要素間のスペースを少し狭める */
+    padding: 10px 20px;
+    width: 100%; /* 親の幅を最大限に使用 */
 }
 
 /* 各機能のボックス */
@@ -69,12 +71,14 @@ main {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
+    padding: 15px; /* 縦の幅を少し狭める */
     border-radius: 15px;
     color: #ffffff;
     font-size: 1.2rem;
     text-decoration: none;
     background: linear-gradient(to bottom right, var(--box-color), #ffffff); /* グラデーション追加 */
+    width: 100%; /* 幅いっぱいに広げる */
+    margin: 0 auto; /* 中央に配置 */
 }
 
 /* グラデーション背景色 */
@@ -87,8 +91,8 @@ main {
 
 /* アイコンのサイズ調整 */
 .feature-icon img {
-    width: 48px;
-    height: 48px;
+    width: 40px; /* アイコンサイズも少し調整 */
+    height: 40px;
 }
 
 /* フッター */
