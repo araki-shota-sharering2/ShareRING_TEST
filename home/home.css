@@ -6,14 +6,14 @@
 }
 
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: Arial, sans-serif;
+    width: 100%;
     max-width: 375px; /* スマートフォンの固定幅 */
     margin: 0 auto; /* 画面中央に配置 */
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* ビューポート全体の高さ */
     overflow-x: hidden; /* 横スクロールを防ぐ */
-    background: #f0f4f8; /* 全体の背景色を柔らかいグレーに変更 */
 }
 
 /* ヘッダー */
@@ -26,12 +26,11 @@ header {
     color: white;
     position: fixed;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%); /* 中央揃えのため */
     width: 100%;
     max-width: 375px; /* スマートフォンの固定幅 */
+    left: 50%;
+    transform: translateX(-50%); /* 中央揃えのため */
     z-index: 1000; /* 他の要素より上に表示 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
 }
 
 /* ヘッダーロゴ */
@@ -49,21 +48,25 @@ header {
 /* メインコンテンツ */
 main {
     flex: 1;
-    padding-top: 80px; /* ヘッダーの高さ分の余白を追加 */
-    padding-bottom: 70px; /* フッターの高さ分の余白を追加 */
+    padding-top: 70px; /* ヘッダーの高さ分の余白を追加 */
+    padding-bottom: 60px; /* フッターの高さ分の余白を追加 */
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* 上から順に並べる */
+    align-items: center;
     width: 100%;
+    max-width: 375px; /* スマートフォンの固定幅 */
+    margin: 0 auto; /* PC画面での中央配置を維持 */
 }
 
-/* コンテンツの縦配置 */
+/* コンテンツのグリッド配置 */
 .feature-grid {
-    display: flex;
-    flex-direction: column; /* 縦に配置 */
-    gap: 15px; /* 各要素間のスペースを設定 */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2列レイアウト */
+    gap: 10px;
     padding: 10px 20px;
-    width: 100%; /* 親の幅を最大限に使用 */
+    width: 100%;
+    max-width: 335px; /* 各機能ボックスがフッターとヘッダーに収まるように調整 */
+    box-sizing: border-box; /* パディングを含めてサイズを計算 */
 }
 
 /* 各機能のボックス */
@@ -73,21 +76,21 @@ main {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
-    border-radius: 20px; /* 丸みを強くしてカード状に */
+    border-radius: 15px;
     color: #ffffff;
-    font-size: 1.2rem;
+    font-size: 0.9rem; /* テキストサイズを少し小さく */
     text-decoration: none;
     background: linear-gradient(to bottom right, var(--box-color), #ffffff); /* グラデーション追加 */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* ボックスに影を追加して立体感を出す */
-    width: 100%; /* 幅いっぱいに広げる */
-    margin: 0 auto; /* 中央に配置 */
-    transition: transform 0.3s, box-shadow 0.3s; /* ホバー時の変化をスムーズに */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 軽い影を追加して立体感を出す */
+    transition: transform 0.2s, box-shadow 0.2s; /* ホバー時の変化をスムーズに */
+    width: 100%; /* 横幅いっぱいを使用 */
+    max-width: 160px; /* 各ボックスの最大幅を指定 */
+    height: 160px; /* 正方形にする */
 }
 
 .feature-box:hover {
-    transform: translateY(-5px); /* ホバー時に少し浮かせる */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* ホバー時の影を強める */
+    transform: translateY(-3px); /* ホバー時に少し浮かせる */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* ホバー時の影を強める */
 }
 
 /* グラデーション背景色 */
@@ -100,9 +103,9 @@ main {
 
 /* アイコンのサイズ調整 */
 .feature-icon img {
-    width: 50px; /* アイコンを少し大きく */
-    height: 50px;
-    margin-bottom: 10px; /* アイコンとテキストの間に余白を追加 */
+    width: 36px; /* アイコンをコンパクトに */
+    height: 36px;
+    margin-bottom: 5px; /* アイコンとテキストの間に余白を少し狭く */
 }
 
 /* フッター */
@@ -110,14 +113,14 @@ footer {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 10px;
+    padding: 8px;
     background-color: #4e5c94;
     position: fixed;
     bottom: 0;
-    left: 50%; /* 中央揃えのため */
-    transform: translateX(-50%); /* 中央揃えのため */
     width: 100%;
     max-width: 375px; /* スマートフォンの固定幅 */
+    left: 50%;
+    transform: translateX(-50%); /* 中央揃えのため */
     z-index: 1000;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
 }
@@ -137,6 +140,6 @@ footer a.active {
 }
 
 footer img {
-    width: 30px; /* フッターアイコンのサイズ調整 */
-    height: 30px;
+    width: 25px; /* フッターアイコンのサイズ調整 */
+    height: 25px;
 }
