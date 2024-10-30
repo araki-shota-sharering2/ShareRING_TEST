@@ -47,7 +47,7 @@ header {
     text-align: center;
     padding: 20px;
     border-radius: 15px;
-    color: #333;
+    color: #4e5c94;
     font-size: 1.2rem;
     text-decoration: none;
     background: linear-gradient(to bottom right, var(--box-color), #ffffff); /* グラデーション追加 */
