@@ -1,24 +1,57 @@
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+/* Reset and Base Styles */
+* {
     margin: 0;
-    background: #f0f0f0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    max-width: 375px; /* Fixed width for mobile */
+    margin: 0 auto;
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #4e5c94;
+    color: white;
+    width: 100%;
+}
+
+.header-logo img {
+    width: 120px;
+}
+
+.header-icons img {
+    width: 24px;
+    height: 24px;
+    margin: 0 10px;
+}
+
+/* Weather Container */
 .weather-container {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    margin-top: 20px;
+    width: 90%;
 }
 
 input, button {
     margin: 10px 0;
     padding: 10px;
+    width: calc(100% - 20px);
     border: 1px solid #ddd;
     border-radius: 5px;
 }
@@ -36,84 +69,20 @@ button:hover {
 #weather-info p {
     margin: 5px 0;
 }
-/* リセットと基本設定 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
-body {
-    font-family: Arial, sans-serif;
-    max-width: 375px; /* スマートフォンの固定幅 */
-    margin: 0 auto; /* 画面中央に配置 */
-}
-
-/* ヘッダー */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #4e5c94;
-    color: white;
-}
-
-.header-logo img {
-    width: 120px; /* ロゴ画像のサイズ調整 */
-}
-
-.header-icons img {
-    width: 24px; /* ヘッダーアイコンのサイズ調整 */
-    height: 24px;
-    margin: 0 10px;
-}
-
-/* メインコンテンツ */
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 20px;
-}
-
-.feature-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px;
-    border-radius: 15px;
-    color: #ffffff;
-    font-size: 1.2rem;
-    text-decoration: none;
-    background: linear-gradient(to bottom right, var(--box-color), #ffffff); /* グラデーション追加 */
-}
-
-/* グラデーション背景色 */
-.fitness { --box-color: #20e960; }
-.mygroup { --box-color: #ef2323; }
-.mymap { --box-color: #e3b320; }
-.myring { --box-color: #2a9ae0; }
-.ringkeeper { --box-color: #9930df; }
-.weather { --box-color: #1be4b8; }
-
-.feature-icon img {
-    width: 48px; /* 各機能アイコンのサイズ調整 */
-    height: 48px;
-}
-
-/* フッター */
+/* Footer */
 footer {
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 10px;
     background-color: #4e5c94;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
 }
 
 footer img {
-    width: 30px; /* フッターアイコンのサイズ調整 */
+    width: 30px;
     height: 30px;
 }

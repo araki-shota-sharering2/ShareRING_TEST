@@ -1,4 +1,4 @@
-const apiKey = '9b28e55e1ae27eecbf9ff7abd481851a'; // OpenWeatherMapのAPIキーをここに入力
+const apiKey = '9b28e55e1ae27eecbf9ff7abd481851a'; // OpenWeatherMap API key
 
 document.getElementById('fetch-weather').addEventListener('click', () => {
     const city = document.getElementById('city-input').value;
@@ -27,8 +27,8 @@ function displayWeather(data) {
         document.getElementById('humidity').textContent = '';
     }
 }
-// 特定のボタンのイベントリスナーの設定
+
+// Optional console log to confirm page load
 document.addEventListener("DOMContentLoaded", function() {
-    // 必要に応じてJavaScriptで機能を拡張
-    console.log("ホーム画面が読み込まれました");
+    console.log("Home screen loaded");
 });
