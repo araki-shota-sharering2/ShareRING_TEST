@@ -62,8 +62,8 @@ main {
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 10px 20px;
+    gap: 20px; /* ボックス間の余白を広げる */
+    padding: 10px 20px; /* 左右の余白を調整 */
     width: 100%;
     max-width: 335px;
     height: calc(100vh - 140px);
@@ -85,8 +85,8 @@ main {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
     width: 100%;
-    max-width: 160px;
-    height: 120px; /* 少し高さをコンパクトに */
+    max-width: 150px; /* ボックスの幅をコンパクトに調整 */
+    height: 120px;
 }
 
 .feature-box:hover {
