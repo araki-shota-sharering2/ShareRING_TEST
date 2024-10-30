@@ -1,4 +1,4 @@
-/* Reset and Base Styles */
+/* リセットと基本設定 */
 * {
     margin: 0;
     padding: 0;
@@ -7,7 +7,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    max-width: 375px; /* Fixed width for mobile */
+    max-width: 375px;
     margin: 0 auto;
     background: #f0f0f0;
     display: flex;
@@ -16,7 +16,7 @@ body {
     height: 100vh;
 }
 
-/* Header */
+/* ヘッダー */
 header {
     display: flex;
     justify-content: space-between;
@@ -37,40 +37,74 @@ header {
     margin: 0 10px;
 }
 
-/* Weather Container */
+/* メインコンテンツ */
 .weather-container {
     background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
     margin-top: 20px;
     width: 90%;
 }
 
-input, button {
-    margin: 10px 0;
-    padding: 10px;
-    width: calc(100% - 20px);
-    border: 1px solid #ddd;
-    border-radius: 5px;
+.current-weather h1 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 5px;
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
+#date {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 5px;
 }
 
-button:hover {
-    background-color: #45a049;
+#time {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
 }
 
-#weather-info p {
+.weather-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.weather-details img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.weather-info {
+    font-size: 1.2rem;
+    color: #444;
+    font-weight: bold;
+}
+
+.weather-info p {
     margin: 5px 0;
 }
 
-/* Footer */
+#temperature {
+    font-size: 2.5rem;
+    color: #333;
+}
+
+#description {
+    font-size: 1rem;
+    color: #666;
+}
+
+#humidity, #wind-speed {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* フッター */
 footer {
     display: flex;
     justify-content: space-around;
@@ -78,6 +112,7 @@ footer {
     padding: 10px;
     background-color: #4e5c94;
     width: 100%;
+    max-width: 375px;
     position: absolute;
     bottom: 0;
 }
