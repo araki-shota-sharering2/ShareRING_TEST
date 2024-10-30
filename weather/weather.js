@@ -32,9 +32,13 @@ function fetchCurrentWeather(lat, lon) {
 
 function displayCurrentWeather(data) {
     if (data.cod === 200) {
+        const date = new Date();
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'long' };
+        document.getElementById('date-time').textContent = `${date.toLocaleDateString("ja-JP", options)} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')} 更新`;
+
         document.getElementById('city-name').textContent = data.name;
         document.getElementById('temperature').textContent = `${data.main.temp}°C`;
-        document.getElementById('description').textContent = `天気:${data.weather[0].description}`;
+        document.getElementById('description').textContent = `天気: ${data.weather[0].description}`;
         document.getElementById('humidity').textContent = `湿度: ${data.main.humidity}%`;
         document.getElementById('wind-speed').textContent = `風速: ${data.wind.speed} m/s`;
         document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
@@ -43,7 +47,7 @@ function displayCurrentWeather(data) {
     }
 }
 
-// 週間予報（5日間の3時間ごとのデータ）を取得
+// 週間予報を取得
 function fetchWeeklyForecast(lat, lon) {
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=ja`;
 
