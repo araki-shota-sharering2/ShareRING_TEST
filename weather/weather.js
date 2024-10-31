@@ -1,4 +1,5 @@
 const apiKey = '9b28e55e1ae27eecbf9ff7abd481851a'; // OpenWeatherMapのAPIキー
+const googleMapsApiKey = 'AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8'; // Replace with your Google Maps API key
 
 // 現在の位置情報を取得して天気データを取得する
 document.addEventListener("DOMContentLoaded", function() {
@@ -14,10 +15,30 @@ function showPosition(position) {
     const lon = position.coords.longitude;
     fetchCurrentWeather(lat, lon);
     fetchWeeklyForecast(lat, lon);
+    fetchLocationName(lat, lon); // Call to get location name
 }
 
 function showError(error) {
     document.getElementById('city-name').textContent = `位置情報を取得できません: ${error.message}`;
+}
+
+// Fetch location name based on latitude and longitude
+function fetchLocationName(lat, lon) {
+    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${googleMapsApiKey}&language=ja`;
+
+    fetch(geocodeUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "OK" && data.results[0]) {
+                const addressComponents = data.results[0].address_components;
+                const prefecture = addressComponents.find(component => component.types.includes("administrative_area_level_1"))?.long_name || "";
+                const city = addressComponents.find(component => component.types.includes("locality"))?.long_name || "";
+                document.getElementById('city-name').textContent = `${prefecture} ${city}`;
+            } else {
+                document.getElementById('city-name').textContent = '位置情報を取得できません';
+            }
+        })
+        .catch(error => console.error('エラー:', error));
 }
 
 // 現在の天気を取得
@@ -36,7 +57,6 @@ function displayCurrentWeather(data) {
         const options = { year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'long' };
         document.getElementById('date-time').textContent = `${date.toLocaleDateString("ja-JP", options)} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')} 更新`;
 
-        document.getElementById('city-name').textContent = data.name;
         document.getElementById('temperature').textContent = `${data.main.temp}°C`;
         document.getElementById('description').textContent = `天気: ${data.weather[0].description}`;
         document.getElementById('humidity').textContent = `湿度: ${data.main.humidity}%`;
