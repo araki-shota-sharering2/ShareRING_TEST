@@ -75,13 +75,32 @@ main {
     position: relative; /* 相対位置 */
     overflow: hidden; /* はみ出しを隠す */
     height: 120px; /* 高さを統一 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 陰影をつける */
     color: white; /* テキストカラー */
-    border: 2px solid rgba(255, 255, 255, 0.8); /* ボックスの枠 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 陰影をつける */
 }
 
 /* 背景のアニメーションを設定 */
 .feature-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(170deg, transparent 85%, #fff 10%); /* 角度をつけて分割 */
+    z-index: 0; /* 背景を前面にしない */
+}
+
+/* 各ボックスのグラデーション背景色 */
+.fitness { background-color: #43e97b; }
+.mygroup { background-color: #f857a6; }
+.mymap { background-color: #f9d423; }
+.myring { background-color: #30cfd0; }
+.ringkeeper { background-color: #a18cd1; }
+.weather { background-color: #1c92d2; }
+
+/* 光るエフェクトの設定 */
+.feature-box::after {
     content: '';
     position: absolute;
     top: 0;
@@ -90,7 +109,7 @@ main {
     bottom: 0;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
     animation: shine 2s linear infinite; /* 光が流れるアニメーション */
-    z-index: 0; /* 背景を前面にしない */
+    z-index: 1; /* 背景を前面にしない */
 }
 
 /* 光るエフェクトのアニメーション */
@@ -103,27 +122,19 @@ main {
     }
 }
 
-/* 各ボックスのグラデーション背景色 */
-.fitness { background-color: #43e97b; }
-.mygroup { background-color: #f857a6; }
-.mymap { background-color: #f9d423; }
-.myring { background-color: #30cfd0; }
-.ringkeeper { background-color: #a18cd1; }
-.weather { background-color: #1c92d2; }
-
 /* アイコンのサイズ調整 */
 .feature-icon img {
     width: 36px;
     height: 36px;
     margin-bottom: 5px;
     position: relative;
-    z-index: 1; /* アイコンを前面に */
+    z-index: 2; /* アイコンを前面に */
 }
 
 /* テキストの位置を調整 */
 .feature-box p {
     position: relative; /* 位置を調整 */
-    z-index: 1; /* テキストを前面に */
+    z-index: 2; /* テキストを前面に */
 }
 
 /* フッター */
