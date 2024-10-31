@@ -7,13 +7,14 @@
 
 body {
     font-family: Arial, sans-serif;
-    width: 100%;
-    max-width: 375px; /* スマートフォンの固定幅 */
+    max-width: 375px;
     margin: 0 auto;
+    background: #f0f0f0;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    overflow-x: hidden;
+    align-items: center;
+    height: 100vh;
+    color: #333;
 }
 
 /* ヘッダー */
@@ -24,21 +25,14 @@ header {
     padding: 10px;
     background-color: #4e5c94;
     color: white;
-    position: fixed;
-    top: 0;
     width: 100%;
-    max-width: 375px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* ヘッダーロゴ */
 .header-logo img {
     width: 80px;
 }
 
-/* ヘッダーアイコン */
 .header-icons img {
     width: 24px;
     height: 24px;
@@ -78,35 +72,58 @@ main {
     justify-content: center;
     text-align: center;
     border-radius: 15px;
-    color: #ffffff;
-    font-size: 0.9rem;
-    text-decoration: none;
-    background: linear-gradient(to bottom right, var(--box-color), #ffffff);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-    width: 100%;
-    max-width: 150px; /* ボックスの幅をコンパクトに調整 */
-    height: 120px;
+    position: relative; /* 相対位置 */
+    overflow: hidden; /* はみ出しを隠す */
+    height: 120px; /* 高さを統一 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 陰影をつける */
+    color: white; /* テキストカラー */
+    border: 2px solid rgba(255, 255, 255, 0.8); /* ボックスの枠 */
 }
 
-.feature-box:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+/* 背景のアニメーションを設定 */
+.feature-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* 左からスタート */
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+    animation: shine 2s linear infinite; /* 光が流れるアニメーション */
+    z-index: 0; /* 背景を前面にしない */
 }
 
-/* グラデーション背景色 */
-.fitness { --box-color: #43e97b; }
-.mygroup { --box-color: #f857a6; }
-.mymap { --box-color: #f9d423; }
-.myring { --box-color: #30cfd0; }
-.ringkeeper { --box-color: #a18cd1; }
-.weather { --box-color: #1c92d2; }
+/* 光るエフェクトのアニメーション */
+@keyframes shine {
+    0% {
+        left: -200%; /* 最初は左外 */
+    }
+    100% {
+        left: 200%; /* 右外へ */
+    }
+}
+
+/* 各ボックスのグラデーション背景色 */
+.fitness { background-color: #43e97b; }
+.mygroup { background-color: #f857a6; }
+.mymap { background-color: #f9d423; }
+.myring { background-color: #30cfd0; }
+.ringkeeper { background-color: #a18cd1; }
+.weather { background-color: #1c92d2; }
 
 /* アイコンのサイズ調整 */
 .feature-icon img {
     width: 36px;
     height: 36px;
     margin-bottom: 5px;
+    position: relative;
+    z-index: 1; /* アイコンを前面に */
+}
+
+/* テキストの位置を調整 */
+.feature-box p {
+    position: relative; /* 位置を調整 */
+    z-index: 1; /* テキストを前面に */
 }
 
 /* フッター */
@@ -126,17 +143,10 @@ footer {
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* フッターのアイコンスタイル */
 footer a {
     text-align: center;
-    flex: 1;
     color: white;
     text-decoration: none;
-}
-
-footer a.active {
-    background-color: #394575;
-    border-top: 3px solid #ffffff;
 }
 
 footer img {
