@@ -9,12 +9,35 @@ body {
     font-family: Arial, sans-serif;
     max-width: 375px;
     margin: 0 auto;
-    background: #f0f0f0;
+    background-color: #0d0d2b; /* 夜空をイメージした濃い青色 */
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 100vh;
-    color: #333;
+    color: #ccc;
+    overflow: hidden;
+}
+
+/* 星のスタイル */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
+}
+
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 /* ヘッダー */
@@ -56,8 +79,8 @@ main {
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px; /* ボックス間の余白を広げる */
-    padding:10px 10px; /* 左右の余白を調整 */
+    gap: 20px; /* ボックス間の余白を広げる */
+    padding: 10px 20px; /* 左右の余白を調整 */
     width: 100%;
     max-width: 335px;
     height: calc(100vh - 140px);
