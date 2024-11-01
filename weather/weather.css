@@ -9,12 +9,35 @@ body {
     font-family: Arial, sans-serif;
     max-width: 375px;
     margin: 0 auto;
-    background: #f0f0f0;
+    background-color: #0d0d2b; /* 夜空をイメージした濃い青色 */
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 100vh;
-    color: #333;
+    color: #ccc;
+    overflow: hidden;
+}
+
+/* 星のスタイル */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
+}
+
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 /* ヘッダー */
@@ -30,13 +53,26 @@ header {
 }
 
 .header-logo img {
-    width: 100px;
+    width: 120px;
 }
 
 .header-icons img {
     width: 24px;
     height: 24px;
     margin: 0 10px;
+}
+
+/* メインコンテンツ */
+main {
+    flex: 1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 375px;
+    margin: 0 auto;
 }
 
 /* 天気情報コンテナ */
