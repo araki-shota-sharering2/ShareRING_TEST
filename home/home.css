@@ -79,8 +79,8 @@ main {
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px; /* ボックス間の余白を広げる */
-    padding: 10px 20px; /* 左右の余白を調整 */
+    gap: 10px; /* ボックス間の余白を狭める */
+    padding: 5px 15px; /* 左右の余白を減らす */
     width: 100%;
     max-width: 335px;
     height: calc(100vh - 140px);
@@ -97,7 +97,7 @@ main {
     border-radius: 15px;
     position: relative; /* 相対位置 */
     overflow: hidden; /* はみ出しを隠す */
-    height: 120px; /* 高さを統一 */
+    height: 110px; /* 高さを少し狭める */
     color: white; /* テキストカラー */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 陰影をつける */
 }
