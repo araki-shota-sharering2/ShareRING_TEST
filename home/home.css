@@ -56,8 +56,8 @@ main {
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px; /* ボックス間の余白を広げる */
-    padding: 10px 20px; /* 左右の余白を調整 */
+    gap: 10px; /* ボックス間の余白を広げる */
+    padding:10px 10px; /* 左右の余白を調整 */
     width: 100%;
     max-width: 335px;
     height: calc(100vh - 140px);
