@@ -154,10 +154,20 @@ footer {
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* フッターのアイコンスタイル */
 footer a {
     text-align: center;
     color: white;
     text-decoration: none;
+    padding: 10px 15px; /* アイコン周囲を広げる */
+}
+
+/* フッターのアクティブ状態を示す */
+footer a.active {
+    background-color: #394575; /* 選択されたときの背景色 */
+    border-top: 3px solid #ffffff; /* 選択されたときの上部バー */
+    border-radius: 5px; /* アイコン周囲に少し丸みを追加 */
+    transition: background-color 0.3s ease, padding 0.3s ease; /* なめらかな変化を追加 */
 }
 
 footer img {
