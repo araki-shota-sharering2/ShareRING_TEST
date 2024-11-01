@@ -28,24 +28,6 @@
     <!-- メインコンテンツ -->
     <main>
         <section class="feature-grid">
-            <a href="fitness.html" class="feature-box fitness">
-                <div class="feature-icon">
-                    <img src="/assets/images/main/fitness.svg" alt="Fitness Icon">
-                </div>
-                <p>FITNESS</p>
-            </a>
-            <a href="mygroup.html" class="feature-box mygroup">
-                <div class="feature-icon">
-                    <img src="/assets/images/main/group.svg" alt="Group Icon">
-                </div>
-                <p>MYGROUP</p>
-            </a>
-            <a href="mymap.html" class="feature-box mymap">
-                <div class="feature-icon">
-                    <img src="/assets/images/main/my_map.svg" alt="Map Icon">
-                </div>
-                <p>MYMAP</p>
-            </a>
             <a href="myring.html" class="feature-box myring">
                 <div class="feature-icon">
                     <img src="/assets/images/main/my_ring.svg" alt="Ring Icon">
@@ -58,11 +40,29 @@
                 </div>
                 <p>RING KEEPER</p>
             </a>
+            <a href="mymap.html" class="feature-box mymap">
+                <div class="feature-icon">
+                    <img src="/assets/images/main/my_map.svg" alt="Map Icon">
+                </div>
+                <p>MYMAP</p>
+            </a>
+            <a href="mygroup.html" class="feature-box mygroup">
+                <div class="feature-icon">
+                    <img src="/assets/images/main/group.svg" alt="Group Icon">
+                </div>
+                <p>MYGROUP</p>
+            </a>
             <a href="/weather/weather.html" class="feature-box weather">
                 <div class="feature-icon">
                     <img src="/assets/images/main/weather.svg" alt="Weather Icon">
                 </div>
                 <p>WEATHER</p>
+            </a>
+            <a href="fitness.html" class="feature-box fitness">
+                <div class="feature-icon">
+                    <img src="/assets/images/main/fitness.svg" alt="Fitness Icon">
+                </div>
+                <p>FITNESS</p>
             </a>
         </section>
     </main>
@@ -76,31 +76,6 @@
         <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="Achievements"></a>
     </footer>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        console.log("ホーム画面が読み込まれました");
-
-        // 現在のURLに基づいてフッターリンクを強調
-        const path = window.location.pathname;
-        const footerLinks = document.querySelectorAll("footer a");
-
-        footerLinks.forEach(link => {
-            if (link.getAttribute("href") === path) {
-                link.classList.add("active");
-            }
-        });
-
-        // 星をランダムに配置
-        const body = document.querySelector('body');
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.animationDuration = (Math.random() * 2 + 1) + 's';
-            body.appendChild(star);
-        }
-    });
-    </script>
+    <script src="home.js"></script>
 </body>
 </html>
