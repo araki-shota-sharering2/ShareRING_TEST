@@ -8,7 +8,10 @@ export default {
                 const { text, png } = data;
 
                 await env.DB.prepare("INSERT INTO testDB (text, png) VALUES (?, ?)").bind(text, png).run();
-                return new Response("データが挿入されました。", { status: 201 });
+                return new Response("データが挿入されました。", {
+                    status: 201,
+                    headers: { "Access-Control-Allow-Origin": "*" }  // これを追加
+                });
             } catch (error) {
                 return new Response("挿入エラー: " + error.message, { status: 500 });
             }
