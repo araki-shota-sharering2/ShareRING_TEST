@@ -2,8 +2,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("data-container");
 
     try {
-        const response = await fetch("./fetch-data");
-        const data = await response.json();
+        const response = await fetch("/fetch-data");
+        
+        // レスポンスのステータスとヘッダーをログに出力
+        console.log("Status:", response.status);
+        console.log("Headers:", response.headers);
+
+        // テキストとしてレスポンスを取得して出力
+        const responseText = await response.text();
+        console.log("Response Text:", responseText);
+
+        // JSONとしてパースしてみる
+        const data = JSON.parse(responseText);
+        console.log("Parsed Data:", data);
 
         if (data.length > 0) {
             data.forEach(item => {
@@ -17,6 +28,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     } catch (error) {
         container.textContent = "データの取得中にエラーが発生しました。";
-        console.error("Error fetching data:", error);
+        console.error("Error fetching or parsing data:", error);
     }
 });
