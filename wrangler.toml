@@ -1,5 +1,4 @@
 name = "sharering-test"  # プロジェクトの名前
-main = "functions/api/beverages.js"  # メインスクリプトファイル（Pages Functions用）
 compatibility_date = "2024-11-02"  # 互換性日付
 
 [[d1_databases]]
