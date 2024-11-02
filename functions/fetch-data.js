@@ -1,15 +1,12 @@
 export default {
     async fetch(request, env) {
         try {
-            // データ取得
-            const stmt = env.DB.prepare("SELECT * FROM test_db");
-            const data = await stmt.all();
-
-            return new Response(JSON.stringify(data), {
+            // 簡単なテストレスポンス
+            return new Response(JSON.stringify({ message: "Hello, this is a test response" }), {
                 headers: { "Content-Type": "application/json" },
             });
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error("Error in function:", error);
             return new Response("Internal Server Error", { status: 500 });
         }
     }
