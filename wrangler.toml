@@ -1,0 +1,8 @@
+name = "my-d1-project"  # プロジェクトの名前
+main = "scripts.js"  # メインスクリプトファイル
+compatibility_date = "2024-11-02"  # 互換性日付
+
+[[d1_databases]]
+binding = "DB"  # 環境変数のバインディング名
+database_name = "sharering"  # データベースの名前
+database_id = "<your-database-id>"  # 実際のデータベースIDを指定
