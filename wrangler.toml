@@ -1,8 +1,15 @@
-name = "sharering-app"
-main = "scripts.js"
+name = "sharering-test"
+main = "/scripts.js"
 compatibility_date = "2024-11-02"
 
+# Cloudflare アカウントIDを記入
+account_id = "24110c1529bddb6fc66ec15da1c1b9b7"
+
+# 開発環境を使用するか
+workers_dev = true
+
+# D1データベースの設定
 [[d1_databases]]
-binding = "DB"
-database_name = "sharering"
-database_id = "217563d5-95bd-476b-ae9a-d3e9f0d322cd"
+binding = "DB"  # アプリケーション内でのバインディング名
+database_name = "sharering"  # D1データベースの名前
+database_id = "217563d5-95bd-476b-ae9a-d3e9f0d322cd"  # Cloudflare ダッシュボードから取得したID
