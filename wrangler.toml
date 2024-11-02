@@ -1,7 +1,0 @@
-name = "sharering-test"  # プロジェクトの名前
-compatibility_date = "2024-11-02"  # 互換性日付
-
-[[d1_databases]]
-binding = "DB"  # 環境変数のバインディング名
-database_name = "sprod-d1-turorial"  # データベースの名前
-database_id = "1aff0b76-bb18-4fe4-a4d1-4f73b09320c4"  # 実際のデータベースIDを指定
