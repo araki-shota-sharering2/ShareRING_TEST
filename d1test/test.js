@@ -1,7 +1,7 @@
 document.getElementById("fetch-data").addEventListener("click", async () => {
     try {
         // APIエンドポイントにGETリクエストを送信
-        const response = await fetch('/functions/api/getData.js');
+        const response = await fetch('/functions/api/beverages.js');
         
         // レスポンスがOKでなければエラーをスロー
         if (!response.ok) {
