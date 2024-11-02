@@ -3,12 +3,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         const response = await fetch("/fetch-data");
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
+        // レスポンスをテキストとしてログ出力して確認
+        const responseText = await response.text();
+        console.log("Response Text:", responseText);
+
+        // JSONとしてパースしてみる
+        const data = JSON.parse(responseText);
 
         // データが空の場合
         if (data.length === 0) {

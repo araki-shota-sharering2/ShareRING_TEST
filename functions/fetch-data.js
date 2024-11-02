@@ -1,7 +1,7 @@
 export default {
     async fetch(request, env) {
         try {
-            // D1データベースへの接続とデータ取得
+            // データ取得
             const stmt = env.DB.prepare("SELECT * FROM test_db");
             const data = await stmt.all();
 
