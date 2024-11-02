@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("data-container");
 
     try {
-        const response = await fetch("/fetch-data");
+        const response = await fetch("./fetch-data");
         const data = await response.json();
 
         if (data.length > 0) {
