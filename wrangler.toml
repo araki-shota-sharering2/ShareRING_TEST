@@ -1,5 +1,5 @@
 name = "sharering-test"
-main = "scripts.js"  # スクリプトファイルを指定
+main = "scripts.js"  # スラッシュを削除
 compatibility_date = "2024-11-02"
 
 # Cloudflare アカウントIDを記入
