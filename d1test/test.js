@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("png", pngInput.files[0]);
 
         try {
+            // データ送信処理
             await fetch("/api/insert", {
                 method: "POST",
                 body: formData,
@@ -21,12 +22,14 @@ document.addEventListener("DOMContentLoaded", () => {
             pngInput.value = "";
             alert("データが送信されました！");
 
+            // データ再読み込み
             loadData();
         } catch (error) {
             console.error("データ送信エラー:", error);
         }
     });
 
+    // データ読み込み関数
     async function loadData() {
         try {
             const response = await fetch("/api/data");
@@ -46,5 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // 初回読み込み
     loadData();
 });
