@@ -1,0 +1,7 @@
+name = "sharering-test"  # プロジェクトの名前
+compatibility_date = "2024-11-02"  # 互換性日付
+
+[[d1_databases]]
+binding = "DB"  # 環境変数のバインディング名
+database_name = "sharering_db"  # データベースの名前
+database_id = "2731a38b-2e18-4d99-a509-f49114e89409"  # 実際のデータベースID
