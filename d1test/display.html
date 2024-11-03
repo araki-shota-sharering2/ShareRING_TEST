@@ -3,11 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>画像投稿と表示</title>
+    <title>データと画像の入出力・削除</title>
     <link rel="stylesheet" href="display.css">
 </head>
 <body>
-    <h1>画像投稿</h1>
+    <h1>test_db データ一覧</h1>
+    <div id="data-container"></div>
+
+    <h2>データ挿入</h2>
+    <form id="insert-form">
+        <label for="data-id">ID:</label>
+        <input type="number" id="data-id" name="data-id" required>
+        <label for="data-name">名前:</label>
+        <input type="text" id="data-name" name="data-name" required>
+        <button type="submit">データ挿入</button>
+    </form>
+
+    <h1>画像の入出力</h1>
     <form id="photo-form">
         <label for="photo-id">ID:</label>
         <input type="number" id="photo-id" name="photo-id" required>

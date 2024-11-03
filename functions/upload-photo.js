@@ -1,4 +1,5 @@
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+
 const r2Client = new S3Client({
     region: 'auto',
     endpoint: 'https://<your-account-id>.r2.cloudflarestorage.com',
@@ -30,15 +31,14 @@ export async function onRequestPost(context) {
         });
         await r2Client.send(command);
 
-        // アップロード後のURLを生成
+        // URLを生成
         const imageUrl = `https://my-photo-bucket.<your-account-id>.r2.cloudflarestorage.com/${objectKey}`;
 
-        // 画像URLをD1データベースに保存
+        // D1に保存
         await db.prepare('INSERT INTO photo (id, blog) VALUES (?, ?)').bind(id, imageUrl).run();
 
         return new Response('Image uploaded successfully', { status: 200 });
     } catch (error) {
-        console.error('Error uploading image:', error);
         return new Response('Error uploading image: ' + error.message, { status: 500 });
     }
 }
