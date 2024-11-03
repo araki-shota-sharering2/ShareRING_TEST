@@ -9,6 +9,8 @@
 <body>
     <h1>画像投稿</h1>
     <form id="photo-form">
+        <label for="photo-id">ID:</label>
+        <input type="number" id="photo-id" name="photo-id" required>
         <label for="photo-file">画像ファイル:</label>
         <input type="file" id="photo-file" name="photo-file" accept="image/*" required>
         <button type="submit">画像投稿</button>

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 画像投稿フォームの送信イベント
     photoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        const id = document.getElementById('photo-id').value;
         const file = document.getElementById('photo-file').files[0];
 
         if (!file) {
@@ -12,7 +13,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        console.log('ID:', id);
+        console.log('File selected:', file);
+
         const formData = new FormData();
+        formData.append('id', id);
         formData.append('file', file);
 
         try {
@@ -24,9 +29,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 alert('画像を投稿しました');
                 location.reload(); // ページをリロードして更新
             } else {
+                console.error('Image upload failed:', response);
                 throw new Error('画像の投稿に失敗しました');
             }
         } catch (error) {
+            console.error('Error during image upload:', error);
             alert(`エラー: ${error.message}`);
         }
     });
