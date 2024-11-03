@@ -6,6 +6,7 @@ export async function onRequestPost(context) {
         const file = formData.get('file');
 
         if (!file) {
+            console.error('File not found in formData');
             return new Response('File is required', { status: 400 });
         }
 
@@ -18,7 +19,7 @@ export async function onRequestPost(context) {
 
         return new Response('Image uploaded successfully', { status: 200 });
     } catch (error) {
-        console.error('Error uploading image:', error); // デバッグ用ログ
+        console.error('Error uploading image:', error); // エラーメッセージを出力
         return new Response('Error uploading image: ' + error.message, { status: 500 });
     }
 }
