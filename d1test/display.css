@@ -1,11 +1,10 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    padding: 0;
     background-color: #f4f4f4;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
     color: #333;
 }
@@ -22,8 +21,28 @@ h1 {
 .data-item {
     padding: 8px;
     border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .data-item:last-child {
     border-bottom: none;
+}
+
+button {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+label, input, button {
+    margin-bottom: 10px;
+    padding: 8px;
 }
