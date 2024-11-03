@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const photoForm = document.getElementById('photo-form');
     const photoContainer = document.getElementById('photo-container');
 
-    // test_db データ取得
+    // test_db のデータ取得
     try {
         const response = await fetch('/');
         if (!response.ok) {
@@ -42,10 +42,32 @@ document.addEventListener('DOMContentLoaded', async () => {
         dataContainer.textContent = `エラー: ${error.message}`;
     }
 
+    // test_db の挿入フォーム送信イベント
+    insertForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const id = document.getElementById('id').value;
+        const name = document.getElementById('name').value;
+
+        try {
+            const response = await fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, name }),
+            });
+            if (response.ok) {
+                alert('データを挿入しました');
+                location.reload(); // ページをリロードして更新
+            } else {
+                throw new Error('挿入に失敗しました');
+            }
+        } catch (error) {
+            alert(`エラー: ${error.message}`);
+        }
+    });
+
     // 画像投稿フォームの送信イベント
     photoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        const id = document.getElementById('photo-id').value;
         const file = document.getElementById('photo-file').files[0];
 
         if (!file) {
@@ -54,7 +76,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const formData = new FormData();
-        formData.append('id', id);
         formData.append('file', file);
 
         try {
@@ -84,10 +105,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         photos.forEach(photo => {
             const div = document.createElement('div');
             div.classList.add('photo-item');
-            div.innerHTML = `<img src="${photo.blog}" alt="Uploaded Image"> <button data-id="${photo.id}">削除</button>`;
+            div.innerHTML = `<img src="data:image/jpeg;base64,${photo.blog}" alt="Uploaded Image"> <button data-id="${photo.id}">削除</button>`;
             photoContainer.appendChild(div);
 
-            // 画像削除ボタンのイベントリスナー
+            // 削除ボタンのイベントリスナー
             div.querySelector('button').addEventListener('click', async (e) => {
                 const id = e.target.getAttribute('data-id');
                 try {
