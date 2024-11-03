@@ -1,5 +1,5 @@
 name = "sharering-test"
-main = "/fuctions/index.js"
+main = "functions/index.js"
 
 [vars]
 DB = "DB"
@@ -7,4 +7,4 @@ DB = "DB"
 [[d1_databases]]
 binding = "DB"
 database_name = "sharering_db"
-database_id = "2731a38b-2e18-4d99-a509-f49114e89409"  # Cloudflare Dashboardで確認できます
+database_id = "2731a38b-2e18-4d99-a509-f49114e89409"
