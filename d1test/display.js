@@ -1,36 +1,21 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    const container = document.getElementById("data-container");
+document.addEventListener('DOMContentLoaded', async () => {
+    const dataContainer = document.getElementById('data-container');
 
     try {
-        const response = await fetch("/fetch-data");
-
+        // 最初に作成した `index.js` のエンドポイントを指定
+        const response = await fetch('/'); // ルートエンドポイントを指定
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error('データの取得に失敗しました');
         }
 
-        // レスポンスをテキストとしてログ出力して確認
-        const responseText = await response.text();
-        console.log("Response Text:", responseText);
-
-        // JSONとしてパースしてみる
-        const data = JSON.parse(responseText);
-
-        // データが空の場合
-        if (data.length === 0) {
-            container.textContent = "データがありません。";
-            return;
-        }
-
-        // データを表示
-        container.innerHTML = "";
+        const data = await response.json();
         data.forEach(item => {
-            const div = document.createElement("div");
-            div.className = "data-item";
+            const div = document.createElement('div');
+            div.classList.add('data-item');
             div.textContent = `ID: ${item.id}, Name: ${item.name}`;
-            container.appendChild(div);
+            dataContainer.appendChild(div);
         });
     } catch (error) {
-        container.textContent = "データの取得中にエラーが発生しました。";
-        console.error("Error fetching or parsing data:", error);
+        dataContainer.textContent = `エラー: ${error.message}`;
     }
 });

@@ -1,20 +1,22 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    padding: 20px;
-    background-color: #f5f5f5;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
 h1 {
     text-align: center;
+    color: #333;
 }
 
 #data-container {
-    margin-top: 20px;
+    margin: 20px auto;
     padding: 10px;
+    border: 1px solid #ccc;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    max-width: 600px;
 }
 
 .data-item {
