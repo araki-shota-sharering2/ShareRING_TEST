@@ -39,6 +39,7 @@ export async function onRequestPost(context) {
 
         return new Response('Image uploaded successfully', { status: 200 });
     } catch (error) {
+        console.error('Error uploading image:', error);
         return new Response('Error uploading image: ' + error.message, { status: 500 });
     }
 }

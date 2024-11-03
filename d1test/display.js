@@ -42,29 +42,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         dataContainer.textContent = `エラー: ${error.message}`;
     }
 
-    // test_db 挿入フォーム送信イベント
-    insertForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const id = document.getElementById('data-id').value;
-        const name = document.getElementById('data-name').value;
-
-        try {
-            const response = await fetch('/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, name }),
-            });
-            if (response.ok) {
-                alert('データを挿入しました');
-                location.reload(); // ページをリロードして更新
-            } else {
-                throw new Error('挿入に失敗しました');
-            }
-        } catch (error) {
-            alert(`エラー: ${error.message}`);
-        }
-    });
-
     // 画像投稿フォームの送信イベント
     photoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
