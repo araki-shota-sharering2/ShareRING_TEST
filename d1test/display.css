@@ -4,12 +4,12 @@ body {
     background-color: #f4f4f4;
 }
 
-h1, h2 {
+h1 {
     text-align: center;
     color: #333;
 }
 
-#data-container, #photo-container {
+#photo-container {
     margin: 20px auto;
     padding: 10px;
     border: 1px solid #ccc;
@@ -18,12 +18,15 @@ h1, h2 {
     max-width: 600px;
 }
 
-.data-item, .photo-item {
+.photo-item {
     padding: 8px;
     border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.data-item:last-child, .photo-item:last-child {
+.photo-item:last-child {
     border-bottom: none;
 }
 
