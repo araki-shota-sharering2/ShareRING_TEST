@@ -1,38 +1,44 @@
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const r2Client = new S3Client({
+    region: 'auto',
+    endpoint: 'https://<your-account-id>.r2.cloudflarestorage.com',
+    credentials: {
+        accessKeyId: 'your-access-key-id',
+        secretAccessKey: 'your-secret-access-key',
+    },
+});
+
 export async function onRequestPost(context) {
     const db = context.env.DB;
 
     try {
-        console.log('Starting form data processing...');
         const formData = await context.request.formData();
         const id = formData.get('id');
         const file = formData.get('file');
 
-        if (!id) {
-            console.error('Error: ID is missing');
-            return new Response('ID is required', { status: 400 });
+        if (!id || !file) {
+            return new Response('ID and file are required', { status: 400 });
         }
 
-        if (!file) {
-            console.error('Error: File is missing');
-            return new Response('File is required', { status: 400 });
-        }
+        // ファイルをR2にアップロード
+        const objectKey = `${id}-${file.name}`;
+        const command = new PutObjectCommand({
+            Bucket: 'my-photo-bucket',
+            Key: objectKey,
+            Body: file.stream(),
+            ContentType: file.type,
+        });
+        await r2Client.send(command);
 
-        console.log('File received:', file.name);
+        // アップロード後のURLを生成
+        const imageUrl = `https://my-photo-bucket.<your-account-id>.r2.cloudflarestorage.com/${objectKey}`;
 
-        // ファイルをBase64でエンコード
-        const reader = await file.arrayBuffer();
-        const base64Image = Buffer.from(reader).toString('base64');
+        // 画像URLをD1データベースに保存
+        await db.prepare('INSERT INTO photo (id, blog) VALUES (?, ?)').bind(id, imageUrl).run();
 
-        // Base64エンコードデータを一部表示（100文字まで）
-        console.log('Base64 encoded image preview:', base64Image.substring(0, 100));
-
-        console.log('Inserting image into the database...');
-        await db.prepare('INSERT INTO photo (id, blog) VALUES (?, ?)').bind(id, base64Image).run();
-
-        console.log('Image inserted successfully');
         return new Response('Image uploaded successfully', { status: 200 });
     } catch (error) {
-        console.error('Error during image upload:', error.message);
+        console.error('Error uploading image:', error);
         return new Response('Error uploading image: ' + error.message, { status: 500 });
     }
 }
