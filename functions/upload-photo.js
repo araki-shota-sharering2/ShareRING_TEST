@@ -10,16 +10,21 @@ export async function onRequestPost(context) {
             return new Response('File is required', { status: 400 });
         }
 
-        // ファイルをBase64でエンコード
-        const reader = await file.arrayBuffer();
-        const base64Image = Buffer.from(reader).toString('base64');
+        try {
+            const reader = await file.arrayBuffer();
+            const base64Image = Buffer.from(reader).toString('base64');
 
-        // `blog` カラムに画像を挿入
-        await db.prepare('INSERT INTO photo (blog) VALUES (?)').bind(base64Image).run();
+            // `blog` カラムに画像を挿入
+            await db.prepare('INSERT INTO photo (blog) VALUES (?)').bind(base64Image).run();
+            console.log('Image inserted successfully');
 
-        return new Response('Image uploaded successfully', { status: 200 });
+            return new Response('Image uploaded successfully', { status: 200 });
+        } catch (encodeError) {
+            console.error('Error encoding or inserting image:', encodeError);
+            return new Response('Error encoding image: ' + encodeError.message, { status: 500 });
+        }
     } catch (error) {
-        console.error('Error uploading image:', error); // エラーメッセージを出力
-        return new Response('Error uploading image: ' + error.message, { status: 500 });
+        console.error('Error processing upload:', error);
+        return new Response('Error processing upload: ' + error.message, { status: 500 });
     }
 }
