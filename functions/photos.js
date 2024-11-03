@@ -7,14 +7,15 @@ export async function onRequestGet(context) {
 
         // 取得した画像をレスポンスとして返す
         const photos = result.results.map(photo => ({
-            title: photo.title,
-            image: `data:image/jpeg;base64,${photo.image}` // Base64で画像を返す
+            title: `Image ID: ${photo.id}`,
+            blog: photo.blog // Base64形式の画像
         }));
 
         return new Response(JSON.stringify(photos), {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {
+        console.error('Error retrieving photos:', error); // デバッグ用ログ
         return new Response('Error retrieving photos: ' + error.message, { status: 500 });
     }
 }

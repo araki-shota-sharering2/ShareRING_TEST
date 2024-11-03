@@ -3,22 +3,22 @@ export async function onRequestPost(context) {
 
     try {
         const formData = await context.request.formData();
-        const title = formData.get('title');
         const file = formData.get('file');
 
-        if (!title || !file) {
-            return new Response('Title and file are required', { status: 400 });
+        if (!file) {
+            return new Response('File is required', { status: 400 });
         }
 
-        // 仮にファイルをBase64で保存するとして変換
+        // ファイルをBase64でエンコード
         const reader = await file.arrayBuffer();
         const base64Image = Buffer.from(reader).toString('base64');
 
-        // テーブルに挿入
-        await db.prepare('INSERT INTO photo (title, image) VALUES (?, ?)').bind(title, base64Image).run();
+        // `blog` カラムに画像を挿入
+        await db.prepare('INSERT INTO photo (blog) VALUES (?)').bind(base64Image).run();
 
         return new Response('Image uploaded successfully', { status: 200 });
     } catch (error) {
+        console.error('Error uploading image:', error); // デバッグ用ログ
         return new Response('Error uploading image: ' + error.message, { status: 500 });
     }
 }
