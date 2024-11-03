@@ -7,7 +7,7 @@ export async function onRequestGet(context) {
 
         // 取得した画像をレスポンスとして返す
         const photos = result.results.map(photo => ({
-            title: `Image ID: ${photo.id}`,
+            id: photo.id,
             blog: photo.blog // Base64形式の画像
         }));
 
@@ -17,5 +17,19 @@ export async function onRequestGet(context) {
     } catch (error) {
         console.error('Error retrieving photos:', error); // デバッグ用ログ
         return new Response('Error retrieving photos: ' + error.message, { status: 500 });
+    }
+}
+
+export async function onRequestDelete(context) {
+    const db = context.env.DB;
+
+    try {
+        const { id } = await context.request.json();
+        await db.prepare('DELETE FROM photo WHERE id = ?').bind(id).run();
+
+        return new Response('Image deleted successfully', { status: 200 });
+    } catch (error) {
+        console.error('Error deleting image:', error); // デバッグ用ログ
+        return new Response('Error deleting image: ' + error.message, { status: 500 });
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DBデータ表示・挿入・削除</title>
+    <title>DBデータ表示・挿入・削除・画像投稿</title>
     <link rel="stylesheet" href="display.css">
 </head>
 <body>
@@ -12,10 +12,20 @@
 
     <h2>データ挿入</h2>
     <form id="insert-form">
+        <label for="id">ID:</label>
+        <input type="number" id="id" name="id" required>
         <label for="name">名前:</label>
         <input type="text" id="name" name="name" required>
         <button type="submit">データ挿入</button>
     </form>
+
+    <h2>画像投稿</h2>
+    <form id="photo-form">
+        <label for="photo-file">画像ファイル:</label>
+        <input type="file" id="photo-file" name="photo-file" accept="image/*" required>
+        <button type="submit">画像投稿</button>
+    </form>
+    <div id="photo-container"></div>
 
     <script src="display.js"></script>
 </body>

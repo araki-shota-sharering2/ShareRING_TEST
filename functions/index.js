@@ -1,10 +1,8 @@
 export async function onRequest(context) {
     const db = context.env.DB;
 
-    // HTTPメソッドの分岐
     switch (context.request.method) {
         case 'GET': {
-            // データの取得
             try {
                 const result = await db.prepare('SELECT * FROM test_db').all();
                 return new Response(JSON.stringify(result.results), {
@@ -15,17 +13,15 @@ export async function onRequest(context) {
             }
         }
         case 'POST': {
-            // データの挿入
             try {
-                const { name } = await context.request.json();
-                await db.prepare('INSERT INTO test_db (name) VALUES (?)').bind(name).run();
+                const { id, name } = await context.request.json();
+                await db.prepare('INSERT INTO test_db (id, name) VALUES (?, ?)').bind(id, name).run();
                 return new Response('Data inserted successfully', { status: 200 });
             } catch (error) {
                 return new Response('Error inserting data: ' + error.message, { status: 500 });
             }
         }
         case 'DELETE': {
-            // データの削除
             try {
                 const { id } = await context.request.json();
                 await db.prepare('DELETE FROM test_db WHERE id = ?').bind(id).run();

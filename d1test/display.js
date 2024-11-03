@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const photoForm = document.getElementById('photo-form');
     const photoContainer = document.getElementById('photo-container');
 
-    // データ取得
+    // test_db のデータ取得
     try {
         const response = await fetch('/');
         if (!response.ok) {
@@ -15,23 +15,44 @@ document.addEventListener('DOMContentLoaded', async () => {
         data.forEach(item => {
             const div = document.createElement('div');
             div.classList.add('data-item');
-            div.textContent = `ID: ${item.id}, Name: ${item.name}`;
+            div.innerHTML = `ID: ${item.id}, Name: ${item.name} <button data-id="${item.id}">削除</button>`;
             dataContainer.appendChild(div);
+
+            // 削除ボタンのイベントリスナー
+            div.querySelector('button').addEventListener('click', async (e) => {
+                const id = e.target.getAttribute('data-id');
+                try {
+                    const deleteResponse = await fetch('/', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id }),
+                    });
+                    if (deleteResponse.ok) {
+                        e.target.parentElement.remove();
+                        alert('データを削除しました');
+                    } else {
+                        throw new Error('削除に失敗しました');
+                    }
+                } catch (error) {
+                    alert(`エラー: ${error.message}`);
+                }
+            });
         });
     } catch (error) {
         dataContainer.textContent = `エラー: ${error.message}`;
     }
 
-    // 挿入フォームの送信イベント
+    // test_db の挿入フォーム送信イベント
     insertForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        const id = document.getElementById('id').value;
         const name = document.getElementById('name').value;
 
         try {
             const response = await fetch('/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name }),
+                body: JSON.stringify({ id, name }),
             });
             if (response.ok) {
                 alert('データを挿入しました');
@@ -47,7 +68,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 画像投稿フォームの送信イベント
     photoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        const title = document.getElementById('photo-title').value;
         const file = document.getElementById('photo-file').files[0];
 
         if (!file) {
@@ -56,7 +76,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const formData = new FormData();
-        formData.append('title', title);
         formData.append('file', file);
 
         try {
@@ -86,8 +105,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         photos.forEach(photo => {
             const div = document.createElement('div');
             div.classList.add('photo-item');
-            div.innerHTML = `<h3>${photo.title}</h3><img src="${photo.url}" alt="${photo.title}">`;
+            div.innerHTML = `<img src="data:image/jpeg;base64,${photo.blog}" alt="Uploaded Image"> <button data-id="${photo.id}">削除</button>`;
             photoContainer.appendChild(div);
+
+            // 削除ボタンのイベントリスナー
+            div.querySelector('button').addEventListener('click', async (e) => {
+                const id = e.target.getAttribute('data-id');
+                try {
+                    const deleteResponse = await fetch('/photos', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id }),
+                    });
+                    if (deleteResponse.ok) {
+                        e.target.parentElement.remove();
+                        alert('画像を削除しました');
+                    } else {
+                        throw new Error('画像の削除に失敗しました');
+                    }
+                } catch (error) {
+                    alert(`エラー: ${error.message}`);
+                }
+            });
         });
     } catch (error) {
         photoContainer.textContent = `エラー: ${error.message}`;
