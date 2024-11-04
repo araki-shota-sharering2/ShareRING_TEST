@@ -2,13 +2,13 @@ export async function onRequestGet(context) {
     const db = context.env.DB;
 
     try {
-        // 画像データを全て取得
+        // 画像URLデータを全て取得
         const result = await db.prepare('SELECT * FROM photo').all();
 
-        // 取得した画像をレスポンスとして返す
+        // 取得した画像URLをレスポンスとして返す
         const photos = result.results.map(photo => ({
             id: photo.id,
-            blog: photo.blog // Base64形式の画像
+            url: photo.blog // URL形式で保存されていると仮定
         }));
 
         return new Response(JSON.stringify(photos), {

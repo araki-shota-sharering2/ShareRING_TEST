@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const photoForm = document.getElementById('photo-form');
     const photoContainer = document.getElementById('photo-container');
 
-    // test_db のデータ取得
+    // D1データの取得
     try {
         const response = await fetch('/');
         if (!response.ok) {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         dataContainer.textContent = `エラー: ${error.message}`;
     }
 
-    // test_db の挿入フォーム送信イベント
+    // 挿入フォームの送信イベント
     insertForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const id = document.getElementById('id').value;

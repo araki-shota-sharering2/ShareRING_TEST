@@ -3,8 +3,13 @@ main = "functions/index.js"
 
 [vars]
 DB = "DB"
+R2_BUCKET_URL = "example.r2.dev" # R2バケットのURLを設定
 
 [[d1_databases]]
 binding = "DB"
 database_name = "sharering_db"
 database_id = "2731a38b-2e18-4d99-a509-f49114e89409"
+
+[[r2_buckets]]
+binding = "MY_R2_BUCKET"
+bucket_name = "my-photo-bucket" # R2バケットの名前
