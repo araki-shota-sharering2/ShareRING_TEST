@@ -1,35 +1,39 @@
-export async function onRequestGet(context) {
-    const db = context.env.DB;
+document.addEventListener('DOMContentLoaded', async () => {
+    const photoContainer = document.getElementById('photo-container');
 
     try {
-        // 画像URLデータを全て取得
-        const result = await db.prepare('SELECT * FROM photo').all();
+        const response = await fetch('/');
+        if (!response.ok) {
+            throw new Error('データの取得に失敗しました');
+        }
 
-        // 取得した画像URLをレスポンスとして返す
-        const photos = result.results.map(photo => ({
-            id: photo.id,
-            url: photo.blog // URL形式で保存されていると仮定
-        }));
+        const { photo } = await response.json();
+        photo.forEach(item => {
+            const div = document.createElement('div');
+            div.classList.add('photo-item');
+            div.innerHTML = `<img src="${item.url}" alt="Uploaded Image"> <button data-id="${item.id}">削除</button>`;
+            photoContainer.appendChild(div);
 
-        return new Response(JSON.stringify(photos), {
-            headers: { 'Content-Type': 'application/json' },
+            div.querySelector('button').addEventListener('click', async (e) => {
+                const id = e.target.getAttribute('data-id');
+                try {
+                    const deleteResponse = await fetch('/', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ table: 'photo', id }),
+                    });
+                    if (deleteResponse.ok) {
+                        e.target.parentElement.remove();
+                        alert('画像を削除しました');
+                    } else {
+                        throw new Error('削除に失敗しました');
+                    }
+                } catch (error) {
+                    alert(`エラー: ${error.message}`);
+                }
+            });
         });
     } catch (error) {
-        console.error('Error retrieving photos:', error); // デバッグ用ログ
-        return new Response('Error retrieving photos: ' + error.message, { status: 500 });
+        photoContainer.textContent = `エラー: ${error.message}`;
     }
-}
-
-export async function onRequestDelete(context) {
-    const db = context.env.DB;
-
-    try {
-        const { id } = await context.request.json();
-        await db.prepare('DELETE FROM photo WHERE id = ?').bind(id).run();
-
-        return new Response('Image deleted successfully', { status: 200 });
-    } catch (error) {
-        console.error('Error deleting image:', error); // デバッグ用ログ
-        return new Response('Error deleting image: ' + error.message, { status: 500 });
-    }
-}
+});

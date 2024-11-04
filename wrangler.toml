@@ -3,7 +3,7 @@ main = "functions/index.js"
 
 [vars]
 DB = "DB"
-R2_BUCKET_URL = "https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev" # R2バケットのURLを設定
+R2_BUCKET_URL = "https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev"
 
 [[d1_databases]]
 binding = "DB"
@@ -12,4 +12,4 @@ database_id = "2731a38b-2e18-4d99-a509-f49114e89409"
 
 [[r2_buckets]]
 binding = "MY_R2_BUCKET"
-bucket_name = "my-photo-bucket" # R2バケットの名前
+bucket_name = "my-photo-bucket"

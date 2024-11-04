@@ -1,37 +1,31 @@
-export async function onRequestPost(context) {
-    const db = context.env.DB;
-    const r2 = context.env.MY_R2_BUCKET; // R2バケットへのバインディング
+document.getElementById('insert-photo-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const id = document.getElementById('photo-id').value;
+    const file = document.getElementById('photo-file').files[0];
+
+    if (!file) {
+        alert('画像を選択してください');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
 
     try {
-        const formData = await context.request.formData();
-        const file = formData.get('file');
-        const id = context.request.headers.get('X-Photo-ID'); // ヘッダーからIDを取得
-
-        if (!file) {
-            return new Response('File is required', { status: 400 });
-        }
-
-        if (!id) {
-            return new Response('ID is required', { status: 400 });
-        }
-
-        // ファイルをR2にアップロード
-        const key = `uploads/${Date.now()}_${file.name}`;
-        await r2.put(key, file.stream(), {
-            httpMetadata: {
-                contentType: file.type,
-            },
+        const response = await fetch('/upload-photo', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Photo-ID': id
+            }
         });
-
-        // 画像のURLを作成
-        const imageUrl = `https://${context.env.R2_BUCKET_URL}/${key}`;
-
-        // D1にIDとURLを保存
-        await db.prepare('INSERT INTO photo (id, blog) VALUES (?, ?)').bind(id, imageUrl).run();
-
-        return new Response('Image uploaded and URL saved successfully', { status: 200 });
+        if (response.ok) {
+            alert('画像を投稿しました');
+            location.reload();
+        } else {
+            throw new Error('画像の投稿に失敗しました');
+        }
     } catch (error) {
-        console.error('Error uploading image:', error); // デバッグ用ログ
-        return new Response('Error uploading image: ' + error.message, { status: 500 });
+        alert(`エラー: ${error.message}`);
     }
-}
+});
