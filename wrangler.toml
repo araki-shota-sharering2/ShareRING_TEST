@@ -3,7 +3,7 @@ main = "functions/index.js"
 
 [vars]
 DB = "DB"
-R2_BUCKET_URL = "example.r2.dev" # R2バケットのURLを設定
+R2_BUCKET_URL = "https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev" # R2バケットのURLを設定
 
 [[d1_databases]]
 binding = "DB"
