@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const dataContainer = document.getElementById('data-container');
     const testDbForm = document.getElementById('insert-test-db-form');
-    const photoForm = document.getElementById('photo-form');
+    const photoForm = document.getElementById('insert-photo-form');
     const photoContainer = document.getElementById('photo-container');
 
     // DBデータの取得
@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // photo 挿入フォームの送信イベント
     photoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        const id = document.getElementById('photo-id').value;
         const file = document.getElementById('photo-file').files[0];
 
         if (!file) {
@@ -114,6 +115,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const response = await fetch('/upload-photo', {
                 method: 'POST',
                 body: formData,
+                headers: {
+                    'X-Photo-ID': id // IDをヘッダーに含めて送信
+                }
             });
             if (response.ok) {
                 alert('画像を投稿しました');

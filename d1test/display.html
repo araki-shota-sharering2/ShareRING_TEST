@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="display.css">
 </head>
 <body>
-    <h1>DBデータ一覧3</h1>
+    <h1>DBデータ一覧5</h1>
     <div id="data-container"></div>
 
     <h2>test_db データ挿入</h2>
@@ -20,7 +20,9 @@
     </form>
 
     <h2>photo データ挿入</h2>
-    <form id="photo-form">
+    <form id="insert-photo-form">
+        <label for="photo-id">ID:</label>
+        <input type="number" id="photo-id" name="id" required>
         <label for="photo-file">画像ファイル:</label>
         <input type="file" id="photo-file" name="photo-file" accept="image/*" required>
         <button type="submit">画像投稿</button>

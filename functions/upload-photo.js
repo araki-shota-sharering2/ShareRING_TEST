@@ -5,9 +5,14 @@ export async function onRequestPost(context) {
     try {
         const formData = await context.request.formData();
         const file = formData.get('file');
+        const id = context.request.headers.get('X-Photo-ID'); // ヘッダーからIDを取得
 
         if (!file) {
             return new Response('File is required', { status: 400 });
+        }
+
+        if (!id) {
+            return new Response('ID is required', { status: 400 });
         }
 
         // ファイルをR2にアップロード
@@ -21,8 +26,8 @@ export async function onRequestPost(context) {
         // 画像のURLを作成
         const imageUrl = `https://${context.env.R2_BUCKET_URL}/${key}`;
 
-        // D1にURLを保存
-        await db.prepare('INSERT INTO photo (blog) VALUES (?)').bind(imageUrl).run();
+        // D1にIDとURLを保存
+        await db.prepare('INSERT INTO photo (id, blog) VALUES (?, ?)').bind(id, imageUrl).run();
 
         return new Response('Image uploaded and URL saved successfully', { status: 200 });
     } catch (error) {
