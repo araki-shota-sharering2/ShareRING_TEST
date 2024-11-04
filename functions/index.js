@@ -4,8 +4,18 @@ export async function onRequest(context) {
     switch (context.request.method) {
         case 'GET': {
             try {
-                const result = await db.prepare('SELECT * FROM test_db').all();
-                return new Response(JSON.stringify(result.results), {
+                // test_db のデータ取得
+                const testDbResult = await db.prepare('SELECT * FROM test_db').all();
+                // photo テーブルのデータ取得
+                const photoResult = await db.prepare('SELECT * FROM photo').all();
+
+                // 結果を結合してレスポンスを返す
+                const combinedResult = {
+                    test_db: testDbResult.results,
+                    photo: photoResult.results,
+                };
+
+                return new Response(JSON.stringify(combinedResult), {
                     headers: { 'Content-Type': 'application/json' },
                 });
             } catch (error) {
@@ -14,8 +24,16 @@ export async function onRequest(context) {
         }
         case 'POST': {
             try {
-                const { id, name } = await context.request.json();
-                await db.prepare('INSERT INTO test_db (id, name) VALUES (?, ?)').bind(id, name).run();
+                const { table, data } = await context.request.json();
+
+                if (table === 'test_db') {
+                    await db.prepare('INSERT INTO test_db (id, name) VALUES (?, ?)').bind(data.id, data.name).run();
+                } else if (table === 'photo') {
+                    await db.prepare('INSERT INTO photo (blog) VALUES (?)').bind(data.blog).run();
+                } else {
+                    return new Response('Invalid table specified', { status: 400 });
+                }
+
                 return new Response('Data inserted successfully', { status: 200 });
             } catch (error) {
                 return new Response('Error inserting data: ' + error.message, { status: 500 });
@@ -23,8 +41,16 @@ export async function onRequest(context) {
         }
         case 'DELETE': {
             try {
-                const { id } = await context.request.json();
-                await db.prepare('DELETE FROM test_db WHERE id = ?').bind(id).run();
+                const { table, id } = await context.request.json();
+
+                if (table === 'test_db') {
+                    await db.prepare('DELETE FROM test_db WHERE id = ?').bind(id).run();
+                } else if (table === 'photo') {
+                    await db.prepare('DELETE FROM photo WHERE id = ?').bind(id).run();
+                } else {
+                    return new Response('Invalid table specified', { status: 400 });
+                }
+
                 return new Response('Data deleted successfully', { status: 200 });
             } catch (error) {
                 return new Response('Error deleting data: ' + error.message, { status: 500 });
