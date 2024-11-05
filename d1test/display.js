@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const dataContainer = document.getElementById('data-container');
-    const testDbForm = document.getElementById('insert-test-db-form');
     const photoForm = document.getElementById('insert-photo-form');
     const photoContainer = document.getElementById('photo-container');
 
@@ -10,49 +9,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             throw new Error('データの取得に失敗しました');
         }
 
-        const { test_db, photo } = await response.json();
+        const { photo } = await response.json();
 
-        test_db.forEach(item => {
-            const div = document.createElement('div');
-            div.classList.add('data-item');
-            div.innerHTML = `ID: ${item.id}, Name: ${item.name} <button data-table="test_db" data-id="${item.id}">削除</button>`;
-            dataContainer.appendChild(div);
-
-            div.querySelector('button').addEventListener('click', async (e) => {
-                const table = e.target.getAttribute('data-table');
-                const id = e.target.getAttribute('data-id');
-                try {
-                    const deleteResponse = await fetch('/', {
-                        method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ table, id }),
-                    });
-                    if (deleteResponse.ok) {
-                        e.target.parentElement.remove();
-                        alert('データを削除しました');
-                    } else {
-                        throw new Error('削除に失敗しました');
-                    }
-                } catch (error) {
-                    alert(`エラー: ${error.message}`);
-                }
-            });
-        });
-
+        // photoテーブルのデータを表示
         photo.forEach(item => {
             const div = document.createElement('div');
             div.classList.add('photo-item');
-            div.innerHTML = `<img src="${item.url}" alt="アップロードされた画像"> <button data-table="photo" data-id="${item.id}">削除</button>`;
+            div.innerHTML = `<img src="${item.url}" alt="アップロードされた画像"> <button data-id="${item.id}">削除</button>`;
             photoContainer.appendChild(div);
 
+            // 削除ボタンのイベントリスナーを設定
             div.querySelector('button').addEventListener('click', async (e) => {
-                const table = e.target.getAttribute('data-table');
                 const id = e.target.getAttribute('data-id');
                 try {
                     const deleteResponse = await fetch('/', {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ table, id }),
+                        body: JSON.stringify({ table: 'photo', id }),
                     });
                     if (deleteResponse.ok) {
                         e.target.parentElement.remove();
@@ -66,30 +39,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
     } catch (error) {
-        dataContainer.textContent = `エラー: ${error.message}`;
+        photoContainer.textContent = `エラー: ${error.message}`;
     }
-
-    testDbForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const id = document.getElementById('test-db-id').value;
-        const name = document.getElementById('test-db-name').value;
-
-        try {
-            const response = await fetch('/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ table: 'test_db', data: { id, name } }),
-            });
-            if (response.ok) {
-                alert('test_dbにデータを挿入しました');
-                location.reload();
-            } else {
-                throw new Error('挿入に失敗しました');
-            }
-        } catch (error) {
-            alert(`エラー: ${error.message}`);
-        }
-    });
 
     photoForm.addEventListener('submit', async (event) => {
         event.preventDefault();

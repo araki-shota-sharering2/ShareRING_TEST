@@ -16,7 +16,6 @@ export async function onRequestPost(context) {
             return new Response('IDが必要です', { status: 400 });
         }
 
-        // 特殊文字をエンコードしてファイルキーを生成
         const key = `uploads/${Date.now()}_${encodeURIComponent(file.name)}`;
         const putResult = await r2.put(key, file.stream(), {
             httpMetadata: {
@@ -28,7 +27,6 @@ export async function onRequestPost(context) {
             return new Response('ファイルのアップロードに失敗しました', { status: 500 });
         }
 
-        // 生成されたURLをデータベースに保存
         const imageUrl = `${bucketUrl}/${key}`;
         await db.prepare('INSERT INTO photo (id, url) VALUES (?, ?)').bind(id, imageUrl).run();
 
