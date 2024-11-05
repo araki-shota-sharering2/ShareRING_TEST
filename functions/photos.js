@@ -1,40 +1,43 @@
-export async function onRequestPost(context) {
-    const db = context.env.DB;
-    const r2 = context.env.MY_R2_BUCKET;
-    const bucketUrl = context.env.R2_BUCKET_URL;  // R2.devの公開URL
+document.addEventListener('DOMContentLoaded', async () => {
+    const photoContainer = document.getElementById('photo-container');
 
     try {
-        const formData = await context.request.formData();
-        const file = formData.get('file');
-        const id = context.request.headers.get('X-Photo-ID');
-
-        if (!file) {
-            return new Response('ファイルが必要です', { status: 400 });
+        // サーバーからphotoテーブルのデータを取得
+        const response = await fetch('/');
+        if (!response.ok) {
+            throw new Error('写真データの取得に失敗しました');
         }
 
-        if (!id) {
-            return new Response('IDが必要です', { status: 400 });
-        }
+        const { photo } = await response.json();
 
-        // ファイルキーを生成
-        const key = `uploads/${Date.now()}_${file.name}`;
-        const putResult = await r2.put(key, file.stream(), {
-            httpMetadata: {
-                contentType: file.type,
-            },
+        // photoテーブルのデータを表示
+        photo.forEach(item => {
+            const div = document.createElement('div');
+            div.classList.add('photo-item');
+            div.innerHTML = `<img src="${item.url}" alt="アップロードされた画像"> <button data-id="${item.id}">削除</button>`;
+            photoContainer.appendChild(div);
+
+            // 削除ボタンのイベントリスナーを設定
+            div.querySelector('button').addEventListener('click', async (e) => {
+                const id = e.target.getAttribute('data-id');
+                try {
+                    const deleteResponse = await fetch('/', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ table: 'photo', id }),
+                    });
+                    if (deleteResponse.ok) {
+                        e.target.parentElement.remove();
+                        alert('画像を削除しました');
+                    } else {
+                        throw new Error('削除に失敗しました');
+                    }
+                } catch (error) {
+                    alert(`エラー: ${error.message}`);
+                }
+            });
         });
-
-        if (!putResult) {
-            return new Response('ファイルのアップロードに失敗しました', { status: 500 });
-        }
-
-        // 正しいR2.dev URLを生成してDBに保存
-        const imageUrl = `${bucketUrl}/${key}`;
-        await db.prepare('INSERT INTO photo (id, url) VALUES (?, ?)').bind(id, imageUrl).run();
-
-        return new Response('画像が正常にアップロードされ、URLが保存されました', { status: 200 });
     } catch (error) {
-        console.error('画像アップロードエラー:', error);
-        return new Response(`画像アップロードエラー: ${error.message}`, { status: 500 });
+        photoContainer.textContent = `エラー: ${error.message}`;
     }
-}
+});
