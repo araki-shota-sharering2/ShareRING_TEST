@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         photo.forEach(item => {
             const div = document.createElement('div');
             div.classList.add('photo-item');
-            div.innerHTML = `<img src="${item.url}" alt="Uploaded Image"> <button data-id="${item.id}">削除</button>`;
+            div.innerHTML = `<img src="${item.url}" alt="アップロードされた画像"> <button data-id="${item.id}">削除</button>`;
             photoContainer.appendChild(div);
 
             div.querySelector('button').addEventListener('click', async (e) => {

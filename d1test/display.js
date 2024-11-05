@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         photo.forEach(item => {
             const div = document.createElement('div');
             div.classList.add('photo-item');
-            div.innerHTML = `<img src="${item.url}" alt="Uploaded Image"> <button data-table="photo" data-id="${item.id}">削除</button>`;
+            div.innerHTML = `<img src="${item.url}" alt="アップロードされた画像"> <button data-table="photo" data-id="${item.id}">削除</button>`;
             photoContainer.appendChild(div);
 
             div.querySelector('button').addEventListener('click', async (e) => {
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 body: JSON.stringify({ table: 'test_db', data: { id, name } }),
             });
             if (response.ok) {
-                alert('test_db データを挿入しました');
+                alert('test_dbにデータを挿入しました');
                 location.reload();
             } else {
                 throw new Error('挿入に失敗しました');
