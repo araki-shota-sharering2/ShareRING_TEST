@@ -15,7 +15,6 @@ export async function onRequestPost(context) {
             return new Response('IDが必要です', { status: 400 });
         }
 
-        // R2にアップロードするキーを作成
         const key = `uploads/${Date.now()}_${file.name}`;
         await r2.put(key, file.stream(), {
             httpMetadata: {
@@ -23,10 +22,8 @@ export async function onRequestPost(context) {
             },
         });
 
-        // 公開URLを生成
         const imageUrl = `${context.env.R2_BUCKET_URL}/${key}`;
 
-        // データベースにURLを挿入
         await db.prepare('INSERT INTO photo (id, url) VALUES (?, ?)').bind(id, imageUrl).run();
 
         return new Response('画像が正常にアップロードされ、URLが保存されました', { status: 200 });
