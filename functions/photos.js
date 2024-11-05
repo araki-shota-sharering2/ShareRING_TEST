@@ -1,0 +1,43 @@
+document.addEventListener('DOMContentLoaded', async () => {
+    const photoContainer = document.getElementById('photo-container');
+
+    try {
+        // サーバーからphotoテーブルのデータを取得
+        const response = await fetch('/');
+        if (!response.ok) {
+            throw new Error('写真データの取得に失敗しました');
+        }
+
+        const { photo } = await response.json();
+
+        // photoテーブルのデータを表示
+        photo.forEach(item => {
+            const div = document.createElement('div');
+            div.classList.add('photo-item');
+            div.innerHTML = `<img src="${item.url}" alt="アップロードされた画像"> <button data-id="${item.id}">削除</button>`;
+            photoContainer.appendChild(div);
+
+            // 削除ボタンのイベントリスナーを設定
+            div.querySelector('button').addEventListener('click', async (e) => {
+                const id = e.target.getAttribute('data-id');
+                try {
+                    const deleteResponse = await fetch('/', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ table: 'photo', id }),
+                    });
+                    if (deleteResponse.ok) {
+                        e.target.parentElement.remove();
+                        alert('画像を削除しました');
+                    } else {
+                        throw new Error('削除に失敗しました');
+                    }
+                } catch (error) {
+                    alert(`エラー: ${error.message}`);
+                }
+            });
+        });
+    } catch (error) {
+        photoContainer.textContent = `エラー: ${error.message}`;
+    }
+});
