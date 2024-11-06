@@ -1,7 +1,7 @@
 export async function onRequestPost(context) {
     const db = context.env.DB;
     const r2 = context.env.MY_R2_BUCKET;
-    const bucketUrl = context.env.R2_BUCKET_URL.replace(/\/$/, '');  // URL末尾のスラッシュを削除
+    const bucketUrl = context.env.R2_BUCKET_URL.replace(/\/$/, ''); // URL末尾のスラッシュを削除
 
     try {
         const formData = await context.request.formData();
