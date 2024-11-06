@@ -1,125 +1,47 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const dataContainer = document.getElementById('data-container');
-    const testDbForm = document.getElementById('insert-test-db-form');
-    const photoForm = document.getElementById('insert-photo-form');
-    const photoContainer = document.getElementById('photo-container');
+export async function onRequestPost(context) {
+    const db = context.env.DB;
+    const r2 = context.env.MY_R2_BUCKET;
+    const bucketUrl = context.env.R2_BUCKET_URL.replace(/\/$/, ''); // URL末尾のスラッシュを削除
 
     try {
-        const response = await fetch('/');
-        if (!response.ok) {
-            throw new Error('データの取得に失敗しました');
-        }
-
-        const { test_db, photo } = await response.json();
-
-        test_db.forEach(item => {
-            const div = document.createElement('div');
-            div.classList.add('data-item');
-            div.innerHTML = `ID: ${item.id}, Name: ${item.name} <button data-table="test_db" data-id="${item.id}">削除</button>`;
-            dataContainer.appendChild(div);
-
-            div.querySelector('button').addEventListener('click', async (e) => {
-                const table = e.target.getAttribute('data-table');
-                const id = e.target.getAttribute('data-id');
-                try {
-                    const deleteResponse = await fetch('/', {
-                        method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ table, id }),
-                    });
-                    if (deleteResponse.ok) {
-                        e.target.parentElement.remove();
-                        alert('データを削除しました');
-                    } else {
-                        throw new Error('削除に失敗しました');
-                    }
-                } catch (error) {
-                    alert(`エラー: ${error.message}`);
-                }
-            });
-        });
-
-        photo.forEach(item => {
-            const div = document.createElement('div');
-            div.classList.add('photo-item');
-            div.innerHTML = `<img src="${item.url}" alt="アップロードされた画像"> <button data-table="photo" data-id="${item.id}">削除</button>`;
-            photoContainer.appendChild(div);
-
-            div.querySelector('button').addEventListener('click', async (e) => {
-                const table = e.target.getAttribute('data-table');
-                const id = e.target.getAttribute('data-id');
-                try {
-                    const deleteResponse = await fetch('/', {
-                        method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ table, id }),
-                    });
-                    if (deleteResponse.ok) {
-                        e.target.parentElement.remove();
-                        alert('画像を削除しました');
-                    } else {
-                        throw new Error('削除に失敗しました');
-                    }
-                } catch (error) {
-                    alert(`エラー: ${error.message}`);
-                }
-            });
-        });
-    } catch (error) {
-        dataContainer.textContent = `エラー: ${error.message}`;
-    }
-
-    testDbForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const id = document.getElementById('test-db-id').value;
-        const name = document.getElementById('test-db-name').value;
-
-        try {
-            const response = await fetch('/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ table: 'test_db', data: { id, name } }),
-            });
-            if (response.ok) {
-                alert('test_dbにデータを挿入しました');
-                location.reload();
-            } else {
-                throw new Error('挿入に失敗しました');
-            }
-        } catch (error) {
-            alert(`エラー: ${error.message}`);
-        }
-    });
-
-    photoForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const id = document.getElementById('photo-id').value;
-        const file = document.getElementById('photo-file').files[0];
+        const formData = await context.request.formData();
+        const file = formData.get('file');
+        const id = formData.get('id'); // D1 に保存するための ID を取得
 
         if (!file) {
-            alert('画像を選択してください');
-            return;
+            return new Response('ファイルが必要です', { status: 400 });
         }
 
-        const formData = new FormData();
-        formData.append('file', file);
-
-        try {
-            const response = await fetch('/upload-photo', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Photo-ID': id
-                }
-            });
-            if (response.ok) {
-                alert('画像を投稿しました');
-                location.reload();
-            } else {
-                throw new Error('画像の投稿に失敗しました');
-            }
-        } catch (error) {
-            alert(`エラー: ${error.message}`);
+        if (!id) {
+            return new Response('ID が必要です', { status: 400 });
         }
-    });
-});
+
+        // 特殊文字をエンコードしてファイルキーを生成
+        const key = `uploads/${Date.now()}_${encodeURIComponent(file.name)}`;
+        console.log('生成されたファイルキー:', key);
+
+        // ファイルを R2 バケットにアップロード
+        const putResult = await r2.put(key, file.stream(), {
+            httpMetadata: {
+                contentType: file.type,
+            },
+        });
+
+        if (!putResult) {
+            console.error('アップロード失敗');
+            return new Response('ファイルのアップロードに失敗しました', { status: 500 });
+        }
+
+        // アップロードされたファイルの URL を生成
+        const imageUrl = `${bucketUrl}/${key}`;
+        console.log('生成された画像URL:', imageUrl);
+
+        // URL を D1 に保存
+        await db.prepare('INSERT INTO photo (id, url) VALUES (?, ?)').bind(id, imageUrl).run();
+
+        return new Response('画像が正常にアップロードされ、URLが保存されました', { status: 200 });
+    } catch (error) {
+        console.error('画像アップロードエラー:', error);
+        return new Response(`画像アップロードエラー: ${error.message}`, { status: 500 });
+    }
+}

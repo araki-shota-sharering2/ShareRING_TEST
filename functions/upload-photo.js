@@ -6,14 +6,14 @@ export async function onRequestPost(context) {
     try {
         const formData = await context.request.formData();
         const file = formData.get('file');
-        const id = context.request.headers.get('X-Photo-ID');
+        const id = formData.get('id'); // D1 に保存するための ID を取得
 
         if (!file) {
             return new Response('ファイルが必要です', { status: 400 });
         }
 
         if (!id) {
-            return new Response('IDが必要です', { status: 400 });
+            return new Response('ID が必要です', { status: 400 });
         }
 
         // 特殊文字をエンコードしてファイルキーを生成
