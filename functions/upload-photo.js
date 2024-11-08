@@ -1,14 +1,14 @@
 export async function onRequestPost(context) {
     const { request, env } = context;
     const formData = await request.formData();
-    const file = formData.get('file'); // フォームからファイルを取得
+    const file = formData.get('file');
+    const id = request.headers.get('X-Photo-ID');
 
-    if (!file) {
-        return new Response('No file uploaded', { status: 400 });
+    if (!file || !id) {
+        return new Response('No file or ID provided', { status: 400 });
     }
 
-    // R2オブジェクトを作成
-    const r2Key = `images/${file.name}`; // ファイルの保存パス（例: images/filename.jpg）
+    const r2Key = `images/${file.name}`;
     const uploadOptions = {
         headers: {
             'Content-Type': file.type,
@@ -16,10 +16,15 @@ export async function onRequestPost(context) {
         body: file.stream(),
     };
 
-    // R2バケットにファイルを保存
     try {
         await env.MY_R2_BUCKET.put(r2Key, uploadOptions.body, uploadOptions.headers);
-        return new Response(JSON.stringify({ message: 'Upload successful', path: r2Key }), { status: 200 });
+
+        const url = `https://<YOUR-R2-BUCKET-NAME>.r2.cloudflarestorage.com/${r2Key}`;
+
+        const db = env.DB;
+        await db.prepare('INSERT INTO photo (id, url) VALUES (?, ?)').bind(id, url).run();
+
+        return new Response(JSON.stringify({ message: 'Upload successful', url }), { status: 200 });
     } catch (error) {
         return new Response(JSON.stringify({ message: 'Upload failed', error: error.message }), { status: 500 });
     }
