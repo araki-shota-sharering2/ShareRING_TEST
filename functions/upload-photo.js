@@ -1,7 +1,5 @@
 export async function onRequestPost(context) {
     const db = context.env.DB;
-    const bucketName = "my-photo-bucket"; // R2のバケット名
-    const accountId = context.env.CLOUDFLARE_ACCOUNT_ID; // アカウントID
     const apiToken = context.env.R2_API_TOKEN; // APIトークン
     const bucketUrl = context.env.R2_BUCKET_URL.replace(/\/$/, ''); // URL末尾のスラッシュを削除
 
@@ -19,7 +17,7 @@ export async function onRequestPost(context) {
         }
 
         const key = `uploads/${Date.now()}_${encodeURIComponent(file.name)}`;
-        const uploadUrl = `${bucketUrl}/${bucketName}/${key}`;
+        const uploadUrl = `${bucketUrl}/${key}`;
 
         // R2にファイルをアップロード
         const uploadResponse = await fetch(uploadUrl, {
@@ -35,7 +33,7 @@ export async function onRequestPost(context) {
             throw new Error("R2へのファイルアップロードに失敗しました");
         }
 
-        const imageUrl = `${bucketUrl}/${key}`;
+        const imageUrl = uploadUrl;
         await db.prepare('INSERT INTO photo (id, url) VALUES (?, ?)').bind(id, imageUrl).run();
 
         return new Response('画像が正常にアップロードされ、URLが保存されました', { status: 200 });
