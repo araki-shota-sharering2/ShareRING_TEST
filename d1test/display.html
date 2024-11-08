@@ -12,19 +12,23 @@
 
     <h2>test_dbにデータを挿入</h2>
     <form id="insert-test-db-form">
-        <label for="id">ID:</label>
-        <input type="number" id="test-db-id" name="id" required>
-        <label for="name">名前:</label>
-        <input type="text" id="test-db-name" name="name" required>
+        <label for="test-db-id">ID:</label>
+        <input type="number" id="test-db-id" name="id" required autocomplete="off">
+        
+        <label for="test-db-name">名前:</label>
+        <input type="text" id="test-db-name" name="name" required autocomplete="off">
+        
         <button type="submit">データ挿入</button>
     </form>
 
     <h2>photoテーブルに写真をアップロード</h2>
     <form id="insert-photo-form">
         <label for="photo-id">ID:</label>
-        <input type="number" id="photo-id" name="id" required>
+        <input type="number" id="photo-id" name="id" required autocomplete="off">
+        
         <label for="photo-file">写真ファイル:</label>
         <input type="file" id="photo-file" name="photo-file" accept="image/*" required>
+        
         <button type="submit">写真アップロード</button>
     </form>
     <div id="photo-container"></div>

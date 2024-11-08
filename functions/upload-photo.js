@@ -36,9 +36,15 @@ export async function onRequestPost(context) {
         const imageUrl = uploadUrl;
         await db.prepare('INSERT INTO photo (id, url) VALUES (?, ?)').bind(id, imageUrl).run();
 
-        return new Response('画像が正常にアップロードされ、URLが保存されました', { status: 200 });
+        return new Response('画像が正常にアップロードされ、URLが保存されました', {
+            status: 200,
+            headers: { 'Access-Control-Allow-Origin': '*' } // CORSヘッダーを追加
+        });
     } catch (error) {
         console.error('画像アップロードエラー:', error);
-        return new Response(`画像アップロードエラー: ${error.message}`, { status: 500 });
+        return new Response(`画像アップロードエラー: ${error.message}`, {
+            status: 500,
+            headers: { 'Access-Control-Allow-Origin': '*' } // CORSヘッダーを追加
+        });
     }
 }

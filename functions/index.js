@@ -13,7 +13,10 @@ export async function onRequest(context) {
                 };
 
                 return new Response(JSON.stringify(combinedResult), {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*' // CORSヘッダーを追加
+                    },
                 });
             } catch (error) {
                 console.error('データベースのクエリエラー:', error);
@@ -32,7 +35,10 @@ export async function onRequest(context) {
                     return new Response('無効なテーブル指定です', { status: 400 });
                 }
 
-                return new Response('データが正常に挿入されました', { status: 200 });
+                return new Response('データが正常に挿入されました', {
+                    status: 200,
+                    headers: { 'Access-Control-Allow-Origin': '*' } // CORSヘッダーを追加
+                });
             } catch (error) {
                 console.error('データ挿入エラー:', error);
                 return new Response('データ挿入エラー: ' + error.message, { status: 500 });
@@ -50,13 +56,19 @@ export async function onRequest(context) {
                     return new Response('無効なテーブル指定です', { status: 400 });
                 }
 
-                return new Response('データが正常に削除されました', { status: 200 });
+                return new Response('データが正常に削除されました', {
+                    status: 200,
+                    headers: { 'Access-Control-Allow-Origin': '*' } // CORSヘッダーを追加
+                });
             } catch (error) {
                 console.error('データ削除エラー:', error);
                 return new Response('データ削除エラー: ' + error.message, { status: 500 });
             }
         }
         default:
-            return new Response('許可されていないメソッドです', { status: 405 });
+            return new Response('許可されていないメソッドです', {
+                status: 405,
+                headers: { 'Access-Control-Allow-Origin': '*' } // CORSヘッダーを追加
+            });
     }
 }
