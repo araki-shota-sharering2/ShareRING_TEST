@@ -4,6 +4,11 @@ ShareRING
 ├── styles.css                  // アプリ全体で使用する共通のCSSスタイル
 ├── scripts.js                  // アプリ全体で使用する共通のJavaScript
 │
+├── login                       // ログイン画面ディレクトリ
+│   ├── login.html              // ログイン画面
+│   ├── login.css               // ログイン画面専用のスタイル
+│   └── login.js                // ログイン機能に関するJavaScript
+│
 ├── home                        // ホーム画面ディレクトリ
 │   ├── home.html               // ホーム画面、他の画面へのナビゲーションボタン配置
 │   ├── home.css                // ホーム画面専用のスタイル
@@ -71,6 +76,13 @@ ShareRING
 ├── config                      // 設定ディレクトリ
 │   └── config.js               // APIキーなどの設定ファイル
 │
-└── apis                        // API連携用のスクリプト
-    ├── google_fit_api.js       // Google FIT APIと連携するスクリプト
-    └── google_maps_api.js      // Google Maps APIと連携するスクリプト
+├── apis                        // API連携用のスクリプト
+│   ├── google_fit_api.js       // Google FIT APIと連携するスクリプト
+│   └── google_maps_api.js      // Google Maps APIと連携するスクリプト
+│
+├── wrangler.toml               // Cloudflare Workers用の設定ファイル
+│
+└── functions                   // Cloudflare Functionsを管理するディレクトリ
+    ├── upload-photo.js         // 画像アップロード処理を行う関数
+    ├── login-handler.js        // ログイン処理を行う関数
+    └── index.js                // 他のエンドポイント用の関数
