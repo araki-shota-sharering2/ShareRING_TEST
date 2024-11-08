@@ -19,7 +19,7 @@ export async function onRequestPost(context) {
     try {
         await env.MY_R2_BUCKET.put(r2Key, uploadOptions.body, uploadOptions.headers);
 
-        const url = `https://<YOUR-R2-BUCKET-NAME>.r2.cloudflarestorage.com/${r2Key}`;
+        const url = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
 
         const db = env.DB;
         await db.prepare('INSERT INTO photo (id, url) VALUES (?, ?)').bind(id, url).run();
