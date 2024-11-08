@@ -8,7 +8,11 @@ export async function onRequestPost(context) {
         return new Response('No file or ID provided', { status: 400 });
     }
 
-    const r2Key = `images/${file.name}`;
+    // タイムスタンプを利用して一意のファイル名を作成
+    const timestamp = Date.now();
+    const uniqueFileName = `${timestamp}-${file.name}`; // ファイル名にタイムスタンプを追加
+    const r2Key = `images/${uniqueFileName}`;
+
     const uploadOptions = {
         headers: {
             'Content-Type': file.type,
@@ -17,10 +21,13 @@ export async function onRequestPost(context) {
     };
 
     try {
+        // R2にファイルを保存
         await env.MY_R2_BUCKET.put(r2Key, uploadOptions.body, uploadOptions.headers);
 
+        // 新しいURLを生成
         const url = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
 
+        // D1データベースにURLを保存
         const db = env.DB;
         await db.prepare('INSERT INTO photo (id, url) VALUES (?, ?)').bind(id, url).run();
 
