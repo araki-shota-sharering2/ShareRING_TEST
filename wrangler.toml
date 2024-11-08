@@ -15,3 +15,12 @@ database_id = "2731a38b-2e18-4d99-a509-f49114e89409"
 [[r2_buckets]]
 binding = "MY_R2_BUCKET"
 bucket_name = "my-photo-bucket"
+
+# ログインおよび新規登録エンドポイントのルーティング設定
+[[routes]]
+pattern = "https://sharering-test.pages.dev/login"
+script = "login-handler"
+
+[[routes]]
+pattern = "https://sharering-test.pages.dev/register"
+script = "register-handler"
