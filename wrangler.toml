@@ -1,11 +1,6 @@
 name = "sharering-test"
 main = "functions/index.js"
 
-[vars]
-DB = "DB"
-R2_BUCKET_URL = "https://24110c1529bddb6fc66ec15da1c1b9b7.r2.cloudflarestorage.com"
-R2_API_TOKEN = "4nE6zX0KOHkmaCzhhJbMjITgJw8oV_Kq-cShkQyJgeS"
-CLOUDFLARE_ACCOUNT_ID = "24110c1529bddb6fc66ec15da1c1b9b7"
 
 [[d1_databases]]
 binding = "DB"
