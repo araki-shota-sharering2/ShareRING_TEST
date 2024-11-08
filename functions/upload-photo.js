@@ -1,13 +1,11 @@
 export async function onRequestPost(context) {
     const db = context.env.DB;
-    const r2 = context.env.MY_R2_BUCKET;
+    const bucketName = "my-photo-bucket"; // R2のバケット名
+    const accountId = context.env.CLOUDFLARE_ACCOUNT_ID; // アカウントID
+    const apiToken = context.env.R2_API_TOKEN; // APIトークン
     const bucketUrl = context.env.R2_BUCKET_URL.replace(/\/$/, ''); // URL末尾のスラッシュを削除
 
     try {
-        if (!r2) {
-            throw new Error("R2バケットが正しく設定されていません。環境変数 'MY_R2_BUCKET' を確認してください。");
-        }
-
         const formData = await context.request.formData();
         const file = formData.get('file');
         const id = context.request.headers.get('X-Photo-ID');
@@ -20,19 +18,23 @@ export async function onRequestPost(context) {
             return new Response('IDが必要です', { status: 400 });
         }
 
-        // 特殊文字をエンコードしてファイルキーを生成
         const key = `uploads/${Date.now()}_${encodeURIComponent(file.name)}`;
-        const putResult = await r2.put(key, file.stream(), {
-            httpMetadata: {
-                contentType: file.type,
+        const uploadUrl = `${bucketUrl}/${bucketName}/${key}`;
+
+        // R2にファイルをアップロード
+        const uploadResponse = await fetch(uploadUrl, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${apiToken}`,
+                'Content-Type': file.type,
             },
+            body: file.stream()
         });
 
-        if (!putResult) {
-            throw new Error("R2へのファイルアップロードに失敗しました。");
+        if (!uploadResponse.ok) {
+            throw new Error("R2へのファイルアップロードに失敗しました");
         }
 
-        // 生成されたURLをデータベースに保存
         const imageUrl = `${bucketUrl}/${key}`;
         await db.prepare('INSERT INTO photo (id, url) VALUES (?, ?)').bind(id, imageUrl).run();
 
