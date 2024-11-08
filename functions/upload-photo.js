@@ -4,6 +4,10 @@ export async function onRequestPost(context) {
     const bucketUrl = context.env.R2_BUCKET_URL.replace(/\/$/, ''); // URL末尾のスラッシュを削除
 
     try {
+        if (!r2) {
+            throw new Error("R2バケットが正しく設定されていません。環境変数 'MY_R2_BUCKET' を確認してください。");
+        }
+
         const formData = await context.request.formData();
         const file = formData.get('file');
         const id = context.request.headers.get('X-Photo-ID');
@@ -25,7 +29,7 @@ export async function onRequestPost(context) {
         });
 
         if (!putResult) {
-            return new Response('ファイルのアップロードに失敗しました', { status: 500 });
+            throw new Error("R2へのファイルアップロードに失敗しました。");
         }
 
         // 生成されたURLをデータベースに保存
