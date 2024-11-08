@@ -1,21 +1,27 @@
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
+/* モーダル全体 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
+/* モーダルコンテンツ */
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 400px;
 }
 
-label, input, button {
-    margin-bottom: 10px;
-}
-
-button {
-    padding: 10px;
+/* 閉じるボタン */
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
 }
