@@ -11,15 +11,11 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         body: JSON.stringify({ email, password })
     });
 
-    if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-            window.location.href = '/home';
-        } else {
-            document.getElementById('loginMessage').textContent = result.message || 'ログインに失敗しました';
-        }
+    const result = await response.json();
+    if (result.success) {
+        window.location.href = '/home';
     } else {
-        document.getElementById('loginMessage').textContent = `HTTP error! status: ${response.status}`;
+        document.getElementById('loginMessage').textContent = result.message || 'ログインに失敗しました';
     }
 });
 
@@ -47,16 +43,16 @@ document.getElementById('registerForm').addEventListener('submit', async functio
             body: JSON.stringify({ username, email, password })
         });
 
-        if (response.ok) {
-            const result = await response.json();
-            if (result.success) {
-                document.getElementById('registerMessage').textContent = '登録が完了しました。ログインしてください。';
-                modal.style.display = 'none';
-            } else {
-                document.getElementById('registerMessage').textContent = result.message || '登録に失敗しました';
-            }
-        } else {
+        if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        if (result.success) {
+            document.getElementById('registerMessage').textContent = '登録が完了しました。ログインしてください。';
+            modal.style.display = 'none';
+        } else {
+            document.getElementById('registerMessage').textContent = result.message || '登録に失敗しました';
         }
     } catch (error) {
         console.error(error);
