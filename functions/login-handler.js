@@ -1,4 +1,8 @@
-export async function onRequestPost(context) {
+export async function onRequest(context) {
+    if (context.request.method !== 'POST') {
+        return new Response('Method Not Allowed', { status: 405 });
+    }
+
     const { request, env } = context;
     const db = env.DB;
     const { email, password } = await request.json();
