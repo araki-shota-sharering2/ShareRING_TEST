@@ -3,14 +3,15 @@ export async function onRequestPost(context) {
     const db = env.DB;
 
     try {
-        // リクエストからデータを取得
         const { username, email, password, profile_image } = await request.json();
 
-        // bcryptを使用してパスワードをハッシュ化
-        const bcrypt = require('bcryptjs');
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // Web Crypto APIを使用してパスワードをハッシュ化
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-        // データベースに新しいユーザーを挿入
         const query = `
             INSERT INTO user_accounts (username, email, password, profile_image)
             VALUES (?, ?, ?, ?);
