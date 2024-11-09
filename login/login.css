@@ -28,8 +28,8 @@ body {
 }
 
 .logo img {
-    width: 120px;
-    margin-bottom: 20px;
+    width: 150px; /* ロゴの大きさを調整 */
+    margin-bottom: 10px;
 }
 
 h2 {
