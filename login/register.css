@@ -12,49 +12,30 @@ body {
 
 .form-container {
     background-color: #2a2a2a;
-    padding: 40px 30px;
+    padding: 40px 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    max-width: 400px;
+    max-width: 320px;
     width: 100%;
-}
-
-.header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.logo {
-    margin-right: 15px;
+    text-align: center;
 }
 
 .logo img {
-    width: 120px; /* ロゴサイズを大きく設定 */
-}
-
-h1 {
-    font-size: 24px;
-    color: #00bfa5;
-    flex: 1; /* タイトルをロゴと並べたときに中央に揃え */
+    width: 150px; /* ロゴの大きさを調整 */
+    margin-bottom: 20px;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    text-align: center;
-}
-
-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #b3b3b3;
+    align-items: center;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="file"] {
+    width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #444;
@@ -63,11 +44,17 @@ input[type="file"] {
     color: #fff;
 }
 
+input[type="file"] {
+    padding: 5px;
+    text-align: center;
+}
+
 button {
+    width: 100%;
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #00bfa5;
+    background-color: #009eeb;
     color: #ffffff;
     font-size: 16px;
     font-weight: bold;
@@ -76,5 +63,5 @@ button {
 }
 
 button:hover {
-    background-color: #009e8b;
+    background-color: #007bb5;
 }

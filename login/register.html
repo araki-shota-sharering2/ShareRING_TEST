@@ -8,23 +8,14 @@
 </head>
 <body>
     <div class="form-container">
-        <div class="header">
-            <div class="logo">
-                <img src="/assets/images/header/sharering_logo.svg" alt="アプリのロゴ">
-            </div>
-            <h1>アカウント登録</h1>
+        <!-- ロゴを中央に配置 -->
+        <div class="logo">
+            <img src="/assets/images/header/sharering_logo.svg" alt="アプリのロゴ">
         </div>
         <form id="registerForm">
-            <label for="username">ユーザー名</label>
-            <input type="text" id="username" name="username" required>
-            
-            <label for="email">メールアドレス</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="password">パスワード</label>
-            <input type="password" id="password" name="password" required>
-            
-            <label for="profile_image">プロフィール画像</label>
+            <input type="text" id="username" name="username" placeholder="ユーザー名" required>
+            <input type="email" id="email" name="email" placeholder="メールアドレス" required>
+            <input type="password" id="password" name="password" placeholder="パスワード" required>
             <input type="file" id="profile_image" name="profile_image" accept="image/*" required>
             
             <button type="submit">登録</button>
