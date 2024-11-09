@@ -1,3 +1,4 @@
+//テスト用コード
 export async function onRequest(context) {
     const db = context.env.DB;
 
