@@ -16,7 +16,6 @@ database_id = "2731a38b-2e18-4d99-a509-f49114e89409"
 binding = "MY_R2_BUCKET"
 bucket_name = "my-photo-bucket"
 
-# 新しいエントリポイントを追加してユーザー登録用の関数を設定
 [[functions]]
 name = "register"
 main = "functions/register-handler.js"
