@@ -8,6 +8,10 @@
 </head>
 <body>
     <div class="form-container">
+        <!-- アプリのロゴをここに表示 -->
+        <div class="logo">
+            <img src="/assets/images/header/sharering_logo.svg" alt="アプリのロゴ">
+        </div>
         <h1>アカウント登録</h1>
         <form id="registerForm">
             <label for="username">ユーザー名</label>
@@ -20,10 +24,7 @@
             <input type="password" id="password" name="password" required>
             
             <label for="profile_image">プロフィール画像</label>
-            <div class="profile-image-container">
-                <img id="profilePreview" src="placeholder-logo.png" alt="プロフィール画像プレビュー">
-                <input type="file" id="profile_image" name="profile_image" accept="image/*" required onchange="previewImage(event)">
-            </div>
+            <input type="file" id="profile_image" name="profile_image" accept="image/*" required>
             
             <button type="submit">登録</button>
         </form>
