@@ -21,6 +21,6 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
         document.getElementById("message").innerText = result.message;
     } catch (error) {
         console.error("リクエストエラー:", error);
-        document.getElementById("message").innerText = "エラーが発生しました。";
+        document.getElementById("message").innerText = "登録に失敗しました。もう一度お試しください。";
     }
 });
