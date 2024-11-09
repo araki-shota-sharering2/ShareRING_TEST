@@ -7,21 +7,27 @@
     <link rel="stylesheet" href="register.css">
 </head>
 <body>
-    <form id="registerForm">
-        <label for="username">ユーザー名：</label>
-        <input type="text" id="username" name="username" required>
-        
-        <label for="email">メールアドレス：</label>
-        <input type="email" id="email" name="email" required>
-        
-        <label for="password">パスワード：</label>
-        <input type="password" id="password" name="password" required>
-        
-        <label for="profile_image">プロフィール画像：</label>
-        <input type="file" id="profile_image" name="profile_image" accept="image/*" required>
-        
-        <button type="submit">登録</button>
-    </form>
+    <div class="form-container">
+        <h1>アカウント登録</h1>
+        <form id="registerForm">
+            <label for="username">ユーザー名</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="email">メールアドレス</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="password">パスワード</label>
+            <input type="password" id="password" name="password" required>
+            
+            <label for="profile_image">プロフィール画像</label>
+            <div class="profile-image-container">
+                <img id="profilePreview" src="placeholder-logo.png" alt="プロフィール画像プレビュー">
+                <input type="file" id="profile_image" name="profile_image" accept="image/*" required onchange="previewImage(event)">
+            </div>
+            
+            <button type="submit">登録</button>
+        </form>
+    </div>
     <script src="register.js"></script>
 </body>
 </html>
