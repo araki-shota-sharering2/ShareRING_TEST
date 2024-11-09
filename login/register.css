@@ -26,16 +26,17 @@ body {
 }
 
 .logo {
-    margin-right: 15px; /* タイトルとの余白 */
+    margin-right: 15px;
 }
 
 .logo img {
-    width: 50px; /* 左側に配置した際のバランスを考慮してサイズ調整 */
+    width: 120px; /* ロゴサイズを大きく設定 */
 }
 
 h1 {
     font-size: 24px;
     color: #00bfa5;
+    flex: 1; /* タイトルをロゴと並べたときに中央に揃え */
 }
 
 form {
