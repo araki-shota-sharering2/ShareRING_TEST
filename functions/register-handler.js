@@ -23,8 +23,8 @@ export async function onRequestPost(context) {
             headers: { 'Content-Type': profileImage.type }
         });
 
-        // 画像のURLを生成
-        const profileImageUrl = `${env.R2_BUCKET_URL}/${r2Key}`;
+        // 新しいURLを生成
+        const profileImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
 
         // ユーザーデータをD1データベースに保存
         const db = env.DB;
@@ -33,7 +33,7 @@ export async function onRequestPost(context) {
             VALUES (?, ?, ?, ?)
         `).bind(username, email, password, profileImageUrl).run();
 
-        return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました' }), {
+        return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました', profileImageUrl }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });
