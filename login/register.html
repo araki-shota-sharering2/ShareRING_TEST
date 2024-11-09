@@ -12,16 +12,24 @@
         <div class="logo">
             <img src="/assets/images/header/sharering_logo.svg" alt="アプリのロゴ">
         </div>
+        <p class="intro-text">登録して写真や動画をチェックしよう</p>
         <form id="registerForm">
-            <input type="text" id="username" name="username" placeholder="ユーザー名" required>
             <input type="email" id="email" name="email" placeholder="メールアドレス" required>
             <input type="password" id="password" name="password" placeholder="パスワード" required>
+            <input type="text" id="full_name" name="full_name" placeholder="フルネーム" required>
+            <input type="text" id="username" name="username" placeholder="ユーザー名" required>
             
             <label for="profile_image" class="profile-label">プロフィール画像をアップロードしてください</label>
             <input type="file" id="profile_image" name="profile_image" accept="image/*" required>
             
-            <button type="submit">登録</button>
+            <button type="submit">登録する</button>
         </form>
+        <p class="terms-text">
+            登録することで、利用規約およびプライバシーポリシーに同意するものとします。
+        </p>
+    </div>
+    <div class="login-link">
+        <p>アカウントをお持ちですか？ <a href="#">ログインする</a></p>
     </div>
     <script src="register.js"></script>
 </body>
