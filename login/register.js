@@ -6,12 +6,21 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     const password = document.getElementById("password").value;
     const profileImage = document.getElementById("profile_image").value;
 
-    const response = await fetch("/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password, profileImage })
-    });
+    try {
+        const response = await fetch("/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, email, password, profileImage })
+        });
 
-    const result = await response.json();
-    document.getElementById("message").innerText = result.message;
+        if (!response.ok) {
+            throw new Error(`HTTPエラー: ${response.status}`);
+        }
+
+        const result = await response.json();
+        document.getElementById("message").innerText = result.message;
+    } catch (error) {
+        console.error("リクエストエラー:", error);
+        document.getElementById("message").innerText = "エラーが発生しました。";
+    }
 });

@@ -3,10 +3,9 @@ export async function onRequestPost(context) {
     const db = env.DB;
 
     try {
-        // リクエストからデータを取得
         const { username, email, password, profile_image } = await request.json();
 
-        // 基本的な入力チェック
+        // 入力チェック
         if (!username || !email || !password) {
             return new Response(JSON.stringify({ message: "すべての必須フィールドを入力してください。" }), { 
                 status: 400, 
@@ -31,7 +30,6 @@ export async function onRequestPost(context) {
     } catch (error) {
         console.error('登録エラー:', error);
 
-        // データベースの一意制約違反など、エラーメッセージを詳しく返す
         const errorMessage = error.message.includes('UNIQUE constraint failed') 
             ? "このメールアドレスは既に登録されています。" 
             : "登録に失敗しました。";
