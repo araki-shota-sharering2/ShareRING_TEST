@@ -1,5 +1,5 @@
 name = "sharering-test"
-main = "functions/register-handler.js"
+main = "functions/index.js"
 
 [vars]
 DB = "DB"
