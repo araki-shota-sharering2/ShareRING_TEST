@@ -12,7 +12,7 @@ body {
 
 .form-container {
     background-color: #2a2a2a;
-    padding: 30px;
+    padding: 40px 30px; /* 上下の余白を少し広げました */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     text-align: center;
@@ -20,9 +20,13 @@ body {
     width: 100%;
 }
 
-.logo img {
-    width: 80px;
+.logo {
     margin-bottom: 20px;
+}
+
+.logo img {
+    width: 120px; /* ロゴを少し大きく表示 */
+    margin-top: -20px; /* 上部余白を少し持たせてバランスを調整 */
 }
 
 h1 {
