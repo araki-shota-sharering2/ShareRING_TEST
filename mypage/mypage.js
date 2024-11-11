@@ -84,17 +84,29 @@ document.getElementById('logout-button').addEventListener('click', async () => {
         console.error("エラーが発生しました:", error);
     }
 });
-
 // アカウント削除ボタンのクリックイベント
 document.getElementById('delete-account-button').addEventListener('click', async () => {
     if (!confirm("本当にアカウントを削除しますか？この操作は取り消せません。")) {
         return;
     }
 
+    // ユーザーのメールアドレスとパスワードを入力させて確認
+    const email = prompt("メールアドレスを入力してください:");
+    const password = prompt("パスワードを入力してください:");
+
+    if (!email || !password) {
+        alert("メールアドレスとパスワードを入力してください");
+        return;
+    }
+
     try {
         const response = await fetch('/delete-account-handler', {
             method: 'POST',
-            credentials: 'include'
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
         });
 
         if (response.ok) {
@@ -102,7 +114,7 @@ document.getElementById('delete-account-button').addEventListener('click', async
             window.location.href = '/login/login.html';
         } else {
             console.error("アカウントの削除に失敗しました");
-            alert("アカウントの削除に失敗しました");
+            alert("メールアドレスまたはパスワードが間違っているか、エラーが発生しました");
         }
     } catch (error) {
         console.error("エラーが発生しました:", error);

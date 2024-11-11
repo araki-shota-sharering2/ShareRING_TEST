@@ -1,48 +1,36 @@
 export async function onRequestPost(context) {
-    const { env, request } = context;
-
-    // Cookieからsession_idを取得
-    const cookieHeader = request.headers.get("Cookie");
-    const cookies = new Map(cookieHeader?.split("; ").map(c => c.split("=")));
-    const sessionId = cookies.get("session_id");
-
-    if (!sessionId) {
-        console.error("Unauthorized access: No session ID found");
-        return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
-    }
+    const { request, env } = context;
+    const { email, password } = await request.json();
+    const db = env.DB;
 
     try {
-        // セッションからユーザーIDを取得
-        const session = await env.DB.prepare(`
-            SELECT user_id FROM user_sessions WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP
-        `).bind(sessionId).first();
+        // ユーザー情報の確認（メールアドレスとパスワードの照合）
+        const user = await db.prepare('SELECT * FROM user_accounts WHERE email = ? AND password = ?')
+            .bind(email, password)
+            .first();
 
-        if (!session) {
-            console.error("Unauthorized access: No valid session found");
-            return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
+        if (user) {
+            // ユーザーが存在する場合、アカウントを削除
+            await db.prepare('DELETE FROM user_accounts WHERE user_id = ?')
+                .bind(user.user_id)
+                .run();
+
+            return new Response(JSON.stringify({ message: 'アカウントが正常に削除されました' }), {
+                status: 200,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        } else {
+            // 認証エラー
+            return new Response(JSON.stringify({ message: 'メールアドレスまたはパスワードが間違っています' }), {
+                status: 401,
+                headers: { 'Content-Type': 'application/json' }
+            });
         }
-
-        // user_accountsテーブルからユーザーアカウントを削除
-        try {
-            await env.DB.prepare(`DELETE FROM user_accounts WHERE user_id = ?`).bind(session.user_id).run();
-            console.log("User account deleted from user_accounts table");
-        } catch (deleteAccountError) {
-            console.error("Error deleting user account:", deleteAccountError);
-            return new Response(JSON.stringify({ message: "Failed to delete user account" }), { status: 500 });
-        }
-
-        // user_sessionsテーブルからユーザーセッションを削除
-        try {
-            await env.DB.prepare(`DELETE FROM user_sessions WHERE user_id = ?`).bind(session.user_id).run();
-            console.log("User session deleted from user_sessions table");
-        } catch (deleteSessionError) {
-            console.error("Error deleting user session:", deleteSessionError);
-            return new Response(JSON.stringify({ message: "Failed to delete user session" }), { status: 500 });
-        }
-
-        return new Response(JSON.stringify({ message: "Account deleted successfully" }), { status: 200 });
     } catch (error) {
-        console.error("Account deletion error:", error);
-        return new Response(JSON.stringify({ message: "Failed to delete account", error: error.message }), { status: 500 });
+        console.error('データベースエラー:', error);
+        return new Response(JSON.stringify({ message: 'サーバーエラー' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
     }
 }
