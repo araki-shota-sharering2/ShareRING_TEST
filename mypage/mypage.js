@@ -84,6 +84,7 @@ document.getElementById('logout-button').addEventListener('click', async () => {
         console.error("エラーが発生しました:", error);
     }
 });
+
 // アカウント削除ボタンのクリックイベント
 document.getElementById('delete-account-button').addEventListener('click', async () => {
     if (!confirm("本当にアカウントを削除しますか？この操作は取り消せません。")) {
@@ -111,7 +112,7 @@ document.getElementById('delete-account-button').addEventListener('click', async
 
         if (response.ok) {
             alert("アカウントが削除されました");
-            window.location.href = '/login/login.html';
+            window.location.href = '/login/login.html'; // ログイン画面にリダイレクト
         } else {
             console.error("アカウントの削除に失敗しました");
             alert("メールアドレスまたはパスワードが間違っているか、エラーが発生しました");
