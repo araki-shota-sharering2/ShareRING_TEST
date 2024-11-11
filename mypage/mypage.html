@@ -16,7 +16,9 @@
     <main>
         <!-- ユーザー情報を表示するカード -->
         <div id="user-card">
-            <img id="profile-image" src="" alt="プロフィール画像">
+            <!-- 画像クリックでファイル選択ダイアログを開く -->
+            <input type="file" id="file-input" style="display: none;" accept="image/*">
+            <img id="profile-image" src="" alt="プロフィール画像" onclick="document.getElementById('file-input').click()">
             <div class="user-info">
                 <p>
                     <strong>ユーザー名:</strong> 
@@ -31,12 +33,6 @@
                     <button class="edit-btn" data-field="email">編集</button>
                 </p>
                 <p>
-                    <strong>プロフィール画像URL:</strong> 
-                    <span id="profile-image-url"></span>
-                    <input type="text" id="edit-profile-image" class="edit-input" style="display: none;">
-                    <button class="edit-btn" data-field="profile_image">編集</button>
-                </p>
-                <p>
                     <strong>アカウント作成日:</strong> <span id="created-at"></span>
                 </p>
             </div>
@@ -48,6 +44,6 @@
 
     <!-- スクリプト -->
     <script src="/assets/js/auth.js"></script> <!-- 認証用スクリプト -->
-    <script src="mypage.js"></script> <!-- ユーザー情報表示、編集、ログアウトスクリプト -->
+    <script src="mypage.js"></script> <!-- ユーザー情報表示、画像更新、ログアウトスクリプト -->
 </body>
 </html>
