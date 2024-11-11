@@ -92,7 +92,7 @@ document.getElementById('delete-account-button').addEventListener('click', async
     }
 
     try {
-        const response = await fetch('/delete-account', {
+        const response = await fetch('/delete-account-handler', {
             method: 'POST',
             credentials: 'include'
         });
