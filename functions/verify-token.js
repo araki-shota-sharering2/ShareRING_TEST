@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const SECRET_KEY = 'your_secret_key';
+const SECRET_KEY = 'sharering_token';
 
 export async function onRequestPost(context) {
     const { request } = context;
