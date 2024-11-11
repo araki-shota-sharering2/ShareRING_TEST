@@ -25,6 +25,7 @@ header {
     align-items: center;
     justify-content: center;
 }
+
 /* 戻るボタン */
 #back-button {
     position: absolute;
@@ -145,5 +146,31 @@ main {
     body {
         max-width: 100%;
         padding: 0;
+    }
+
+    header h1 {
+        font-size: 16px; /* スマホ画面でのタイトルサイズ調整 */
+    }
+
+    #back-button {
+        font-size: 14px; /* 戻るボタンの文字サイズを調整 */
+    }
+
+    #profile-image {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+    }
+
+    .edit-btn {
+        font-size: 14px;
+    }
+
+    .edit-input {
+        font-size: 14px;
+    }
+
+    #logout-button, #delete-account-button {
+        font-size: 14px;
     }
 }
