@@ -14,11 +14,20 @@
 
     <!-- メインコンテンツ -->
     <main>
+        <!-- ユーザー情報を表示するエリア -->
+        <div id="user-info">
+            <img id="profile-image" src="" alt="プロフィール画像">
+            <p><strong>ユーザー名:</strong> <span id="username"></span></p>
+            <p><strong>メールアドレス:</strong> <span id="email"></span></p>
+            <p><strong>アカウント作成日:</strong> <span id="created-at"></span></p>
+        </div>
+        
+        <!-- ログアウトボタン -->
         <button id="logout-button">ログアウト</button>
     </main>
 
     <!-- スクリプト -->
     <script src="/assets/js/auth.js"></script> <!-- 認証用スクリプト -->
-    <script src="mypage.js"></script> <!-- ログアウトスクリプト -->
+    <script src="mypage.js"></script> <!-- ユーザー情報表示とログアウトスクリプト -->
 </body>
 </html>
