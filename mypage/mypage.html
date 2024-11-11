@@ -7,47 +7,24 @@
     <link rel="stylesheet" href="mypage.css">
 </head>
 <body>
-    <!-- ヘッダー -->
     <header>
         <h1>マイページ</h1>
     </header>
 
-    <!-- メインコンテンツ -->
     <main>
-        <!-- ユーザー情報を表示するカード -->
         <div id="user-card">
-            <!-- プロフィール画像表示のみ -->
             <img id="profile-image" src="" alt="プロフィール画像">
             <div class="user-info">
-                <p>
-                    <strong>ユーザー名:</strong> 
-                    <span id="username"></span>
-                    <input type="text" id="edit-username" class="edit-input" style="display: none;">
-                    <button class="edit-btn" data-field="username">編集</button>
-                </p>
-                <p>
-                    <strong>メールアドレス:</strong> 
-                    <span id="email"></span>
-                    <input type="email" id="edit-email" class="edit-input" style="display: none;">
-                    <button class="edit-btn" data-field="email">編集</button>
-                </p>
-                <p>
-                    <strong>アカウント作成日:</strong> <span id="created-at"></span>
-                </p>
+                <p><strong>ユーザー名:</strong> <span id="username"></span></p>
+                <p><strong>メールアドレス:</strong> <span id="email"></span></p>
+                <p><strong>アカウント作成日:</strong> <span id="created-at"></span></p>
             </div>
         </div>
 
-        <!-- ログアウトボタン -->
         <button id="logout-button">ログアウト</button>
-        
-        <!-- アカウント削除ボタン -->
-        <button id="delete-account-button" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; transition: background-color 0.3s;">
-            アカウント削除
-        </button>
+        <button id="delete-account-button" style="background-color: #dc3545; color: white;">アカウント削除</button>
     </main>
 
-    <!-- スクリプト -->
-    <script src="/assets/js/auth.js"></script> <!-- 認証用スクリプト -->
-    <script src="mypage.js"></script> <!-- ユーザー情報表示、ログアウトスクリプト -->
+    <script src="mypage.js"></script>
 </body>
 </html>

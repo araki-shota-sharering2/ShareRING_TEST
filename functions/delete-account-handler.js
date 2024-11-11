@@ -27,7 +27,7 @@ export async function onRequestDelete(context) {
         `).bind(userId).first();
 
         if (userResult && userResult.profile_image) {
-            const r2Key = userResult.profile_image.split('https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/')[1];
+            const r2Key = userResult.profile_image.split(`${env.R2_BUCKET_URL}/`)[1];
             await env.MY_R2_BUCKET.delete(r2Key);
         }
 
