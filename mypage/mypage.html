@@ -9,7 +9,6 @@
 <body>
     <!-- ヘッダー -->
     <header>
-        <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
         <h1>マイページ</h1>
     </header>
 
@@ -42,11 +41,13 @@
         <button id="logout-button">ログアウト</button>
         
         <!-- アカウント削除ボタン -->
-        <button id="delete-account-button">アカウント削除</button>
+        <button id="delete-account-button" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; transition: background-color 0.3s;">
+            アカウント削除
+        </button>
     </main>
 
     <!-- スクリプト -->
     <script src="/assets/js/auth.js"></script> <!-- 認証用スクリプト -->
-    <script src="mypage.js"></script> <!-- ユーザー情報表示、ログアウト、アカウント削除スクリプト -->
+    <script src="mypage.js"></script> <!-- ユーザー情報表示、ログアウトスクリプト -->
 </body>
 </html>

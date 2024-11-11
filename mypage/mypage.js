@@ -27,12 +27,14 @@ document.querySelectorAll('.edit-btn').forEach(button => {
         const displayElement = document.getElementById(field);
         const inputElement = document.getElementById(`edit-${field}`);
 
+        // 表示と入力フィールドの切り替え
         if (inputElement.style.display === 'none') {
             inputElement.value = displayElement.textContent;
             displayElement.style.display = 'none';
             inputElement.style.display = 'inline';
             event.target.textContent = '保存';
         } else {
+            // フォームデータを使って更新処理を実行
             const formData = new FormData();
             formData.append(field, inputElement.value);
 
@@ -41,7 +43,7 @@ document.querySelectorAll('.edit-btn').forEach(button => {
     });
 });
 
-// ユーザー情報の更新
+// ユーザー情報の更新（FormDataを使用）
 async function updateUserInfo(formData, field, displayElement, inputElement, button) {
     try {
         const response = await fetch('/update-user-info', {
@@ -87,26 +89,28 @@ document.getElementById('logout-button').addEventListener('click', async () => {
 
 // アカウント削除ボタンのクリックイベント
 document.getElementById('delete-account-button').addEventListener('click', async () => {
-    if (!confirm("本当にアカウントを削除しますか？この操作は取り消せません。")) {
-        return;
-    }
+    if (confirm("本当にアカウントを削除しますか？この操作は元に戻せません。")) {
+        try {
+            const formData = new FormData();
+            formData.append('email', document.getElementById('email').textContent); // 現在表示されているメールアドレスを使用
 
-    try {
-        const response = await fetch('/delete-account', {
-            method: 'POST',
-            credentials: 'include'
-        });
+            const response = await fetch('/delete-account', {
+                method: 'DELETE',
+                body: formData,
+                credentials: 'include'
+            });
 
-        if (response.ok) {
-            alert("アカウントが削除されました");
-            window.location.href = '/login/login.html';
-        } else {
-            console.error("アカウントの削除に失敗しました");
-            alert("アカウントの削除に失敗しました");
+            if (response.ok) {
+                alert("アカウントが削除されました");
+                window.location.href = '/login/login.html'; // ログインページへリダイレクト
+            } else {
+                console.error("アカウント削除に失敗しました");
+                alert("アカウント削除に失敗しました");
+            }
+        } catch (error) {
+            console.error("エラーが発生しました:", error);
+            alert("アカウント削除中にエラーが発生しました");
         }
-    } catch (error) {
-        console.error("エラーが発生しました:", error);
-        alert("アカウント削除中にエラーが発生しました");
     }
 });
 
