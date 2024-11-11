@@ -18,26 +18,29 @@
         <div id="user-card">
             <img id="profile-image" src="" alt="プロフィール画像">
             <div class="user-info">
-                <p><strong>ユーザー名:</strong> <span id="username"></span></p>
-                <p><strong>メールアドレス:</strong> <span id="email"></span></p>
-                <p><strong>アカウント作成日:</strong> <span id="created-at"></span></p>
+                <p>
+                    <strong>ユーザー名:</strong> 
+                    <span id="username"></span>
+                    <input type="text" id="edit-username" class="edit-input" style="display: none;">
+                    <button class="edit-btn" data-field="username">編集</button>
+                </p>
+                <p>
+                    <strong>メールアドレス:</strong> 
+                    <span id="email"></span>
+                    <input type="email" id="edit-email" class="edit-input" style="display: none;">
+                    <button class="edit-btn" data-field="email">編集</button>
+                </p>
+                <p>
+                    <strong>プロフィール画像URL:</strong> 
+                    <span id="profile-image-url"></span>
+                    <input type="text" id="edit-profile-image" class="edit-input" style="display: none;">
+                    <button class="edit-btn" data-field="profile_image">編集</button>
+                </p>
+                <p>
+                    <strong>アカウント作成日:</strong> <span id="created-at"></span>
+                </p>
             </div>
         </div>
-
-        <!-- 編集用フォーム -->
-        <form id="edit-form">
-            <h2>登録情報を編集</h2>
-            <label for="edit-username">ユーザー名:</label>
-            <input type="text" id="edit-username" name="username">
-
-            <label for="edit-email">メールアドレス:</label>
-            <input type="email" id="edit-email" name="email">
-
-            <label for="edit-profile-image">プロフィール画像URL:</label>
-            <input type="text" id="edit-profile-image" name="profile_image">
-
-            <button type="submit">変更を保存</button>
-        </form>
 
         <!-- ログアウトボタン -->
         <button id="logout-button">ログアウト</button>

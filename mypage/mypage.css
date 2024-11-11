@@ -39,67 +39,38 @@ main {
     margin-bottom: 20px;
 }
 
-/* 編集フォーム */
-#edit-form {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 400px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-#edit-form h2 {
-    color: #007BFF;
+#profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
     margin-bottom: 15px;
-    text-align: center;
+    border: 3px solid #007BFF;
 }
 
-#edit-form label {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #333;
+/* インライン編集用ボタン */
+.edit-btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
 }
 
-#edit-form input {
-    padding: 8px;
+.edit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 編集入力フィールド */
+.edit-input {
+    width: 100%;
+    max-width: 250px;
+    padding: 5px;
+    margin-top: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
-    margin-top: 5px;
-    font-size: 16px;
-}
-
-#edit-form button {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-    transition: background-color 0.3s;
-}
-
-#edit-form button:hover {
-    background-color: #0056b3;
-}
-
-/* ログアウトボタン */
-#logout-button {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-    transition: background-color 0.3s;
-}
-
-#logout-button:hover {
-    background-color: #0056b3;
+    font-size: 14px;
 }
