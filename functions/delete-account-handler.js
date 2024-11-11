@@ -1,5 +1,5 @@
-export async function onRequest(context) {
-    const { env, request } = context;
+export async function onRequestPost(context) {
+    const { request, env } = context;
     const db = env.DB;
 
     // メソッドがDELETEでなければ405エラーを返す
