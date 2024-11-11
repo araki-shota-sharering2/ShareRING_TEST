@@ -1,30 +1,44 @@
 export async function onRequestDelete(context) {
     const { env, request } = context;
-    
+    const cookieHeader = request.headers.get("Cookie");
+    const cookies = new Map(cookieHeader?.split("; ").map(c => c.split("=")));
+    const sessionId = cookies.get("session_id");
+
+    if (!sessionId) {
+        return new Response("Unauthorized", { status: 401 });
+    }
+
     try {
-        const formData = await request.formData();
-        const email = formData.get('email'); // 削除対象のユーザー識別にemailを使用（または他の識別子）
+        // セッションIDからユーザーIDを取得
+        const session = await env.DB.prepare(`
+            SELECT user_id FROM user_sessions
+            WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP
+        `).bind(sessionId).first();
 
-        if (!email) {
-            return new Response(JSON.stringify({ message: 'メールアドレスが必要です' }), { status: 400 });
+        if (!session) {
+            return new Response("Unauthorized", { status: 401 });
         }
 
-        const db = env.DB;
-        
-        // D1データベースからユーザーを削除
-        const deleteResult = await db.prepare(`DELETE FROM user_accounts WHERE email = ?`).bind(email).run();
+        const userId = session.user_id;
 
-        if (deleteResult.changes === 0) {
-            return new Response(JSON.stringify({ message: '指定されたユーザーが見つかりません' }), { status: 404 });
-        }
-
-        // R2からプロフィール画像の削除
-        // プロフィール画像のURLを取得し、R2のキーを特定します
-        const userResult = await db.prepare(`SELECT profile_image FROM user_accounts WHERE email = ?`).bind(email).first();
+        // プロフィール画像のURLを取得し、R2のキーを特定
+        const userResult = await env.DB.prepare(`
+            SELECT profile_image FROM user_accounts WHERE user_id = ?
+        `).bind(userId).first();
 
         if (userResult && userResult.profile_image) {
             const r2Key = userResult.profile_image.split('https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/')[1];
             await env.MY_R2_BUCKET.delete(r2Key);
+        }
+
+        // D1データベースからユーザーを削除
+        const deleteResult = await env.DB.prepare(`DELETE FROM user_accounts WHERE user_id = ?`).bind(userId).run();
+
+        // セッション情報も削除
+        await env.DB.prepare(`DELETE FROM user_sessions WHERE session_id = ?`).bind(sessionId).run();
+
+        if (deleteResult.changes === 0) {
+            return new Response(JSON.stringify({ message: 'ユーザーが見つかりません' }), { status: 404 });
         }
 
         return new Response(JSON.stringify({ message: 'アカウントが削除されました' }), {
@@ -32,8 +46,8 @@ export async function onRequestDelete(context) {
             headers: { 'Content-Type': 'application/json' }
         });
     } catch (error) {
-        console.error('削除中のエラー:', error);
-        return new Response(JSON.stringify({ message: '削除に失敗しました', error: error.message }), {
+        console.error('アカウント削除中にエラーが発生しました:', error);
+        return new Response(JSON.stringify({ message: 'アカウント削除に失敗しました', error: error.message }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
         });
