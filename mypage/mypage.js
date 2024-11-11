@@ -1,3 +1,22 @@
+// 認証状態を確認して、認証されていない場合はログインページへリダイレクト
+async function checkAuthentication() {
+    try {
+        const response = await fetch('/authenticate', {
+            method: 'GET',
+            credentials: 'include'
+        });
+
+        if (response.status === 401) {
+            window.location.href = '/login/login.html';
+        } else if (response.status === 200) {
+            console.log("認証成功");
+        }
+    } catch (error) {
+        console.error("認証エラー:", error);
+        window.location.href = '/login/login.html';
+    }
+}
+
 // ページが読み込まれたときにユーザー情報を取得
 async function fetchUserInfo() {
     try {
@@ -34,16 +53,14 @@ document.querySelectorAll('.edit-btn').forEach(button => {
             inputElement.style.display = 'inline';
             event.target.textContent = '保存';
         } else {
-            // フォームデータを使って更新処理を実行
             const formData = new FormData();
             formData.append(field, inputElement.value);
-
             updateUserInfo(formData, field, displayElement, inputElement, event.target);
         }
     });
 });
 
-// ユーザー情報の更新（FormDataを使用）
+// ユーザー情報の更新
 async function updateUserInfo(formData, field, displayElement, inputElement, button) {
     try {
         const response = await fetch('/update-user-info', {
@@ -52,7 +69,6 @@ async function updateUserInfo(formData, field, displayElement, inputElement, but
             credentials: 'include'
         });
 
-        const result = await response.json();
         if (response.ok) {
             displayElement.textContent = formData.get(field);
             inputElement.style.display = 'none';
@@ -60,6 +76,7 @@ async function updateUserInfo(formData, field, displayElement, inputElement, but
             button.textContent = '編集';
             alert("情報が更新されました");
         } else {
+            const result = await response.json();
             console.error("情報の更新に失敗しました:", result.message);
             alert("情報の更新に失敗しました: " + result.message);
         }
@@ -91,18 +108,14 @@ document.getElementById('logout-button').addEventListener('click', async () => {
 document.getElementById('delete-account-button').addEventListener('click', async () => {
     if (confirm("本当にアカウントを削除しますか？この操作は元に戻せません。")) {
         try {
-            const formData = new FormData();
-            formData.append('email', document.getElementById('email').textContent); // 現在表示されているメールアドレスを使用
-
             const response = await fetch('/delete-account-handler', {
                 method: 'DELETE',
-                body: formData,
                 credentials: 'include'
             });
 
             if (response.ok) {
                 alert("アカウントが削除されました");
-                window.location.href = '/login/login.html'; // ログインページへリダイレクト
+                window.location.href = '/login/login.html';
             } else {
                 console.error("アカウント削除に失敗しました");
                 alert("アカウント削除に失敗しました");
@@ -114,5 +127,5 @@ document.getElementById('delete-account-button').addEventListener('click', async
     }
 });
 
-// ページロード時にユーザー情報を取得
-fetchUserInfo();
+// ページロード時に認証をチェックしてからユーザー情報を取得
+checkAuthentication().then(fetchUserInfo);
