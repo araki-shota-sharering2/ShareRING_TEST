@@ -86,8 +86,9 @@ document.getElementById('delete-account-button').addEventListener('click', async
                 alert("アカウントが削除されました");
                 window.location.href = '/login/login.html';
             } else {
-                console.error("アカウント削除に失敗しました");
-                alert("アカウント削除に失敗しました");
+                const result = await response.json();
+                console.error("アカウント削除に失敗しました:", result.message);
+                alert("アカウント削除に失敗しました: " + result.message);
             }
         } catch (error) {
             console.error("エラーが発生しました:", error);
@@ -95,6 +96,3 @@ document.getElementById('delete-account-button').addEventListener('click', async
         }
     }
 });
-
-// ページロード時にユーザー情報を取得
-fetchUserInfo();

@@ -1,67 +1,31 @@
-export async function onRequestPost(context) {
-    const { request, env } = context;
-    const db = env.DB;
+// delete-account-handler.js
 
-    // メソッドがDELETEでなければ405エラーを返す
-    if (request.method !== 'DELETE') {
-        return new Response('許可されていないメソッドです', {
-            status: 405,
-            headers: { 'Access-Control-Allow-Origin': '*' }
-        });
-    }
-
-    // Cookieからsession_idを取得
-    const cookieHeader = request.headers.get("Cookie");
-    const cookies = new Map(cookieHeader?.split("; ").map(c => c.split("=")));
-    const sessionId = cookies.get("session_id");
-
-    if (!sessionId) {
-        return new Response("Unauthorized", { status: 401, headers: { 'Access-Control-Allow-Origin': '*' } });
-    }
-
+export async function onRequestDelete({ request, env, ctx }) {
     try {
-        // セッションからユーザーIDを取得
-        console.log("セッションIDからユーザーIDを取得開始");
-        const session = await db.prepare(`
-            SELECT user_id FROM user_sessions
-            WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP
-        `).bind(sessionId).first();
-
-        if (!session) {
-            console.log("セッションが無効または期限切れです");
-            return new Response("Unauthorized", { status: 401, headers: { 'Access-Control-Allow-Origin': '*' } });
+        const sessionID = request.headers.get('cookie').split('sessionID=')[1];
+        
+        if (!sessionID) {
+            return new Response(JSON.stringify({ message: 'セッションが見つかりません' }), { status: 401 });
         }
 
-        const userId = session.user_id;
-        console.log("取得したユーザーID:", userId);
+        const userAccount = await env.DB.prepare(`
+            SELECT user_id FROM user_sessions WHERE session_id = ?
+        `).bind(sessionID).first();
 
-        // ユーザー情報を削除
-        console.log("ユーザー情報の削除を開始");
-        const deleteUserResult = await db.prepare(`DELETE FROM user_accounts WHERE user_id = ?`).bind(userId).run();
-
-        // セッション情報も削除
-        console.log("セッション情報の削除を開始");
-        const deleteSessionResult = await db.prepare(`DELETE FROM user_sessions WHERE session_id = ?`).bind(sessionId).run();
-
-        // ユーザーが見つからない場合
-        if (deleteUserResult.changes === 0) {
-            console.log("ユーザーが見つかりませんでした");
-            return new Response(JSON.stringify({ message: 'ユーザーが見つかりません' }), { 
-                status: 404, 
-                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } 
-            });
+        if (!userAccount) {
+            return new Response(JSON.stringify({ message: 'ユーザーが見つかりません' }), { status: 404 });
         }
 
-        console.log("アカウントが正常に削除されました");
-        return new Response(JSON.stringify({ message: 'アカウントが削除されました' }), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-        });
+        const deleteResult = await env.DB.prepare(`
+            DELETE FROM user_accounts WHERE user_id = ?
+        `).bind(userAccount.user_id).run();
+
+        if (deleteResult.success) {
+            return new Response(JSON.stringify({ message: 'アカウントが削除されました' }), { status: 200 });
+        } else {
+            return new Response(JSON.stringify({ message: 'アカウントの削除に失敗しました' }), { status: 500 });
+        }
     } catch (error) {
-        console.error('アカウント削除中にエラーが発生しました:', error);
-        return new Response(JSON.stringify({ message: 'アカウント削除に失敗しました', error: error.message }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-        });
+        return new Response(JSON.stringify({ message: 'エラーが発生しました', error: error.message }), { status: 500 });
     }
 }
