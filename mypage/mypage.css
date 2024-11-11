@@ -45,23 +45,35 @@ main {
     border-radius: 50%;
     margin-bottom: 15px;
     border: 3px solid #007BFF;
+    cursor: pointer;
 }
 
-/* インライン編集用ボタン */
+/* ユーザー情報 */
+.user-info p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.user-info strong {
+    margin-right: 5px;
+    color: #333;
+}
+
+/* 編集ボタン */
 .edit-btn {
-    background-color: #007BFF;
-    color: white;
+    background: none;
     border: none;
-    padding: 5px 10px;
-    margin-left: 10px;
-    border-radius: 5px;
+    color: #007BFF;
     cursor: pointer;
-    font-size: 12px;
-    transition: background-color 0.3s;
+    font-size: 16px;
+    margin-left: 8px;
+    transition: color 0.3s;
 }
 
 .edit-btn:hover {
-    background-color: #0056b3;
+    color: #0056b3;
 }
 
 /* 編集入力フィールド */
@@ -73,4 +85,21 @@ main {
     border-radius: 5px;
     border: 1px solid #ddd;
     font-size: 14px;
+}
+
+/* ログアウトボタン */
+#logout-button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+#logout-button:hover {
+    background-color: #0056b3;
 }
