@@ -21,8 +21,10 @@ header {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
 /* 戻るボタン */
 #back-button {
     position: absolute;
