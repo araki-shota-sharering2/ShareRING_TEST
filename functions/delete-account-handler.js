@@ -2,6 +2,7 @@ export async function onRequest(context) {
     const { env, request } = context;
     const db = env.DB;
 
+    // メソッドがDELETEでなければ405エラーを返す
     if (request.method !== 'DELETE') {
         return new Response('許可されていないメソッドです', {
             status: 405,
@@ -9,6 +10,7 @@ export async function onRequest(context) {
         });
     }
 
+    // Cookieからsession_idを取得
     const cookieHeader = request.headers.get("Cookie");
     const cookies = new Map(cookieHeader?.split("; ").map(c => c.split("=")));
     const sessionId = cookies.get("session_id");
@@ -18,6 +20,7 @@ export async function onRequest(context) {
     }
 
     try {
+        // セッションからユーザーIDを取得
         console.log("セッションIDからユーザーIDを取得開始");
         const session = await db.prepare(`
             SELECT user_id FROM user_sessions
@@ -40,6 +43,7 @@ export async function onRequest(context) {
         console.log("セッション情報の削除を開始");
         const deleteSessionResult = await db.prepare(`DELETE FROM user_sessions WHERE session_id = ?`).bind(sessionId).run();
 
+        // ユーザーが見つからない場合
         if (deleteUserResult.changes === 0) {
             console.log("ユーザーが見つかりませんでした");
             return new Response(JSON.stringify({ message: 'ユーザーが見つかりません' }), { 
