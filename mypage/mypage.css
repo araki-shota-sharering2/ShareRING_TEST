@@ -42,6 +42,30 @@ main {
     margin-bottom: 15px;
 }
 
+.edit-btn {
+    background: none;
+    border: none;
+    color: #007BFF;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 8px;
+    transition: color 0.3s;
+}
+
+.edit-btn:hover {
+    color: #0056b3;
+}
+
+.edit-input {
+    width: 100%;
+    max-width: 250px;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
 #logout-button, #delete-account-button {
     padding: 10px 20px;
     border: none;

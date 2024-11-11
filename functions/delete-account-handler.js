@@ -21,16 +21,6 @@ export async function onRequestDelete(context) {
 
         const userId = session.user_id;
 
-        // プロフィール画像のURLを取得し、R2のキーを特定
-        const userResult = await env.DB.prepare(`
-            SELECT profile_image FROM user_accounts WHERE user_id = ?
-        `).bind(userId).first();
-
-        if (userResult && userResult.profile_image) {
-            const r2Key = userResult.profile_image.split(`${env.R2_BUCKET_URL}/`)[1];
-            await env.MY_R2_BUCKET.delete(r2Key);
-        }
-
         // D1データベースからユーザーを削除
         const deleteResult = await env.DB.prepare(`DELETE FROM user_accounts WHERE user_id = ?`).bind(userId).run();
 
