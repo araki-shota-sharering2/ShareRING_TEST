@@ -26,7 +26,6 @@ document.getElementById('file-input').addEventListener('change', async (event) =
     if (!file) return;
 
     try {
-        // 古い画像の削除と新しい画像のアップロード
         const formData = new FormData();
         formData.append('file', file);
 
