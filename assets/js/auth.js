@@ -7,14 +7,14 @@ async function checkAuthentication() {
         });
 
         if (response.status === 401) {
-            // 認証されていない場合、login.htmlにリダイレクト
-            window.location.href = '/login.html';
+            // 認証されていない場合、/login/login.htmlにリダイレクト
+            window.location.href = '/login/login.html';
         } else if (response.status === 200) {
             console.log("認証成功");
         }
     } catch (error) {
         console.error("認証エラー:", error);
-        window.location.href = '../login/login.html'; // エラー時もlogin.htmlにリダイレクト
+        window.location.href = '/login/login.html'; // エラー時も/login/login.htmlにリダイレクト
     }
 }
 
