@@ -1,12 +1,15 @@
+/* 全体スタイル */
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #f0f4f8;
-    margin: 0;
 }
 
+/* ヘッダー */
 header {
     background-color: #007BFF;
     color: white;
@@ -14,8 +17,27 @@ header {
     width: 100%;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
 }
 
+/* 戻るボタン */
+#back-button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#back-button:hover {
+    color: #cccccc;
+}
+
+/* メインコンテンツ */
 main {
     display: flex;
     flex-direction: column;
@@ -23,6 +45,7 @@ main {
     margin-top: 30px;
 }
 
+/* ユーザーカード */
 #user-card {
     background-color: white;
     border-radius: 10px;
@@ -38,10 +61,11 @@ main {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 3px solid #007BFF;
     margin-bottom: 15px;
+    border: 3px solid #007BFF;
 }
 
+/* 編集ボタン */
 .edit-btn {
     background: none;
     border: none;
@@ -56,6 +80,7 @@ main {
     color: #0056b3;
 }
 
+/* 編集入力フィールド */
 .edit-input {
     width: 100%;
     max-width: 250px;
@@ -66,7 +91,10 @@ main {
     font-size: 14px;
 }
 
-#logout-button, #delete-account-button {
+/* ログアウトボタン */
+#logout-button {
+    background-color: #007BFF;
+    color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -76,15 +104,23 @@ main {
     transition: background-color 0.3s;
 }
 
-#logout-button {
-    background-color: #007BFF;
-    color: white;
-}
-
 #logout-button:hover {
     background-color: #0056b3;
 }
 
+/* アカウント削除ボタン */
+#delete-account-button {
+    background-color: #FF4B4B;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
 #delete-account-button:hover {
-    background-color: #c82333;
+    background-color: #D32F2F;
 }
