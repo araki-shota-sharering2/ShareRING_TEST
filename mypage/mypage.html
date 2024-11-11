@@ -16,9 +16,8 @@
     <main>
         <!-- ユーザー情報を表示するカード -->
         <div id="user-card">
-            <!-- 画像クリックでファイル選択ダイアログを開く -->
-            <input type="file" id="file-input" style="display: none;" accept="image/*">
-            <img id="profile-image" src="" alt="プロフィール画像" onclick="document.getElementById('file-input').click()">
+            <!-- プロフィール画像表示のみ -->
+            <img id="profile-image" src="" alt="プロフィール画像">
             <div class="user-info">
                 <p>
                     <strong>ユーザー名:</strong> 
@@ -44,6 +43,6 @@
 
     <!-- スクリプト -->
     <script src="/assets/js/auth.js"></script> <!-- 認証用スクリプト -->
-    <script src="mypage.js"></script> <!-- ユーザー情報表示、画像更新、ログアウトスクリプト -->
+    <script src="mypage.js"></script> <!-- ユーザー情報表示、ログアウトスクリプト -->
 </body>
 </html>

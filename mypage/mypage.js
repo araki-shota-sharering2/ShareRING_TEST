@@ -20,34 +20,6 @@ async function fetchUserInfo() {
     }
 }
 
-// 画像クリック時のファイル選択
-document.getElementById('file-input').addEventListener('change', async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-        const uploadResponse = await fetch('/upload-profile-image', {
-            method: 'POST',
-            body: formData,
-            credentials: 'include'
-        });
-
-        const result = await uploadResponse.json();
-        if (uploadResponse.ok) {
-            document.getElementById('profile-image').src = result.newImageUrl;
-            alert("プロフィール画像が更新されました");
-        } else {
-            console.error("画像のアップロードに失敗しました:", result.message);
-            alert("画像のアップロードに失敗しました: " + result.message);
-        }
-    } catch (error) {
-        console.error("エラーが発生しました:", error);
-    }
-});
-
 // 編集ボタンのクリックイベント
 document.querySelectorAll('.edit-btn').forEach(button => {
     button.addEventListener('click', (event) => {
