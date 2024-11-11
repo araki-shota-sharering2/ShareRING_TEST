@@ -7,7 +7,7 @@ async function checkLogin() {
     if (token) {
         try {
             // サーバーにトークンの有効性を確認（例: /auth/verify-token）
-            const response = await fetch('/auth/verify-token', {
+            const response = await fetch('/functions/verify-token', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
