@@ -48,19 +48,6 @@ main {
     cursor: pointer;
 }
 
-/* ユーザー情報 */
-.user-info p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10px 0;
-}
-
-.user-info strong {
-    margin-right: 5px;
-    color: #333;
-}
-
 /* 編集ボタン */
 .edit-btn {
     background: none;
