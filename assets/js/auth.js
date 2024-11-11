@@ -6,14 +6,13 @@ async function checkLogin() {
 
     if (token) {
         try {
-            // サーバーにトークンの有効性を確認
             const response = await fetch('/functions/verify-token', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
             if (!response.ok) {
-                // トークンが無効ならログインページにリダイレクト
+                console.warn('無効なトークン。ログインページにリダイレクトします。');
                 window.location.href = '/login/login.html';
             }
         } catch (error) {
@@ -21,7 +20,7 @@ async function checkLogin() {
             window.location.href = '/login/login.html';
         }
     } else {
-        // トークンが存在しない場合、ログインページにリダイレクト
+        console.warn('トークンがありません。ログインページにリダイレクトします。');
         window.location.href = '/login/login.html';
     }
 }

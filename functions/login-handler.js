@@ -1,21 +1,19 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
-const SECRET_KEY = 'sharering_token';
+const SECRET_KEY = process.env.SECRET_KEY;
 
 export async function onRequestPost(context) {
     const { request, env } = context;
     const { email, password } = await request.json();
-
     const db = env.DB;
 
     try {
         const user = await db.prepare('SELECT * FROM user_accounts WHERE email = ?').bind(email).first();
 
-        if (user && user.password === password) {  // パスワードをハッシュ化して比較することが推奨されます
-            // JWTトークンを生成（例としてuser_idをペイロードに含める）
+        if (user && await bcrypt.compare(password, user.password)) {
             const token = jwt.sign({ userId: user.user_id, email: user.email }, SECRET_KEY, { expiresIn: '1h' });
 
-            // クッキーにトークンを設定してレスポンスを返す
             return new Response(JSON.stringify({ message: 'ログイン成功' }), {
                 status: 200,
                 headers: {

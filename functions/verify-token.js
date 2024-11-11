@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const SECRET_KEY = 'sharering_token';
+const SECRET_KEY = process.env.SECRET_KEY;
 
 export async function onRequestPost(context) {
     const { request } = context;
@@ -18,6 +18,7 @@ export async function onRequestPost(context) {
             headers: { 'Content-Type': 'application/json' }
         });
     } catch (error) {
+        console.error('トークン検証エラー:', error);
         return new Response('Invalid token', { status: 401 });
     }
 }
