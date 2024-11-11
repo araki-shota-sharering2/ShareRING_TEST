@@ -25,27 +25,77 @@ document.getElementById('file-input').addEventListener('change', async (event) =
     const file = event.target.files[0];
     if (!file) return;
 
-    try {
-        const formData = new FormData();
-        formData.append('file', file);
+    const formData = new FormData();
+    formData.append('file', file);
 
+    try {
         const uploadResponse = await fetch('/upload-profile-image', {
             method: 'POST',
             body: formData,
             credentials: 'include'
         });
 
+        const result = await uploadResponse.json();
         if (uploadResponse.ok) {
-            const { newImageUrl } = await uploadResponse.json();
-            document.getElementById('profile-image').src = newImageUrl;
+            document.getElementById('profile-image').src = result.newImageUrl;
             alert("プロフィール画像が更新されました");
         } else {
-            console.error("画像のアップロードに失敗しました");
+            console.error("画像のアップロードに失敗しました:", result.message);
+            alert("画像のアップロードに失敗しました: " + result.message);
         }
     } catch (error) {
         console.error("エラーが発生しました:", error);
     }
 });
+
+// 編集ボタンのクリックイベント
+document.querySelectorAll('.edit-btn').forEach(button => {
+    button.addEventListener('click', (event) => {
+        const field = event.target.getAttribute('data-field');
+        const displayElement = document.getElementById(field);
+        const inputElement = document.getElementById(`edit-${field}`);
+
+        // 表示と入力フィールドの切り替え
+        if (inputElement.style.display === 'none') {
+            inputElement.value = displayElement.textContent;
+            displayElement.style.display = 'none';
+            inputElement.style.display = 'inline';
+            event.target.textContent = '保存';
+        } else {
+            // フォームデータを使って更新処理を実行
+            const formData = new FormData();
+            formData.append(field, inputElement.value);
+
+            updateUserInfo(formData, field, displayElement, inputElement, event.target);
+        }
+    });
+});
+
+// ユーザー情報の更新（FormDataを使用）
+async function updateUserInfo(formData, field, displayElement, inputElement, button) {
+    try {
+        const response = await fetch('/update-user-info', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include'
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            displayElement.textContent = formData.get(field);
+            inputElement.style.display = 'none';
+            displayElement.style.display = 'inline';
+            button.textContent = '編集';
+            alert("情報が更新されました");
+        } else {
+            console.error("情報の更新に失敗しました:", result.message);
+            alert("情報の更新に失敗しました: " + result.message);
+        }
+    } catch (error) {
+        console.error("エラーが発生しました:", error);
+        alert("情報の更新中にエラーが発生しました");
+    }
+}
 
 // ログアウトボタンのクリックイベント
 document.getElementById('logout-button').addEventListener('click', async () => {

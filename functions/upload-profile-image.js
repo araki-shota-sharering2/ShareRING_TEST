@@ -31,12 +31,10 @@ export async function onRequestPost(context) {
             return new Response(JSON.stringify({ message: "No file uploaded" }), { status: 400 });
         }
 
-        // タイムスタンプを利用して一意のファイル名を作成
         const timestamp = Date.now();
         const uniqueFileName = `profile-${session.user_id}-${timestamp}-${profileImage.name}`;
         const r2Key = `profile_images/${uniqueFileName}`;
 
-        // 古い画像の削除（存在する場合）
         if (session.profile_image) {
             const oldImageName = session.profile_image.replace(/^.+\/([^/]+)$/, '$1');
             try {
@@ -47,7 +45,6 @@ export async function onRequestPost(context) {
             }
         }
 
-        // 新しい画像をR2にアップロード
         try {
             await env.MY_R2_BUCKET.put(r2Key, profileImage.stream(), {
                 headers: { 'Content-Type': profileImage.type }
@@ -58,10 +55,8 @@ export async function onRequestPost(context) {
             return new Response(JSON.stringify({ message: "Failed to upload new image" }), { status: 500 });
         }
 
-        // 新しいURLを生成
         const newImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
 
-        // データベースを更新
         try {
             await env.DB.prepare(`
                 UPDATE user_accounts SET profile_image = ? WHERE user_id = ?
