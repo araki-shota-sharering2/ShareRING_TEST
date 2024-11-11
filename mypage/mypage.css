@@ -7,11 +7,14 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: #f0f4f8;
+    max-width: 400px; /* 最大幅をスマホサイズに固定 */
+    margin: 0 auto;
+    overflow-x: hidden;
 }
 
 /* ヘッダー */
 header {
-    background-color: #007BFF;
+    background-color: #4e5c94;
     color: white;
     padding: 15px;
     width: 100%;
@@ -43,6 +46,8 @@ main {
     flex-direction: column;
     align-items: center;
     margin-top: 30px;
+    width: 100%;
+    padding: 0 10px; /* スマホでの余白 */
 }
 
 /* ユーザーカード */
@@ -50,7 +55,7 @@ main {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 90%;
+    width: 100%;
     max-width: 400px;
     padding: 20px;
     text-align: center;
@@ -102,6 +107,8 @@ main {
     font-size: 16px;
     margin-top: 20px;
     transition: background-color 0.3s;
+    width: 100%; /* スマホサイズで全幅に */
+    max-width: 250px;
 }
 
 #logout-button:hover {
@@ -119,8 +126,22 @@ main {
     font-size: 16px;
     margin-top: 10px;
     transition: background-color 0.3s;
+    width: 100%; /* スマホサイズで全幅に */
+    max-width: 250px;
 }
 
 #delete-account-button:hover {
     background-color: #D32F2F;
+}
+
+/* スマートフォンのレイアウト調整 */
+@media screen and (max-width: 400px) {
+    #user-card, #logout-button, #delete-account-button {
+        width: 100%;
+    }
+
+    body {
+        max-width: 100%;
+        padding: 0;
+    }
 }
