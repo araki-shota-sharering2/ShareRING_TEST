@@ -14,7 +14,7 @@ async function checkAuthentication() {
         }
     } catch (error) {
         console.error("認証エラー:", error);
-        window.location.href = '/login.html'; // エラー時もlogin.htmlにリダイレクト
+        window.location.href = '../login/login.html'; // エラー時もlogin.htmlにリダイレクト
     }
 }
 
