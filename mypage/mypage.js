@@ -8,10 +8,13 @@ async function fetchUserInfo() {
 
         if (response.ok) {
             const user = await response.json();
+            // ユーザー名、メールアドレス、作成日を表示
             document.getElementById('username').textContent = user.username;
             document.getElementById('email').textContent = user.email;
             document.getElementById('created-at').textContent = new Date(user.created_at).toLocaleDateString();
-            document.getElementById('profile-image').src = user.profile_image || '/assets/images/default-profile.png';
+            // プロフィール画像の設定
+            const profileImageUrl = user.profile_image ? user.profile_image : '/assets/images/default-profile.png';
+            document.getElementById('profile-image').src = profileImageUrl;
         } else {
             console.error("ユーザー情報の取得に失敗しました");
         }
