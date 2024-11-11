@@ -41,10 +41,23 @@ document.querySelectorAll('.edit-btn').forEach(button => {
             displayElement.style.display = 'none';
             button.textContent = '保存';
         } else {
-            updateUserInfo(field, inputElement.value);
-            inputElement.style.display = 'none';
-            displayElement.style.display = 'block';
-            button.textContent = '編集';
+            // 編集データをサーバーに送信
+            updateUserInfo(field, inputElement.value)
+                .then(success => {
+                    if (success) {
+                        // 成功時に表示を更新し、編集モードを終了
+                        displayElement.textContent = inputElement.value;
+                        if (field === 'profile_image') {
+                            document.getElementById('profile-image').src = inputElement.value || '/assets/images/default-profile.png';
+                            document.getElementById('profile-image-url').textContent = inputElement.value || '';
+                        }
+                        inputElement.style.display = 'none';
+                        displayElement.style.display = 'block';
+                        button.textContent = '編集';
+                    } else {
+                        alert("情報の更新に失敗しました。再試行してください。");
+                    }
+                });
         }
     });
 });
@@ -62,18 +75,15 @@ async function updateUserInfo(field, value) {
         });
 
         if (response.ok) {
-            // データが更新された後に表示を更新
-            document.getElementById(field).textContent = value;
-            if (field === 'profile_image') {
-                document.getElementById('profile-image').src = value || '/assets/images/default-profile.png';
-                document.getElementById('profile-image-url').textContent = value || '';
-            }
             alert("情報が更新されました");
+            return true;
         } else {
-            console.error("情報の更新に失敗しました");
+            console.error("情報の更新に失敗しました:", await response.text());
+            return false;
         }
     } catch (error) {
         console.error("エラーが発生しました:", error);
+        return false;
     }
 }
 
