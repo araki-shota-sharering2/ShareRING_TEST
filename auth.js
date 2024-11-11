@@ -6,13 +6,14 @@ async function checkLogin() {
 
     if (token) {
         try {
-            // サーバーにトークンの有効性を確認（例: /auth/verify-token）
+            // サーバーにトークンの有効性を確認
             const response = await fetch('/functions/verify-token', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
             if (!response.ok) {
+                // トークンが無効ならログインページにリダイレクト
                 window.location.href = '/login/login.html';
             }
         } catch (error) {
@@ -20,6 +21,7 @@ async function checkLogin() {
             window.location.href = '/login/login.html';
         }
     } else {
+        // トークンが存在しない場合、ログインページにリダイレクト
         window.location.href = '/login/login.html';
     }
 }
