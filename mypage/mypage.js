@@ -94,7 +94,7 @@ document.getElementById('delete-account-button').addEventListener('click', async
             const formData = new FormData();
             formData.append('email', document.getElementById('email').textContent); // 現在表示されているメールアドレスを使用
 
-            const response = await fetch('/delete-account', {
+            const response = await fetch('/delete-account-handler', {
                 method: 'DELETE',
                 body: formData,
                 credentials: 'include'
