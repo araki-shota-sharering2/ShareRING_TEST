@@ -1,12 +1,13 @@
 export async function onRequestPost(context) {
-    const { request, env } = context;
+    const { env, request } = context;
+
     const cookieHeader = request.headers.get("Cookie");
     const cookies = new Map(cookieHeader?.split("; ").map(c => c.split("=")));
     const sessionId = cookies.get("session_id");
 
     if (!sessionId) {
         console.error("Unauthorized access: No session ID found");
-        return new Response("Unauthorized", { status: 401 });
+        return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
     }
 
     try {
@@ -19,41 +20,46 @@ export async function onRequestPost(context) {
 
         if (!session) {
             console.error("Unauthorized access: No valid session found");
-            return new Response("Unauthorized", { status: 401 });
+            return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
         }
 
         const formData = await request.formData();
-        const file = formData.get('file');
+        const profileImage = formData.get('file');
 
-        if (!file) {
+        if (!profileImage) {
             console.error("No file uploaded");
-            return new Response("No file uploaded", { status: 400 });
+            return new Response(JSON.stringify({ message: "No file uploaded" }), { status: 400 });
         }
+
+        // タイムスタンプを利用して一意のファイル名を作成
+        const timestamp = Date.now();
+        const uniqueFileName = `profile-${session.user_id}-${timestamp}-${profileImage.name}`;
+        const r2Key = `profile_images/${uniqueFileName}`;
 
         // 古い画像の削除（存在する場合）
         if (session.profile_image) {
             const oldImageName = session.profile_image.replace(/^.+\/([^/]+)$/, '$1');
             try {
-                await env.R2_BUCKET.delete(oldImageName);
+                await env.MY_R2_BUCKET.delete(oldImageName);
                 console.log(`Old image deleted: ${oldImageName}`);
             } catch (deleteError) {
                 console.error("Error deleting old image:", deleteError);
             }
         }
 
-        // 新しい画像のアップロード
-        const newFileName = `profile_images/${session.user_id}-${Date.now()}`;
+        // 新しい画像をR2にアップロード
         try {
-            await env.R2_BUCKET.put(newFileName, file.stream(), {
-                httpMetadata: { contentType: file.type }
+            await env.MY_R2_BUCKET.put(r2Key, profileImage.stream(), {
+                headers: { 'Content-Type': profileImage.type }
             });
-            console.log(`New image uploaded: ${newFileName}`);
+            console.log(`New image uploaded: ${r2Key}`);
         } catch (uploadError) {
             console.error("Error uploading new image:", uploadError);
-            return new Response("Failed to upload new image", { status: 500 });
+            return new Response(JSON.stringify({ message: "Failed to upload new image" }), { status: 500 });
         }
 
-        const newImageUrl = `${env.R2_PUBLIC_URL}/${newFileName}`;
+        // 新しいURLを生成
+        const newImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
 
         // データベースを更新
         try {
@@ -63,15 +69,15 @@ export async function onRequestPost(context) {
             console.log("Database updated with new image URL");
         } catch (dbError) {
             console.error("Error updating database:", dbError);
-            return new Response("Failed to update database", { status: 500 });
+            return new Response(JSON.stringify({ message: "Failed to update database" }), { status: 500 });
         }
 
-        return new Response(JSON.stringify({ newImageUrl }), {
+        return new Response(JSON.stringify({ message: 'プロフィール画像が更新されました', newImageUrl }), {
             status: 200,
-            headers: { "Content-Type": "application/json" }
+            headers: { 'Content-Type': 'application/json' }
         });
     } catch (error) {
         console.error("Unknown error:", error);
-        return new Response("サーバーエラー", { status: 500 });
+        return new Response(JSON.stringify({ message: "サーバーエラー", error: error.message }), { status: 500 });
     }
 }
