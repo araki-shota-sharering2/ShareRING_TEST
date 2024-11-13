@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShareRING</title>
+    <title>ShareRING - MYMAP</title>
     <link rel="stylesheet" href="/mymap/mymap.css">
 
     <!-- ファビコン -->
@@ -20,23 +20,28 @@
     <header>
         <div class="header-logo"><img src="/assets/images/header/sharering_logo.svg" alt="logo"></div>
         <div class="header-icons">
-            <a href="/notice/notice.html"><img src="/assets/images/header/notifications.svg" alt="Notifications"></a>
-            <a href="/mypage/mypage.html"><img src="/assets/images/header/my_page.svg" alt="My Page"></a>
+            <a href="/notice/notice.html"><img src="/assets/images/header/notifications.svg" alt="通知"></a>
+            <a href="/mypage/mypage.html"><img src="/assets/images/header/my_page.svg" alt="マイページ"></a>
         </div>
     </header>
 
-    <h1>MYMAP 準備中</h1>
+    <h1>MYMAP</h1>
+
+    <!-- マップ表示エリア -->
+    <div id="map" style="width: 100%; height: 400px;"></div>
 
     <!-- フッター -->
     <footer>
-        <a href="/home/home.html"><img src="/assets/images/footer/home.svg" alt="Home"></a>
-        <a href="/post_viewing/post_viewing.html"><img src="/assets/images/footer/post_viewing.svg" alt="View"></a>
-        <a href="/post_creation/post_creation.html"><img src="/assets/images/footer/post_creation.svg" alt="Create"></a>
+        <a href="/home/home.html"><img src="/assets/images/footer/home.svg" alt="ホーム"></a>
+        <a href="/post_viewing/post_viewing.html"><img src="/assets/images/footer/post_viewing.svg" alt="投稿を見る"></a>
+        <a href="/post_creation/post_creation.html"><img src="/assets/images/footer/post_creation.svg" alt="投稿を作成"></a>
         <a href="/ring_navi/ring_navi.html"><img src="/assets/images/footer/ring_navi.svg" alt="AI"></a>
-        <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="Achievements"></a>
+        <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="実績"></a>
     </footer>
-    
+
+    <!-- JavaScriptファイルの読み込み -->
     <script src="/assets/js/auth.js"></script>
     <script src="/mymap/mymap.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&callback=initMap"></script>
 </body>
 </html>

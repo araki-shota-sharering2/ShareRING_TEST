@@ -29,7 +29,6 @@ body {
     opacity: 0.5;
 }
 
-/* 星の輝きアニメーション */
 @keyframes twinkle {
     0% {
         opacity: 0.3;
