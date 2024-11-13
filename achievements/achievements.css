@@ -5,15 +5,38 @@
     box-sizing: border-box;
 }
 
-/* 共通のボディ設定 */
 body {
     font-family: Arial, sans-serif;
     max-width: 375px;
     margin: 0 auto;
-    background-color: #0d0d2b;
+    background-color: #0d0d2b; /* 夜空をイメージした濃い青色 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
     color: #ccc;
     overflow: hidden;
-    position: relative;
+}
+
+/* 星のスタイル */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
+}
+
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 /* ヘッダー */
@@ -28,14 +51,14 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.header-logo .logo-img {
-    width: 100px; /* ロゴサイズを指定 */
-    height: auto;
+.header-logo img {
+    width: 120px;
 }
 
-.header-icons .header-icon {
-    width: 24px; /* ヘッダーアイコンのサイズ */
+.header-icons img {
+    width: 24px;
     height: 24px;
+    margin: 0 10px;
 }
 
 /* フッター */
@@ -49,15 +72,21 @@ footer {
     bottom: 0;
     width: 100%;
     max-width: 375px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* フッターのアイコンスタイル */
 footer a {
+    text-align: center;
     color: white;
     text-decoration: none;
     padding: 10px 15px;
 }
 
+/* フッターのアクティブ状態を示す */
 footer a.active {
     background-color: #394575;
     border-top: 3px solid #ffffff;
@@ -65,28 +94,7 @@ footer a.active {
     transition: background-color 0.3s ease, padding 0.3s ease;
 }
 
-.footer-icon {
-    width: 25px; /* フッターアイコンのサイズ */
+footer img {
+    width: 25px;
     height: 25px;
-}
-
-/* 背景の星 */
-.star-background {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
-.star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    animation: twinkle 2s infinite ease-in-out alternate;
-}
-
-@keyframes twinkle {
-    0% { opacity: 0.3; }
-    100% { opacity: 1; }
 }
