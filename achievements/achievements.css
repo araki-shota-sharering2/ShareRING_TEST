@@ -28,6 +28,16 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.header-logo .logo-img {
+    width: 100px; /* ロゴサイズを指定 */
+    height: auto;
+}
+
+.header-icons .header-icon {
+    width: 24px; /* ヘッダーアイコンのサイズ */
+    height: 24px;
+}
+
 /* フッター */
 footer {
     display: flex;
@@ -55,8 +65,8 @@ footer a.active {
     transition: background-color 0.3s ease, padding 0.3s ease;
 }
 
-footer img {
-    width: 25px;
+.footer-icon {
+    width: 25px; /* フッターアイコンのサイズ */
     height: 25px;
 }
 
