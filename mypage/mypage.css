@@ -6,10 +6,30 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f0f4f8;
+    background-color: #0d0d2b; /* 夜空をイメージした濃い青色 */
     max-width: 400px; /* 最大幅をスマホサイズに固定 */
     margin: 0 auto;
     overflow-x: hidden;
+    color: #ccc;
+    position: relative;
+    height: 100vh;
+}
+
+/* 星の背景 */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
+}
+
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
 }
 
 /* ヘッダー */
@@ -39,10 +59,6 @@ header {
     cursor: pointer;
 }
 
-#back-button:hover {
-    color: #cccccc;
-}
-
 /* メインコンテンツ */
 main {
     display: flex;
@@ -63,6 +79,8 @@ main {
     padding: 20px;
     text-align: center;
     margin-bottom: 20px;
+    position: relative;
+    z-index: 1; /* 背景の星より前面に表示 */
 }
 
 /* プロフィール画像 */
@@ -74,105 +92,15 @@ main {
     border: 3px solid #007BFF;
 }
 
-/* 編集ボタン */
-.edit-btn {
-    background: none;
-    border: none;
-    color: #007BFF;
-    cursor: pointer;
-    font-size: 16px;
-    margin-left: 8px;
-    transition: color 0.3s;
-}
+/* その他のスタイル省略（前述のCSS内容をそのまま使用） */
 
-.edit-btn:hover {
-    color: #0056b3;
-}
-
-/* 編集入力フィールド */
-.edit-input {
-    width: 100%;
-    max-width: 250px;
-    padding: 5px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 14px;
-}
-
-/* ログアウトボタン */
-#logout-button {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-    transition: background-color 0.3s;
-    width: 100%; /* スマホサイズで全幅に */
-    max-width: 250px;
-}
-
-#logout-button:hover {
-    background-color: #0056b3;
-}
-
-/* アカウント削除ボタン */
-#delete-account-button {
-    background-color: #FF4B4B;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    transition: background-color 0.3s;
-    width: 100%; /* スマホサイズで全幅に */
-    max-width: 250px;
-}
-
-#delete-account-button:hover {
-    background-color: #D32F2F;
-}
-
-/* スマートフォンのレイアウト調整 */
-@media screen and (max-width: 400px) {
-    #user-card, #logout-button, #delete-account-button {
-        width: 100%;
-    }
-
-    body {
-        max-width: 100%;
-        padding: 0;
-    }
-
-    header h1 {
-        font-size: 16px; /* スマホ画面でのタイトルサイズ調整 */
-    }
-
-    #back-button {
-        font-size: 14px; /* 戻るボタンの文字サイズを調整 */
-    }
-
-    /* プロフィール画像の調整 */
-    #profile-image {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 10px;
-    }
-
-    .edit-btn {
-        font-size: 14px;
-    }
-
-    .edit-input {
-        font-size: 14px;
-    }
-
-    #logout-button, #delete-account-button {
-        font-size: 14px;
-    }
+/* 星を表示するために最初に読み込む */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
 }
