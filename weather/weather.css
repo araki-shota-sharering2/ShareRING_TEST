@@ -1,11 +1,64 @@
-/* ボディのスタイリング */
+/* リセットと基本設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     max-width: 375px;
     margin: 0 auto;
     background-color: #0d0d2b; /* 夜空をイメージした濃い青色 */
     color: #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
     overflow: hidden;
+}
+
+/* 星のスタイル */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
+}
+
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ヘッダー */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #1a1a3b;
+    color: white;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.header-logo img {
+    width: 100px;
+}
+
+.header-icons img {
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
 }
 
 /* 天気情報コンテナ */
@@ -21,7 +74,10 @@ body {
     color: #fff;
 }
 
-/* 現在の天気詳細 */
+.current-weather {
+    margin-bottom: 20px;
+}
+
 .current-weather h1 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -93,6 +149,7 @@ footer {
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
 }
 
 footer img {
