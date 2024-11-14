@@ -1,6 +1,4 @@
-// public/mymap/mymap.js
-
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", function() {
     console.log("MYMAP画面が読み込まれました");
 
     // フッターリンクの強調表示
@@ -22,34 +20,23 @@ document.addEventListener("DOMContentLoaded", async function() {
         star.style.animationDuration = (Math.random() * 2 + 1) + 's';
         body.appendChild(star);
     }
-
-    try {
-        // プロフィール画像を取得
-        const profileImage = await fetch('/getProfileImage')
-            .then(res => res.json())
-            .then(data => data.profile_image);
-
-        // Google Map の初期化
-        initMap(profileImage);
-    } catch (error) {
-        console.error("プロフィール画像の取得に失敗しました:", error);
-    }
 });
 
-function initMap(profileImage) {
+// Google Map 初期化関数
+function initMap() {
     const mapOptions = {
         center: { lat: 35.6895, lng: 139.6917 }, // 東京の初期座標
         zoom: 12
     };
     const map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-    // 現在位置のマーカーを設定（プロフィール画像をアイコンとして使用）
+    // 現在位置のマーカーを設定（カスタムアイコンを使用）
     let marker = new google.maps.Marker({
         map: map,
         title: "現在位置",
         icon: {
-            url: profileImage, // プロフィール画像をアイコンとして設定
-            scaledSize: new google.maps.Size(40, 40)
+            url: "/assets/images/icons/current_location.svg", // 現在位置のアイコン画像パス
+            scaledSize: new google.maps.Size(40, 40) // アイコンのサイズ
         }
     });
 
