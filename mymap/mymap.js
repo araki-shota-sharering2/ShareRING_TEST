@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// Google Map の初期化関数
+// Google Map 初期化関数
 function initMap() {
     const mapOptions = {
         center: { lat: 35.6895, lng: 139.6917 }, // 東京の初期座標
@@ -30,10 +30,14 @@ function initMap() {
     };
     const map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-    // 現在位置のマーカーを設定
+    // 現在位置のマーカーを設定（カスタムアイコンを使用）
     let marker = new google.maps.Marker({
         map: map,
-        title: "現在位置"
+        title: "現在位置",
+        icon: {
+            url: "/assets/images/icons/current_location.svg", // 現在位置のアイコン画像パス
+            scaledSize: new google.maps.Size(40, 40) // アイコンのサイズ
+        }
     });
 
     // 位置情報が取得できた場合の処理
