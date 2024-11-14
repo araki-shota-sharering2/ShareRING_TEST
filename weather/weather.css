@@ -1,142 +1,82 @@
-/* リセットと基本設定 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* ボディのスタイリング */
 body {
     font-family: Arial, sans-serif;
     max-width: 375px;
     margin: 0 auto;
     background-color: #0d0d2b; /* 夜空をイメージした濃い青色 */
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
     color: #ccc;
     overflow: hidden;
 }
 
-/* 星のスタイル */
-.star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    animation: twinkle 2s infinite ease-in-out alternate;
-    opacity: 0.5;
-}
-
-/* 星の輝きアニメーション */
-@keyframes twinkle {
-    0% {
-        opacity: 0.3;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-/* ヘッダー */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #4e5c94;
-    color: white;
-    width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.header-logo img {
-    width: 120px;
-}
-
-.header-icons img {
-    width: 24px;
-    height: 24px;
-    margin: 0 10px;
-}
-
-/* メインコンテンツ */
-main {
-    flex: 1;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 375px;
-    margin: 0 auto;
-}
-
 /* 天気情報コンテナ */
 .weather-container {
-    background-color: #fff;
+    background-color: #1a1a3b; /* コンテナ背景色を少し暗めに */
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     text-align: center;
     margin-top: 20px;
     width: 90%;
     max-width: 350px;
-}
-
-.current-weather {
-    margin-bottom: 20px;
+    color: #fff;
 }
 
 /* 現在の天気詳細 */
+.current-weather h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+#date-time {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.large-text {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #e3e3e3;
+}
+
 .weather-details {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 .weather-info p {
-    margin: 5px 0;
-}
-
-.large-text {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-}
-
-#description, #humidity, #wind-speed {
+    margin: 3px 0;
     font-size: 1rem;
-    color: #555;
+    color: #ddd;
 }
 
 /* 週間予報 */
 .forecast-container {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
     overflow-x: auto;
     padding: 10px 0;
 }
 
 .forecast-item {
     text-align: center;
-    font-size: 0.9rem;
-    color: #333;
+    font-size: 0.85rem;
+    background-color: #262654;
     padding: 10px;
-    background-color: #f9f9f9;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     min-width: 70px;
+    color: #fff;
 }
 
 .forecast-item img {
     width: 40px;
     height: 40px;
+    margin: 5px 0;
 }
 
 /* フッター */
@@ -145,7 +85,7 @@ footer {
     justify-content: space-around;
     align-items: center;
     padding: 8px;
-    background-color: #4e5c94;
+    background-color: #1a1a3b;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -153,7 +93,6 @@ footer {
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 footer img {
