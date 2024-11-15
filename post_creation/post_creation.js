@@ -6,15 +6,22 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function displayLocationWithIcon() {
-    // スポット名を仮に設定（実際はAPIなどから取得）
-    const spotName = "渋谷スクランブル交差点"; // ここを動的に取得する場合はAPIから取得
-
-    // スポット名を表示し、右にアイコンを追加
+    const locationData = JSON.parse(localStorage.getItem("selectedLocation"));
     const locationNameElement = document.getElementById("locationName");
-    locationNameElement.innerHTML = `${spotName} 
-        <a href="/post_creation/search_place.html">
-            <img src="/assets/images/post_creation/reload.svg" alt="変更アイコン" id="changeLocationIcon">
-        </a>`;
+
+    if (locationData && locationData.name) {
+        // Display the location name dynamically
+        locationNameElement.innerHTML = `${locationData.name}
+            <a href="/post_creation/search_place.html">
+                <img src="/assets/images/post_creation/reload.svg" alt="変更アイコン" id="changeLocationIcon">
+            </a>`;
+    } else {
+        // Fallback if no location is available
+        locationNameElement.innerHTML = `位置情報が取得できません
+            <a href="/post_creation/search_place.html">
+                <img src="/assets/images/post_creation/reload.svg" alt="変更アイコン" id="changeLocationIcon">
+            </a>`;
+    }
 }
 
 function setupPhotoCapture() {
