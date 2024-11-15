@@ -1,86 +1,37 @@
-export async function onRequest(context) {
-    const { request, env } = context;
-
-    if (request.method === "GET") {
-        return await getUserPosts(context);
-    } else if (request.method === "DELETE") {
-        return await deleteUserPost(context);
-    } else {
-        return new Response("Method not allowed", { status: 405 });
-    }
-}
-
-async function getUserPosts({ request, env }) {
-    const userId = await getUserIdFromSession(request, env);
-    if (!userId) {
-        return new Response(JSON.stringify({ message: "セッションが無効です。再ログインしてください。" }), {
-            status: 401,
-            headers: { "Content-Type": "application/json" },
-        });
-    }
-
-    const query = `
-        SELECT post_id, image_url, ring_color
-        FROM user_posts
-        WHERE user_id = ?;
-    `;
+export async function onRequestGet(context) {
+    const { env, request } = context;
 
     try {
-        const posts = await env.DB.prepare(query).bind(userId).all();
+        const cookieHeader = request.headers.get("Cookie");
+        const cookies = new Map(cookieHeader?.split("; ").map(c => c.split("=")));
+        const sessionId = cookies.get("session_id");
+
+        if (!sessionId) {
+            return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
+        }
+
+        const session = await env.DB.prepare(`
+            SELECT user_id FROM user_sessions 
+            WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP
+        `).bind(sessionId).first();
+
+        if (!session) {
+            return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
+        }
+
+        const posts = await env.DB.prepare(`
+            SELECT post_id, image_url, caption, location, created_at, address 
+            FROM user_posts 
+            WHERE user_id = ?
+            ORDER BY created_at DESC
+        `).bind(session.user_id).all();
+
         return new Response(JSON.stringify(posts.results), {
             headers: { "Content-Type": "application/json" },
+            status: 200,
         });
     } catch (error) {
-        console.error("投稿の取得中にエラーが発生しました:", error);
-        return new Response("エラーが発生しました", { status: 500 });
-    }
-}
-
-async function deleteUserPost({ request, env }) {
-    const userId = await getUserIdFromSession(request, env);
-    if (!userId) {
-        return new Response(JSON.stringify({ message: "セッションが無効です。再ログインしてください。" }), {
-            status: 401,
-            headers: { "Content-Type": "application/json" },
-        });
-    }
-
-    const { post_id } = await request.json();
-    const query = `DELETE FROM user_posts WHERE post_id = ? AND user_id = ?`;
-
-    try {
-        await env.DB.prepare(query).bind(post_id, userId).run();
-        return new Response("投稿を削除しました", { status: 200 });
-    } catch (error) {
-        console.error("投稿の削除中にエラーが発生しました:", error);
-        return new Response("エラーが発生しました", { status: 500 });
-    }
-}
-
-async function getUserIdFromSession(request, env) {
-    const cookieHeader = request.headers.get("Cookie");
-    const cookies = Object.fromEntries(
-        cookieHeader.split("; ").map((c) => c.split("=").map(decodeURIComponent))
-    );
-    const sessionId = cookies["session_id"];
-
-    if (!sessionId) return null;
-
-    try {
-        const session = await env.DB.prepare(
-            `SELECT user_id, expires_at FROM user_sessions WHERE session_id = ?`
-        ).bind(sessionId).first();
-
-        if (!session) return null;
-
-        const now = new Date();
-        const expiresAt = new Date(session.expires_at);
-
-        if (expiresAt < now) return null;
-
-        return session.user_id;
-    } catch (error) {
-        console.error("セッション情報の取得中にエラーが発生しました:", error);
-        return null;
+        console.error("エラー:", error);
+        return new Response(JSON.stringify({ message: "サーバーエラーが発生しました" }), { status: 500 });
     }
 }

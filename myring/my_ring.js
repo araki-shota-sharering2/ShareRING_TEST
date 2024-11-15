@@ -1,61 +1,39 @@
-document.addEventListener("DOMContentLoaded", () => {
-    loadUserPosts();
-});
-
-async function loadUserPosts() {
+document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const response = await fetch("/functions/my_ring-handler");
+        const response = await fetch("/functions/my_ring-handler.js", {
+            method: "GET",
+            credentials: "include",
+        });
 
         if (!response.ok) {
-            throw new Error(`サーバーエラー: ${response.status}`);
-        }
-
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-            throw new Error("期待したJSONレスポンスが返されていません");
+            throw new Error("投稿データを取得できませんでした");
         }
 
         const posts = await response.json();
         displayPosts(posts);
     } catch (error) {
-        console.error("投稿の読み込みに失敗しました:", error);
+        console.error("エラー:", error);
+        alert("投稿データの読み込み中にエラーが発生しました");
     }
-}
+});
 
 function displayPosts(posts) {
-    const postList = document.getElementById("postList");
-    postList.innerHTML = "";
+    const postsList = document.getElementById("postsList");
+    postsList.innerHTML = "";
 
-    posts.forEach((post) => {
+    posts.forEach(post => {
         const listItem = document.createElement("li");
+        listItem.classList.add("post-item");
+
         listItem.innerHTML = `
-            <img src="${post.image_url}" alt="投稿画像" style="border-color: ${post.ring_color}">
-            <button class="deleteButton" data-id="${post.post_id}">&times;</button>
+            <img src="${post.image_url}" alt="投稿画像">
+            <div class="info">
+                <h2>${post.caption || "キャプションなし"}</h2>
+                <p>${post.address || "住所情報なし"}</p>
+                <small>投稿日: ${new Date(post.created_at).toLocaleString()}</small>
+            </div>
         `;
-        postList.appendChild(listItem);
 
-        const deleteButton = listItem.querySelector(".deleteButton");
-        deleteButton.addEventListener("click", () => deletePost(post.post_id));
+        postsList.appendChild(listItem);
     });
-}
-
-async function deletePost(postId) {
-    if (!confirm("この投稿を削除してもよろしいですか？")) return;
-
-    try {
-        const response = await fetch(`/functions/my_ring-handler`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ post_id: postId }),
-        });
-
-        if (response.ok) {
-            alert("投稿を削除しました");
-            loadUserPosts();
-        } else {
-            console.error("投稿の削除に失敗しました:", response.status);
-        }
-    } catch (error) {
-        console.error("投稿の削除中にエラーが発生しました:", error);
-    }
 }
