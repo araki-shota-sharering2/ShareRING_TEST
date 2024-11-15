@@ -1,3 +1,5 @@
+import { generateUUID } from './utils';
+
 export async function onRequestPost(context) {
     const { request, env } = context;
     const { email, password } = await request.json();
@@ -10,19 +12,21 @@ export async function onRequestPost(context) {
             .first();
 
         if (!user) {
+            // ユーザーが存在しない場合
             return new Response(JSON.stringify({ message: 'メールアドレスまたはパスワードが間違っています' }), {
                 status: 401,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
 
-        // 入力パスワードとソルトを組み合わせ、SHA-256でハッシュ化して検証
+        // 保存されたソルトを使って入力されたパスワードをハッシュ化し、検証
         const encoder = new TextEncoder();
         const data = encoder.encode(password + user.salt);
         const hashBuffer = await crypto.subtle.digest("SHA-256", data);
         const hashedInputPassword = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
         if (hashedInputPassword === user.password) {
+            // ログイン成功処理
             const sessionId = generateUUID();
             const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
@@ -39,14 +43,15 @@ export async function onRequestPost(context) {
                 }
             });
         } else {
+            // パスワードが一致しない場合
             return new Response(JSON.stringify({ message: 'メールアドレスまたはパスワードが間違っています' }), {
                 status: 401,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
     } catch (error) {
-        console.error('データベースエラー:', error);
-        return new Response(JSON.stringify({ message: 'サーバーエラー' }), {
+        console.error('ログイン中のサーバーエラー:', error);
+        return new Response(JSON.stringify({ message: 'サーバーエラーが発生しました' }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
         });
