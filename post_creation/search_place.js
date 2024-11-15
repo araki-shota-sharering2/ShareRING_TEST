@@ -90,7 +90,7 @@ function displaySpots(spots, userLocation) {
         const iconType = getIconType(spot.types);
 
         listItem.innerHTML = `
-            <img src="/assets/icons/${iconType}.svg" alt="icon">
+            <img src="/assets/images/post_creation/${iconType}.svg" alt="icon">
             <div class="info">
                 <h2>${spot.name}</h2>
                 <p>${spot.vicinity}</p>
@@ -112,17 +112,15 @@ function handleSearch() {
 }
 
 function selectSpot(spot) {
-    // 選択されたスポットの情報を投稿作成画面に渡す処理
     console.log("選択されたスポット:", spot.name, spot.vicinity);
-
-    // 投稿作成画面に遷移する処理を追加
+    // 必要に応じて投稿作成画面に遷移する処理を追加
     // location.href = "post_creation_form.html?name=" + encodeURIComponent(spot.name) + "&address=" + encodeURIComponent(spot.vicinity);
 }
 
 /**
- * スポットタイプに応じてアイコンタイプを取得
+ * スポットタイプに応じてアイコンファイル名を決定
  * @param {Array} types スポットのタイプ
- * @returns {string} アイコンのファイル名
+ * @returns {string} アイコンファイル名
  */
 function getIconType(types) {
     if (!types || types.length === 0) return "default";
@@ -134,6 +132,11 @@ function getIconType(types) {
         museum: "museum",
         hospital: "hospital",
         store: "store",
+        shopping_mall: "shopping_mall",
+        supermarket: "supermarket",
+        train_station: "train_station",
+        bus_station: "bus_station",
+        airport: "airport",
         // 必要に応じて他のマッピングを追加
     };
 
