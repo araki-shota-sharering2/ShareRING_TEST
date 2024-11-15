@@ -3,12 +3,17 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function loadUserPosts() {
-    const response = await fetch("/functions/my_ring-handler");
-    if (response.ok) {
+    try {
+        const response = await fetch("/functions/my_ring-handler");
+        
+        if (!response.ok) {
+            throw new Error(`サーバーエラー: ${response.status}`);
+        }
+
         const posts = await response.json();
         displayPosts(posts);
-    } else {
-        console.error("投稿の読み込みに失敗しました");
+    } catch (error) {
+        console.error("投稿の読み込みに失敗しました:", error);
     }
 }
 
@@ -32,16 +37,20 @@ function displayPosts(posts) {
 async function deletePost(postId) {
     if (!confirm("この投稿を削除してもよろしいですか？")) return;
 
-    const response = await fetch(`/functions/my_ring-handler`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ post_id: postId }),
-    });
+    try {
+        const response = await fetch(`/functions/my_ring-handler`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ post_id: postId }),
+        });
 
-    if (response.ok) {
-        alert("投稿を削除しました");
-        loadUserPosts();
-    } else {
-        console.error("投稿の削除に失敗しました");
+        if (response.ok) {
+            alert("投稿を削除しました");
+            loadUserPosts();
+        } else {
+            console.error("投稿の削除に失敗しました:", response.status);
+        }
+    } catch (error) {
+        console.error("投稿の削除中にエラーが発生しました:", error);
     }
 }

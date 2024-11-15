@@ -58,7 +58,10 @@ async function deleteUserPost({ request, env }) {
 }
 
 async function getUserIdFromSession(request, env) {
-    const cookies = parseCookies(request.headers.get("Cookie"));
+    const cookieHeader = request.headers.get("Cookie");
+    const cookies = Object.fromEntries(
+        cookieHeader.split("; ").map((c) => c.split("=").map(decodeURIComponent))
+    );
     const sessionId = cookies["session_id"];
 
     if (!sessionId) return null;
@@ -80,16 +83,4 @@ async function getUserIdFromSession(request, env) {
         console.error("セッション情報の取得中にエラーが発生しました:", error);
         return null;
     }
-}
-
-function parseCookies(cookieString) {
-    const cookies = {};
-    if (!cookieString) return cookies;
-
-    cookieString.split(";").forEach((cookie) => {
-        const [key, value] = cookie.trim().split("=");
-        cookies[key] = decodeURIComponent(value);
-    });
-
-    return cookies;
 }
