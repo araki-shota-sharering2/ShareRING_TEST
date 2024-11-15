@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const response = await fetch("/functions/my_ring-handler.js", {
+        const response = await fetch("/functions/myring-handler.js", {
             method: "GET",
             credentials: "include",
         });
