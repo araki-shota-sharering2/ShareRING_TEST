@@ -18,7 +18,7 @@ function initMap() {
                     lng: position.coords.longitude,
                 };
 
-                locationDisplay.textContent = `現在地: 緯度 ${userLocation.lat.toFixed(4)}, 経度 ${userLocation.lng.toFixed(4)}`;
+                locationDisplay.textContent = "現在地を取得しました";
 
                 const spots = await findNearbyPlaces(userLocation);
                 displaySpots(spots, userLocation);
