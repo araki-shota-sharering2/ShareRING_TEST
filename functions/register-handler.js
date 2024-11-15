@@ -41,7 +41,9 @@ export async function onRequestPost(context) {
     }
 
     // ランダムなソルトを生成
-    const salt = crypto.getRandomValues(new Uint8Array(16)).toString();
+    const saltArray = new Uint8Array(16);
+    crypto.getRandomValues(saltArray);
+    const salt = Array.from(saltArray).map(b => b.toString(16).padStart(2, '0')).join('');
 
     // パスワードをハッシュ化
     const hashedPassword = await hashPassword(password, salt);
