@@ -1,10 +1,17 @@
-document.addEventListener("DOMContentLoaded", initMap);
+document.addEventListener("DOMContentLoaded", () => {
+    initMap();
+
+    const searchButton = document.getElementById("searchButton");
+    searchButton.addEventListener("click", handleSearch);
+});
+
+let userLocation;
 
 function initMap() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
-                const userLocation = {
+                userLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                 };
@@ -23,13 +30,13 @@ function initMap() {
     }
 }
 
-async function findNearbyPlaces(location) {
+async function findNearbyPlaces(location, keyword = null) {
     return new Promise((resolve, reject) => {
         const service = new google.maps.places.PlacesService(document.createElement("div"));
         const request = {
             location: location,
             radius: 200, // 半径200m
-            type: ["store", "restaurant", "park"], // 検索対象の種類
+            keyword: keyword, // キーワードによる検索
         };
 
         service.nearbySearch(request, (results, status) => {
@@ -85,11 +92,19 @@ function displaySpots(spots, userLocation) {
     });
 }
 
+function handleSearch() {
+    const keyword = document.getElementById("searchInput").value;
+    if (keyword) {
+        findNearbyPlaces(userLocation, keyword)
+            .then((spots) => displaySpots(spots, userLocation))
+            .catch((error) => console.error(error));
+    }
+}
+
 function selectSpot(spot) {
     // 選択されたスポットの情報を投稿作成画面に渡す処理
-    // ここでは例としてスポット名と住所をコンソールに出力します
     console.log("選択されたスポット:", spot.name, spot.vicinity);
 
-    // 必要に応じて投稿作成画面に遷移する処理を追加
+    // 投稿作成画面に遷移する処理を追加
     // location.href = "post_creation_form.html?name=" + encodeURIComponent(spot.name) + "&address=" + encodeURIComponent(spot.vicinity);
 }
