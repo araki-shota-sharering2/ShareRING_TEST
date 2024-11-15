@@ -4,8 +4,8 @@ body {
     padding: 0;
     background-color: #f9f9f9;
     color: #333;
-    max-width: 375px; /* スマホ幅に固定 */
-    margin: 0 auto; /* 横方向のセンタリング */
+    max-width: 375px;
+    margin: 0 auto;
 }
 
 header {
@@ -13,7 +13,7 @@ header {
     align-items: center;
     background-color: #4e5c94;
     color: white;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     position: relative;
 }
 
@@ -21,6 +21,7 @@ header h1 {
     flex-grow: 1;
     text-align: center;
     margin: 0;
+    font-size: 1.2rem;
 }
 
 #backButton {
@@ -29,11 +30,16 @@ header h1 {
     color: white;
     font-size: 1rem;
     cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    margin-right: 0.5rem;
 }
 
 .search-container {
     display: flex;
     align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 0.2rem 0.5rem;
     position: absolute;
     right: 1rem;
     top: 50%;
@@ -42,10 +48,11 @@ header h1 {
 
 #searchInput {
     padding: 0.5rem;
-    border-radius: 4px;
     border: none;
+    outline: none;
     font-size: 1rem;
-    margin-right: 0.5rem;
+    color: #333;
+    border-radius: 20px;
 }
 
 #searchButton {
@@ -53,11 +60,13 @@ header h1 {
     border: none;
     padding: 0;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 #searchButton img {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
 }
 
 main {
