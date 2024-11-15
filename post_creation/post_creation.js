@@ -15,16 +15,14 @@ function displayLocation() {
 }
 
 function setupPhotoCapture() {
-    const takePhotoButton = document.getElementById("takePhotoButton"); // 修正: IDを正しいものに変更
+    const takePhotoButton = document.getElementById("takePhotoButton");
     const photoInput = document.getElementById("photoInput");
     const photoPreview = document.getElementById("photoPreview");
 
-    // ボタンをクリックしたときにカメラを起動
     takePhotoButton.addEventListener("click", () => {
         photoInput.click();
     });
 
-    // ファイルが選択されたときの処理
     photoInput.addEventListener("change", () => {
         const file = photoInput.files[0];
         if (file) {
@@ -32,7 +30,8 @@ function setupPhotoCapture() {
             reader.onload = (e) => {
                 photoPreview.src = e.target.result;
                 photoPreview.style.display = "block";
-                takePhotoButton.style.display = "none"; // ボタンを非表示
+                takePhotoButton.style.display = "none";
+                localStorage.setItem("capturedPhoto", e.target.result); // キャプチャ画像をローカルストレージに保存
             };
             reader.readAsDataURL(file);
         }
@@ -72,13 +71,17 @@ function setupShareButton() {
         };
 
         try {
-            const response = await fetch("/api/post_creation", {
+            const response = await fetch("/post_creation", { // Cloudflare Functionsのエンドポイントに合わせて修正
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(postData),
             });
+
+            if (!response.ok) {
+                throw new Error(`サーバーエラー: ${response.status}`);
+            }
 
             const result = await response.json();
             if (result.success) {
@@ -88,7 +91,7 @@ function setupShareButton() {
             }
         } catch (error) {
             console.error("投稿エラー:", error);
-            alert("投稿に失敗しました");
+            alert("投稿に失敗しました。サーバーが応答しないか、エラーが発生しました。");
         }
     });
 }

@@ -1,43 +1,31 @@
-function setupShareButton() {
-    const shareButton = document.getElementById("shareButton");
-    shareButton.addEventListener("click", async () => {
-        const caption = document.getElementById("captionInput").value;
-        const locationData = JSON.parse(localStorage.getItem("selectedLocation"));
-        const imageDataUrl = localStorage.getItem("capturedPhoto");
-        const ringColor = localStorage.getItem("ringColor");
+import { DB } from '@cloudflare/d1';
 
-        if (!imageDataUrl) {
-            alert("写真がありません。撮影してください。");
-            return;
+export async function onRequestPost({ request, env }) {
+    try {
+        const data = await request.json();
+
+        // 必要なデータが含まれているかチェック
+        if (!data.user_id || !data.image_url || !data.location || !data.ring_color || !data.address) {
+            return new Response(JSON.stringify({ success: false, error: "不正なデータです" }), { status: 400 });
         }
 
-        const postData = {
-            user_id: sessionStorage.getItem("user_id"),
-            caption: caption,
-            location: locationData,
-            image_url: imageDataUrl,
-            ring_color: ringColor,
-        };
+        // データベースに投稿を挿入
+        const { user_id, image_url, caption, location, ring_color, address } = data;
+        const createdAt = new Date().toISOString(); // 作成日時
 
-        try {
-            const response = await fetch("/api/post_creation", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(postData),
-            });
+        const query = `
+            INSERT INTO user_posts (user_id, image_url, caption, location, created_at, ring_color, address)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `;
 
-            const result = await response.json();
-            if (result.success) {
-                alert("投稿が完了しました！");
-                // 必要に応じて投稿後の処理
-            } else {
-                alert("投稿に失敗しました: " + result.error);
-            }
-        } catch (error) {
-            console.error("投稿エラー:", error);
-            alert("投稿に失敗しました");
-        }
-    });
+        const result = await env.DB.prepare(query)
+            .bind(user_id, image_url, caption, location, createdAt, ring_color, address)
+            .run();
+
+        // 挿入が成功した場合のレスポンス
+        return new Response(JSON.stringify({ success: true, post_id: result.lastInsertRowId }), { status: 200 });
+    } catch (error) {
+        console.error("サーバーエラー:", error);
+        return new Response(JSON.stringify({ success: false, error: error.message }), { status: 500 });
+    }
 }
