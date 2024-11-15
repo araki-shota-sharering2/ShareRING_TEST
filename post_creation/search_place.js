@@ -2,7 +2,15 @@ document.addEventListener("DOMContentLoaded", () => {
     initMap();
 
     const searchButton = document.getElementById("searchButton");
+    const backButton = document.getElementById("backButton");
+
+    // 検索ボタンのクリックイベント
     searchButton.addEventListener("click", handleSearch);
+
+    // 戻るボタンのクリックイベント
+    backButton.addEventListener("click", () => {
+        window.location.href = "/home/home.html";
+    });
 });
 
 let userLocation;
@@ -79,8 +87,10 @@ function displaySpots(spots, userLocation) {
         listItem.classList.add("spot-item");
         listItem.onclick = () => selectSpot(spot);
 
+        const iconType = getIconType(spot.types);
+
         listItem.innerHTML = `
-            <img src="https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/${spot.icon}" alt="icon">
+            <img src="/assets/icons/${iconType}.svg" alt="icon">
             <div class="info">
                 <h2>${spot.name}</h2>
                 <p>${spot.vicinity}</p>
@@ -107,4 +117,31 @@ function selectSpot(spot) {
 
     // 投稿作成画面に遷移する処理を追加
     // location.href = "post_creation_form.html?name=" + encodeURIComponent(spot.name) + "&address=" + encodeURIComponent(spot.vicinity);
+}
+
+/**
+ * スポットタイプに応じてアイコンタイプを取得
+ * @param {Array} types スポットのタイプ
+ * @returns {string} アイコンのファイル名
+ */
+function getIconType(types) {
+    if (!types || types.length === 0) return "default";
+
+    const typeMapping = {
+        restaurant: "restaurant",
+        cafe: "cafe",
+        park: "park",
+        museum: "museum",
+        hospital: "hospital",
+        store: "store",
+        // 必要に応じて他のマッピングを追加
+    };
+
+    for (const type of types) {
+        if (typeMapping[type]) {
+            return typeMapping[type];
+        }
+    }
+
+    return "default"; // マッピングされていない場合はデフォルトアイコン
 }
