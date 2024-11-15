@@ -58,10 +58,21 @@ header button {
     justify-content: center;
     border-radius: 50%;
     background-color: #d3d3d3; /* 灰色の背景 */
-    width: 160px; /* フレームの外側のサイズを調整 */
-    height: 160px; /* フレームの外側のサイズを調整 */
+    width: 160px; /* フレームの外側のサイズ */
+    height: 160px; /* フレームの外側のサイズ */
     border: 5px solid #4e5c94; /* デフォルトリングの境界色 */
     position: relative;
+}
+
+/* プレビュー画像 */
+#photoPreview {
+    width: 140px; /* フレームの内側のサイズに合わせる */
+    height: 140px; /* フレームの内側のサイズに合わせる */
+    border-radius: 50%;
+    object-fit: cover; /* 画像を円形内に収める */
+    position: absolute;
+    z-index: 2;
+    display: none; /* 初期状態では非表示 */
 }
 
 /* 「写真を撮影する」リンク */
@@ -72,16 +83,6 @@ header button {
     text-decoration: underline;
     position: absolute;
     z-index: 1;
-}
-/* プレビュー画像 */
-#photoPreview {
-    width: 140px; /* フレームの内側のサイズに合わせる */
-    height: 140px; /* フレームの内側のサイズに合わせる */
-    border-radius: 50%;
-    object-fit: cover; /* 画像を円形内に収める */
-    position: absolute;
-    z-index: 2;
-    display: none; /* 初期状態では非表示 */
 }
 
 /* カラー選択部分 */
@@ -122,12 +123,13 @@ main {
     width: 100%;
 }
 
+/* フッターのスタイル */
 footer {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 8px;
-    background-color: #4e5c94;
+    padding: 10px 0;
+    background: linear-gradient(90deg, #4e5c94, #3c476f); /* グラデーション背景 */
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -136,23 +138,34 @@ footer {
     transform: translateX(-50%);
     z-index: 1000;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.2); /* おしゃれな区切り線 */
 }
 
 footer a {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
+    padding: 8px 15px;
+    font-size: 0.75rem;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 
-footer a.active {
-    background-color: #394575;
-    border-top: 3px solid #ffffff;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, padding 0.3s ease;
+footer a:hover {
+    color: #ffd700; /* ホバー時にゴールド */
+    transform: translateY(-3px); /* 少し上に持ち上げる */
 }
 
 footer img {
-    width: 25px;
-    height: 25px;
+    width: 30px; /* 少し大きめに変更 */
+    height: 30px;
+    margin-bottom: 5px; /* アイコン下にスペース */
+    filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3)); /* おしゃれな影 */
+}
+
+footer a.active {
+    background-color: rgba(255, 255, 255, 0.1); /* アクティブなリンクを軽く強調 */
+    border-top: 3px solid #ffd700; /* ゴールドのラインで強調 */
+    border-radius: 8px;
 }
