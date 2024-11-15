@@ -11,6 +11,13 @@
         <h1 id="locationName">現在地を取得中...</h1>
         <button id="changeLocationButton">現在地を変更する</button>
     </header>
+    
+    <script>
+        document.getElementById("changeLocationButton").addEventListener("click", () => {
+            window.location.href = "/post_creation/search_place.html";
+        });
+    </script>
+    
     <main>
         <div class="actions">
             <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none;">
