@@ -2,20 +2,16 @@ document.addEventListener("DOMContentLoaded", () => {
     initMap();
 
     const searchButton = document.getElementById("searchButton");
-    const backButton = document.getElementById("backButton");
 
     // 検索ボタンのクリックイベント
     searchButton.addEventListener("click", handleSearch);
-
-    // 戻るボタンのクリックイベント
-    backButton.addEventListener("click", () => {
-        window.location.href = "/home/home.html";
-    });
 });
 
 let userLocation;
 
 function initMap() {
+    const locationDisplay = document.getElementById("currentLocation");
+
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
@@ -24,17 +20,18 @@ function initMap() {
                     lng: position.coords.longitude,
                 };
 
-                console.log(`現在地: 緯度 ${userLocation.lat}, 経度 ${userLocation.lng}`);
+                locationDisplay.textContent = `現在地: 緯度 ${userLocation.lat.toFixed(4)}, 経度 ${userLocation.lng.toFixed(4)}`;
 
                 const spots = await findNearbyPlaces(userLocation);
                 displaySpots(spots, userLocation);
             },
             (error) => {
+                locationDisplay.textContent = "現在地を取得できませんでした";
                 console.error("位置情報の取得に失敗しました", error);
             }
         );
     } else {
-        alert("ブラウザが位置情報サービスに対応していません");
+        locationDisplay.textContent = "ブラウザが位置情報サービスに対応していません";
     }
 }
 
@@ -44,7 +41,7 @@ async function findNearbyPlaces(location, keyword = null) {
         const request = {
             location: location,
             radius: 200, // 半径200m
-            keyword: keyword, // キーワードによる検索
+            keyword: keyword,
         };
 
         service.nearbySearch(request, (results, status) => {
@@ -58,7 +55,7 @@ async function findNearbyPlaces(location, keyword = null) {
 }
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // 地球の半径 (km)
+    const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
@@ -68,7 +65,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
             Math.sin(dLon / 2) *
             Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c * 1000; // 距離 (m) に変換
+    return R * c * 1000;
 }
 
 function displaySpots(spots, userLocation) {

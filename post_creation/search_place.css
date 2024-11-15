@@ -71,6 +71,13 @@ header h1 {
 
 main {
     padding: 1rem;
+    padding-bottom: 60px; /* フッターに重ならないように調整 */
+}
+
+#currentLocation {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
 }
 
 ul {
