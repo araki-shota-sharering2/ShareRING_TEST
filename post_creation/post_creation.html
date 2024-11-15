@@ -3,31 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>スポット作成</title>
+    <title>スポット選択</title>
     <link rel="stylesheet" href="post_creation.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&libraries=places"></script>
 </head>
 <body>
     <header>
-        <h1>周辺スポット一覧</h1>
+        <h1>どこにいますか？</h1>
+        <button id="backButton">戻る</button>
     </header>
     <main>
-        <table id="spotsTable">
-            <thead>
-                <tr>
-                    <th>名前</th>
-                    <th>住所</th>
-                    <th>距離 (km)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- スポット情報がここに挿入されます -->
-            </tbody>
-        </table>
+        <ul id="spotsList">
+            <!-- スポット情報がここに挿入されます -->
+        </ul>
     </main>
-    <footer>
-        <p>&copy; 2024 ShareRING</p>
-    </footer>
     <script src="post_creation.js"></script>
 </body>
 </html>

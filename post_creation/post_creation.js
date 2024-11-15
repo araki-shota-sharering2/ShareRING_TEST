@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", initMap);
+
 function initMap() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -10,27 +12,7 @@ function initMap() {
                 console.log(`現在地: 緯度 ${userLocation.lat}, 経度 ${userLocation.lng}`);
 
                 const spots = await findNearbyPlaces(userLocation);
-                const tableBody = document.querySelector("#spotsTable tbody");
-
-                // スポット情報をテーブルに追加
-                spots.forEach((spot) => {
-                    const distance = calculateDistance(
-                        userLocation.lat,
-                        userLocation.lng,
-                        spot.geometry.location.lat(),
-                        spot.geometry.location.lng()
-                    );
-
-                    const row = `
-                        <tr>
-                            <td>${spot.name}</td>
-                            <td>${spot.vicinity}</td>
-                            <td>${distance.toFixed(2)}</td>
-                        </tr>
-                    `;
-
-                    tableBody.innerHTML += row;
-                });
+                displaySpots(spots, userLocation);
             },
             (error) => {
                 console.error("位置情報の取得に失敗しました", error);
@@ -46,8 +28,8 @@ async function findNearbyPlaces(location) {
         const service = new google.maps.places.PlacesService(document.createElement("div"));
         const request = {
             location: location,
-            radius: 1000, // 半径1km
-            type: ["restaurant", "park", "museum"], // 検索対象の種類
+            radius: 200, // 半径200m
+            type: ["store", "restaurant", "park"], // 検索対象の種類
         };
 
         service.nearbySearch(request, (results, status) => {
@@ -71,8 +53,43 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
             Math.sin(dLon / 2) *
             Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // 距離 (km)
+    return R * c * 1000; // 距離 (m) に変換
 }
 
-// 初期化
-window.onload = initMap;
+function displaySpots(spots, userLocation) {
+    const spotsList = document.getElementById("spotsList");
+    spotsList.innerHTML = "";
+
+    spots.forEach((spot) => {
+        const distance = calculateDistance(
+            userLocation.lat,
+            userLocation.lng,
+            spot.geometry.location.lat(),
+            spot.geometry.location.lng()
+        );
+
+        const listItem = document.createElement("li");
+        listItem.classList.add("spot-item");
+        listItem.onclick = () => selectSpot(spot);
+
+        listItem.innerHTML = `
+            <img src="https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/${spot.icon}" alt="icon">
+            <div class="info">
+                <h2>${spot.name}</h2>
+                <p>${spot.vicinity}</p>
+            </div>
+            <span class="distance">${distance.toFixed(0)} m</span>
+        `;
+
+        spotsList.appendChild(listItem);
+    });
+}
+
+function selectSpot(spot) {
+    // 選択されたスポットの情報を投稿作成画面に渡す処理
+    // ここでは例としてスポット名と住所をコンソールに出力します
+    console.log("選択されたスポット:", spot.name, spot.vicinity);
+
+    // 必要に応じて投稿作成画面に遷移する処理を追加
+    // location.href = "post_creation_form.html?name=" + encodeURIComponent(spot.name) + "&address=" + encodeURIComponent(spot.vicinity);
+}
