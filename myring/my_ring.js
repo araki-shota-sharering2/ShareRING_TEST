@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const response = await fetch("/functions/myring-handler", {
+        const response = await fetch("/functions/myring-handler.js", {
             method: "GET",
             credentials: "include",
         });
@@ -29,7 +29,8 @@ function displayPosts(posts) {
             <img src="${post.image_url}" alt="投稿画像">
             <div class="info">
                 <h2>${post.caption || "キャプションなし"}</h2>
-                <p>${post.address || "住所情報なし"}</p>
+                <p>住所: ${post.address || "住所情報なし"}</p>
+                <p>カラー: ${post.ring_color || "なし"}</p>
                 <small>投稿日: ${new Date(post.created_at).toLocaleString()}</small>
             </div>
         `;
