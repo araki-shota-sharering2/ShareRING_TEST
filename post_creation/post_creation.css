@@ -8,10 +8,10 @@ body {
     align-items: center;
     padding: 0;
     margin: 0;
-    max-width: 375px; /* スマホサイズに固定 */
+    max-width: 375px;
     margin: 0 auto;
-    height: 100vh; /* ビューポートの高さに合わせる */
-    overflow: hidden; /* オーバーフロー防止 */
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* ヘッダーのスタイル */
@@ -24,15 +24,23 @@ header {
     position: relative;
 }
 
+.header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 header h1 {
     margin: 0;
     font-size: 1.2rem;
+    max-width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 header button {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
+    margin-top: 0.5rem;
     background: none;
     border: none;
     color: white;
@@ -46,9 +54,16 @@ header button {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 1; /* コンテンツの中央寄せ */
+    flex: 1;
     width: 100%;
     padding: 1rem;
+}
+
+/* RINGと色選択の横並び */
+.ring-and-color {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* RINGプレビューと色選択の間にスペース */
 }
 
 /* RINGのプレビュー枠 */
@@ -57,10 +72,10 @@ header button {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: #d3d3d3; /* 灰色の背景 */
-    width: 160px; /* フレームの外側のサイズを調整 */
-    height: 160px; /* フレームの外側のサイズを調整 */
-    border: 5px solid #4e5c94; /* デフォルトリングの境界色 */
+    background-color: #d3d3d3;
+    width: 160px;
+    height: 160px;
+    border: 5px solid #4e5c94;
     position: relative;
 }
 
@@ -70,46 +85,48 @@ header button {
     color: white;
     background-color: #4e5c94;
     border: none;
-    border-radius: 50px; /* 丸みのあるボタン */
+    border-radius: 50px;
     padding: 10px 20px;
     font-size: 1rem;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽い影 */
-    transition: background-color 0.3s, transform 0.2s; /* アニメーション */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
     z-index: 1;
     position: relative;
 }
 
 /* ボタンホバー時 */
 #takePhotoButton:hover {
-    background-color: #394575; /* 少し暗い色に変化 */
-    transform: translateY(-2px); /* 少し上に浮く効果 */
+    background-color: #394575;
+    transform: translateY(-2px);
 }
 
 /* ボタン押下時 */
 #takePhotoButton:active {
-    background-color: #283259; /* さらに暗い色 */
-    transform: translateY(0); /* 押し下がる */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 影を減らす */
+    background-color: #283259;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* プレビュー画像 */
 #photoPreview {
-    width: 140px; /* フレームの内側のサイズに合わせる */
-    height: 140px; /* フレームの内側のサイズに合わせる */
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    object-fit: cover; /* 画像を円形内に収める */
+    object-fit: cover;
     position: absolute;
     z-index: 2;
-    display: none; /* 初期状態では非表示 */
+    display: none;
 }
 
 /* カラー選択部分 */
 .color-selection {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 1rem;
+}
+
+.color-selection label {
+    margin-right: 0.5rem;
 }
 
 /* テキストエリア */
@@ -124,33 +141,34 @@ textarea {
     resize: none;
 }
 
+/* シェアボタン */
 #shareButton {
     width: calc(100% - 2rem);
     margin: 1rem;
     padding: 12px;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(135deg, #ff7e5f, #feb47b, #ff7e5f); /* カラフルなグラデーション */
+    background: linear-gradient(135deg, #ff7e5f, #feb47b, #ff7e5f);
     border: none;
     border-radius: 50px;
     cursor: pointer;
     transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2); /* 文字の立体感 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加 */
-}
-/* アクティブ時（押されたとき） */
-#shareButton:active {
-    background: linear-gradient(135deg, #ff6a88, #ff99ac, #ff9a8b); /* アクティブ時の色 */
-    transform: translateY(1px); /* 押し下がる効果 */
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* 影を減らす */
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* ホバー時 */
 #shareButton:hover {
-    background: linear-gradient(135deg, #ff9a8b, #ff6a88, #ff99ac); /* ホバー時の色 */
-    transform: translateY(-3px); /* 少し浮かせる効果 */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* ホバー時の影 */
+    background: linear-gradient(135deg, #ff9a8b, #ff6a88, #ff99ac);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
+
+#shareButton:active {
+    background: linear-gradient(135deg, #ff6a88, #ff99ac, #ff9a8b);
+    transform: translateY(1px);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
 /* mainコンテナのスタイル */
 main {
     display: flex;
@@ -158,7 +176,7 @@ main {
     align-items: center;
     flex: 1;
     width: 100%;
-    padding-bottom: 70px; /* フッター分のスペースを確保 */
+    padding-bottom: 70px;
 }
 
 /* フッターのスタイル */

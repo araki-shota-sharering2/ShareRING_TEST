@@ -8,23 +8,27 @@
 </head>
 <body>
     <header>
-        <h1 id="locationName">現在地を取得中...</h1>
-        <a href="/post_creation/search_place.html">
-            <button id="changeLocationButton">現在地を変更する</button>
-        </a>
+        <div class="header-content">
+            <h1 id="locationName">現在地を取得中...</h1>
+            <a href="/post_creation/search_place.html">
+                <button id="changeLocationButton">現在地を変更する</button>
+            </a>
+        </div>
     </header>
     <main>
         <div id="photoPreviewContainer">
-            <div id="ringPreview">
-                <button id="takePhotoButton">写真を撮影する</button>
-                <img id="photoPreview" alt="撮影した写真のプレビュー" style="display:none;">
+            <div class="ring-and-color">
+                <div id="ringPreview">
+                    <button id="takePhotoButton">写真を撮影する</button>
+                    <img id="photoPreview" alt="撮影した写真のプレビュー" style="display:none;">
+                </div>
+                <div class="color-selection">
+                    <label for="ringColorInput">RINGの色を選択:</label>
+                    <input type="color" id="ringColorInput">
+                </div>
             </div>
         </div>
         <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none;">
-        <div class="color-selection">
-            <label for="ringColorInput">RINGの色を選択:</label>
-            <input type="color" id="ringColorInput">
-        </div>
         <textarea id="captionInput" placeholder="何をしていますか？"></textarea>
         <button id="shareButton">Let’s Share</button>
     </main>
