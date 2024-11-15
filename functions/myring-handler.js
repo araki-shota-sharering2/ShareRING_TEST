@@ -20,7 +20,7 @@ export async function onRequestGet(context) {
         }
 
         const posts = await env.DB.prepare(`
-            SELECT post_id, image_url, caption, location, created_at, address 
+            SELECT post_id, image_url, caption, latitude, longitude, created_at, address 
             FROM user_posts 
             WHERE user_id = ?
             ORDER BY created_at DESC
