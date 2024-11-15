@@ -13,8 +13,12 @@
     </header>
     <main>
         <div class="actions">
+            <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none;">
             <button id="takePhotoButton">📷 写真を撮影</button>
             <button id="chooseRingButton">🔴 RINGの選択</button>
+        </div>
+        <div id="photoPreviewContainer">
+            <img id="photoPreview" alt="撮影した写真のプレビュー" style="display:none; max-width: 100%; height: auto;">
         </div>
         <textarea id="captionInput" placeholder="何をしていますか？"></textarea>
         <button id="shareButton">Let’s Share</button>

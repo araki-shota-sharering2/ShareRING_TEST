@@ -56,6 +56,12 @@ button {
     margin: 0 0.5rem;
 }
 
+#photoPreviewContainer {
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+}
+
 textarea {
     width: calc(100% - 2rem);
     height: 100px;

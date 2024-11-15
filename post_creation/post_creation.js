@@ -1,11 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     displayLocation();
-    setupCamera();
+    setupPhotoCapture();
     setupRingSelection();
     setupShareButton();
 });
-
-let stream; // グローバル変数としてストリームを保持
 
 function displayLocation() {
     const locationData = JSON.parse(localStorage.getItem("selectedLocation"));
@@ -16,48 +14,29 @@ function displayLocation() {
     }
 }
 
-function setupCamera() {
+function setupPhotoCapture() {
     const takePhotoButton = document.getElementById("takePhotoButton");
-    const video = document.createElement("video");
-    video.setAttribute("playsinline", true); // iOSのSafariでの表示をサポート
-    video.style.width = "100%";
-    video.style.maxWidth = "300px";
-    document.body.insertBefore(video, takePhotoButton);
+    const photoInput = document.getElementById("photoInput");
+    const photoPreview = document.getElementById("photoPreview");
 
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then((mediaStream) => {
-            stream = mediaStream;
-            video.srcObject = stream;
-            video.play();
+    // カメラを起動するためのファイル入力ボタンをクリック
+    takePhotoButton.addEventListener("click", () => {
+        photoInput.click();
+    });
 
-            takePhotoButton.addEventListener("click", () => capturePhoto(video));
-        })
-        .catch((error) => {
-            console.error("カメラのアクセスに失敗しました:", error);
-            alert("カメラのアクセスに失敗しました。ブラウザの設定を確認してください。");
-        });
-}
-
-function capturePhoto(video) {
-    const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const context = canvas.getContext("2d");
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const imageDataUrl = canvas.toDataURL("image/png");
-    localStorage.setItem("capturedPhoto", imageDataUrl);
-
-    alert("写真が保存されました");
-
-    // ストリームを停止する（必要に応じてユーザーがその場で確認するために停止しない場合もあります）
-    stopCamera();
-}
-
-function stopCamera() {
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-    }
+    // ファイルが選択されたときの処理
+    photoInput.addEventListener("change", () => {
+        const file = photoInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                photoPreview.src = e.target.result;
+                photoPreview.style.display = "block";
+                localStorage.setItem("capturedPhoto", e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 }
 
 function setupRingSelection() {
