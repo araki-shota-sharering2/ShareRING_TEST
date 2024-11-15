@@ -31,7 +31,7 @@ function setupPhotoCapture() {
                 photoPreview.src = e.target.result;
                 photoPreview.style.display = "block";
                 takePhotoButton.style.display = "none";
-                localStorage.setItem("capturedPhoto", e.target.result); // キャプチャ画像をローカルストレージに保存
+                localStorage.setItem("capturedPhoto", e.target.result);
             };
             reader.readAsDataURL(file);
         }
@@ -63,7 +63,6 @@ function setupShareButton() {
         }
 
         const postData = {
-            user_id: sessionStorage.getItem("user_id"),
             caption: caption,
             location: locationData,
             image_url: imageDataUrl,
