@@ -77,10 +77,9 @@ function displaySpots(spots, userLocation) {
         <img src="/assets/images/post_creation/default.svg" alt="icon">
         <div class="info">
             <h2>カスタムスポット</h2>
-            <p>現在地を利用してスポット名を入力できます</p>
             <input type="text" id="customSpotName" placeholder="スポット名を入力">
         </div>
-        <button id="customSpotButton">選択</button>
+        <button id="customSpotButton">次へ</button>
     `;
 
     const customButton = customSpot.querySelector("#customSpotButton");
