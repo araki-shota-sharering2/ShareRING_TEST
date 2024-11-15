@@ -1,17 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
-    displayLocation();
+    displayLocationWithIcon();
     setupPhotoCapture();
     setupColorPicker();
     setupShareButton();
 });
 
-function displayLocation() {
-    const locationData = JSON.parse(localStorage.getItem("selectedLocation"));
-    if (locationData && locationData.name) {
-        document.getElementById("locationName").textContent = locationData.name;
-    } else {
-        document.getElementById("locationName").textContent = "位置情報が取得できません";
-    }
+function displayLocationWithIcon() {
+    // スポット名を仮に設定（実際はAPIなどから取得）
+    const spotName = "渋谷スクランブル交差点"; // ここを動的に取得する場合はAPIから取得
+
+    // スポット名を表示し、右にアイコンを追加
+    const locationNameElement = document.getElementById("locationName");
+    locationNameElement.innerHTML = `${spotName} 
+        <a href="/post_creation/search_place.html">
+            <img src="/assets/images/post_creation/reload.svg" alt="変更アイコン" id="changeLocationIcon">
+        </a>`;
 }
 
 function setupPhotoCapture() {
