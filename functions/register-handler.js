@@ -18,24 +18,32 @@ export async function onRequestPost(context) {
     const keyLength = 32;
 
     // PBKDF2でパスワードを暗号化
-    const hashedPassword = await crypto.subtle.deriveKey(
+    const keyMaterial = await crypto.subtle.importKey(
+        "raw",
+        new TextEncoder().encode(password),
+        { name: "PBKDF2" },
+        false,
+        ["deriveBits"]
+    );
+
+    const hashBuffer = await crypto.subtle.deriveBits(
         {
-            name: 'PBKDF2',
-            hash: 'SHA-256',
-            salt: Buffer.from(salt, 'utf-8'),
+            name: "PBKDF2",
+            hash: "SHA-256",
+            salt: new TextEncoder().encode(salt),
             iterations: iterations
         },
-        Buffer.from(password, 'utf-8'),
-        { name: 'HMAC', length: keyLength * 8 },
-        true,
-        ['sign']
+        keyMaterial,
+        keyLength * 8
     );
+
+    const hashedPassword = Buffer.from(hashBuffer).toString('hex');
 
     // プロフィール画像のアップロード処理
     const timestamp = Date.now();
     const uniqueFileName = `profile-${timestamp}-${profileImage.name}`;
     const r2Key = `profile_images/${uniqueFileName}`;
-    
+
     try {
         await env.MY_R2_BUCKET.put(r2Key, profileImage.stream(), {
             headers: { 'Content-Type': profileImage.type }
@@ -43,12 +51,12 @@ export async function onRequestPost(context) {
         
         const profileImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
 
-        // 暗号化済みパスワードとソルトをデータベースに保存
+        // 暗号化済みパスワード、ソルト、その他の情報をデータベースに保存
         const db = env.DB;
         await db.prepare(
-            `INSERT INTO user_accounts (username, email, password, profile_image, salt)
+            `INSERT INTO user_accounts (username, email, password, salt, profile_image)
             VALUES (?, ?, ?, ?, ?)`
-        ).bind(username, email, hashedPassword, profileImageUrl, salt).run();
+        ).bind(username, email, hashedPassword, salt, profileImageUrl).run();
 
         return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました', profileImageUrl }), {
             status: 200,

@@ -7,56 +7,31 @@ export async function onRequestPost(context) {
     const db = env.DB;
 
     try {
-        // 平文パスワードが保存されているかをチェック
-        const user = await db.prepare('SELECT * FROM user_accounts WHERE email = ?')
-            .bind(email)
-            .first();
+        const user = await db.prepare('SELECT * FROM user_accounts WHERE email = ?').bind(email).first();
 
         if (user) {
-            if (!user.salt) {
-                // ソルトがない場合は、平文パスワードが保存されている可能性があるので暗号化処理を行う
-                const salt = crypto.randomUUID();
-                const iterations = 100000;
-                const keyLength = 32;
-
-                const hashedPassword = await crypto.subtle.deriveKey(
-                    {
-                        name: 'PBKDF2',
-                        hash: 'SHA-256',
-                        salt: Buffer.from(salt, 'utf-8'),
-                        iterations: iterations
-                    },
-                    Buffer.from(password, 'utf-8'),
-                    { name: 'HMAC', length: keyLength * 8 },
-                    true,
-                    ['sign']
-                );
-
-                // 暗号化されたパスワードとソルトを再保存
-                await db.prepare(
-                    `UPDATE user_accounts SET password = ?, salt = ? WHERE user_id = ?`
-                ).bind(hashedPassword, salt, user.user_id).run();
-                
-                user.password = hashedPassword;  // 更新後のパスワードで上書き
-                user.salt = salt; // 更新後のソルトで上書き
-            }
-
-            // 暗号化済みパスワードの検証
-            const derivedKey = await crypto.subtle.deriveKey(
-                {
-                    name: 'PBKDF2',
-                    hash: 'SHA-256',
-                    salt: Buffer.from(user.salt, 'utf-8'),
-                    iterations: 100000
-                },
-                Buffer.from(password, 'utf-8'),
-                { name: 'HMAC', length: 32 * 8 },
-                true,
-                ['sign']
+            const keyMaterial = await crypto.subtle.importKey(
+                "raw",
+                new TextEncoder().encode(password),
+                { name: "PBKDF2" },
+                false,
+                ["deriveBits"]
             );
 
-            if (derivedKey === user.password) {
-                // ログイン成功
+            const derivedKeyBuffer = await crypto.subtle.deriveBits(
+                {
+                    name: "PBKDF2",
+                    hash: "SHA-256",
+                    salt: new TextEncoder().encode(user.salt),
+                    iterations: 100000
+                },
+                keyMaterial,
+                32 * 8
+            );
+
+            const derivedKeyHex = Buffer.from(derivedKeyBuffer).toString('hex');
+
+            if (derivedKeyHex === user.password) {
                 const sessionId = generateUUID();
                 const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
@@ -73,14 +48,12 @@ export async function onRequestPost(context) {
                     }
                 });
             } else {
-                // パスワードが一致しない場合
                 return new Response(JSON.stringify({ message: 'メールアドレスまたはパスワードが間違っています' }), {
                     status: 401,
                     headers: { 'Content-Type': 'application/json' }
                 });
             }
         } else {
-            // ユーザーが見つからない場合
             return new Response(JSON.stringify({ message: 'メールアドレスまたはパスワードが間違っています' }), {
                 status: 401,
                 headers: { 'Content-Type': 'application/json' }
