@@ -1,4 +1,30 @@
-import bcrypt from 'bcryptjs';
+// パスワードをPBKDF2を使ってハッシュ化するための関数
+async function hashPassword(password, salt) {
+    const encoder = new TextEncoder();
+    const passwordData = encoder.encode(password);
+    const saltData = encoder.encode(salt);
+
+    const key = await crypto.subtle.importKey(
+        'raw',
+        passwordData,
+        { name: 'PBKDF2' },
+        false,
+        ['deriveBits', 'deriveKey']
+    );
+
+    const derivedKey = await crypto.subtle.deriveBits(
+        {
+            name: 'PBKDF2',
+            salt: saltData,
+            iterations: 100000,
+            hash: 'SHA-256'
+        },
+        key,
+        256
+    );
+
+    return Buffer.from(derivedKey).toString('hex');
+}
 
 export async function onRequestPost(context) {
     const { env, request } = context;
@@ -7,20 +33,24 @@ export async function onRequestPost(context) {
     const formData = await request.formData();
     const username = formData.get('username');
     const email = formData.get('email');
-    const password = formData.get('password'); // 平文のパスワード
+    const password = formData.get('password');
     const profileImage = formData.get('profile_image');
 
     if (!username || !email || !password || !profileImage) {
         return new Response(JSON.stringify({ message: '全てのフィールドを入力してください' }), { status: 400 });
     }
 
-    // パスワードをハッシュ化
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // ランダムなソルトを生成
+    const salt = crypto.getRandomValues(new Uint8Array(16)).toString();
 
-    // タイムスタンプを利用して一意のファイル名を作成
+    // パスワードをハッシュ化
+    const hashedPassword = await hashPassword(password, salt);
+
+    // プロフィール画像のアップロード準備
     const timestamp = Date.now();
     const uniqueFileName = `profile-${timestamp}-${profileImage.name}`;
     const r2Key = `profile_images/${uniqueFileName}`;
+    const profileImageUrl = `https://example.r2.dev/${r2Key}`;
 
     try {
         // プロフィール画像をR2にアップロード
@@ -28,15 +58,12 @@ export async function onRequestPost(context) {
             headers: { 'Content-Type': profileImage.type }
         });
 
-        // 新しいURLを生成
-        const profileImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
-
         // ユーザーデータをD1データベースに保存
         const db = env.DB;
         await db.prepare(`
-            INSERT INTO user_accounts (username, email, password, profile_image)
-            VALUES (?, ?, ?, ?)
-        `).bind(username, email, hashedPassword, profileImageUrl).run();
+            INSERT INTO user_accounts (username, email, password, salt, profile_image)
+            VALUES (?, ?, ?, ?, ?)
+        `).bind(username, email, hashedPassword, salt, profileImageUrl).run();
 
         return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました', profileImageUrl }), {
             status: 200,
