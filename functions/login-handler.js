@@ -1,5 +1,5 @@
 import { generateUUID } from './utils';
-import { crypto } from 'crypto';
+import crypto from 'crypto';
 
 export async function onRequestPost(context) {
     const { request, env } = context;
@@ -7,40 +7,32 @@ export async function onRequestPost(context) {
     const db = env.DB;
 
     try {
-        const user = await db.prepare('SELECT * FROM user_accounts WHERE email = ?').bind(email).first();
+        const user = await db.prepare(`SELECT * FROM user_accounts WHERE email = ?`)
+            .bind(email)
+            .first();
 
         if (user) {
-            const keyMaterial = await crypto.subtle.importKey(
-                "raw",
-                new TextEncoder().encode(password),
-                { name: "PBKDF2" },
+            const hashedInputPassword = await crypto.subtle.importKey(
+                'raw',
+                new TextEncoder().encode(password + user.salt),
+                { name: 'PBKDF2' },
                 false,
-                ["deriveBits"]
-            );
+                ['deriveBits']
+            ).then(key => crypto.subtle.deriveBits(
+                { name: 'PBKDF2', salt: new TextEncoder().encode(user.salt), iterations: 100000, hash: 'SHA-256' },
+                key,
+                256
+            ));
 
-            const derivedKeyBuffer = await crypto.subtle.deriveBits(
-                {
-                    name: "PBKDF2",
-                    hash: "SHA-256",
-                    salt: new TextEncoder().encode(user.salt),
-                    iterations: 100000
-                },
-                keyMaterial,
-                32 * 8
-            );
+            const encodedInputPassword = Buffer.from(new Uint8Array(hashedInputPassword)).toString('hex');
 
-            const derivedKeyHex = Buffer.from(derivedKeyBuffer).toString('hex');
-
-            if (derivedKeyHex === user.password) {
+            if (encodedInputPassword === user.password) {
                 const sessionId = generateUUID();
-                const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-
                 await db.prepare(
-                    `INSERT INTO user_sessions (session_id, user_id, expires_at)
-                    VALUES (?, ?, ?)`
-                ).bind(sessionId, user.user_id, expiresAt).run();
+                    `INSERT INTO user_sessions (session_id, user_id) VALUES (?, ?)`
+                ).bind(sessionId, user.user_id).run();
 
-                return new Response(JSON.stringify({ message: 'ログイン成功' }), {
+                return new Response(JSON.stringify({ message: 'Login successful' }), {
                     status: 200,
                     headers: {
                         'Content-Type': 'application/json',
@@ -48,20 +40,20 @@ export async function onRequestPost(context) {
                     }
                 });
             } else {
-                return new Response(JSON.stringify({ message: 'メールアドレスまたはパスワードが間違っています' }), {
+                return new Response(JSON.stringify({ message: 'Invalid email or password' }), {
                     status: 401,
                     headers: { 'Content-Type': 'application/json' }
                 });
             }
         } else {
-            return new Response(JSON.stringify({ message: 'メールアドレスまたはパスワードが間違っています' }), {
+            return new Response(JSON.stringify({ message: 'Invalid email or password' }), {
                 status: 401,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
     } catch (error) {
-        console.error('データベースエラー:', error);
-        return new Response(JSON.stringify({ message: 'サーバーエラー' }), {
+        console.error('Database error:', error);
+        return new Response(JSON.stringify({ message: 'Server error' }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
         });
