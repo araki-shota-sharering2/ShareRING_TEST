@@ -2,8 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initMap();
 
     const searchButton = document.getElementById("searchButton");
-
-    // 検索ボタンのクリックイベント
     searchButton.addEventListener("click", handleSearch);
 });
 
@@ -20,7 +18,6 @@ function initMap() {
                     lng: position.coords.longitude,
                 };
 
-                // 現在位置の表示エリアをクリア
                 locationDisplay.textContent = "";
 
                 const spots = await findNearbyPlaces(userLocation);
@@ -41,7 +38,7 @@ async function findNearbyPlaces(location, keyword = null) {
         const service = new google.maps.places.PlacesService(document.createElement("div"));
         const request = {
             location: location,
-            radius: 200, // 半径200m
+            radius: 200,
             keyword: keyword,
         };
 
@@ -110,12 +107,17 @@ function handleSearch() {
 }
 
 function selectSpot(spot) {
-    console.log("選択されたスポット:", spot.name, spot.vicinity);
+    const selectedLocation = {
+        name: spot.name,
+        latitude: spot.geometry.location.lat(),
+        longitude: spot.geometry.location.lng(),
+    };
+
+    localStorage.setItem("selectedLocation", JSON.stringify(selectedLocation));
+    window.location.href = "/post_creation/post_creation.html";
 }
 
 function getIconType(types) {
-    if (!types || types.length === 0) return "default";
-
     const typeMapping = {
         restaurant: "restaurant",
         cafe: "cafe",
