@@ -49,7 +49,7 @@ function setupColorPicker() {
     });
 }
 
-function setupShareButton() {
+async function setupShareButton() {
     const shareButton = document.getElementById("shareButton");
     shareButton.addEventListener("click", async () => {
         const caption = document.getElementById("captionInput").value;
@@ -62,37 +62,37 @@ function setupShareButton() {
             return;
         }
 
-        const postData = {
-            caption: caption,
-            location: locationData,
-            image_url: imageDataUrl,
-            ring_color: ringColor,
-        };
+        // 画像データをBlobに変換
+        const response = await fetch(imageDataUrl);
+        const blob = await response.blob();
+
+        const formData = new FormData();
+        formData.append("caption", caption);
+        formData.append("location", JSON.stringify(locationData));
+        formData.append("ring_color", ringColor);
+        formData.append("image", blob, "post-image.jpg");
 
         try {
-            const response = await fetch("/post_creation", {
+            const result = await fetch("/post_creation", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(postData),
+                body: formData,
             });
 
-            if (!response.ok) {
-                throw new Error(`サーバーエラー: ${response.status}`);
+            if (!result.ok) {
+                throw new Error(`サーバーエラー: ${result.status}`);
             }
 
-            const result = await response.json();
-            if (result.success) {
+            const data = await result.json();
+            if (data.success) {
                 alert("投稿が完了しました！");
-                localStorage.clear(); // 投稿成功時にローカルストレージをクリア
+                localStorage.clear();
                 window.location.href = "/post_viewing/post_viewing.html";
             } else {
-                alert("投稿に失敗しました: " + result.error);
+                alert("投稿に失敗しました: " + data.message);
             }
         } catch (error) {
             console.error("投稿エラー:", error);
-            alert("投稿に失敗しました。サーバーが応答しないか、エラーが発生しました。");
+            alert("投稿に失敗しました。");
         }
     });
 }
