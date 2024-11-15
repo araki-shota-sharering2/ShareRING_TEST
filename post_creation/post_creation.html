@@ -15,15 +15,13 @@
     </header>
     
     <main>
-        <div class="actions">
-            <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none;">
-            <button id="takePhotoButton">写真を撮影</button>
-        </div>
         <div id="photoPreviewContainer">
             <div id="ringPreview">
+                <a id="takePhotoLink" href="javascript:void(0);">写真を撮影する</a>
                 <img id="photoPreview" alt="撮影した写真のプレビュー" style="display:none;">
             </div>
         </div>
+        <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none;">
         <div class="color-selection">
             <label for="ringColorInput">RINGの色を選択:</label>
             <input type="color" id="ringColorInput">

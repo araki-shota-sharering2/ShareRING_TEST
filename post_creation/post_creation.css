@@ -57,39 +57,29 @@ header button {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    padding: 5px;
-    border: 3px solid #4e5c94; /* デフォルトのリング色 */
-    width: 200px; /* フレームの外側のサイズ */
-    height: 200px; /* フレームの外側のサイズ */
-    background-color: white;
+    background-color: #d3d3d3; /* 灰色の背景 */
+    width: 200px;
+    height: 200px;
+    position: relative;
 }
 
-/* プレビュー画像 */
+#takePhotoLink {
+    text-align: center;
+    color: #4e5c94;
+    font-size: 1rem;
+    text-decoration: underline;
+    position: absolute;
+    z-index: 1;
+}
+
 #photoPreview {
     width: 180px; /* フレームの内側のサイズに合わせる */
     height: 180px; /* フレームの内側のサイズに合わせる */
     border-radius: 50%;
     object-fit: cover; /* 画像を円形内に収める */
-}
-
-/* ボタンのスタイル */
-button {
-    background-color: #4e5c94;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    font-size: 1rem;
-    cursor: pointer;
-    flex: 1;
-    margin: 0 0.5rem;
-}
-
-.actions {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    padding: 1rem;
+    position: absolute;
+    z-index: 2;
+    display: none; /* 初期状態では非表示 */
 }
 
 /* カラー選択部分 */
