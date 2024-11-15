@@ -4,6 +4,8 @@ body {
     padding: 0;
     background-color: #f9f9f9;
     color: #333;
+    max-width: 375px; /* スマホ幅に固定 */
+    margin: 0 auto; /* 横方向のセンタリング */
 }
 
 header {
@@ -54,7 +56,7 @@ header h1 {
 }
 
 #searchButton img {
-    width: 24px; /* アイコンサイズ調整 */
+    width: 24px;
     height: 24px;
 }
 

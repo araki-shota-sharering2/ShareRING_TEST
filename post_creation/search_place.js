@@ -113,15 +113,8 @@ function handleSearch() {
 
 function selectSpot(spot) {
     console.log("選択されたスポット:", spot.name, spot.vicinity);
-    // 必要に応じて投稿作成画面に遷移する処理を追加
-    // location.href = "post_creation_form.html?name=" + encodeURIComponent(spot.name) + "&address=" + encodeURIComponent(spot.vicinity);
 }
 
-/**
- * スポットタイプに応じてアイコンファイル名を決定
- * @param {Array} types スポットのタイプ
- * @returns {string} アイコンファイル名
- */
 function getIconType(types) {
     if (!types || types.length === 0) return "default";
 
@@ -137,7 +130,6 @@ function getIconType(types) {
         train_station: "train_station",
         bus_station: "bus_station",
         airport: "airport",
-        // 必要に応じて他のマッピングを追加
     };
 
     for (const type of types) {
@@ -146,5 +138,5 @@ function getIconType(types) {
         }
     }
 
-    return "default"; // マッピングされていない場合はデフォルトアイコン
+    return "default";
 }
