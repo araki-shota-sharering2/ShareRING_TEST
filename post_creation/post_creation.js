@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     displayLocation();
     setupPhotoCapture();
-    setupRingSelection();
+    setupColorPicker();
     setupShareButton();
 });
 
@@ -39,13 +39,14 @@ function setupPhotoCapture() {
     });
 }
 
-function setupRingSelection() {
-    const chooseRingButton = document.getElementById("chooseRingButton");
-    chooseRingButton.addEventListener("click", () => {
-        const ringColor = prompt("RINGの色を選択してください (例: #ff0000)");
-        if (ringColor) {
-            localStorage.setItem("ringColor", ringColor);
-        }
+function setupColorPicker() {
+    const ringColorInput = document.getElementById("ringColorInput");
+    const ringPreview = document.getElementById("ringPreview");
+
+    ringColorInput.addEventListener("input", () => {
+        const selectedColor = ringColorInput.value;
+        ringPreview.style.borderColor = selectedColor;
+        localStorage.setItem("ringColor", selectedColor);
     });
 }
 
