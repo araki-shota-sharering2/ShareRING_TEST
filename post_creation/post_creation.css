@@ -1,3 +1,4 @@
+/* 全体のスタイル */
 body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
@@ -7,10 +8,13 @@ body {
     align-items: center;
     padding: 0;
     margin: 0;
-    max-width: 375px;
+    max-width: 375px; /* スマホサイズに固定 */
     margin: 0 auto;
+    height: 100vh; /* ビューポートの高さに合わせる */
+    overflow: hidden; /* オーバーフロー防止 */
 }
 
+/* ヘッダーのスタイル */
 header {
     background-color: #4e5c94;
     color: white;
@@ -37,13 +41,38 @@ header button {
     padding: 0.2rem 0.5rem;
 }
 
-.actions {
+/* プレビューコンテナ */
+#photoPreviewContainer {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
+    flex: 1; /* コンテンツの中央寄せ */
     width: 100%;
     padding: 1rem;
 }
 
+/* RINGのプレビュー枠 */
+#ringPreview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 5px;
+    border: 3px solid #4e5c94; /* デフォルトのリング色 */
+    width: 200px; /* フレームの外側のサイズ */
+    height: 200px; /* フレームの外側のサイズ */
+    background-color: white;
+}
+
+/* プレビュー画像 */
+#photoPreview {
+    width: 180px; /* フレームの内側のサイズに合わせる */
+    height: 180px; /* フレームの内側のサイズに合わせる */
+    border-radius: 50%;
+    object-fit: cover; /* 画像を円形内に収める */
+}
+
+/* ボタンのスタイル */
 button {
     background-color: #4e5c94;
     color: white;
@@ -56,31 +85,14 @@ button {
     margin: 0 0.5rem;
 }
 
-#photoPreviewContainer {
+.actions {
+    display: flex;
+    justify-content: space-around;
     width: 100%;
     padding: 1rem;
-    text-align: center;
 }
 
-#ringPreview {
-    display: inline-block;
-    border-radius: 50%;
-    padding: 5px;
-    border: 3px solid #4e5c94; /* デフォルトのリング色 */
-    width: 200px; /* 大きめのサイズ */
-    height: 200px; /* 大きめのサイズ */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#photoPreview {
-    width: 180px; /* フレームの内側のサイズに合わせる */
-    height: 180px; /* フレームの内側のサイズに合わせる */
-    border-radius: 50%;
-    object-fit: cover; /* 画像を円形内に収める */
-}
-
+/* カラー選択部分 */
 .color-selection {
     display: flex;
     align-items: center;
@@ -88,6 +100,7 @@ button {
     padding: 1rem;
 }
 
+/* テキストエリア */
 textarea {
     width: calc(100% - 2rem);
     height: 100px;
@@ -99,10 +112,20 @@ textarea {
     resize: none;
 }
 
+/* シェアボタン */
 #shareButton {
     width: calc(100% - 2rem);
     margin: 1rem;
     padding: 10px;
     font-size: 1.1rem;
     background-color: #4e5c94;
+}
+
+/* その他の調整 */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    width: 100%;
 }
