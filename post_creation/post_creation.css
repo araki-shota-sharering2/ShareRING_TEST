@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    max-width: 375px;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #4e5c94;
+    color: white;
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+header button {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 1rem;
+}
+
+button {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    flex: 1;
+    margin: 0 0.5rem;
+}
+
+textarea {
+    width: calc(100% - 2rem);
+    height: 100px;
+    margin: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    resize: none;
+}
+
+#shareButton {
+    width: calc(100% - 2rem);
+    margin: 1rem;
+    padding: 10px;
+    font-size: 1.1rem;
+    background-color: #4e5c94;
+}
