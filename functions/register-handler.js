@@ -13,12 +13,12 @@ export async function onRequestPost(context) {
         return new Response(JSON.stringify({ message: '全てのフィールドを入力してください' }), { status: 400 });
     }
 
-    const salt = crypto.randomUUID(); // ソルトの生成
+    const salt = crypto.randomUUID(); // ソルトを生成
     const iterations = 100000;
     const keyLength = 32;
 
-    // PBKDF2を使用してパスワードを暗号化
-    const hashedPassword = crypto.subtle.deriveKey(
+    // PBKDF2でパスワードを暗号化
+    const hashedPassword = await crypto.subtle.deriveKey(
         {
             name: 'PBKDF2',
             hash: 'SHA-256',
@@ -31,15 +31,26 @@ export async function onRequestPost(context) {
         ['sign']
     );
 
-    const db = env.DB;
-
+    // プロフィール画像のアップロード処理
+    const timestamp = Date.now();
+    const uniqueFileName = `profile-${timestamp}-${profileImage.name}`;
+    const r2Key = `profile_images/${uniqueFileName}`;
+    
     try {
+        await env.MY_R2_BUCKET.put(r2Key, profileImage.stream(), {
+            headers: { 'Content-Type': profileImage.type }
+        });
+        
+        const profileImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
+
+        // 暗号化済みパスワードとソルトをデータベースに保存
+        const db = env.DB;
         await db.prepare(
             `INSERT INTO user_accounts (username, email, password, profile_image, salt)
             VALUES (?, ?, ?, ?, ?)`
         ).bind(username, email, hashedPassword, profileImageUrl, salt).run();
 
-        return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました' }), {
+        return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました', profileImageUrl }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });
