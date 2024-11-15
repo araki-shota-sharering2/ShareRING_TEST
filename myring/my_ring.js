@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadUserPosts() {
     try {
-        const response = await fetch("/myring/my_ring-handler");
+        const response = await fetch("/functions/my_ring-handler");
 
         if (!response.ok) {
             throw new Error(`サーバーエラー: ${response.status}`);
@@ -43,7 +43,7 @@ async function deletePost(postId) {
     if (!confirm("この投稿を削除してもよろしいですか？")) return;
 
     try {
-        const response = await fetch(`/myring/my_ring-handler`, {
+        const response = await fetch(`/functions/my_ring-handler`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ post_id: postId }),
