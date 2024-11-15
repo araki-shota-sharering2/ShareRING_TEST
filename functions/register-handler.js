@@ -1,5 +1,4 @@
 import { generateUUID } from './utils';
-import CryptoJS from "https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js";
 
 export async function onRequestPost(context) {
     const { env, request } = context;
@@ -13,23 +12,26 @@ export async function onRequestPost(context) {
         return new Response(JSON.stringify({ message: '全てのフィールドを入力してください' }), { status: 400 });
     }
 
-    // ランダムなソルトを生成
-    const salt = CryptoJS.lib.WordArray.random(16).toString();
-    
-    // パスワードとソルトを組み合わせてSHA-256でハッシュ化
-    const saltedPassword = password + salt;
-    const hashedPassword = CryptoJS.SHA256(saltedPassword).toString(CryptoJS.enc.Hex);
+    // ソルトを生成
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const saltHex = Array.from(salt).map(b => b.toString(16).padStart(2, '0')).join('');
+
+    // ソルトとパスワードを結合し、SHA-256でハッシュ化
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password + saltHex);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashedPassword = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
     // プロフィール画像のアップロード処理
     const timestamp = Date.now();
     const uniqueFileName = `profile-${timestamp}-${profileImage.name}`;
     const r2Key = `profile_images/${uniqueFileName}`;
-    
+
     try {
         await env.MY_R2_BUCKET.put(r2Key, profileImage.stream(), {
             headers: { 'Content-Type': profileImage.type }
         });
-        
+
         const profileImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
 
         // ハッシュ化されたパスワードとソルトをデータベースに保存
@@ -37,7 +39,7 @@ export async function onRequestPost(context) {
         await db.prepare(
             `INSERT INTO user_accounts (username, email, password, profile_image, salt)
             VALUES (?, ?, ?, ?, ?)`
-        ).bind(username, email, hashedPassword, profileImageUrl, salt).run();
+        ).bind(username, email, hashedPassword, profileImageUrl, saltHex).run();
 
         return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました', profileImageUrl }), {
             status: 200,

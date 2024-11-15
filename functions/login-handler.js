@@ -1,5 +1,3 @@
-import CryptoJS from "https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js";
-
 export async function onRequestPost(context) {
     const { request, env } = context;
     const { email, password } = await request.json();
@@ -18,9 +16,11 @@ export async function onRequestPost(context) {
             });
         }
 
-        // 保存されたソルトを使って入力されたパスワードをハッシュ化し、比較
-        const saltedPassword = password + user.salt;
-        const hashedInputPassword = CryptoJS.SHA256(saltedPassword).toString(CryptoJS.enc.Hex);
+        // 入力パスワードとソルトを組み合わせ、SHA-256でハッシュ化して検証
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password + user.salt);
+        const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+        const hashedInputPassword = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
         if (hashedInputPassword === user.password) {
             const sessionId = generateUUID();
