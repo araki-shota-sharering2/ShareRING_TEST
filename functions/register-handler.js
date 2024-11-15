@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs';
+
 export async function onRequestPost(context) {
     const { env, request } = context;
 
@@ -5,12 +7,15 @@ export async function onRequestPost(context) {
     const formData = await request.formData();
     const username = formData.get('username');
     const email = formData.get('email');
-    const password = formData.get('password'); // 現時点では平文のまま保存
+    const password = formData.get('password'); // 平文のパスワード
     const profileImage = formData.get('profile_image');
 
     if (!username || !email || !password || !profileImage) {
         return new Response(JSON.stringify({ message: '全てのフィールドを入力してください' }), { status: 400 });
     }
+
+    // パスワードをハッシュ化
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // タイムスタンプを利用して一意のファイル名を作成
     const timestamp = Date.now();
@@ -31,7 +36,7 @@ export async function onRequestPost(context) {
         await db.prepare(`
             INSERT INTO user_accounts (username, email, password, profile_image)
             VALUES (?, ?, ?, ?)
-        `).bind(username, email, password, profileImageUrl).run();
+        `).bind(username, email, hashedPassword, profileImageUrl).run();
 
         return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました', profileImageUrl }), {
             status: 200,

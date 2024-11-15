@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { generateUUID } from './utils';
 
 export async function onRequestPost(context) {
@@ -6,12 +7,12 @@ export async function onRequestPost(context) {
     const db = env.DB;
 
     try {
-        // ユーザー情報の照会（平文のパスワードを直接比較）
-        const user = await db.prepare('SELECT * FROM user_accounts WHERE email = ? AND password = ?')
-            .bind(email, password)
+        // ユーザー情報の照会（ハッシュ化されたパスワードの検証）
+        const user = await db.prepare('SELECT * FROM user_accounts WHERE email = ?')
+            .bind(email)
             .first();
 
-        if (user) {
+        if (user && await bcrypt.compare(password, user.password)) {
             // ログイン成功、セッションIDの生成
             const sessionId = generateUUID();
             const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
