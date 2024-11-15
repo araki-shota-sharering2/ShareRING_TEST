@@ -131,15 +131,18 @@ textarea {
     padding: 10px;
     font-size: 1.1rem;
     background-color: #4e5c94;
+    position: relative;
+    z-index: 1; /* フッターの上に配置 */
 }
 
-/* その他の調整 */
+/* mainコンテナのスタイル */
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
     flex: 1;
     width: 100%;
+    padding-bottom: 70px; /* フッター分のスペースを確保 */
 }
 
 /* フッターのスタイル */
