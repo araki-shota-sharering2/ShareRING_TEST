@@ -145,7 +145,6 @@ footer a {
     padding: 10px 15px;
 }
 
-/* フッターのアクティブ状態を示す */
 footer a.active {
     background-color: #394575;
     border-top: 3px solid #ffffff;
