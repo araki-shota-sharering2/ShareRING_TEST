@@ -66,13 +66,19 @@ button {
     display: inline-block;
     border-radius: 50%;
     padding: 5px;
-    border: 5px solid #4e5c94; /* デフォルトのリング色 */
+    border: 3px solid #4e5c94; /* デフォルトのリング色 */
+    width: 200px; /* 大きめのサイズ */
+    height: 200px; /* 大きめのサイズ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #photoPreview {
-    width: 150px;
-    height: 150px;
+    width: 180px; /* フレームの内側のサイズに合わせる */
+    height: 180px; /* フレームの内側のサイズに合わせる */
     border-radius: 50%;
+    object-fit: cover; /* 画像を円形内に収める */
 }
 
 .color-selection {
