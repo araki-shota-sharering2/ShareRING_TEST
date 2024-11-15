@@ -49,46 +49,43 @@ function setupColorPicker() {
     });
 }
 
-async function setupShareButton() {
+function setupShareButton() {
     const shareButton = document.getElementById("shareButton");
     shareButton.addEventListener("click", async () => {
         const caption = document.getElementById("captionInput").value;
         const locationData = JSON.parse(localStorage.getItem("selectedLocation"));
-        const imageDataUrl = localStorage.getItem("capturedPhoto");
         const ringColor = localStorage.getItem("ringColor");
 
+        // ローカルストレージから画像データを取得し、Blobに変換
+        const imageDataUrl = localStorage.getItem("capturedPhoto");
         if (!imageDataUrl) {
             alert("写真がありません。撮影してください。");
             return;
         }
 
-        // 画像データをBlobに変換
         const response = await fetch(imageDataUrl);
-        const blob = await response.blob();
+        const imageBlob = await response.blob();
 
+        // フォームデータを作成
         const formData = new FormData();
         formData.append("caption", caption);
         formData.append("location", JSON.stringify(locationData));
         formData.append("ring_color", ringColor);
-        formData.append("image", blob, "post-image.jpg");
+        formData.append("image", imageBlob, "post-image.jpg");
 
         try {
-            const result = await fetch("/post_creation", {
+            const response = await fetch("/post_creation", {
                 method: "POST",
                 body: formData,
             });
 
-            if (!result.ok) {
-                throw new Error(`サーバーエラー: ${result.status}`);
-            }
-
-            const data = await result.json();
-            if (data.success) {
+            const result = await response.json();
+            if (response.ok) {
                 alert("投稿が完了しました！");
                 localStorage.clear();
                 window.location.href = "/post_viewing/post_viewing.html";
             } else {
-                alert("投稿に失敗しました: " + data.message);
+                alert("投稿に失敗しました: " + result.message);
             }
         } catch (error) {
             console.error("投稿エラー:", error);
