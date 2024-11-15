@@ -124,17 +124,33 @@ textarea {
     resize: none;
 }
 
-/* シェアボタン */
 #shareButton {
     width: calc(100% - 2rem);
     margin: 1rem;
-    padding: 10px;
+    padding: 12px;
     font-size: 1.1rem;
-    background-color: #4e5c94;
-    position: relative;
-    z-index: 1; /* フッターの上に配置 */
+    color: #fff;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b, #ff7e5f); /* カラフルなグラデーション */
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2); /* 文字の立体感 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加 */
+}
+/* アクティブ時（押されたとき） */
+#shareButton:active {
+    background: linear-gradient(135deg, #ff6a88, #ff99ac, #ff9a8b); /* アクティブ時の色 */
+    transform: translateY(1px); /* 押し下がる効果 */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* 影を減らす */
 }
 
+/* ホバー時 */
+#shareButton:hover {
+    background: linear-gradient(135deg, #ff9a8b, #ff6a88, #ff99ac); /* ホバー時の色 */
+    transform: translateY(-3px); /* 少し浮かせる効果 */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* ホバー時の影 */
+}
 /* mainコンテナのスタイル */
 main {
     display: flex;
