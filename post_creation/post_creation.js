@@ -16,6 +16,7 @@ function displayLocation() {
 
 function setupPhotoCapture() {
     const takePhotoButton = document.getElementById("takePhotoButton");
+    const retakePhotoButton = document.getElementById("retakePhotoButton");
     const photoInput = document.getElementById("photoInput");
     const photoPreview = document.getElementById("photoPreview");
 
@@ -33,9 +34,18 @@ function setupPhotoCapture() {
                 photoPreview.src = e.target.result;
                 photoPreview.style.display = "block";
                 localStorage.setItem("capturedPhoto", e.target.result);
+
+                // 撮影後、撮影ボタンを非表示にして再撮影ボタンを表示
+                takePhotoButton.style.display = "none";
+                retakePhotoButton.style.display = "inline-block";
             };
             reader.readAsDataURL(file);
         }
+    });
+
+    // 再撮影ボタンが押されたときの処理
+    retakePhotoButton.addEventListener("click", () => {
+        photoInput.click(); // 再度写真を撮影
     });
 }
 
