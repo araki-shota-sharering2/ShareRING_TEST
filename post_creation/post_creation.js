@@ -15,12 +15,12 @@ function displayLocation() {
 }
 
 function setupPhotoCapture() {
-    const takePhotoLink = document.getElementById("takePhotoLink");
+    const takePhotoButton = document.getElementById("takePhotoButton"); // 修正: IDを正しいものに変更
     const photoInput = document.getElementById("photoInput");
     const photoPreview = document.getElementById("photoPreview");
 
-    // カメラを起動するためのファイル入力ボタンをクリック
-    takePhotoLink.addEventListener("click", () => {
+    // ボタンをクリックしたときにカメラを起動
+    takePhotoButton.addEventListener("click", () => {
         photoInput.click();
     });
 
@@ -32,7 +32,7 @@ function setupPhotoCapture() {
             reader.onload = (e) => {
                 photoPreview.src = e.target.result;
                 photoPreview.style.display = "block";
-                takePhotoLink.style.display = "none"; // 「写真を撮影する」リンクを非表示
+                takePhotoButton.style.display = "none"; // ボタンを非表示
             };
             reader.readAsDataURL(file);
         }
