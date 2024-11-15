@@ -1,39 +1,45 @@
+import { generateUUID } from './utils';
+import { crypto } from 'crypto';
+
 export async function onRequestPost(context) {
     const { env, request } = context;
-
-    // フォームデータを取得
     const formData = await request.formData();
     const username = formData.get('username');
     const email = formData.get('email');
-    const password = formData.get('password'); // 現時点では平文のまま保存
+    const password = formData.get('password');
     const profileImage = formData.get('profile_image');
 
     if (!username || !email || !password || !profileImage) {
         return new Response(JSON.stringify({ message: '全てのフィールドを入力してください' }), { status: 400 });
     }
 
-    // タイムスタンプを利用して一意のファイル名を作成
-    const timestamp = Date.now();
-    const uniqueFileName = `profile-${timestamp}-${profileImage.name}`;
-    const r2Key = `profile_images/${uniqueFileName}`;
+    const salt = crypto.randomUUID(); // ソルトの生成
+    const iterations = 100000;
+    const keyLength = 32;
+
+    // PBKDF2を使用してパスワードを暗号化
+    const hashedPassword = crypto.subtle.deriveKey(
+        {
+            name: 'PBKDF2',
+            hash: 'SHA-256',
+            salt: Buffer.from(salt, 'utf-8'),
+            iterations: iterations
+        },
+        Buffer.from(password, 'utf-8'),
+        { name: 'HMAC', length: keyLength * 8 },
+        true,
+        ['sign']
+    );
+
+    const db = env.DB;
 
     try {
-        // プロフィール画像をR2にアップロード
-        await env.MY_R2_BUCKET.put(r2Key, profileImage.stream(), {
-            headers: { 'Content-Type': profileImage.type }
-        });
+        await db.prepare(
+            `INSERT INTO user_accounts (username, email, password, profile_image, salt)
+            VALUES (?, ?, ?, ?, ?)`
+        ).bind(username, email, hashedPassword, profileImageUrl, salt).run();
 
-        // 新しいURLを生成
-        const profileImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
-
-        // ユーザーデータをD1データベースに保存
-        const db = env.DB;
-        await db.prepare(`
-            INSERT INTO user_accounts (username, email, password, profile_image)
-            VALUES (?, ?, ?, ?)
-        `).bind(username, email, password, profileImageUrl).run();
-
-        return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました', profileImageUrl }), {
+        return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました' }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });
