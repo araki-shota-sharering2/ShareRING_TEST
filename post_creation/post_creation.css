@@ -64,15 +64,35 @@ header button {
     position: relative;
 }
 
-/* 「写真を撮影する」リンク */
-#takePhotoLink {
-    text-align: center;
-    color: #4e5c94;
+/* 「写真を撮影する」ボタン */
+#takePhotoButton {
+    display: inline-block;
+    color: white;
+    background-color: #4e5c94;
+    border: none;
+    border-radius: 50px; /* 丸みのあるボタン */
+    padding: 10px 20px;
     font-size: 1rem;
-    text-decoration: underline;
-    position: absolute;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽い影 */
+    transition: background-color 0.3s, transform 0.2s; /* アニメーション */
     z-index: 1;
+    position: relative;
 }
+
+/* ボタンホバー時 */
+#takePhotoButton:hover {
+    background-color: #394575; /* 少し暗い色に変化 */
+    transform: translateY(-2px); /* 少し上に浮く効果 */
+}
+
+/* ボタン押下時 */
+#takePhotoButton:active {
+    background-color: #283259; /* さらに暗い色 */
+    transform: translateY(0); /* 押し下がる */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 影を減らす */
+}
+
 /* プレビュー画像 */
 #photoPreview {
     width: 140px; /* フレームの内側のサイズに合わせる */
@@ -122,6 +142,7 @@ main {
     width: 100%;
 }
 
+/* フッターのスタイル */
 footer {
     display: flex;
     justify-content: space-around;
