@@ -12,16 +12,18 @@
         <button id="changeLocationButton">現在地を変更する</button>
     </header>
     <main>
+        <div class="actions">
+            <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none;">
+            <button id="takePhotoButton">写真を撮影</button>
+        </div>
         <div id="photoPreviewContainer">
             <div id="ringPreview">
                 <img id="photoPreview" alt="撮影した写真のプレビュー" style="display:none;">
-                <button id="takePhotoButton">写真を撮影</button>
             </div>
         </div>
         <div class="color-selection">
             <label for="ringColorInput">RINGの色を選択:</label>
             <input type="color" id="ringColorInput">
-            <button id="retakePhotoButton" style="display:none;">再撮影</button>
         </div>
         <textarea id="captionInput" placeholder="何をしていますか？"></textarea>
         <button id="shareButton">Let’s Share</button>

@@ -37,43 +37,48 @@ header button {
     padding: 0.2rem 0.5rem;
 }
 
+.actions {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 1rem;
+}
+
+button {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    flex: 1;
+    margin: 0 0.5rem;
+}
+
 #photoPreviewContainer {
     width: 100%;
     padding: 1rem;
     text-align: center;
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
 }
 
 #ringPreview {
-    position: relative;
+    display: inline-block;
     border-radius: 50%;
     padding: 5px;
     border: 3px solid #4e5c94; /* デフォルトのリング色 */
-    width: 200px;
-    height: 200px;
+    width: 200px; /* 大きめのサイズ */
+    height: 200px; /* 大きめのサイズ */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 #photoPreview {
-    width: 180px;
-    height: 180px;
+    width: 180px; /* フレームの内側のサイズに合わせる */
+    height: 180px; /* フレームの内側のサイズに合わせる */
     border-radius: 50%;
-    object-fit: cover;
-}
-
-#takePhotoButton {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    padding: 10px;
-    font-size: 1rem;
-    cursor: pointer;
+    object-fit: cover; /* 画像を円形内に収める */
 }
 
 .color-selection {
@@ -81,16 +86,6 @@ header button {
     align-items: center;
     justify-content: center;
     padding: 1rem;
-}
-
-#retakePhotoButton {
-    margin-left: 10px;
-    background-color: #4e5c94;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
 }
 
 textarea {
