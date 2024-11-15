@@ -12,6 +12,12 @@ function displayLocation() {
     } else {
         document.getElementById("locationName").textContent = "位置情報が取得できません";
     }
+
+    const changeLocationButton = document.getElementById("changeLocationButton");
+    changeLocationButton.addEventListener("click", () => {
+        alert("現在地の変更機能は未実装です。");
+        // 必要に応じて、ここに現在地の変更ロジックを追加
+    });
 }
 
 function setupPhotoCapture() {
