@@ -58,11 +58,13 @@ header button {
     justify-content: center;
     border-radius: 50%;
     background-color: #d3d3d3; /* 灰色の背景 */
-    width: 200px;
-    height: 200px;
+    width: 160px; /* フレームの外側のサイズを調整 */
+    height: 160px; /* フレームの外側のサイズを調整 */
+    border: 5px solid #4e5c94; /* デフォルトリングの境界色 */
     position: relative;
 }
 
+/* 「写真を撮影する」リンク */
 #takePhotoLink {
     text-align: center;
     color: #4e5c94;
@@ -71,10 +73,10 @@ header button {
     position: absolute;
     z-index: 1;
 }
-
+/* プレビュー画像 */
 #photoPreview {
-    width: 180px; /* フレームの内側のサイズに合わせる */
-    height: 180px; /* フレームの内側のサイズに合わせる */
+    width: 140px; /* フレームの内側のサイズに合わせる */
+    height: 140px; /* フレームの内側のサイズに合わせる */
     border-radius: 50%;
     object-fit: cover; /* 画像を円形内に収める */
     position: absolute;
