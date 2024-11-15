@@ -1,4 +1,5 @@
 import { generateUUID } from './utils';
+import CryptoJS from "https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js";
 
 export async function onRequestPost(context) {
     const { env, request } = context;
@@ -12,34 +13,12 @@ export async function onRequestPost(context) {
         return new Response(JSON.stringify({ message: '全てのフィールドを入力してください' }), { status: 400 });
     }
 
-    // ソルトの生成
-    const salt = crypto.getRandomValues(new Uint8Array(16));
-    const iterations = 100000;
-    const keyLength = 32;
-
-    // パスワードの暗号化
-    const enc = new TextEncoder();
-    const keyMaterial = await crypto.subtle.importKey(
-        "raw",
-        enc.encode(password),
-        { name: "PBKDF2" },
-        false,
-        ["deriveBits", "deriveKey"]
-    );
-
-    const derivedBits = await crypto.subtle.deriveBits(
-        {
-            name: "PBKDF2",
-            salt: salt,
-            iterations: iterations,
-            hash: "SHA-256"
-        },
-        keyMaterial,
-        keyLength * 8
-    );
-
-    const hashedPassword = Buffer.from(derivedBits).toString('hex');
-    const saltHex = Buffer.from(salt).toString('hex');
+    // ランダムなソルトを生成
+    const salt = CryptoJS.lib.WordArray.random(16).toString();
+    
+    // パスワードとソルトを組み合わせてSHA-256でハッシュ化
+    const saltedPassword = password + salt;
+    const hashedPassword = CryptoJS.SHA256(saltedPassword).toString(CryptoJS.enc.Hex);
 
     // プロフィール画像のアップロード処理
     const timestamp = Date.now();
@@ -53,12 +32,12 @@ export async function onRequestPost(context) {
         
         const profileImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
 
-        // 暗号化されたパスワードとソルトをデータベースに保存
+        // ハッシュ化されたパスワードとソルトをデータベースに保存
         const db = env.DB;
         await db.prepare(
             `INSERT INTO user_accounts (username, email, password, profile_image, salt)
             VALUES (?, ?, ?, ?, ?)`
-        ).bind(username, email, hashedPassword, profileImageUrl, saltHex).run();
+        ).bind(username, email, hashedPassword, profileImageUrl, salt).run();
 
         return new Response(JSON.stringify({ message: 'ユーザーが正常に登録されました', profileImageUrl }), {
             status: 200,
