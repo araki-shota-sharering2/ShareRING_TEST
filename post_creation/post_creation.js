@@ -71,7 +71,7 @@ function setupShareButton() {
         };
 
         try {
-            const response = await fetch("/post_creation", { // Cloudflare Functionsのエンドポイントに合わせて修正
+            const response = await fetch("/post_creation", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -86,6 +86,8 @@ function setupShareButton() {
             const result = await response.json();
             if (result.success) {
                 alert("投稿が完了しました！");
+                localStorage.clear(); // 投稿成功時にローカルストレージをクリア
+                window.location.href = "/post_viewing/post_viewing.html";
             } else {
                 alert("投稿に失敗しました: " + result.error);
             }

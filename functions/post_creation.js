@@ -1,31 +1,44 @@
-import { DB } from '@cloudflare/d1';
+export async function onRequestPost(context) {
+    const { request, env } = context;
+    const db = env.DB;
 
-export async function onRequestPost({ request, env }) {
     try {
-        const data = await request.json();
+        const postData = await request.json();
+        const { user_id, caption, location, image_url, ring_color } = postData;
 
-        // 必要なデータが含まれているかチェック
-        if (!data.user_id || !data.image_url || !data.location || !data.ring_color || !data.address) {
-            return new Response(JSON.stringify({ success: false, error: "不正なデータです" }), { status: 400 });
+        if (!user_id || !image_url || !location) {
+            return new Response(JSON.stringify({ success: false, error: "必要なデータが不足しています。" }), {
+                status: 400,
+                headers: { "Content-Type": "application/json" },
+            });
         }
 
-        // データベースに投稿を挿入
-        const { user_id, image_url, caption, location, ring_color, address } = data;
-        const createdAt = new Date().toISOString(); // 作成日時
+        const { latitude, longitude } = location;
 
-        const query = `
-            INSERT INTO user_posts (user_id, image_url, caption, location, created_at, ring_color, address)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        `;
-
-        const result = await env.DB.prepare(query)
-            .bind(user_id, image_url, caption, location, createdAt, ring_color, address)
+        const result = await db
+            .prepare(
+                `INSERT INTO user_posts (user_id, image_url, caption, location, ring_color, address) 
+                 VALUES (?, ?, ?, ?, ?, ?)`
+            )
+            .bind(
+                user_id,
+                image_url,
+                caption || null,
+                `POINT(${longitude} ${latitude})`,
+                ring_color || "#4e5c94",
+                location.name || null
+            )
             .run();
 
-        // 挿入が成功した場合のレスポンス
-        return new Response(JSON.stringify({ success: true, post_id: result.lastInsertRowId }), { status: 200 });
+        return new Response(JSON.stringify({ success: true, post_id: result.meta.last_row_id }), {
+            status: 201,
+            headers: { "Content-Type": "application/json" },
+        });
     } catch (error) {
-        console.error("サーバーエラー:", error);
-        return new Response(JSON.stringify({ success: false, error: error.message }), { status: 500 });
+        console.error("投稿処理中のエラー:", error);
+        return new Response(JSON.stringify({ success: false, error: "投稿処理中にエラーが発生しました。" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 }
