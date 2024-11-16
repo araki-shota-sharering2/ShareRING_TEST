@@ -1,40 +1,31 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        const response = await fetch("/functions/myring-handler.js", {
-            method: "GET",
-            credentials: "include",
-        });
+document.addEventListener('DOMContentLoaded', async () => {
+    const postContainer = document.getElementById('post-container');
 
+    try {
+        const response = await fetch('/functions/myring-handler');
         if (!response.ok) {
-            throw new Error("投稿データを取得できませんでした");
+            throw new Error('投稿データの取得に失敗しました');
         }
 
         const posts = await response.json();
-        displayPosts(posts);
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'post';
+
+            const imgElement = document.createElement('img');
+            imgElement.src = post.image_url;
+            imgElement.style.borderColor = post.ring_color;
+
+            const captionElement = document.createElement('div');
+            captionElement.className = 'caption';
+            captionElement.textContent = post.caption || 'No Caption';
+
+            postElement.appendChild(imgElement);
+            postElement.appendChild(captionElement);
+            postContainer.appendChild(postElement);
+        });
     } catch (error) {
-        console.error("エラー:", error);
-        alert("投稿データの読み込み中にエラーが発生しました");
+        console.error('エラー:', error);
+        postContainer.textContent = '投稿の表示に失敗しました。';
     }
 });
-
-function displayPosts(posts) {
-    const postsList = document.getElementById("postsList");
-    postsList.innerHTML = "";
-
-    posts.forEach(post => {
-        const listItem = document.createElement("li");
-        listItem.classList.add("post-item");
-
-        listItem.innerHTML = `
-            <img src="${post.image_url}" alt="投稿画像">
-            <div class="info">
-                <h2>${post.caption || "キャプションなし"}</h2>
-                <p>住所: ${post.address || "住所情報なし"}</p>
-                <p>カラー: ${post.ring_color || "なし"}</p>
-                <small>投稿日: ${new Date(post.created_at).toLocaleString()}</small>
-            </div>
-        `;
-
-        postsList.appendChild(listItem);
-    });
-}
