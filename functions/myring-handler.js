@@ -1,4 +1,5 @@
-import { generateUUID } from '../utils';
+import { generateUUID } from './utils.js';
+
 
 export async function onRequestGet(context) {
     const { env, request } = context;
