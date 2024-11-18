@@ -45,7 +45,7 @@ h1 {
 /* コンテナ設定 */
 #post-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 横4つ並び */
+    grid-template-columns: repeat(3, 1fr); /* 横3つ並び */
     gap: 10px; /* 各投稿の間隔 */
     padding: 10px;
     justify-content: center;
@@ -55,29 +55,29 @@ h1 {
 /* 各投稿カード */
 .post-card {
     background: white;
-    border: 1px solid #ddd;
     border-radius: 8px;
     padding: 10px;
     text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.post-card:hover {
+    transform: scale(1.05); /* ホバーで拡大 */
 }
 
 /* 画像フレーム */
 .image-wrapper {
-    width: 70px; /* 画像サイズ調整 */
-    height: 70px;
+    width: 80px; /* 画像サイズ調整 */
+    height: 80px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     margin: 0 auto 5px;
-    border: 4px solid #cccccc; /* デフォルトのリングカラー */
-    transition: transform 0.2s ease; /* ホバーアニメーション */
-}
-
-.image-wrapper:hover {
-    transform: scale(1.1); /* 画像拡大効果 */
+    border: 4px solid #cccccc; /* デフォルトリングカラー */
 }
 
 .image-wrapper img {
@@ -95,16 +95,52 @@ h1 {
     text-overflow: ellipsis; /* 文字が長い場合は省略 */
 }
 
-/* 日付・住所 */
-.address, .created-at {
-    font-size: 10px;
-    color: #888;
-    text-align: center;
-    margin-top: 2px;
-}
-
-/* スクロール時のアクセシビリティ向上 */
-html, body {
+/* モーダル */
+#modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none; /* 初期状態は非表示 */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
+#modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+}
+
+#modal-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+#modal-content .modal-details {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+}
+
+#modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #f00;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
