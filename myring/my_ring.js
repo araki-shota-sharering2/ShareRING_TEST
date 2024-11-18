@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const postContainer = document.getElementById("post-container");
     const modal = document.getElementById("modal");
     const modalContent = document.getElementById("modal-content");
-    const modalClose = document.getElementById("modal-close");
 
     let posts = []; // 投稿データを保持
     let currentIndex = 0; // 現在の投稿のインデックス
@@ -55,9 +54,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <p><strong>住所:</strong> ${post.address || "なし"}</p>
                 <p><strong>投稿日時:</strong> ${new Date(post.created_at).toLocaleString()}</p>
             </div>
-            <button id="modal-close">×</button>
-            <button id="modal-prev">&lt;</button>
-            <button id="modal-next">&gt;</button>
+            <button id="modal-prev"></button>
+            <button id="modal-next"></button>
         `;
 
         modal.style.display = "flex";
@@ -65,9 +63,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         // 前後ボタンのイベント
         document.getElementById("modal-prev").addEventListener("click", () => navigatePost(-1));
         document.getElementById("modal-next").addEventListener("click", () => navigatePost(1));
-        document.getElementById("modal-close").addEventListener("click", () => {
-            modal.style.display = "none";
-        });
     }
 
     // 前後の投稿に移動
@@ -75,4 +70,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentIndex = (currentIndex + direction + posts.length) % posts.length; // インデックスを循環させる
         showModal(posts[currentIndex]);
     }
+
+    // モーダル全体をクリックで閉じる
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
 });
