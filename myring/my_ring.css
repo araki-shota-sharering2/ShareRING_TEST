@@ -13,7 +13,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
     color: #ccc;
     overflow: hidden;
 }
@@ -49,6 +48,9 @@ header {
     color: white;
     width: 100%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .header-logo img {
@@ -66,25 +68,29 @@ header {
     padding: 20px;
     overflow-y: auto;
     height: calc(100vh - 140px); /* ヘッダーとフッターの高さを差し引く */
+    width: 100%;
+    box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .timeline-item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     position: relative;
+    padding-bottom: 10px;
 }
 
 .timeline-marker {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     border: 4px solid #cccccc; /* デフォルトのリングカラー */
     overflow: hidden;
     margin-right: 15px;
+    background-color: #fff; /* 背景色で丸を際立たせる */
 }
 
 .timeline-marker img {
@@ -93,10 +99,9 @@ header {
     object-fit: cover;
 }
 
-/* タイムラインの内容 */
 .timeline-content {
     flex: 1;
-    border-left: 2px solid #ddd;
+    border-left: 2px solid #555;
     padding-left: 15px;
     position: relative;
 }
@@ -107,8 +112,8 @@ header {
     top: 0;
     left: -6px;
     width: 2px;
-    height: 100%;
-    background: #ddd;
+    height: calc(100% + 10px); /* 投稿間の線をしっかりつなげる */
+    background: #555;
 }
 
 .timeline-title {
@@ -125,9 +130,10 @@ header {
 }
 
 .timeline-date {
-    font-size: 10px;
+    font-size: 11px;
     color: #888;
     margin-top: 5px;
+    font-style: italic;
 }
 
 /* フッター */
