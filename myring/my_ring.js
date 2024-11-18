@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <img src="${post.image_url}" alt="投稿画像">
                     </div>
                     <div class="caption">${post.caption || "キャプションなし"}</div>
+                    <div class="post-date">${new Date(post.created_at).toLocaleDateString()}</div>
                 `;
 
                 // クリックイベントでモーダル表示
@@ -54,15 +55,42 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <p><strong>住所:</strong> ${post.address || "なし"}</p>
                 <p><strong>投稿日時:</strong> ${new Date(post.created_at).toLocaleString()}</p>
             </div>
-            <button id="modal-prev"></button>
-            <button id="modal-next"></button>
+            <button id="modal-close">×</button>
         `;
 
         modal.style.display = "flex";
 
-        // 前後ボタンのイベント
-        document.getElementById("modal-prev").addEventListener("click", () => navigatePost(-1));
-        document.getElementById("modal-next").addEventListener("click", () => navigatePost(1));
+        // スワイプ操作を有効化
+        enableSwipe();
+        document.getElementById("modal-close").addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+    }
+
+    // スワイプ操作を設定
+    function enableSwipe() {
+        let startX = 0;
+
+        modal.addEventListener("touchstart", (event) => {
+            startX = event.touches[0].clientX;
+        });
+
+        modal.addEventListener("touchmove", (event) => {
+            if (!startX) return;
+
+            const endX = event.touches[0].clientX;
+            const diffX = startX - endX;
+
+            if (diffX > 50) {
+                // 左にスワイプ（次の投稿）
+                navigatePost(1);
+                startX = 0; // リセット
+            } else if (diffX < -50) {
+                // 右にスワイプ（前の投稿）
+                navigatePost(-1);
+                startX = 0; // リセット
+            }
+        });
     }
 
     // 前後の投稿に移動
@@ -70,11 +98,4 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentIndex = (currentIndex + direction + posts.length) % posts.length; // インデックスを循環させる
         showModal(posts[currentIndex]);
     }
-
-    // モーダル全体をクリックで閉じる
-    modal.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    });
 });
