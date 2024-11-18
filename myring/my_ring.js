@@ -10,20 +10,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (response.ok) {
             const posts = await response.json();
 
+            // 投稿を1件ずつ作成して表示
             posts.forEach(post => {
                 const postCard = document.createElement("div");
                 postCard.classList.add("post-card");
 
-                // リングカラーを適用
-                const ringColor = post.ring_color || "#cccccc"; // デフォルトのリングカラー
+                const ringColor = post.ring_color || "#cccccc"; // デフォルトリングカラー
 
                 postCard.innerHTML = `
-                    <div class="image-wrapper" style="border: 5px solid ${ringColor};">
+                    <div class="image-wrapper" style="border-color: ${ringColor};">
                         <img src="${post.image_url}" alt="投稿画像">
                     </div>
                     <div class="caption">${post.caption || "キャプションなし"}</div>
-                    <div class="address">${post.address || "住所情報なし"}</div>
-                    <div class="created-at">${new Date(post.created_at).toLocaleString()}</div>
+                    <div class="address">${post.address || ""}</div>
+                    <div class="created-at">${new Date(post.created_at).toLocaleDateString()}</div>
                 `;
 
                 postContainer.appendChild(postCard);
