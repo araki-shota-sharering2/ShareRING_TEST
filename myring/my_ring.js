@@ -1,31 +1,33 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const postContainer = document.getElementById('post-container');
+document.addEventListener("DOMContentLoaded", async () => {
+    const postContainer = document.getElementById("post-container");
 
     try {
-        const response = await fetch('/functions/myring-handler');
-        if (!response.ok) {
-            throw new Error('投稿データの取得に失敗しました');
-        }
-
-        const posts = await response.json();
-        posts.forEach(post => {
-            const postElement = document.createElement('div');
-            postElement.className = 'post';
-
-            const imgElement = document.createElement('img');
-            imgElement.src = post.image_url;
-            imgElement.style.borderColor = post.ring_color;
-
-            const captionElement = document.createElement('div');
-            captionElement.className = 'caption';
-            captionElement.textContent = post.caption || 'No Caption';
-
-            postElement.appendChild(imgElement);
-            postElement.appendChild(captionElement);
-            postContainer.appendChild(postElement);
+        const response = await fetch('/myring-handler', {
+            method: 'GET',
+            credentials: 'include'
         });
+
+        if (response.ok) {
+            const posts = await response.json();
+            posts.forEach(post => {
+                const postCard = document.createElement("div");
+                postCard.classList.add("post-card");
+
+                postCard.innerHTML = `
+                    <img src="${post.image_url}" alt="投稿画像">
+                    <div class="caption">${post.caption || "キャプションなし"}</div>
+                    <div class="address">${post.address || "住所情報なし"}</div>
+                    <div class="created-at">${new Date(post.created_at).toLocaleString()}</div>
+                `;
+
+                postContainer.appendChild(postCard);
+            });
+        } else {
+            console.error("投稿データの取得に失敗しました");
+            postContainer.textContent = "投稿データの取得に失敗しました。";
+        }
     } catch (error) {
-        console.error('エラー:', error);
-        postContainer.textContent = '投稿の表示に失敗しました。';
+        console.error("エラーが発生しました:", error);
+        postContainer.textContent = "エラーが発生しました。";
     }
 });

@@ -3,23 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MYRING</title>
-    <link rel="stylesheet" href="/myring/myring.css">
+    <title>My Ring</title>
+    <link rel="stylesheet" href="my_ring.css">
 </head>
 <body>
     <header>
-        <h1>過去の投稿_update</h1>
+        <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
+        <h1>My Ring</h1>
     </header>
-    <main>
-        <div id="post-container"></div>
+    <main id="post-container">
+        <!-- 投稿データがここに表示されます -->
     </main>
-    <footer>
-        <nav>
-            <a href="/home">ホーム</a>
-            <a href="/my_ring">MYRING</a>
-            <a href="/post_creation">投稿</a>
-        </nav>
-    </footer>
-    <script src="/myring/myring.js"></script>
+    <script src="my_ring.js"></script>
 </body>
 </html>
