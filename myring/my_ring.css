@@ -10,15 +10,17 @@ body {
 
 /* ヘッダー */
 header {
-    background-color: #4CAF50;
+    background-color: #394575;
     color: white;
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
     display: flex;
     align-items: center;
-    padding: 10px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    border-bottom: 1px solid #ddd;
+    justify-content: center;
+    font-weight: bold;
 }
 
 header button {
