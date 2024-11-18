@@ -40,27 +40,34 @@ body {
 
 /* ヘッダー */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #4e5c94;
+    background-color: #394575;
     color: white;
+    padding: 15px;
     width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
 }
 
-.header-logo img {
-    width: 120px;
+/* 戻るボタン */
+#back-button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
 }
 
-.header-icons img {
-    width: 24px;
-    height: 24px;
-    margin: 0 10px;
+#back-button:hover {
+    color: #cccccc;
 }
 
 /* タイムライン */
