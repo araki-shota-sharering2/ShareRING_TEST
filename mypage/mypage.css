@@ -1,194 +1,176 @@
-/* 全体スタイル */
+/* 基本スタイル */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #0d0d2b;
-    max-width: 400px;
-    margin: 0 auto;
+    background-color: #f9f9f9;
     overflow-x: hidden;
-    color: #ccc;
-    position: relative;
-    height: 100vh;
+    max-width: 420px; /* スマホ幅に対して少し小さく */
+    margin: 0 auto;   /* 画面中央に配置 */
 }
 
 /* ヘッダー */
 header {
-    background-color: #394575;
+    background-color: #4CAF50;
     color: white;
-    padding: 15px;
-    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #ddd;
+}
+
+header button {
+    margin-right: 10px;
+    background-color: white;
+    color: #4CAF50;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+header button:hover {
+    background-color: #f0f0f0;
+}
+
+h1 {
+    margin: 0;
+    font-size: 18px;
+}
+
+/* コンテナ設定 */
+#post-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 横3つ並び */
+    gap: 10px; /* 各投稿の間隔 */
+    padding: 10px;
+    justify-content: center;
+    align-items: start;
+}
+
+/* 各投稿カード */
+.post-card {
+    background: white;
+    border-radius: 8px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.post-card:hover {
+    transform: scale(1.05); /* ホバーで拡大 */
+}
+
+/* 画像フレーム */
+.image-wrapper {
+    width: 70px; /* 画像サイズ固定 */
+    height: 70px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    overflow: hidden;
+    margin: 0 auto 5px;
+    border: 4px solid #cccccc; /* デフォルトリングカラー */
 }
 
-/* 戻るボタン */
-#back-button {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-#back-button:hover {
-    color: #cccccc;
-}
-
-/* メインコンテンツ */
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
+.image-wrapper img {
     width: 100%;
-    padding: 0 10px;
+    height: 100%;
+    object-fit: cover;
 }
 
-/* ユーザーカード */
-#user-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 20px;
-    position: relative;
-    z-index: 1;
-}
-
-/* プロフィール画像 */
-#profile-image {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-bottom: 15px;
-    border: 3px solid #007BFF;
-}
-
-/* ユーザー情報 */
-.user-info p {
-    margin: 10px 0;
-    font-size: 1em;
-    color: #666;
-}
-
-.user-info p strong {
+/* キャプション */
+.caption {
+    font-size: 12px;
     color: #333;
-    font-weight: bold;
-    margin-right: 5px;
+    white-space: nowrap; /* テキストを1行に固定 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 文字が長い場合は省略 */
 }
 
-.user-info p span {
-    color: #555;
-}
-
-/* 編集ボタン */
-.edit-btn {
-    background: #007BFF;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px;
-    transition: background-color 0.3s;
-}
-
-.edit-btn:hover {
-    background-color: #0056b3;
-}
-
-/* 編集入力フィールド */
-.edit-input {
+/* モーダル */
+#modal {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 250px;
-    padding: 5px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 14px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none; /* 初期状態は非表示 */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-/* ログアウトボタン */
-#logout-button,
-#delete-account-button {
-    background-color: #007BFF;
+#modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 360px; /* モーダルの幅を少し小さく */
+    text-align: center;
+    position: relative;
+}
+
+#modal-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+#modal-content .modal-details {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    position: relative;
+}
+
+#modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #f00;
     color: white;
-    padding: 10px 20px;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* 前後ボタン */
+.modal-nav-btn {
+    background: #4CAF50;
+    color: white;
     border: none;
     border-radius: 5px;
+    padding: 5px 15px;
+    font-size: 14px;
     cursor: pointer;
-    font-size: 16px;
-    margin-top: 15px;
-    transition: background-color 0.3s;
-    width: 80%;
-    max-width: 250px;
-    text-align: center;
+    margin-top: 10px;
 }
 
-#logout-button:hover,
-#delete-account-button:hover {
-    background-color: #0056b3;
+.modal-nav-btn:hover {
+    background: #45a049;
 }
 
-/* アカウント削除ボタン */
-#delete-account-button {
-    background-color: #FF4B4B;
+#modal-prev {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
 }
 
-#delete-account-button:hover {
-    background-color: #D32F2F;
-}
-
-/* スマートフォンのレイアウト調整 */
-@media screen and (max-width: 400px) {
-    #user-card, #logout-button, #delete-account-button {
-        width: 100%;
-    }
-
-    body {
-        max-width: 100%;
-        padding: 0;
-    }
-
-    header h1 {
-        font-size: 16px;
-    }
-
-    #back-button {
-        font-size: 14px;
-    }
-
-    #profile-image {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 10px;
-    }
-
-    .edit-btn {
-        font-size: 14px;
-    }
-
-    .edit-input {
-        font-size: 14px;
-    }
-
-    #logout-button, #delete-account-button {
-        font-size: 14px;
-    }
+#modal-next {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
 }
