@@ -11,10 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentPage = 1;
     let currentPostId = null;
 
-    // 投稿データを取得して描画する
+    // 投稿データを取得してタイムラインに描画する
     const fetchPosts = async (page) => {
         try {
-            clearTimeline();
+            timelineContainer.innerHTML = ''; // タイムラインをリセット
 
             const response = await fetch(`/myring-handler?page=${page}`, {
                 method: 'GET',
@@ -36,11 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // タイムラインをクリア
-    const clearTimeline = () => {
-        timelineContainer.querySelectorAll(".timeline-item").forEach((item) => item.remove());
-    };
-
     // タイムラインを描画
     const renderTimeline = (posts) => {
         posts.forEach((post) => {
@@ -49,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // タイムラインアイテムを作成
+    // タイムラインアイテムを生成
     const createTimelineItem = (post) => {
         const timelineItem = document.createElement("div");
         timelineItem.classList.add("timeline-item");
@@ -65,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
 
+        // モーダルを開くクリックイベントを追加
         timelineItem.querySelector("img").addEventListener("click", () => {
             openModal(post.post_id, post.image_url, post.caption);
         });
@@ -85,42 +81,47 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.style.display = "none";
     });
 
-    // 投稿を削除
+    // 投稿を削除する
     const deletePost = async () => {
+        if (!confirm("この投稿を削除してもよろしいですか？")) return;
+
         try {
             const response = await fetch(`/functions/myring-delete-handler`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify({ postId: currentPostId }),
             });
 
             if (response.ok) {
-                alert("投稿が削除されました。");
+                alert("投稿が削除されました");
                 modal.style.display = "none";
-                fetchPosts(currentPage);
+                fetchPosts(currentPage); // 現在のページを再取得
             } else {
-                alert("削除に失敗しました。");
+                alert("削除に失敗しました");
+                console.error("投稿削除エラー:", await response.json());
             }
         } catch (error) {
             console.error("削除エラー:", error);
-            alert("削除に失敗しました。");
+            alert("削除中にエラーが発生しました");
         }
     };
 
-    // イベントリスナーの設定
-    deletePostButton.addEventListener("click", deletePost);
+    // ページング機能
     prevButton.addEventListener("click", () => {
         if (currentPage > 1) {
             currentPage--;
             fetchPosts(currentPage);
         }
     });
+
     nextButton.addEventListener("click", () => {
         currentPage++;
         fetchPosts(currentPage);
     });
+
+    // 削除ボタンにイベントリスナーを設定
+    deletePostButton.addEventListener("click", deletePost);
 
     // 初期データを取得
     fetchPosts(currentPage);

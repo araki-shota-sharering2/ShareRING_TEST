@@ -5,7 +5,7 @@ export async function onRequestGet(context) {
     const sessionId = cookies.get("session_id");
 
     if (!sessionId) {
-        return new Response("Unauthorized", { status: 401 });
+        return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
     }
 
     const session = await env.DB.prepare(`
@@ -13,7 +13,7 @@ export async function onRequestGet(context) {
     `).bind(sessionId).first();
 
     if (!session) {
-        return new Response("Unauthorized", { status: 401 });
+        return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
     }
 
     const url = new URL(request.url);

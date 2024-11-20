@@ -7,7 +7,7 @@ export async function onRequestPost(context) {
         const sessionId = cookies.get("session_id");
 
         if (!sessionId) {
-            return new Response("Unauthorized", { status: 401 });
+            return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
         }
 
         // セッション情報を取得して認証
@@ -16,7 +16,7 @@ export async function onRequestPost(context) {
         `).bind(sessionId).first();
 
         if (!session) {
-            return new Response("Unauthorized", { status: 401 });
+            return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
         }
 
         const userId = session.user_id;
@@ -26,7 +26,7 @@ export async function onRequestPost(context) {
         const { postId } = requestBody;
 
         if (!postId) {
-            return new Response("Invalid Request: Missing postId", { status: 400 });
+            return new Response(JSON.stringify({ message: "Invalid Request: Missing postId" }), { status: 400 });
         }
 
         // 投稿が認証ユーザーのものであるか確認
@@ -35,7 +35,7 @@ export async function onRequestPost(context) {
         `).bind(postId).first();
 
         if (!postCheck || postCheck.user_id !== userId) {
-            return new Response("Forbidden: You can only delete your own posts", { status: 403 });
+            return new Response(JSON.stringify({ message: "Forbidden: You can only delete your own posts" }), { status: 403 });
         }
 
         // 投稿を削除
@@ -49,6 +49,6 @@ export async function onRequestPost(context) {
         });
     } catch (error) {
         console.error("Error during deletion:", error);
-        return new Response("Internal Server Error", { status: 500 });
+        return new Response(JSON.stringify({ message: "Internal Server Error", error: error.message }), { status: 500 });
     }
 }
