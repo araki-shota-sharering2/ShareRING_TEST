@@ -72,37 +72,38 @@ body {
     color: #aaa;
     margin-top: 4px;
 }
-
-/* ページングコントロール */
 .pagination-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-top: 10px;
     padding: 10px 0;
     position: fixed;
-    bottom: 60px; /* フッター上に配置 */
-    background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+    bottom: 60px; /* フッターの上に固定配置 */
+    background-color: #2b2e4a;
     z-index: 1000;
-    padding: 5px;
 }
 
 .pagination-controls button {
     background-color: #4e5c94;
     color: white;
     border: none;
-    padding: 8px 12px;
-    font-size: 12px;
+    padding: 8px 16px;
+    font-size: 14px;
     border-radius: 5px;
     cursor: pointer;
-    width: 100px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-controls button:hover {
+    background-color: #3b4c7f;
 }
 
 .pagination-controls button:disabled {
     background-color: #aaa;
     cursor: not-allowed;
 }
+
 
 /* モーダル */
 .modal {
