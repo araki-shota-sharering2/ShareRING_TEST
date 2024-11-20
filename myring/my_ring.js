@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             timelineContainer.querySelectorAll(".timeline-item").forEach((item) => item.remove());
 
-            const response = await fetch(`/myring-handler?page=${page}`, {
+            const response = await fetch(`/functions/get-posts?page=${page}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify({ postId: currentPostId }),
             });
 
