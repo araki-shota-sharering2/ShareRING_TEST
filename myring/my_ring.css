@@ -81,6 +81,11 @@ body {
     width: 100%;
     margin-top: 10px;
     padding: 10px 0;
+    position: fixed;
+    bottom: 60px; /* フッター上に配置 */
+    background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+    z-index: 1000;
+    padding: 5px;
 }
 
 .pagination-controls button {
@@ -91,6 +96,7 @@ body {
     font-size: 12px;
     border-radius: 5px;
     cursor: pointer;
+    width: 100px;
 }
 
 .pagination-controls button:disabled {
