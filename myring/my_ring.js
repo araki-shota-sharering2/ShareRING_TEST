@@ -2,11 +2,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const timelineContainer = document.querySelector(".timeline");
     const prevButton = document.querySelector("#prev-button");
     const nextButton = document.querySelector("#next-button");
+    const modal = document.querySelector("#modal");
+    const modalImage = document.querySelector("#modal-image");
+    const modalCaption = document.querySelector("#modal-caption");
+    const deletePostButton = document.querySelector("#delete-post");
+    const closeModalButton = document.querySelector("#modal-close");
     let currentPage = 1;
+    let currentPostId = null;
 
     async function fetchPosts(page) {
         try {
-            // タイムラインをクリア（ページングボタン以外）
             timelineContainer.querySelectorAll(".timeline-item").forEach((item) => item.remove());
 
             const response = await fetch(`/myring-handler?page=${page}`, {
@@ -18,14 +23,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const posts = await response.json();
 
                 posts.forEach((post) => {
-                    const ringColor = post.ring_color || "#cccccc";
-
                     const timelineItem = document.createElement("div");
                     timelineItem.classList.add("timeline-item");
 
                     timelineItem.innerHTML = `
-                        <div class="timeline-marker" style="border-color: ${ringColor};">
-                            <img src="${post.image_url}" alt="投稿画像">
+                        <div class="timeline-marker" style="border-color: ${post.ring_color || "#cccccc"};">
+                            <img src="${post.image_url}" alt="投稿画像" data-post-id="${post.post_id}">
                         </div>
                         <div class="timeline-content">
                             <p class="timeline-title">${post.caption || "キャプションなし"}</p>
@@ -34,23 +37,57 @@ document.addEventListener("DOMContentLoaded", async () => {
                         </div>
                     `;
 
+                    timelineItem.querySelector("img").addEventListener("click", () => {
+                        openModal(post.post_id, post.image_url, post.caption);
+                    });
+
                     timelineContainer.appendChild(timelineItem);
                 });
 
-                // ボタンの有効・無効を設定
                 prevButton.disabled = page === 1;
-                nextButton.disabled = posts.length < 10; // 10件未満の場合は「次へ」を無効化
+                nextButton.disabled = posts.length < 10;
             } else {
                 console.error("投稿データの取得に失敗しました");
-                timelineContainer.textContent = "投稿データの取得に失敗しました。";
             }
         } catch (error) {
             console.error("エラーが発生しました:", error);
-            timelineContainer.textContent = "エラーが発生しました。";
         }
     }
 
-    // 「前へ」ボタンの動作
+    function openModal(postId, imageUrl, caption) {
+        currentPostId = postId;
+        modalImage.src = imageUrl;
+        modalCaption.textContent = caption || "キャプションなし";
+        modal.style.display = "flex";
+    }
+
+    closeModalButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    deletePostButton.addEventListener("click", async () => {
+        try {
+            const response = await fetch(`/functions/delete-post`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ postId: currentPostId }),
+            });
+
+            if (response.ok) {
+                alert("投稿が削除されました。");
+                modal.style.display = "none";
+                fetchPosts(currentPage);
+            } else {
+                alert("削除に失敗しました。");
+            }
+        } catch (error) {
+            console.error("削除エラー:", error);
+            alert("削除に失敗しました。");
+        }
+    });
+
     prevButton.addEventListener("click", () => {
         if (currentPage > 1) {
             currentPage--;
@@ -58,12 +95,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // 「次へ」ボタンの動作
     nextButton.addEventListener("click", () => {
         currentPage++;
         fetchPosts(currentPage);
     });
 
-    // 初回ロード
     fetchPosts(currentPage);
 });
