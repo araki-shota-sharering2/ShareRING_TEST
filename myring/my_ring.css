@@ -9,7 +9,7 @@ body {
     font-family: Arial, sans-serif;
     max-width: 375px;
     margin: 0 auto;
-    background-color: #0d0d2b; /* 夜空をイメージした濃い青色 */
+    background-color: #0d0d2b;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -17,25 +17,152 @@ body {
     overflow: hidden;
 }
 
-/* 星のスタイル */
-.star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    animation: twinkle 2s infinite ease-in-out alternate;
-    opacity: 0.5;
+/* タイムライン */
+.timeline {
+    padding: 10px;
+    overflow-y: auto;
+    height: calc(100vh - 140px); /* ヘッダーとフッターの高さを差し引く */
+    width: 100%;
+    box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* 星の輝きアニメーション */
-@keyframes twinkle {
-    0% {
-        opacity: 0.3;
-    }
-    100% {
-        opacity: 1;
-    }
+/* タイムラインアイテム */
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.timeline-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 4px solid #cccccc;
+    overflow: hidden;
+    margin-right: 15px;
+    background-color: #fff;
+}
+
+.timeline-marker img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.timeline-content {
+    flex: 1;
+    border-left: 2px solid #555;
+    padding-left: 10px;
+}
+
+.timeline-title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #fff;
+}
+
+.timeline-address,
+.timeline-date {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 4px;
+}
+
+/* ページングコントロール */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 0;
+}
+
+.pagination-controls button {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+/* モーダル */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 90%;
+    width: 350px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+}
+
+#modal-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+#modal-caption {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+    word-break: break-word;
+}
+
+#delete-post {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#delete-post:hover {
+    background-color: #c9302c;
 }
 
 /* ヘッダー */
@@ -45,11 +172,10 @@ header {
     padding: 15px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    position: relative;
     font-weight: bold;
 }
 
@@ -62,115 +188,12 @@ header {
     background: none;
     border: none;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
 }
 
 #back-button:hover {
     color: #cccccc;
-}
-
-/* タイムライン */
-.timeline {
-    padding: 20px;
-    overflow-y: auto;
-    height: calc(100vh - 140px); /* ヘッダーとフッターの高さを差し引く */
-    width: 100%;
-    box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.timeline-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 25px;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.timeline-marker {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 4px solid #cccccc; /* デフォルトのリングカラー */
-    overflow: hidden;
-    margin-right: 15px;
-    background-color: #fff; /* 背景色で丸を際立たせる */
-}
-
-.timeline-marker img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.timeline-content {
-    flex: 1;
-    border-left: 2px solid #555;
-    padding-left: 15px;
-    position: relative;
-}
-
-.timeline-content::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -6px;
-    width: 2px;
-    height: calc(100% + 10px); /* 投稿間の線をしっかりつなげる */
-    background: #555;
-}
-
-.timeline-title {
-    font-weight: bold;
-    margin: 0;
-    font-size: 14px;
-    color: #fff;
-}
-
-.timeline-address {
-    font-size: 12px;
-    color: #aaa;
-    margin-top: 4px;
-}
-
-.timeline-date {
-    font-size: 11px;
-    color: #888;
-    margin-top: 5px;
-    font-style: italic;
-}
-
-/* ページングコントロール */
-.pagination-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-top: 20px;
-    padding: 10px 0;
-}
-
-.pagination-controls button {
-    background-color: #4e5c94;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.pagination-controls button:disabled {
-    background-color: #aaa; /* 無効時は薄い色 */
-    cursor: not-allowed;
-}
-
-.pagination-controls button:hover:not(:disabled) {
-    background-color: #6666ff;
 }
 
 /* フッター */
@@ -200,49 +223,4 @@ footer a {
 footer img {
     width: 25px;
     height: 25px;
-}
-
-/* モーダル */
-#modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none; /* 初期状態は非表示 */
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-#modal-content {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 300px;
-    width: 90%;
-    text-align: center;
-    position: relative;
-}
-
-#modal-content img {
-    width: 100%;
-    max-height: 300px;
-    object-fit: contain; /* 適切なサイズで表示 */
-    border-radius: 10px;
-}
-
-#modal-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #f00;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    font-size: 18px;
 }
