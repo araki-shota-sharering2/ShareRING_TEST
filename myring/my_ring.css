@@ -72,16 +72,18 @@ body {
     color: #aaa;
     margin-top: 4px;
 }
+/* ページングコントロール */
 .pagination-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 10px 0;
+    padding: 10px;
     position: fixed;
-    bottom: 60px; /* フッターの上に固定配置 */
-    background-color: #2b2e4a;
+    bottom: 60px; /* フッターの上に配置 */
+    background-color: rgba(45, 49, 90, 0.9); /* 半透明の背景でフッターとの視覚的分離 */
     z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .pagination-controls button {
@@ -103,6 +105,7 @@ body {
     background-color: #aaa;
     cursor: not-allowed;
 }
+
 
 
 /* モーダル */
