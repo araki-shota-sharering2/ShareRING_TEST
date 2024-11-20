@@ -8,13 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // const deletePostButton = document.querySelector("#delete-post"); // 削除ボタン
 
     let currentPage = 1;
+    let totalPosts = []; // 全投稿データ
+    const postsPerPage = 10; // 1ページあたりの投稿数
 
     // 投稿データを取得して描画
-    const fetchPosts = async (page) => {
+    const fetchPosts = async () => {
         try {
             timelineContainer.innerHTML = ''; // タイムラインをクリア
 
-            // ページ指定を無効化して全投稿を取得
             const response = await fetch(`/myring-handler`, {
                 method: 'GET',
                 credentials: 'include',
@@ -26,20 +27,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            const posts = await response.json();
-            renderTimeline(posts);
+            totalPosts = await response.json(); // 全投稿データを取得
+            renderPage(currentPage); // 現在のページを表示
 
-            // ページングボタンは常に有効化
-            prevButton.disabled = false;
-            nextButton.disabled = false;
+            // ページングボタンの状態を更新
+            updatePaginationButtons();
         } catch (error) {
             console.error("投稿データ取得中にエラーが発生しました:", error);
         }
     };
 
-    // タイムラインを描画
-    const renderTimeline = (posts) => {
-        posts.forEach((post) => {
+    // 指定されたページを描画
+    const renderPage = (page) => {
+        timelineContainer.innerHTML = ''; // タイムラインをクリア
+        const startIndex = (page - 1) * postsPerPage;
+        const endIndex = startIndex + postsPerPage;
+        const pagePosts = totalPosts.slice(startIndex, endIndex); // ページ内の投稿を取得
+
+        pagePosts.forEach((post) => {
             const timelineItem = createTimelineItem(post);
             timelineContainer.appendChild(timelineItem);
         });
@@ -64,15 +69,29 @@ document.addEventListener("DOMContentLoaded", () => {
         return timelineItem;
     };
 
-    // ページングイベント（現在の動作は常に全投稿を表示）
+    // ページングボタンの状態を更新
+    const updatePaginationButtons = () => {
+        prevButton.disabled = currentPage === 1;
+        nextButton.disabled = currentPage * postsPerPage >= totalPosts.length;
+    };
+
+    // ページングイベント
     prevButton.addEventListener("click", () => {
-        console.log("前のページボタンがクリックされました");
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage); // 前のページを表示
+            updatePaginationButtons();
+        }
     });
 
     nextButton.addEventListener("click", () => {
-        console.log("次のページボタンがクリックされました");
+        if (currentPage * postsPerPage < totalPosts.length) {
+            currentPage++;
+            renderPage(currentPage); // 次のページを表示
+            updatePaginationButtons();
+        }
     });
 
     // 初期データを取得
-    fetchPosts(currentPage);
+    fetchPosts();
 });

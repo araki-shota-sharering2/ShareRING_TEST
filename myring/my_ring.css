@@ -72,6 +72,7 @@ body {
     color: #aaa;
     margin-top: 4px;
 }
+
 /* ページングコントロール */
 .pagination-controls {
     display: flex;
@@ -105,8 +106,6 @@ body {
     background-color: #aaa;
     cursor: not-allowed;
 }
-
-
 
 /* モーダル */
 .modal {
