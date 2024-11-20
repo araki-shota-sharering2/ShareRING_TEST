@@ -9,23 +9,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     const closeModalButton = document.querySelector("#modal-close");
     let currentPage = 1;
     let currentPostId = null;
-
     async function fetchPosts(page) {
         try {
             timelineContainer.querySelectorAll(".timeline-item").forEach((item) => item.remove());
-
-            const response = await fetch(`/functions/get-posts?page=${page}`, {
+    
+            // エンドポイントURLを修正
+            const response = await fetch(`/functions/get-post?page=${page}`, {
                 method: 'GET',
                 credentials: 'include',
             });
-
+    
             if (response.ok) {
                 const posts = await response.json();
-
+    
                 posts.forEach((post) => {
                     const timelineItem = document.createElement("div");
                     timelineItem.classList.add("timeline-item");
-
+    
                     timelineItem.innerHTML = `
                         <div class="timeline-marker" style="border-color: ${post.ring_color || "#cccccc"};">
                             <img src="${post.image_url}" alt="投稿画像" data-post-id="${post.post_id}">
@@ -36,14 +36,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <p class="timeline-date">${new Date(post.created_at).toLocaleString()}</p>
                         </div>
                     `;
-
+    
                     timelineItem.querySelector("img").addEventListener("click", () => {
                         openModal(post.post_id, post.image_url, post.caption);
                     });
-
+    
                     timelineContainer.appendChild(timelineItem);
                 });
-
+    
                 prevButton.disabled = page === 1;
                 nextButton.disabled = posts.length < 10;
             } else {
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error("エラーが発生しました:", error);
         }
     }
-
+    
     function openModal(postId, imageUrl, caption) {
         currentPostId = postId;
         modalImage.src = imageUrl;
