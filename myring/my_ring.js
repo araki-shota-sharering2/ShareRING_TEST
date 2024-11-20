@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let currentPage = 1;
 
+    // 投稿データを取得する関数
     async function fetchPosts(page) {
         try {
             const response = await fetch(`/myring-handler?page=${page}`, {
@@ -21,13 +22,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (response.ok) {
                 const posts = await response.json();
 
-                // If no posts, disable load more button
-                if (posts.length < 15) {
+                // 10件未満の場合、ボタンを非表示
+                if (posts.length < 10) {
                     loadMoreButton.style.display = "none";
                 }
 
                 posts.forEach((post) => {
-                    const ringColor = post.ring_color || "#cccccc"; // Default ring color
+                    const ringColor = post.ring_color || "#cccccc"; // デフォルトリングカラー
 
                     const timelineItem = document.createElement("div");
                     timelineItem.classList.add("timeline-item");
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         </div>
                     `;
 
-                    // Add click event to show modal
+                    // 写真をタップしたときのモーダル表示
                     timelineItem.querySelector(".timeline-marker img").addEventListener("click", () => {
                         showModal(post.image_url);
                     });
@@ -51,19 +52,20 @@ document.addEventListener("DOMContentLoaded", async () => {
                     timelineContainer.appendChild(timelineItem);
                 });
             } else {
-                console.error("Failed to fetch posts");
+                console.error("投稿データの取得に失敗しました");
                 if (currentPage === 1) {
                     timelineContainer.textContent = "投稿データの取得に失敗しました。";
                 }
             }
         } catch (error) {
-            console.error("Error fetching posts:", error);
+            console.error("エラーが発生しました:", error);
             if (currentPage === 1) {
                 timelineContainer.textContent = "エラーが発生しました。";
             }
         }
     }
 
+    // モーダルを表示する関数
     function showModal(imageUrl) {
         const modalContent = modal.querySelector("#modal-content");
         modalContent.innerHTML = `
@@ -77,7 +79,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Add "Load More" button
+    // 「もっと見る」ボタンを作成
     const loadMoreButton = document.createElement("button");
     loadMoreButton.textContent = "もっと見る";
     loadMoreButton.style.display = "block";
@@ -89,6 +91,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         fetchPosts(currentPage);
     });
 
-    // Fetch the first page
+    // 初回ロード
     fetchPosts(currentPage);
 });
