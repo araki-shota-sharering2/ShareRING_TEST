@@ -233,7 +233,16 @@ footer img {
     border-radius: 8px;
 }
 
-/* ページングボタン */
+/* ページングコントロール */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
 .pagination-controls button {
     background-color: #4e5c94;
     color: white;
