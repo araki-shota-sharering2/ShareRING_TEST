@@ -1,26 +1,13 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const timelineContainer = document.querySelector(".timeline");
+    const prevButton = document.querySelector("#prev-button");
+    const nextButton = document.querySelector("#next-button");
     let currentPage = 1;
-
-    // ページングボタンを生成
-    const paginationControls = document.createElement("div");
-    paginationControls.className = "pagination-controls";
-
-    const prevButton = document.createElement("button");
-    prevButton.id = "prev-button";
-    prevButton.textContent = "前へ";
-
-    const nextButton = document.createElement("button");
-    nextButton.id = "next-button";
-    nextButton.textContent = "次へ";
-
-    paginationControls.appendChild(prevButton);
-    paginationControls.appendChild(nextButton);
-    timelineContainer.appendChild(paginationControls);
 
     async function fetchPosts(page) {
         try {
-            timelineContainer.innerHTML = ""; // 前回の投稿をクリア
+            // タイムラインをクリア（ページングボタン以外）
+            timelineContainer.querySelectorAll(".timeline-item").forEach((item) => item.remove());
 
             const response = await fetch(`/myring-handler?page=${page}`, {
                 method: 'GET',
@@ -49,9 +36,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     timelineContainer.appendChild(timelineItem);
                 });
-
-                // タイムラインの最後にボタンを再追加
-                timelineContainer.appendChild(paginationControls);
 
                 // ボタンの有効・無効を設定
                 prevButton.disabled = page === 1;
