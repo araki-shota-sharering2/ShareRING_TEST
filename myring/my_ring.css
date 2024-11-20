@@ -216,3 +216,40 @@ footer img {
     cursor: pointer;
     font-size: 18px;
 }
+/* ページングコントロール */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 375px; /* スマホ幅に収める */
+    margin: 10px auto;
+    padding: 10px;
+    position: fixed;
+    bottom: 60px; /* フッターの上に表示 */
+    z-index: 1000;
+    background-color: #394575; /* ヘッダーと同じ色で統一感 */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+/* ページングボタン */
+.pagination-controls button {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pagination-controls button:disabled {
+    background-color: #aaa; /* 無効時は薄い色 */
+    cursor: not-allowed;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background-color: #6666ff;
+}
