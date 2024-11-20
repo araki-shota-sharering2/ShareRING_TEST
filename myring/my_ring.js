@@ -1,16 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const timelineContainer = document.querySelector(".timeline");
-
-    // 星の背景を追加
-    for (let i = 0; i < 100; i++) {
-        const star = document.createElement("div");
-        star.classList.add("star");
-        star.style.top = Math.random() * 100 + "vh";
-        star.style.left = Math.random() * 100 + "vw";
-        star.style.animationDuration = Math.random() * 2 + 1 + "s";
-        document.body.appendChild(star);
-    }
-
     const modal = document.createElement("div");
     modal.id = "modal";
     modal.innerHTML = `
@@ -20,52 +9,61 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
     document.body.appendChild(modal);
 
-    try {
-        const response = await fetch('/myring-handler', {
-            method: 'GET',
-            credentials: 'include'
-        });
+    let currentPage = 1;
 
-        if (response.ok) {
-            const posts = await response.json();
-
-            // 最新の投稿順に並び替え
-            posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-            posts.forEach((post) => {
-                const ringColor = post.ring_color || "#cccccc"; // デフォルトリングカラー
-
-                const timelineItem = document.createElement("div");
-                timelineItem.classList.add("timeline-item");
-
-                timelineItem.innerHTML = `
-                    <div class="timeline-marker" style="border-color: ${ringColor};">
-                        <img src="${post.image_url}" alt="投稿画像">
-                    </div>
-                    <div class="timeline-content">
-                        <p class="timeline-title">${post.caption || "キャプションなし"}</p>
-                        <p class="timeline-address">${post.address || "住所情報なし"}</p>
-                        <p class="timeline-date">${new Date(post.created_at).toLocaleString()}</p>
-                    </div>
-                `;
-
-                // 写真タップでモーダル表示
-                timelineItem.querySelector(".timeline-marker img").addEventListener("click", () => {
-                    showModal(post.image_url);
-                });
-
-                timelineContainer.appendChild(timelineItem);
+    async function fetchPosts(page) {
+        try {
+            const response = await fetch(`/myring-handler?page=${page}`, {
+                method: 'GET',
+                credentials: 'include'
             });
-        } else {
-            console.error("投稿データの取得に失敗しました");
-            timelineContainer.textContent = "投稿データの取得に失敗しました。";
+
+            if (response.ok) {
+                const posts = await response.json();
+
+                // If no posts, disable load more button
+                if (posts.length < 15) {
+                    loadMoreButton.style.display = "none";
+                }
+
+                posts.forEach((post) => {
+                    const ringColor = post.ring_color || "#cccccc"; // Default ring color
+
+                    const timelineItem = document.createElement("div");
+                    timelineItem.classList.add("timeline-item");
+
+                    timelineItem.innerHTML = `
+                        <div class="timeline-marker" style="border-color: ${ringColor};">
+                            <img src="${post.image_url}" alt="投稿画像">
+                        </div>
+                        <div class="timeline-content">
+                            <p class="timeline-title">${post.caption || "キャプションなし"}</p>
+                            <p class="timeline-address">${post.address || "住所情報なし"}</p>
+                            <p class="timeline-date">${new Date(post.created_at).toLocaleString()}</p>
+                        </div>
+                    `;
+
+                    // Add click event to show modal
+                    timelineItem.querySelector(".timeline-marker img").addEventListener("click", () => {
+                        showModal(post.image_url);
+                    });
+
+                    timelineContainer.appendChild(timelineItem);
+                });
+            } else {
+                console.error("Failed to fetch posts");
+                if (currentPage === 1) {
+                    timelineContainer.textContent = "投稿データの取得に失敗しました。";
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+            if (currentPage === 1) {
+                timelineContainer.textContent = "エラーが発生しました。";
+            }
         }
-    } catch (error) {
-        console.error("エラーが発生しました:", error);
-        timelineContainer.textContent = "エラーが発生しました。";
     }
 
-    // モーダルを表示
     function showModal(imageUrl) {
         const modalContent = modal.querySelector("#modal-content");
         modalContent.innerHTML = `
@@ -74,9 +72,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
         modal.style.display = "flex";
 
-        // モーダルを閉じる
         modal.querySelector("#modal-close").addEventListener("click", () => {
             modal.style.display = "none";
         });
     }
+
+    // Add "Load More" button
+    const loadMoreButton = document.createElement("button");
+    loadMoreButton.textContent = "もっと見る";
+    loadMoreButton.style.display = "block";
+    loadMoreButton.style.margin = "20px auto";
+    document.body.appendChild(loadMoreButton);
+
+    loadMoreButton.addEventListener("click", () => {
+        currentPage++;
+        fetchPosts(currentPage);
+    });
+
+    // Fetch the first page
+    fetchPosts(currentPage);
 });
