@@ -9,11 +9,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
     document.body.appendChild(modal);
 
-    let currentPage = 1;
+    let currentPage = 1; // 現在のページ番号
+    const itemsPerPage = 10; // 1ページあたりの件数
 
     // 投稿データを取得する関数
     async function fetchPosts(page) {
         try {
+            timelineContainer.innerHTML = ""; // 前回の投稿データをクリア
+
             const response = await fetch(`/myring-handler?page=${page}`, {
                 method: 'GET',
                 credentials: 'include'
@@ -22,11 +25,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (response.ok) {
                 const posts = await response.json();
 
-                // 10件未満の場合、ボタンを非表示
-                if (posts.length < 10) {
-                    loadMoreButton.style.display = "none";
+                if (posts.length === 0 && page === 1) {
+                    timelineContainer.textContent = "まだ投稿がありません。";
+                    paginationControls.style.display = "none"; // ページングコントロール非表示
+                    return;
                 }
 
+                // データがあれば投稿を表示
                 posts.forEach((post) => {
                     const ringColor = post.ring_color || "#cccccc"; // デフォルトリングカラー
 
@@ -44,24 +49,27 @@ document.addEventListener("DOMContentLoaded", async () => {
                         </div>
                     `;
 
-                    // 写真をタップしたときのモーダル表示
+                    // 写真タップでモーダルを表示
                     timelineItem.querySelector(".timeline-marker img").addEventListener("click", () => {
                         showModal(post.image_url);
                     });
 
                     timelineContainer.appendChild(timelineItem);
                 });
+
+                // ページングコントロールを表示
+                paginationControls.style.display = "flex";
+
+                // 「前へ」ボタンの有効/無効を設定
+                prevButton.disabled = currentPage === 1;
+
             } else {
                 console.error("投稿データの取得に失敗しました");
-                if (currentPage === 1) {
-                    timelineContainer.textContent = "投稿データの取得に失敗しました。";
-                }
+                timelineContainer.textContent = "投稿データの取得に失敗しました。";
             }
         } catch (error) {
             console.error("エラーが発生しました:", error);
-            if (currentPage === 1) {
-                timelineContainer.textContent = "エラーが発生しました。";
-            }
+            timelineContainer.textContent = "エラーが発生しました。";
         }
     }
 
@@ -79,14 +87,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // 「もっと見る」ボタンを作成
-    const loadMoreButton = document.createElement("button");
-    loadMoreButton.textContent = "もっと見る";
-    loadMoreButton.style.display = "block";
-    loadMoreButton.style.margin = "20px auto";
-    document.body.appendChild(loadMoreButton);
+    // ページングコントロールを追加
+    const paginationControls = document.createElement("div");
+    paginationControls.style.display = "flex";
+    paginationControls.style.justifyContent = "space-between";
+    paginationControls.style.margin = "20px 0";
 
-    loadMoreButton.addEventListener("click", () => {
+    const prevButton = document.createElement("button");
+    prevButton.textContent = "前へ";
+    prevButton.disabled = true; // 初期状態では無効
+    prevButton.style.marginRight = "10px";
+
+    const nextButton = document.createElement("button");
+    nextButton.textContent = "次へ";
+
+    paginationControls.appendChild(prevButton);
+    paginationControls.appendChild(nextButton);
+    document.body.appendChild(paginationControls);
+
+    // 「前へ」ボタンをクリック
+    prevButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            fetchPosts(currentPage);
+        }
+    });
+
+    // 「次へ」ボタンをクリック
+    nextButton.addEventListener("click", () => {
         currentPage++;
         fetchPosts(currentPage);
     });
