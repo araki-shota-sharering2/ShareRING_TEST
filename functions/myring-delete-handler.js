@@ -1,5 +1,5 @@
 export async function onRequestPost(context) {
-    const { request, env } = context;
+    const { env, request } = context;
 
     try {
         // クッキーからセッションIDを取得
@@ -7,9 +7,10 @@ export async function onRequestPost(context) {
         const cookies = new Map(cookieHeader?.split("; ").map(c => c.split("=")));
         const sessionId = cookies.get("session_id");
 
-        // セッションIDが存在しない場合はUnauthorized
+        // セッションIDが存在しない場合
         if (!sessionId) {
-            return new Response(JSON.stringify({ message: "Unauthorized: No session ID" }), {
+            console.error("Unauthorized access: No session ID found");
+            return new Response(JSON.stringify({ message: "Unauthorized" }), {
                 status: 401,
                 headers: { "Content-Type": "application/json" },
             });
@@ -21,9 +22,9 @@ export async function onRequestPost(context) {
             WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP
         `).bind(sessionId).first();
 
-        // 有効なセッションがない場合はUnauthorized
         if (!session) {
-            return new Response(JSON.stringify({ message: "Unauthorized: Invalid session" }), {
+            console.error("Unauthorized access: No valid session found");
+            return new Response(JSON.stringify({ message: "Unauthorized" }), {
                 status: 401,
                 headers: { "Content-Type": "application/json" },
             });
@@ -31,11 +32,11 @@ export async function onRequestPost(context) {
 
         const userId = session.user_id;
 
-        // リクエストボディを解析して `postId` を取得
+        // リクエストボディを解析して投稿IDを取得
         const requestBody = await request.json();
         const { postId } = requestBody;
 
-        // postIdが提供されていない場合はBad Request
+        // 投稿IDが存在しない場合
         if (!postId) {
             return new Response(JSON.stringify({ message: "Bad Request: Missing postId" }), {
                 status: 400,
@@ -67,15 +68,12 @@ export async function onRequestPost(context) {
             DELETE FROM user_posts WHERE post_id = ?
         `).bind(postId).run();
 
-        // 成功レスポンス
         return new Response(JSON.stringify({ message: "Post deleted successfully" }), {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
         console.error("Error during post deletion:", error);
-
-        // サーバーエラーレスポンス
         return new Response(JSON.stringify({ message: "Internal Server Error", error: error.message }), {
             status: 500,
             headers: { "Content-Type": "application/json" },

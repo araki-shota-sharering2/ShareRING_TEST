@@ -11,28 +11,30 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentPage = 1;
     let currentPostId = null;
 
-    // 投稿データを取得してタイムラインに描画する
+    // 投稿データを取得して描画
     const fetchPosts = async (page) => {
         try {
-            timelineContainer.innerHTML = ''; // タイムラインをリセット
+            timelineContainer.innerHTML = ''; // タイムラインをクリア
 
             const response = await fetch(`/myring-handler?page=${page}`, {
                 method: 'GET',
                 credentials: 'include',
             });
 
-            if (response.ok) {
-                const posts = await response.json();
-                renderTimeline(posts);
-
-                // ページングボタンの有効/無効を切り替え
-                prevButton.disabled = page === 1;
-                nextButton.disabled = posts.length < 10;
-            } else {
-                console.error("投稿データの取得に失敗しました");
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("投稿データ取得エラー:", errorText);
+                return;
             }
+
+            const posts = await response.json();
+            renderTimeline(posts);
+
+            // ページングボタンの有効/無効を切り替え
+            prevButton.disabled = page === 1;
+            nextButton.disabled = posts.length < 10;
         } catch (error) {
-            console.error("エラーが発生しました:", error);
+            console.error("投稿データ取得中にエラーが発生しました:", error);
         }
     };
 
@@ -60,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
 
-        // モーダルを開くクリックイベントを追加
+        // モーダルを開くイベント
         timelineItem.querySelector("img").addEventListener("click", () => {
             openModal(post.post_id, post.image_url, post.caption);
         });
@@ -81,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.style.display = "none";
     });
 
-    // 投稿を削除する
+    // 投稿を削除
     const deletePost = async () => {
         if (!confirm("この投稿を削除してもよろしいですか？")) return;
 
@@ -93,21 +95,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ postId: currentPostId }),
             });
 
-            if (response.ok) {
-                alert("投稿が削除されました");
-                modal.style.display = "none";
-                fetchPosts(currentPage); // 現在のページを再取得
-            } else {
-                alert("削除に失敗しました");
-                console.error("投稿削除エラー:", await response.json());
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("投稿削除エラー:", errorText);
+                alert("削除に失敗しました: " + errorText);
+                return;
             }
+
+            alert("投稿が削除されました");
+            modal.style.display = "none";
+            fetchPosts(currentPage); // 現在のページを再取得
         } catch (error) {
-            console.error("削除エラー:", error);
+            console.error("削除中にエラーが発生しました:", error);
             alert("削除中にエラーが発生しました");
         }
     };
 
-    // ページング機能
+    // ページングイベント
     prevButton.addEventListener("click", () => {
         if (currentPage > 1) {
             currentPage--;
@@ -120,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchPosts(currentPage);
     });
 
-    // 削除ボタンにイベントリスナーを設定
+    // 削除ボタンのイベントリスナーを設定
     deletePostButton.addEventListener("click", deletePost);
 
     // 初期データを取得
