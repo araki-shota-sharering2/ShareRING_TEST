@@ -15,6 +15,7 @@ body {
     align-items: center;
     color: #ccc;
     overflow: hidden;
+    width: 100%; /* スマホ幅に合わせて固定 */
 }
 
 /* タイムライン */
@@ -85,21 +86,20 @@ body {
     background-color: rgba(45, 49, 90, 0.9); /* 半透明の背景でフッターとの視覚的分離 */
     z-index: 1000;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    flex-wrap: wrap; /* スマホで折り返し対応 */
-    gap: 10px; /* ボタン間の隙間 */
+    flex-wrap: nowrap; /* ボタンを一列に配置 */
 }
 
 .pagination-controls button {
     background-color: #4e5c94;
     color: white;
     border: none;
-    padding: 12px 18px; /* タッチ領域を広げる */
+    padding: 15px 20px; /* タッチ領域をさらに広げる */
     font-size: 16px; /* スマホ向けに文字サイズを大きく */
     border-radius: 8px; /* 丸みを増やす */
     cursor: pointer;
     transition: background-color 0.3s ease;
     flex: 1; /* スマホサイズで幅を均等にする */
-    min-width: 120px; /* 最小幅を指定 */
+    min-width: 140px; /* 最小幅を指定 */
     text-align: center;
 }
 
@@ -114,8 +114,12 @@ body {
 
 /* スマホサイズ対応のレスポンシブ設定 */
 @media (max-width: 480px) {
+    .pagination-controls {
+        gap: 5px; /* スマホでボタン間の余白を縮小 */
+    }
+
     .pagination-controls button {
-        padding: 12px; /* さらに小さい画面では余白を調整 */
+        padding: 12px 16px; /* タッチ領域を微調整 */
         font-size: 14px; /* テキストサイズを少し小さく */
     }
 }

@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             totalPosts = await response.json(); // 全投稿データを取得
             renderPage(currentPage); // 現在のページを表示
-            updatePaginationButtons();
+            updatePaginationButtons(); // ボタンの状態を更新
         } catch (error) {
             console.error("投稿データ取得中にエラーが発生しました:", error);
         }
@@ -46,8 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const timelineItem = createTimelineItem(post);
             timelineContainer.appendChild(timelineItem);
         });
-
-        updatePaginationButtons();
     };
 
     // タイムラインアイテムを生成
@@ -97,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentPage > 1) {
             currentPage--;
             renderPage(currentPage);
+            updatePaginationButtons();
         }
     });
 
@@ -104,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentPage * postsPerPage < totalPosts.length) {
             currentPage++;
             renderPage(currentPage);
+            updatePaginationButtons();
         }
     });
 
