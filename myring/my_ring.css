@@ -5,6 +5,15 @@
     box-sizing: border-box;
 }
 
+.star {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 2s infinite;
+}
+
 /* 星の輝きアニメーション */
 @keyframes twinkle {
     0% {
