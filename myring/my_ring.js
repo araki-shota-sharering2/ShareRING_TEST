@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     deletePostButton.addEventListener("click", async () => {
         try {
-            const response = await fetch(`/functions/delete-post`, {
+            const response = await fetch(`/myring-delete-handler`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
