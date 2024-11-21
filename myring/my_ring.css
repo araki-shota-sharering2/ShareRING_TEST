@@ -4,15 +4,17 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+/* 星のスタイル */
 .star {
     position: absolute;
-    width: 5px;
-    height: 5px;
-    background: white;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    animation: twinkle 2s infinite;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
 }
+
 
 /* 星の輝きアニメーション */
 @keyframes twinkle {
