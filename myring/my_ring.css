@@ -1,3 +1,103 @@
+/* リセットと基本設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    max-width: 375px;
+    margin: 0 auto;
+    background-color: #0d0d2b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ccc;
+    overflow: hidden;
+}
+
+/* タイムライン */
+.timeline {
+    padding: 10px;
+    overflow-y: auto;
+    height: calc(100vh - 140px); /* ヘッダーとフッターの高さを差し引く */
+    width: 100%;
+    box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* タイムラインアイテム */
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.timeline-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 4px solid #cccccc;
+    overflow: hidden;
+    margin-right: 15px;
+    background-color: #fff;
+}
+
+.timeline-marker img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.timeline-content {
+    flex: 1;
+    border-left: 2px solid #555;
+    padding-left: 10px;
+}
+
+.timeline-title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #fff;
+}
+
+.timeline-address,
+.timeline-date {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 4px;
+}
+
+/* ページングコントロール */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 0;
+}
+
+.pagination-controls button {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
 /* モーダル */
 .modal {
     display: none;
@@ -15,11 +115,12 @@
 .modal-content {
     background: white;
     padding: 20px;
-    border-radius: 8px;
-    text-align: center;
+    border-radius: 10px;
     max-width: 90%;
-    width: 300px;
+    width: 350px;
+    text-align: center;
     position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 #modal-close {
@@ -38,13 +139,16 @@
 
 #modal-image {
     width: 100%;
+    max-height: 300px;
+    object-fit: contain;
     margin-bottom: 10px;
 }
 
 #modal-caption {
-    margin-bottom: 20px;
-    color: #333;
     font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+    word-break: break-word;
 }
 
 #delete-post {
@@ -55,9 +159,68 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s;
 }
 
 #delete-post:hover {
     background-color: #c9302c;
+}
+
+/* ヘッダー */
+header {
+    background-color: #394575;
+    color: white;
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-weight: bold;
+}
+
+/* 戻るボタン */
+#back-button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#back-button:hover {
+    color: #cccccc;
+}
+
+/* フッター */
+footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px;
+    background-color: #4e5c94;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 375px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+footer a {
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+footer img {
+    width: 25px;
+    height: 25px;
 }
