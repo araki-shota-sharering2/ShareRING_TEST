@@ -2,6 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const timelineContainer = document.querySelector(".timeline");
     const prevButton = document.querySelector("#prev-button");
     const nextButton = document.querySelector("#next-button");
+    const modal = document.querySelector("#modal");
+    const modalImage = document.querySelector("#modal-image");
+    const modalCaption = document.querySelector("#modal-caption");
+    const modalCloseButton = document.querySelector("#modal-close");
 
     let currentPage = 1;
     let totalPosts = []; // 全投稿データ
@@ -35,16 +39,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderPage = (page) => {
         timelineContainer.innerHTML = ''; // タイムラインをクリア
         const startIndex = (page - 1) * postsPerPage;
-        const endIndex = Math.min(startIndex + postsPerPage, totalPosts.length); // 終了インデックスの範囲チェック
-        const pagePosts = totalPosts.slice(startIndex, endIndex); // ページ内の投稿を取得
+        const endIndex = Math.min(startIndex + postsPerPage, totalPosts.length);
+        const pagePosts = totalPosts.slice(startIndex, endIndex);
 
-        // ページに投稿データを描画
         pagePosts.forEach((post) => {
             const timelineItem = createTimelineItem(post);
             timelineContainer.appendChild(timelineItem);
         });
 
-        // ページングボタンの状態を更新
         updatePaginationButtons();
     };
 
@@ -64,27 +66,44 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
 
+        // モーダルを開くイベントリスナーを追加
+        timelineItem.querySelector(".timeline-marker img").addEventListener("click", () => {
+            openModal(post);
+        });
+
         return timelineItem;
     };
 
+    // モーダルを開く
+    const openModal = (post) => {
+        modalImage.src = post.image_url;
+        modalCaption.textContent = post.caption || "キャプションなし";
+        modal.style.display = "flex";
+    };
+
+    // モーダルを閉じる
+    modalCloseButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
     // ページングボタンの状態を更新
     const updatePaginationButtons = () => {
-        prevButton.disabled = currentPage === 1; // 最初のページでは「前へ」を無効化
-        nextButton.disabled = currentPage * postsPerPage >= totalPosts.length; // 最終ページでは「次へ」を無効化
+        prevButton.disabled = currentPage === 1;
+        nextButton.disabled = currentPage * postsPerPage >= totalPosts.length;
     };
 
     // ページングイベント
     prevButton.addEventListener("click", () => {
         if (currentPage > 1) {
             currentPage--;
-            renderPage(currentPage); // 前のページを表示
+            renderPage(currentPage);
         }
     });
 
     nextButton.addEventListener("click", () => {
         if (currentPage * postsPerPage < totalPosts.length) {
             currentPage++;
-            renderPage(currentPage); // 次のページを表示
+            renderPage(currentPage);
         }
     });
 
