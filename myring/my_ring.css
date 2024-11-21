@@ -5,6 +5,16 @@
     box-sizing: border-box;
 }
 
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 body {
     font-family: Arial, sans-serif;
     max-width: 375px;
