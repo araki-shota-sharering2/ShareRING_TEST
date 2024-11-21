@@ -1,94 +1,104 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const timelineContainer = document.querySelector(".timeline");
     const prevButton = document.querySelector("#prev-button");
     const nextButton = document.querySelector("#next-button");
+    const modal = document.querySelector("#modal");
+    const modalImage = document.querySelector("#modal-image");
+    const modalCaption = document.querySelector("#modal-caption");
+    const deletePostButton = document.querySelector("#delete-post");
+    const closeModalButton = document.querySelector("#modal-close");
     let currentPage = 1;
-    let totalPosts = [];
-    const postsPerPage = 10;
+    let currentPostId = null;
 
-    // 投稿データを取得して描画
-    const fetchPosts = async () => {
+    async function fetchPosts(page) {
         try {
-            const response = await fetch(`/myring-handler`, {
+            timelineContainer.querySelectorAll(".timeline-item").forEach((item) => item.remove());
+
+            const response = await fetch(`/myring-handler?page=${page}`, {
                 method: 'GET',
                 credentials: 'include',
             });
 
-            if (!response.ok) {
-                console.error("投稿データ取得エラー:", await response.text());
-                return;
+            if (response.ok) {
+                const posts = await response.json();
+
+                posts.forEach((post) => {
+                    const timelineItem = document.createElement("div");
+                    timelineItem.classList.add("timeline-item");
+
+                    timelineItem.innerHTML = `
+                        <div class="timeline-marker" style="border-color: ${post.ring_color || "#cccccc"};">
+                            <img src="${post.image_url}" alt="投稿画像" data-post-id="${post.post_id}">
+                        </div>
+                        <div class="timeline-content">
+                            <p class="timeline-title">${post.caption || "キャプションなし"}</p>
+                            <p class="timeline-address">${post.address || "住所情報なし"}</p>
+                            <p class="timeline-date">${new Date(post.created_at).toLocaleString()}</p>
+                        </div>
+                    `;
+
+                    timelineItem.querySelector("img").addEventListener("click", () => {
+                        openModal(post.post_id, post.image_url, post.caption);
+                    });
+
+                    timelineContainer.appendChild(timelineItem);
+                });
+
+                prevButton.disabled = page === 1;
+                nextButton.disabled = posts.length < 10;
+            } else {
+                console.error("投稿データの取得に失敗しました");
             }
-
-            totalPosts = await response.json();
-
-            // 投稿が存在しない場合の処理
-            if (totalPosts.length === 0) {
-                timelineContainer.innerHTML = "<p>投稿がありません。</p>";
-                return;
-            }
-
-            renderPage(currentPage);
-            updatePaginationButtons();
         } catch (error) {
-            console.error("投稿データ取得中にエラーが発生しました:", error);
+            console.error("エラーが発生しました:", error);
         }
-    };
+    }
 
-    // ページ描画
-    const renderPage = (page) => {
-        timelineContainer.innerHTML = '';
-        const startIndex = (page - 1) * postsPerPage;
-        const endIndex = Math.min(startIndex + postsPerPage, totalPosts.length);
-        const pagePosts = totalPosts.slice(startIndex, endIndex);
+    function openModal(postId, imageUrl, caption) {
+        currentPostId = postId;
+        modalImage.src = imageUrl;
+        modalCaption.textContent = caption || "キャプションなし";
+        modal.style.display = "flex";
+    }
 
-        pagePosts.forEach((post) => {
-            const timelineItem = document.createElement("div");
-            timelineItem.classList.add("timeline-item");
-            timelineItem.innerHTML = `
-                <div class="timeline-marker" style="border-color: ${post.ring_color || "#cccccc"};">
-                    <img src="${post.image_url}" alt="投稿画像">
-                </div>
-                <div class="timeline-content">
-                    <p class="timeline-title">${post.caption || "キャプションなし"}</p>
-                    <p class="timeline-address">${post.address || "住所情報なし"}</p>
-                    <p class="timeline-date">${new Date(post.created_at).toLocaleString()}</p>
-                </div>
-            `;
-            timelineContainer.appendChild(timelineItem);
-        });
+    closeModalButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
 
-        updatePaginationButtons();
-    };
+    deletePostButton.addEventListener("click", async () => {
+        try {
+            const response = await fetch(`/functions/delete-post`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ postId: currentPostId }),
+            });
 
-    // ページングボタンの状態更新
-    const updatePaginationButtons = () => {
-        const totalPages = Math.ceil(totalPosts.length / postsPerPage);
-        prevButton.disabled = currentPage <= 1;
-        nextButton.disabled = currentPage >= totalPages;
+            if (response.ok) {
+                alert("投稿が削除されました。");
+                modal.style.display = "none";
+                fetchPosts(currentPage);
+            } else {
+                alert("削除に失敗しました。");
+            }
+        } catch (error) {
+            console.error("削除エラー:", error);
+            alert("削除に失敗しました。");
+        }
+    });
 
-        // デバッグ用ログ
-        console.log(`Current Page: ${currentPage}`);
-        console.log(`Total Pages: ${totalPages}`);
-        console.log("Prev Button Disabled:", prevButton.disabled);
-        console.log("Next Button Disabled:", nextButton.disabled);
-    };
-
-    // ボタンクリックイベント
     prevButton.addEventListener("click", () => {
         if (currentPage > 1) {
             currentPage--;
-            renderPage(currentPage);
+            fetchPosts(currentPage);
         }
     });
 
     nextButton.addEventListener("click", () => {
-        const totalPages = Math.ceil(totalPosts.length / postsPerPage);
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderPage(currentPage);
-        }
+        currentPage++;
+        fetchPosts(currentPage);
     });
 
-    // 初期化
-    fetchPosts();
+    fetchPosts(currentPage);
 });
