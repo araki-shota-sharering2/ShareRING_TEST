@@ -20,6 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             totalPosts = await response.json();
+
+            // 投稿が存在しない場合の処理
+            if (totalPosts.length === 0) {
+                timelineContainer.innerHTML = "<p>投稿がありません。</p>";
+                return;
+            }
+
             renderPage(currentPage);
             updatePaginationButtons();
         } catch (error) {
@@ -56,8 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // ページングボタンの状態更新
     const updatePaginationButtons = () => {
         const totalPages = Math.ceil(totalPosts.length / postsPerPage);
-        prevButton.disabled = currentPage === 1;
-        nextButton.disabled = currentPage === totalPages;
+        prevButton.disabled = currentPage <= 1;
+        nextButton.disabled = currentPage >= totalPages;
 
         // デバッグ用ログ
         console.log(`Current Page: ${currentPage}`);
