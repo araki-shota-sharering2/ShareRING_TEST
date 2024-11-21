@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("ホーム画面が読み込まれました");
-
-    // 現在のURLに基づいてフッターリンクを強調
+    // 現在のURLに基づいてフッターリンクを強調表示
     const path = window.location.pathname;
     const footerLinks = document.querySelectorAll("footer a");
 
@@ -11,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // 星をランダムに配置
+    // 背景の星をランダムに配置
     const body = document.querySelector('body');
     for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
