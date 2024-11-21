@@ -1,5 +1,4 @@
 name = "sharering-test"
-main = "functions/index.js"
 
 [vars]
 DB = "DB"
@@ -15,3 +14,7 @@ database_id = "2731a38b-2e18-4d99-a509-f49114e89409"
 [[r2_buckets]]
 binding = "MY_R2_BUCKET"
 bucket_name = "my-photo-bucket"
+
+[[functions]]
+name = "delete-post"
+path = "functions/delete-post.js"
