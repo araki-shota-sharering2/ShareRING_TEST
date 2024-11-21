@@ -15,6 +15,27 @@ body {
     height: 100vh;
 }
 
+/* 星のスタイル */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
+}
+
+
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 /* ヘッダー */
 header {
     background-color: #394575;
