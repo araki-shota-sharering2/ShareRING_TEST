@@ -8,36 +8,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalCloseButton = document.querySelector("#modal-close");
 
     let currentPage = 1;
-    let totalPosts = []; // 全投稿データ
-    const postsPerPage = 10; // 1ページあたりの投稿数
+    let totalPosts = [];
+    const postsPerPage = 10;
 
-    // 投稿データを取得して描画
     const fetchPosts = async () => {
         try {
-            timelineContainer.innerHTML = ''; // タイムラインをクリア
+            timelineContainer.innerHTML = "";
 
             const response = await fetch(`/myring-handler`, {
-                method: 'GET',
-                credentials: 'include',
+                method: "GET",
+                credentials: "include",
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error("投稿データ取得エラー:", errorText);
+                console.error("投稿データ取得エラー:", await response.text());
                 return;
             }
 
-            totalPosts = await response.json(); // 全投稿データを取得
-            renderPage(currentPage); // 現在のページを表示
-            updatePaginationButtons(); // ボタンの状態を更新
+            totalPosts = await response.json();
+            renderPage(currentPage);
+            updatePaginationButtons();
         } catch (error) {
-            console.error("投稿データ取得中にエラーが発生しました:", error);
+            console.error("投稿データ取得中にエラー:", error);
         }
     };
 
-    // 指定されたページを描画
     const renderPage = (page) => {
-        timelineContainer.innerHTML = ''; // タイムラインをクリア
+        timelineContainer.innerHTML = "";
         const startIndex = (page - 1) * postsPerPage;
         const endIndex = Math.min(startIndex + postsPerPage, totalPosts.length);
         const pagePosts = totalPosts.slice(startIndex, endIndex);
@@ -48,7 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // タイムラインアイテムを生成
     const createTimelineItem = (post) => {
         const timelineItem = document.createElement("div");
         timelineItem.classList.add("timeline-item");
@@ -64,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
 
-        // モーダルを開くイベントリスナーを追加
         timelineItem.querySelector(".timeline-marker img").addEventListener("click", () => {
             openModal(post);
         });
@@ -72,25 +67,22 @@ document.addEventListener("DOMContentLoaded", () => {
         return timelineItem;
     };
 
-    // モーダルを開く
     const openModal = (post) => {
         modalImage.src = post.image_url;
         modalCaption.textContent = post.caption || "キャプションなし";
         modal.style.display = "flex";
     };
 
-    // モーダルを閉じる
     modalCloseButton.addEventListener("click", () => {
         modal.style.display = "none";
     });
 
-    // ページングボタンの状態を更新
     const updatePaginationButtons = () => {
+        const totalPages = Math.ceil(totalPosts.length / postsPerPage);
         prevButton.disabled = currentPage === 1;
-        nextButton.disabled = currentPage * postsPerPage >= totalPosts.length;
+        nextButton.disabled = currentPage >= totalPages;
     };
 
-    // ページングイベント
     prevButton.addEventListener("click", () => {
         if (currentPage > 1) {
             currentPage--;
@@ -107,6 +99,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 初期データを取得
     fetchPosts();
 });

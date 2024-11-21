@@ -14,16 +14,18 @@ body {
     flex-direction: column;
     align-items: center;
     color: #ccc;
+    width: 100%;
+    height: 100vh;
     overflow: hidden;
-    width: 100%; /* スマホ幅に合わせて固定 */
 }
 
 /* タイムライン */
 .timeline {
     padding: 10px;
     overflow-y: auto;
-    height: calc(100vh - 140px); /* ヘッダーとフッターの高さを差し引く */
+    height: calc(100vh - 140px);
     width: 100%;
+    max-width: 375px;
     box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -80,26 +82,26 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    max-width: 375px;
     padding: 10px;
     position: fixed;
-    bottom: 60px; /* フッターの上に配置 */
-    background-color: rgba(45, 49, 90, 0.9); /* 半透明の背景でフッターとの視覚的分離 */
+    bottom: 60px;
+    background-color: rgba(45, 49, 90, 0.9);
     z-index: 1000;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    flex-wrap: nowrap; /* ボタンを一列に配置 */
 }
 
 .pagination-controls button {
     background-color: #4e5c94;
     color: white;
     border: none;
-    padding: 15px 20px; /* タッチ領域をさらに広げる */
-    font-size: 16px; /* スマホ向けに文字サイズを大きく */
-    border-radius: 8px; /* 丸みを増やす */
+    padding: 15px 20px;
+    font-size: 16px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    flex: 1; /* スマホサイズで幅を均等にする */
-    min-width: 140px; /* 最小幅を指定 */
+    flex: 1;
+    min-width: 140px;
     text-align: center;
 }
 
@@ -115,12 +117,12 @@ body {
 /* スマホサイズ対応のレスポンシブ設定 */
 @media (max-width: 480px) {
     .pagination-controls {
-        gap: 5px; /* スマホでボタン間の余白を縮小 */
+        gap: 5px;
     }
 
     .pagination-controls button {
-        padding: 12px 16px; /* タッチ領域を微調整 */
-        font-size: 14px; /* テキストサイズを少し小さく */
+        padding: 12px 16px;
+        font-size: 14px;
     }
 }
 
@@ -205,7 +207,6 @@ header {
     font-weight: bold;
 }
 
-/* 戻るボタン */
 #back-button {
     position: absolute;
     left: 10px;
