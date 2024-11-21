@@ -1,168 +1,18 @@
-/* リセットと基本設定 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* 全体スタイル */
 body {
     font-family: Arial, sans-serif;
-    max-width: 375px;
-    margin: 0 auto;
-    background-color: #0d0d2b;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #0d0d2b;
+    max-width: 400px;
+    margin: 0 auto;
+    overflow-x: hidden;
     color: #ccc;
-    overflow: hidden;
-}
-
-/* タイムライン */
-.timeline {
-    padding: 10px;
-    overflow-y: auto;
-    height: calc(100vh - 140px); /* ヘッダーとフッターの高さを差し引く */
-    width: 100%;
-    box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* タイムラインアイテム */
-.timeline-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 20px;
     position: relative;
-    padding-bottom: 10px;
-}
-
-.timeline-marker {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 4px solid #cccccc;
-    overflow: hidden;
-    margin-right: 15px;
-    background-color: #fff;
-}
-
-.timeline-marker img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.timeline-content {
-    flex: 1;
-    border-left: 2px solid #555;
-    padding-left: 10px;
-}
-
-.timeline-title {
-    font-weight: bold;
-    font-size: 14px;
-    color: #fff;
-}
-
-.timeline-address,
-.timeline-date {
-    font-size: 12px;
-    color: #aaa;
-    margin-top: 4px;
-}
-
-/* ページングコントロール */
-.pagination-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-top: 10px;
-    padding: 10px 0;
-}
-
-.pagination-controls button {
-    background-color: #4e5c94;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    font-size: 12px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.pagination-controls button:disabled {
-    background-color: #aaa;
-    cursor: not-allowed;
-}
-
-/* モーダル */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 90%;
-    width: 350px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-#modal-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    font-size: 16px;
-}
-
-#modal-image {
-    width: 100%;
-    max-height: 300px;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-
-#modal-caption {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 20px;
-    word-break: break-word;
-}
-
-#delete-post {
-    background-color: #d9534f;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-#delete-post:hover {
-    background-color: #c9302c;
+    height: 100vh;
 }
 
 /* ヘッダー */
@@ -172,10 +22,11 @@ header {
     padding: 15px;
     width: 100%;
     text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: bold;
 }
 
@@ -188,7 +39,7 @@ header {
     background: none;
     border: none;
     color: white;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
 }
 
@@ -196,31 +47,148 @@ header {
     color: #cccccc;
 }
 
-/* フッター */
-footer {
+/* メインコンテンツ */
+main {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     align-items: center;
-    padding: 8px;
-    background-color: #4e5c94;
-    position: fixed;
-    bottom: 0;
+    margin-top: 20px;
     width: 100%;
-    max-width: 375px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    padding: 0 10px;
 }
 
-footer a {
+/* ユーザーカード */
+#user-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    padding: 20px;
     text-align: center;
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
 }
 
-footer img {
-    width: 25px;
-    height: 25px;
+/* プロフィール画像 */
+#profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 3px solid #007BFF;
+}
+
+/* ユーザー情報 */
+.user-info p {
+    margin: 10px 0;
+    font-size: 1em;
+    color: #666;
+}
+
+.user-info p strong {
+    color: #333;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.user-info p span {
+    color: #555;
+}
+
+/* 編集ボタン */
+.edit-btn {
+    background: #007BFF;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 編集入力フィールド */
+.edit-input {
+    width: 100%;
+    max-width: 250px;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+/* ログアウトボタン */
+#logout-button,
+#delete-account-button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+    width: 80%;
+    max-width: 250px;
+    text-align: center;
+}
+
+#logout-button:hover,
+#delete-account-button:hover {
+    background-color: #0056b3;
+}
+
+/* アカウント削除ボタン */
+#delete-account-button {
+    background-color: #FF4B4B;
+}
+
+#delete-account-button:hover {
+    background-color: #D32F2F;
+}
+
+/* スマートフォンのレイアウト調整 */
+@media screen and (max-width: 400px) {
+    #user-card, #logout-button, #delete-account-button {
+        width: 100%;
+    }
+
+    body {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    header h1 {
+        font-size: 16px;
+    }
+
+    #back-button {
+        font-size: 14px;
+    }
+
+    #profile-image {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+    }
+
+    .edit-btn {
+        font-size: 14px;
+    }
+
+    .edit-input {
+        font-size: 14px;
+    }
+
+    #logout-button, #delete-account-button {
+        font-size: 14px;
+    }
 }
