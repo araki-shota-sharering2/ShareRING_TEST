@@ -1,4 +1,16 @@
 document.addEventListener("DOMContentLoaded", async () => {
+    // 星をランダムに配置
+    const body = document.querySelector("body");
+    for (let i = 0; i < 100; i++) {
+        const star = document.createElement("div");
+        star.classList.add("star");
+        star.style.top = Math.random() * 100 + "vh";
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.animationDuration = Math.random() * 2 + 1 + "s";
+        body.appendChild(star);
+    }
+
+    // タイムライン関連の処理
     const timelineContainer = document.querySelector(".timeline");
     const prevButton = document.querySelector("#prev-button");
     const nextButton = document.querySelector("#next-button");
@@ -15,8 +27,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             timelineContainer.querySelectorAll(".timeline-item").forEach((item) => item.remove());
 
             const response = await fetch(`/myring-handler?page=${page}`, {
-                method: 'GET',
-                credentials: 'include',
+                method: "GET",
+                credentials: "include",
             });
 
             if (response.ok) {
