@@ -2,10 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const timelineContainer = document.querySelector(".timeline");
     const prevButton = document.querySelector("#prev-button");
     const nextButton = document.querySelector("#next-button");
-    const modal = document.querySelector("#modal");
-    const modalImage = document.querySelector("#modal-image");
-    const modalCaption = document.querySelector("#modal-caption");
-    // const deletePostButton = document.querySelector("#delete-post"); // 削除ボタン
 
     let currentPage = 1;
     let totalPosts = []; // 全投稿データ
@@ -29,8 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             totalPosts = await response.json(); // 全投稿データを取得
             renderPage(currentPage); // 現在のページを表示
-
-            // ページングボタンの状態を更新
             updatePaginationButtons();
         } catch (error) {
             console.error("投稿データ取得中にエラーが発生しました:", error);
@@ -41,13 +35,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderPage = (page) => {
         timelineContainer.innerHTML = ''; // タイムラインをクリア
         const startIndex = (page - 1) * postsPerPage;
-        const endIndex = startIndex + postsPerPage;
+        const endIndex = Math.min(startIndex + postsPerPage, totalPosts.length); // 終了インデックスの範囲チェック
         const pagePosts = totalPosts.slice(startIndex, endIndex); // ページ内の投稿を取得
 
+        // ページに投稿データを描画
         pagePosts.forEach((post) => {
             const timelineItem = createTimelineItem(post);
             timelineContainer.appendChild(timelineItem);
         });
+
+        // ページングボタンの状態を更新
+        updatePaginationButtons();
     };
 
     // タイムラインアイテムを生成
@@ -71,8 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ページングボタンの状態を更新
     const updatePaginationButtons = () => {
-        prevButton.disabled = currentPage === 1;
-        nextButton.disabled = currentPage * postsPerPage >= totalPosts.length;
+        prevButton.disabled = currentPage === 1; // 最初のページでは「前へ」を無効化
+        nextButton.disabled = currentPage * postsPerPage >= totalPosts.length; // 最終ページでは「次へ」を無効化
     };
 
     // ページングイベント
@@ -80,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentPage > 1) {
             currentPage--;
             renderPage(currentPage); // 前のページを表示
-            updatePaginationButtons();
         }
     });
 
@@ -88,7 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentPage * postsPerPage < totalPosts.length) {
             currentPage++;
             renderPage(currentPage); // 次のページを表示
-            updatePaginationButtons();
         }
     });
 
