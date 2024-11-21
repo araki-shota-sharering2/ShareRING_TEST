@@ -1,16 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    // 星をランダムに配置
-    const body = document.querySelector("body");
-    for (let i = 0; i < 100; i++) {
-        const star = document.createElement("div");
-        star.classList.add("star");
-        star.style.top = Math.random() * 100 + "vh";
-        star.style.left = Math.random() * 100 + "vw";
-        star.style.animationDuration = Math.random() * 2 + 1 + "s";
-        body.appendChild(star);
-    }
-
-    // タイムライン関連の変数
     const timelineContainer = document.querySelector(".timeline");
     const prevButton = document.querySelector("#prev-button");
     const nextButton = document.querySelector("#next-button");
@@ -22,19 +10,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentPage = 1;
     let currentPostId = null;
 
-    // 投稿データを取得して描画
     async function fetchPosts(page) {
         try {
             timelineContainer.querySelectorAll(".timeline-item").forEach((item) => item.remove());
 
-            const response = await fetch(`/functions/myring-handler?page=${page}`, {
-                method: "GET",
-                credentials: "include",
+            const response = await fetch(`/myring-handler?page=${page}`, {
+                method: 'GET',
+                credentials: 'include',
             });
 
             if (response.ok) {
                 const posts = await response.json();
-                renderTimeline(posts);
+
+                posts.forEach((post) => {
+                    const timelineItem = document.createElement("div");
+                    timelineItem.classList.add("timeline-item");
+
+                    timelineItem.innerHTML = `
+                        <div class="timeline-marker" style="border-color: ${post.ring_color || "#cccccc"};">
+                            <img src="${post.image_url}" alt="投稿画像" data-post-id="${post.post_id}">
+                        </div>
+                        <div class="timeline-content">
+                            <p class="timeline-title">${post.caption || "キャプションなし"}</p>
+                            <p class="timeline-address">${post.address || "住所情報なし"}</p>
+                            <p class="timeline-date">${new Date(post.created_at).toLocaleString()}</p>
+                        </div>
+                    `;
+
+                    timelineItem.querySelector("img").addEventListener("click", () => {
+                        openModal(post.post_id, post.image_url, post.caption);
+                    });
+
+                    timelineContainer.appendChild(timelineItem);
+                });
 
                 prevButton.disabled = page === 1;
                 nextButton.disabled = posts.length < 10;
@@ -46,32 +54,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // タイムライン描画
-    function renderTimeline(posts) {
-        posts.forEach((post) => {
-            const timelineItem = document.createElement("div");
-            timelineItem.classList.add("timeline-item");
-
-            timelineItem.innerHTML = `
-                <div class="timeline-marker" style="border-color: ${post.ring_color || "#cccccc"};">
-                    <img src="${post.image_url}" alt="投稿画像" data-post-id="${post.post_id}">
-                </div>
-                <div class="timeline-content">
-                    <p class="timeline-title">${post.caption || "キャプションなし"}</p>
-                    <p class="timeline-address">${post.address || "住所情報なし"}</p>
-                    <p class="timeline-date">${new Date(post.created_at).toLocaleString()}</p>
-                </div>
-            `;
-
-            timelineItem.querySelector("img").addEventListener("click", () => {
-                openModal(post.post_id, post.image_url, post.caption);
-            });
-
-            timelineContainer.appendChild(timelineItem);
-        });
-    }
-
-    // モーダルを開く
     function openModal(postId, imageUrl, caption) {
         currentPostId = postId;
         modalImage.src = imageUrl;
@@ -79,15 +61,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         modal.style.display = "flex";
     }
 
-    // モーダルを閉じる
     closeModalButton.addEventListener("click", () => {
         modal.style.display = "none";
     });
 
-    // 投稿を削除
     deletePostButton.addEventListener("click", async () => {
-        if (!confirm("この投稿を削除しますか？")) return;
-
         try {
             const response = await fetch(`/functions/delete-post`, {
                 method: "POST",
@@ -110,7 +88,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // ページ遷移ボタン
     prevButton.addEventListener("click", () => {
         if (currentPage > 1) {
             currentPage--;
@@ -123,6 +100,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         fetchPosts(currentPage);
     });
 
-    // 初期データ取得
     fetchPosts(currentPage);
 });
