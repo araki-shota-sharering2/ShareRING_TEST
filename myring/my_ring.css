@@ -98,20 +98,20 @@ body {
     padding: 15px 20px;
     font-size: 16px;
     border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    cursor: pointer; /* 常にポインタを表示 */
     flex: 1;
     min-width: 140px;
     text-align: center;
 }
-
 .pagination-controls button:hover {
     background-color: #3b4c7f;
 }
 
 .pagination-controls button:disabled {
     background-color: #aaa;
-    cursor: not-allowed;
+    color: #666;
+    cursor: default; /* カーソルを通常の矢印に戻す */
+    pointer-events: none; /* クリックを無効化 */
 }
 
 /* スマホサイズ対応のレスポンシブ設定 */
