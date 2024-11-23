@@ -12,10 +12,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 375px;
+    width: 100%;
+    max-width: 375px; /* スマホ向け固定幅 */
     margin: 0 auto;
     overflow: hidden;
 }
+
 /* ヘッダー */
 header {
     background-color: #394575;
@@ -47,18 +49,19 @@ header {
     color: #cccccc;
 }
 
-/* 選択された投稿の表示領域 */
+/* 投稿詳細エリア */
 .timeline {
     flex: 1;
     width: 100%;
     text-align: center;
-    padding: 20px 10px 80px; /* フッター分の余白を確保 */
+    padding: 20px 10px 110px; /* フッター分とプレビューエリアの余白を確保 */
     overflow-y: auto;
 }
 
 .timeline img {
-    max-width: 100%;
-    height: auto;
+    width: 90%; /* サイズを調整して縦長問題を解消 */
+    max-height: 300px; /* 画像の最大高さを設定 */
+    object-fit: cover;
     border-radius: 10px;
     margin-bottom: 10px;
 }
@@ -88,13 +91,13 @@ header {
     bottom: 60px; /* フッターの上に配置 */
     z-index: 1000;
     justify-content: center;
+    gap: 10px;
 }
 
 .preview-slider img {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    margin: 0 10px;
     cursor: pointer;
     border: 2px solid #555;
     transition: transform 0.3s, border-color 0.3s;
@@ -104,12 +107,13 @@ header {
     transform: scale(1.2);
     border-color: #fff;
 }
+
 /* フッター */
 footer {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 8px;
+    padding: 10px;
     background-color: #4e5c94;
     position: fixed;
     bottom: 0;
@@ -121,20 +125,11 @@ footer {
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* フッターのアイコンスタイル */
 footer a {
     text-align: center;
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
-}
-
-/* フッターのアクティブ状態を示す */
-footer a.active {
-    background-color: #394575;
-    border-top: 3px solid #ffffff;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, padding 0.3s ease;
+    padding: 5px;
 }
 
 footer img {
