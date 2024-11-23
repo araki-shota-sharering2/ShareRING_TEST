@@ -2,37 +2,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     const timeline = document.querySelector(".timeline");
     const previewSlider = document.querySelector(".preview-slider");
     let posts = [];
-    let currentIndex = 0;
+    let currentPage = 1;
+    const itemsPerPage = 8; // 1ページあたりの投稿数
+    const maxVisiblePreviews = 8;
 
     // 投稿を取得してプレビューアイコンを生成
-    async function fetchPosts() {
+    async function fetchPosts(page) {
         try {
-            const response = await fetch("/post-viewing-handler", {
+            const response = await fetch(`/post-viewing-handler?page=${page}`, {
                 method: "GET",
                 credentials: "include",
             });
 
             if (response.ok) {
-                posts = await response.json();
-                posts.forEach((post, index) => {
-                    // プレビューアイコン
-                    const previewItem = document.createElement("img");
-                    previewItem.src = post.image_url;
-                    previewItem.alt = "投稿プレビュー";
-                    previewItem.dataset.index = index;
-
-                    // 初期状態で最初の投稿を選択
-                    if (index === 0) {
-                        previewItem.classList.add("active");
-                        displayPost(index);
-                    }
-
-                    previewItem.addEventListener("click", () => {
-                        switchToPost(index);
-                    });
-
-                    previewSlider.appendChild(previewItem);
-                });
+                const data = await response.json();
+                posts = data;
+                displayPosts();
+                displayPreviewIcons();
             } else {
                 console.error("投稿データの取得に失敗しました");
             }
@@ -41,38 +27,72 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // 指定された投稿を上部に表示
-    function displayPost(index) {
-        const post = posts[index];
+    // 投稿詳細を表示
+    function displayPosts() {
+        timeline.innerHTML = "";
+        if (posts.length === 0) {
+            timeline.innerHTML = "<p>投稿が見つかりません</p>";
+            return;
+        }
+
+        const post = posts[currentPage - 1];
         timeline.innerHTML = `
             <img src="${post.image_url}" alt="投稿画像">
             <div class="post-details">
                 <div class="post-title">
-                    <span>${post.username}</span>
+                    <span>${post.username || "匿名ユーザー"}</span>
                     <span>${post.address || "場所情報なし"}</span>
                 </div>
                 <p class="post-comment">${post.caption || "コメントなし"}</p>
                 <p class="post-location">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
-            </div>
-            <div class="buttons">
-                <button><img src="/assets/icons/navigation.svg" alt="ナビアイコン">ここへ行く</button>
-                <button><img src="/assets/icons/like.svg" alt="いいねアイコン">いいね</button>
-                <button><img src="/assets/icons/save.svg" alt="保存アイコン">Keep</button>
+                <div class="buttons">
+                    <button>
+                        <img src="/assets/icons/navigation.svg" alt="ナビアイコン">ここへ行く
+                    </button>
+                    <button>
+                        <img src="/assets/icons/like.svg" alt="いいねアイコン">いいね
+                    </button>
+                    <button>
+                        <img src="/assets/icons/save.svg" alt="保存アイコン">Keep
+                    </button>
+                </div>
             </div>
         `;
     }
 
-    // 投稿を切り替える（アイコンと上部表示の更新）
+    // プレビューアイコンを表示
+    function displayPreviewIcons() {
+        previewSlider.innerHTML = "";
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + maxVisiblePreviews, posts.length);
+
+        for (let i = startIndex; i < endIndex; i++) {
+            const previewItem = document.createElement("img");
+            previewItem.src = posts[i].image_url;
+            previewItem.alt = "投稿プレビュー";
+            previewItem.dataset.index = i;
+
+            if (i === currentPage - 1) previewItem.classList.add("active");
+
+            previewItem.addEventListener("click", () => {
+                switchToPost(i);
+            });
+
+            previewSlider.appendChild(previewItem);
+        }
+    }
+
+    // 特定の投稿を表示
     function switchToPost(index) {
         document.querySelectorAll(".preview-slider img").forEach((img) => {
             img.classList.remove("active");
         });
         document.querySelector(`[data-index='${index}']`).classList.add("active");
-        currentIndex = index;
-        displayPost(index);
+        currentPage = index + 1;
+        displayPosts();
     }
 
-    // スワイプで投稿を切り替える
+    // スワイプイベントの追加
     function addSwipeEvents() {
         let startX = 0;
 
@@ -84,14 +104,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             const endX = e.changedTouches[0].clientX;
             const diff = endX - startX;
 
-            if (diff > 50 && currentIndex > 0) {
-                switchToPost(currentIndex - 1); // 左スワイプで前の投稿
-            } else if (diff < -50 && currentIndex < posts.length - 1) {
-                switchToPost(currentIndex + 1); // 右スワイプで次の投稿
+            if (diff > 50 && currentPage > 1) {
+                currentPage--;
+                displayPosts();
+                displayPreviewIcons();
+            } else if (diff < -50 && currentPage < posts.length) {
+                currentPage++;
+                displayPosts();
+                displayPreviewIcons();
             }
         });
     }
 
-    fetchPosts();
+    fetchPosts(1); // 初期ロード
     addSwipeEvents();
 });
