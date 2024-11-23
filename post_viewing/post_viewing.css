@@ -14,6 +14,7 @@ body {
     align-items: center;
     max-width: 375px;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 header img {
@@ -26,11 +27,12 @@ header img {
     flex: 1;
     width: 100%;
     text-align: center;
-    padding: 20px;
+    padding: 20px 10px 80px; /* フッター分の余白を確保 */
+    overflow-y: auto;
 }
 
 .timeline img {
-    width: 100%;
+    max-width: 100%;
     height: auto;
     border-radius: 10px;
     margin-bottom: 10px;
@@ -54,9 +56,13 @@ header img {
 .preview-slider {
     display: flex;
     overflow-x: scroll;
-    padding: 10px;
+    padding: 10px 5px;
     background-color: #111;
     width: 100%;
+    position: fixed;
+    bottom: 60px; /* フッターの上に配置 */
+    z-index: 1000;
+    justify-content: center;
 }
 
 .preview-slider img {
@@ -74,49 +80,6 @@ header img {
     border-color: #fff;
 }
 
-footer {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-    background-color: #111;
-}
-
-footer img {
-    width: 30px;
-    height: 30px;
-}
-
-/* ヘッダー */
-header {
-    background-color: #394575;
-    color: white;
-    padding: 15px;
-    width: 100%;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    font-weight: bold;
-}
-
-/* 戻るボタン */
-#back-button {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-#back-button:hover {
-    color: #cccccc;
-}
-/* フッター */
 footer {
     display: flex;
     justify-content: space-around;

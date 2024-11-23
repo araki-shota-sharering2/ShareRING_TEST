@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const timeline = document.querySelector(".timeline");
     const previewSlider = document.querySelector(".preview-slider");
     let posts = [];
+    let currentIndex = 0;
 
     // 投稿を取得してプレビューアイコンを生成
     async function fetchPosts() {
@@ -27,11 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }
 
                     previewItem.addEventListener("click", () => {
-                        document.querySelectorAll(".preview-slider img").forEach((img) => {
-                            img.classList.remove("active");
-                        });
-                        previewItem.classList.add("active");
-                        displayPost(index);
+                        switchToPost(index);
                     });
 
                     previewSlider.appendChild(previewItem);
@@ -63,5 +60,36 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
     }
 
+    // 投稿を切り替える（アイコンと上部表示の更新）
+    function switchToPost(index) {
+        document.querySelectorAll(".preview-slider img").forEach((img) => {
+            img.classList.remove("active");
+        });
+        document.querySelector(`[data-index='${index}']`).classList.add("active");
+        currentIndex = index;
+        displayPost(index);
+    }
+
+    // スワイプで投稿を切り替える
+    function addSwipeEvents() {
+        let startX = 0;
+
+        previewSlider.addEventListener("touchstart", (e) => {
+            startX = e.touches[0].clientX;
+        });
+
+        previewSlider.addEventListener("touchend", (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const diff = endX - startX;
+
+            if (diff > 50 && currentIndex > 0) {
+                switchToPost(currentIndex - 1); // 左スワイプで前の投稿
+            } else if (diff < -50 && currentIndex < posts.length - 1) {
+                switchToPost(currentIndex + 1); // 右スワイプで次の投稿
+            }
+        });
+    }
+
     fetchPosts();
+    addSwipeEvents();
 });
