@@ -21,23 +21,15 @@ header img {
     margin: 10px 0;
 }
 
+/* 選択された投稿の表示領域 */
 .timeline {
     flex: 1;
     width: 100%;
-    overflow-y: auto;
+    text-align: center;
     padding: 20px;
 }
 
-.timeline-item {
-    background-color: #222;
-    margin-bottom: 20px;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.timeline-item img {
+.timeline img {
     width: 100%;
     height: auto;
     border-radius: 10px;
@@ -46,6 +38,7 @@ header img {
 
 .user-info {
     display: flex;
+    justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }
@@ -57,35 +50,28 @@ header img {
     margin-right: 10px;
 }
 
-.buttons {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
-}
-
-button {
-    background-color: #4e5c94;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
+/* プレビューアイコン（スライド可能） */
 .preview-slider {
     display: flex;
-    overflow-x: auto;
+    overflow-x: scroll;
     padding: 10px;
     background-color: #111;
+    width: 100%;
 }
 
 .preview-slider img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    margin: 0 5px;
+    margin: 0 10px;
     cursor: pointer;
     border: 2px solid #555;
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.preview-slider img.active {
+    transform: scale(1.2);
+    border-color: #fff;
 }
 
 footer {
