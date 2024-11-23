@@ -46,12 +46,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const post = posts[index];
         timeline.innerHTML = `
             <img src="${post.image_url}" alt="投稿画像">
-            <div class="user-info">
-                <img src="${post.profile_image}" alt="プロフィール画像">
-                <p>${post.username}</p>
+            <div class="post-details">
+                <div class="post-title">
+                    <span>${post.username}</span>
+                    <span>${post.address || "場所情報なし"}</span>
+                </div>
+                <p class="post-comment">${post.caption || "コメントなし"}</p>
+                <p class="post-location">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
             </div>
-            <p>${post.caption || "コメントなし"}</p>
-            <p>${post.address || "住所なし"}</p>
             <div class="buttons">
                 <button><img src="/assets/icons/navigation.svg" alt="ナビアイコン">ここへ行く</button>
                 <button><img src="/assets/icons/like.svg" alt="いいねアイコン">いいね</button>
