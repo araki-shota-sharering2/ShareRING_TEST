@@ -54,13 +54,13 @@ header {
     flex: 1;
     width: 100%;
     text-align: center;
-    padding: 20px 10px 110px; /* フッター分とプレビューエリアの余白を確保 */
+    padding: 20px 10px 120px; /* フッター分とプレビューエリアの余白を確保 */
     overflow-y: auto;
 }
 
 .timeline img {
-    width: 90%; /* サイズを調整して縦長問題を解消 */
-    max-height: 300px; /* 画像の最大高さを設定 */
+    width: 90%;
+    max-height: 250px;
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 10px;
@@ -80,17 +80,48 @@ header {
     margin-right: 10px;
 }
 
-/* プレビューアイコン（スライド可能） */
+/* ボタンエリア */
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.buttons button {
+    display: flex;
+    align-items: center;
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    gap: 5px;
+    transition: transform 0.2s;
+}
+
+.buttons button img {
+    width: 20px;
+    height: 20px;
+}
+
+.buttons button:hover {
+    transform: scale(1.1);
+    background-color: #394575;
+}
+
+/* プレビューアイコン（最大6つ表示） */
 .preview-slider {
     display: flex;
-    overflow-x: scroll;
+    overflow-x: auto;
     padding: 10px 5px;
     background-color: #111;
     width: 100%;
     position: fixed;
     bottom: 60px; /* フッターの上に配置 */
     z-index: 1000;
-    justify-content: center;
+    justify-content: start;
     gap: 10px;
 }
 
