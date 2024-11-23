@@ -8,8 +8,9 @@
 </head>
 <body>
     <header>
-        <img src="/assets/images/logo.png" alt="ShareRING ロゴ">
+        <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
     </header>
+
 
     <!-- 投稿の詳細表示領域 -->
     <main class="timeline">
@@ -21,14 +22,15 @@
         <!-- スライド用の投稿プレビューが挿入される -->
     </section>
 
+    <!-- フッター -->
     <footer>
-        <a href="/home/home.html"><img src="/assets/images/footer/home.svg" alt="ホーム"></a>
-        <a href="/post_viewing/post_viewing.html"><img src="/assets/images/footer/post_viewing.svg" alt="投稿を見る"></a>
-        <a href="/post_creation/post_creation.html"><img src="/assets/images/footer/post_creation.svg" alt="投稿作成"></a>
-        <a href="/ring_navi/ring_navi.html"><img src="/assets/images/footer/ring_navi.svg" alt="RING-NAVI"></a>
-        <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="アチーブメント"></a>
+        <a href="/home/home.html"><img src="/assets/images/footer/home.svg" alt="Home"></a>
+        <a href="/post_viewing/post_viewing.html" class="active"><img src="/assets/images/footer/post_viewing.svg" alt="View"></a>
+        <a href="/post_creation/search_place.html"><img src="/assets/images/footer/post_creation.svg" alt="Create"></a>
+        <a href="/ring_navi/ring_navi.html"><img src="/assets/images/footer/ring_navi.svg" alt="AI"></a>
+        <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="Achievements"></a>
     </footer>
-
+    
     <script src="/post_viewing/post_viewing.js"></script>
 </body>
 </html>
