@@ -54,7 +54,7 @@ header {
     flex: 1;
     width: 100%;
     text-align: center;
-    padding: 20px 10px 120px; /* フッター分とプレビューエリアの余白を確保 */
+    padding: 20px 10px 90px; /* プレビューエリアの余白を確保 */
     overflow-y: auto;
 }
 
@@ -111,18 +111,17 @@ header {
     background-color: #394575;
 }
 
-/* プレビューアイコン（最大6つ表示） */
+/* プレビューアイコン（スライド可能） */
 .preview-slider {
     display: flex;
-    overflow-x: auto;
-    padding: 10px 5px;
+    overflow-x: scroll;
+    padding: 10px;
     background-color: #111;
     width: 100%;
-    position: fixed;
-    bottom: 60px; /* フッターの上に配置 */
-    z-index: 1000;
-    justify-content: start;
+    position: relative; /* プレビューをフッターから分離 */
+    justify-content: center;
     gap: 10px;
+    margin-bottom: 10px;
 }
 
 .preview-slider img {

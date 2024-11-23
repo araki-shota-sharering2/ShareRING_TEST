@@ -33,9 +33,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     previewSlider.appendChild(previewItem);
                 });
-
-                // 最大6つのプレビューアイコンを表示
-                limitPreviewIcons();
             } else {
                 console.error("投稿データの取得に失敗しました");
             }
@@ -73,22 +70,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         displayPost(index);
     }
 
-    // 最大6つのプレビューアイコンを表示する
-    function limitPreviewIcons() {
-        const icons = document.querySelectorAll(".preview-slider img");
-        icons.forEach((icon, index) => {
-            icon.style.display = index < 6 ? "block" : "none"; // 最初の6個のみ表示
+    // スワイプで投稿を切り替える
+    function addSwipeEvents() {
+        let startX = 0;
+
+        previewSlider.addEventListener("touchstart", (e) => {
+            startX = e.touches[0].clientX;
         });
 
-        previewSlider.addEventListener("scroll", () => {
-            const scrollLeft = previewSlider.scrollLeft;
-            const iconWidth = icons[0].offsetWidth + 10; // アイコンの幅 + 余白
-            const start = Math.floor(scrollLeft / iconWidth);
-            icons.forEach((icon, index) => {
-                icon.style.display = index >= start && index < start + 6 ? "block" : "none";
-            });
+        previewSlider.addEventListener("touchend", (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const diff = endX - startX;
+
+            if (diff > 50 && currentIndex > 0) {
+                switchToPost(currentIndex - 1); // 左スワイプで前の投稿
+            } else if (diff < -50 && currentIndex < posts.length - 1) {
+                switchToPost(currentIndex + 1); // 右スワイプで次の投稿
+            }
         });
     }
 
     fetchPosts();
+    addSwipeEvents();
 });
