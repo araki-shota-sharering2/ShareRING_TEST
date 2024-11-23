@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentPage = 1;
     const itemsPerPage = 8;
 
+    // 投稿を取得してプレビューアイコンを生成
     async function fetchPosts(page) {
         try {
             const response = await fetch(`/post-viewing-handler?page=${page}`, {
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (response.ok) {
                 const data = await response.json();
-                posts = data.posts;
+                posts = data.posts || [];
                 displayPosts();
                 displayPreviewIcons();
             } else {
@@ -25,18 +26,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // 投稿詳細を表示
     function displayPosts() {
         timelineContainer.innerHTML = "";
         posts.forEach((post) => {
-            const postItem = `
+            const postHTML = `
                 <div class="timeline-item">
                     <div class="timeline-image">
                         <img src="${post.image_url}" alt="投稿画像">
                     </div>
                     <div class="timeline-content">
                         <div class="user-info">
-                            <img src="${post.profile_image}" alt="ユーザー画像">
-                            <p>${post.username}</p>
+                            <img src="${post.profile_image || '/assets/images/default-user.png'}" alt="ユーザー画像">
+                            <p>${post.username || "匿名ユーザー"}</p>
                         </div>
                         <p class="timeline-caption">${post.caption || "キャプションなし"}</p>
                         <p class="timeline-address">${post.address || "住所なし"}</p>
@@ -55,10 +57,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                 </div>
             `;
-            timelineContainer.innerHTML += postItem;
+            timelineContainer.innerHTML += postHTML;
         });
     }
 
+    // プレビューアイコンを表示
     function displayPreviewIcons() {
         previewSlider.innerHTML = "";
         const startIndex = (currentPage - 1) * itemsPerPage;
@@ -84,13 +87,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // 特定の投稿を表示
     function displayPost(index) {
         const post = posts[index];
         timelineContainer.innerHTML = `
             <img src="${post.image_url}" alt="投稿画像">
             <div class="post-details">
                 <div class="post-title">
-                    <span>${post.username}</span>
+                    <span>${post.username || "匿名ユーザー"}</span>
                     <span>${post.address || "場所情報なし"}</span>
                 </div>
                 <p class="post-comment">${post.caption || "コメントなし"}</p>
@@ -110,6 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
     }
 
+    // スワイプイベントの追加
     function addSwipeEvents() {
         let startX = 0;
 
