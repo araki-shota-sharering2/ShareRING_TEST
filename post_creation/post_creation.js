@@ -1,22 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
+    enforceLandscapeMode();
     displayLocationWithIcon();
     setupPhotoCapture();
     setupColorPicker();
     setupShareButton();
 });
 
+function enforceLandscapeMode() {
+    if (window.matchMedia("(orientation: landscape)").matches) {
+        console.log("Landscape mode detected");
+    } else {
+        alert("横向きモードで撮影してください！");
+    }
+    window.addEventListener("orientationchange", () => {
+        if (!window.matchMedia("(orientation: landscape)").matches) {
+            alert("横向きモードで撮影してください！");
+        }
+    });
+}
+
 function displayLocationWithIcon() {
     const locationData = JSON.parse(localStorage.getItem("selectedLocation"));
     const locationNameElement = document.getElementById("locationName");
 
     if (locationData && locationData.name) {
-        // Display the location name dynamically
         locationNameElement.innerHTML = `${locationData.name}
             <a href="/post_creation/search_place.html">
                 <img src="/assets/images/post_creation/reload.svg" alt="変更アイコン" id="changeLocationIcon">
             </a>`;
     } else {
-        // Fallback if no location is available
         locationNameElement.innerHTML = `位置情報が取得できません
             <a href="/post_creation/search_place.html">
                 <img src="/assets/images/post_creation/reload.svg" alt="変更アイコン" id="changeLocationIcon">
@@ -65,9 +77,8 @@ function setupShareButton() {
         const caption = document.getElementById("captionInput").value;
         const locationData = JSON.parse(localStorage.getItem("selectedLocation"));
         const ringColor = localStorage.getItem("ringColor");
-
-        // ローカルストレージから画像データを取得し、Blobに変換
         const imageDataUrl = localStorage.getItem("capturedPhoto");
+
         if (!imageDataUrl) {
             alert("写真がありません。撮影してください。");
             return;
@@ -76,7 +87,6 @@ function setupShareButton() {
         const response = await fetch(imageDataUrl);
         const imageBlob = await response.blob();
 
-        // フォームデータを作成
         const formData = new FormData();
         formData.append("caption", caption);
         formData.append("location", JSON.stringify(locationData));
