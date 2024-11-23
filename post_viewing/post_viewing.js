@@ -1,15 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const timelineContainer = document.querySelector(".timeline");
-    const prevButton = document.querySelector("#prev-button");
-    const nextButton = document.querySelector("#next-button");
-    let currentPage = 1;
+    const timeline = document.querySelector(".timeline");
+    const previewSlider = document.querySelector(".preview-slider");
 
-    async function fetchPosts(page) {
+    async function fetchPosts() {
         try {
-            // 投稿をクリア
-            timelineContainer.innerHTML = "";
-
-            const response = await fetch(`/post-viewing-handler?page=${page}`, {
+            const response = await fetch("/post-viewing-handler", {
                 method: "GET",
                 credentials: "include",
             });
@@ -17,23 +12,30 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (response.ok) {
                 const posts = await response.json();
                 posts.forEach((post) => {
-                    const timelineItem = document.createElement("div");
-                    timelineItem.classList.add("timeline-item");
-                    timelineItem.innerHTML = `
-                        <div class="timeline-image">
-                            <img src="${post.image_url}" alt="投稿画像">
+                    // メインタイムライン投稿
+                    const postItem = document.createElement("div");
+                    postItem.classList.add("timeline-item");
+                    postItem.innerHTML = `
+                        <img src="${post.image_url}" alt="投稿画像">
+                        <div class="user-info">
+                            <img src="${post.profile_image}" alt="プロフィール画像">
+                            <p>${post.username}</p>
                         </div>
-                        <div class="timeline-content">
-                            <p class="timeline-caption">${post.caption || "キャプションなし"}</p>
-                            <p class="timeline-address">${post.address || "住所なし"}</p>
-                            <p class="timeline-date">${new Date(post.created_at).toLocaleString()}</p>
+                        <p>${post.caption || "コメントなし"}</p>
+                        <p>${post.address || "住所なし"}</p>
+                        <div class="buttons">
+                            <button>ここへ行く</button>
+                            <button>いいね</button>
+                            <button>Keep</button>
                         </div>
                     `;
-                    timelineContainer.appendChild(timelineItem);
-                });
+                    timeline.appendChild(postItem);
 
-                prevButton.disabled = page === 1;
-                nextButton.disabled = posts.length < 10;
+                    // プレビューアイコン
+                    const previewItem = document.createElement("img");
+                    previewItem.src = post.image_url;
+                    previewSlider.appendChild(previewItem);
+                });
             } else {
                 console.error("投稿データの取得に失敗しました");
             }
@@ -42,17 +44,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    prevButton.addEventListener("click", () => {
-        if (currentPage > 1) {
-            currentPage--;
-            fetchPosts(currentPage);
-        }
-    });
-
-    nextButton.addEventListener("click", () => {
-        currentPage++;
-        fetchPosts(currentPage);
-    });
-
-    fetchPosts(currentPage);
+    fetchPosts();
 });
