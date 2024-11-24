@@ -13,6 +13,7 @@ export async function onRequestGet(context) {
             posts.caption, 
             posts.address, 
             posts.created_at, 
+            posts.ring_color, 
             users.username, 
             users.profile_image
          FROM user_posts AS posts

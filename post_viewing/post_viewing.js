@@ -37,7 +37,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const post = posts[currentPage - 1];
         timeline.innerHTML = `
-            <img src="${post.image_url}" alt="投稿画像">
+            <div class="post-frame" style="border-color: ${post.ring_color || "#4e5c94"};">
+                <img src="${post.image_url}" alt="投稿画像">
+            </div>
             <div class="post-details">
                 <div class="post-title">
                     <span>${post.username || "匿名ユーザー"}</span>
