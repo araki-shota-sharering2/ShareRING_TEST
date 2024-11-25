@@ -100,6 +100,8 @@ header {
     object-position: center; /* 中央を基準にトリミング */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 影を追加 */
     flex-shrink: 0; /* スマホ画面で画像が縮まないようにする */
+    max-width: 100%; /* 画面幅を超えないように制限 */
+    max-height: 100%; /* 縦幅を超えないように制限 */
 }
 
 .post-comment {
