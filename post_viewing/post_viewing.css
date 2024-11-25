@@ -94,14 +94,14 @@ header {
 .user-avatar {
     width: 40px; /* 固定幅 */
     height: 40px; /* 固定高さ */
-    border-radius: 50%;
+    border-radius: 50%; /* 円形にする */
     border: 2px solid #4e5c94; /* アバター画像の枠線 */
     object-fit: cover; /* アスペクト比を維持してトリミング */
     object-position: center; /* 中央を基準にトリミング */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 影を追加 */
     flex-shrink: 0; /* スマホ画面で画像が縮まないようにする */
-    max-width: 100%; /* 画面幅を超えないように制限 */
-    max-height: 100%; /* 縦幅を超えないように制限 */
+    max-width: 40px; /* 最大幅を固定 */
+    max-height: 40px; /* 最大高さを固定 */
 }
 
 .post-comment {
@@ -146,6 +146,7 @@ header {
     background-color: #394575;
 }
 
+/* プレビューエリア */
 .preview-slider {
     display: flex;
     overflow-x: auto;
@@ -155,7 +156,7 @@ header {
     justify-content: center;
     gap: 10px;
     margin: 10px 0;
-    scroll-behavior: smooth; /* スムーズスクロール */
+    scroll-behavior: smooth;
 }
 
 .preview-slider img {
@@ -172,7 +173,7 @@ header {
     border-color: #fff;
 }
 
-
+/* スクロールバー */
 .preview-slider::-webkit-scrollbar {
     height: 8px;
 }
@@ -186,6 +187,7 @@ header {
     background: #888;
 }
 
+/* フッター */
 footer {
     display: flex;
     justify-content: space-around;
