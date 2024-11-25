@@ -3,9 +3,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body {
+  }
+  
+  body {
     font-family: Arial, sans-serif;
     max-width: 375px;
     margin: 0 auto;
@@ -16,10 +16,10 @@ body {
     height: 100vh;
     color: #ccc;
     overflow: hidden;
-}
-
-/* 星のスタイル */
-.star {
+  }
+  
+  /* 星のスタイル */
+  .star {
     position: absolute;
     width: 2px;
     height: 2px;
@@ -27,20 +27,20 @@ body {
     border-radius: 50%;
     animation: twinkle 2s infinite ease-in-out alternate;
     opacity: 0.5;
-}
-
-/* 星の輝きアニメーション */
-@keyframes twinkle {
+  }
+  
+  /* 星の輝きアニメーション */
+  @keyframes twinkle {
     0% {
         opacity: 0.3;
     }
     100% {
         opacity: 1;
     }
-}
-
-/* ヘッダー */
-header {
+  }
+  
+  /* ヘッダー */
+  header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -49,20 +49,20 @@ header {
     color: white;
     width: 100%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.header-logo img {
+  }
+  
+  .header-logo img {
     width: 120px;
-}
-
-.header-icons img {
+  }
+  
+  .header-icons img {
     width: 24px;
     height: 24px;
     margin: 0 10px;
-}
-
-/* フッター */
-footer {
+  }
+  
+  /* フッター */
+  footer {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -76,25 +76,25 @@ footer {
     transform: translateX(-50%);
     z-index: 1000;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* フッターのアイコンスタイル */
-footer a {
+  }
+  
+  /* フッターのアイコンスタイル */
+  footer a {
     text-align: center;
     color: white;
     text-decoration: none;
     padding: 10px 15px;
-}
-
-/* フッターのアクティブ状態を示す */
-footer a.active {
+  }
+  
+  /* フッターのアクティブ状態を示す */
+  footer a.active {
     background-color: #394575;
     border-top: 3px solid #ffffff;
     border-radius: 5px;
     transition: background-color 0.3s ease, padding 0.3s ease;
-}
-
-footer img {
+  }
+  
+  footer img {
     width: 25px;
     height: 25px;
-}
+  }
