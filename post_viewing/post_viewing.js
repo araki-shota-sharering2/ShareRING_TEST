@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const timeline = document.querySelector(".timeline");
-    const previewSlider = document.querySelector(".preview-slider");
     let posts = [];
     let currentPage = 0;
     let isFetching = false;
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (newPosts.length > 0) {
                     posts = [...posts, ...newPosts];
                     displayPosts(newPosts);
-                    displayPreviewIcons(newPosts);
                     currentPage++;
                 }
                 isFetching = false;
@@ -36,50 +34,27 @@ document.addEventListener("DOMContentLoaded", async () => {
             const postFrame = document.createElement("div");
             postFrame.className = "post-frame";
 
-            const ringColor = post.ring_color || "#FFFFFF"; // NULLの場合はデフォルトの白
+            const ringColor = post.ring_color || "#FFFFFF";
 
             postFrame.innerHTML = `
-                <img src="${post.image_url}" alt="投稿画像" style="border-color: ${ringColor};">
+                <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
                 <div class="post-details">
-                    <div class="post-title">
-                        <div class="user-info">
-                            <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
-                            <span>${post.username || "匿名ユーザー"}</span>
-                        </div>
-                        <span>${post.address || "場所情報なし"}</span>
+                    <div class="user-info">
+                        <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
+                        <span>${post.username || "匿名ユーザー"}</span>
                     </div>
                     <p class="post-comment">${post.caption || "コメントなし"}</p>
                     <p class="post-location">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
+                </div>
+                <div class="post-actions">
+                    <button class="like-button">いいね</button>
+                    <button class="keep-button">Keep</button>
+                    <textarea class="comment-box" placeholder="コメントを入力"></textarea>
                 </div>
             `;
             timeline.appendChild(postFrame);
         });
     }
-
-    function displayPreviewIcons(newPosts) {
-        newPosts.forEach((post, index) => {
-            const previewItem = document.createElement("img");
-            previewItem.src = post.image_url;
-            previewItem.alt = "投稿プレビュー";
-            previewItem.dataset.index = posts.length - newPosts.length + index;
-
-            previewItem.addEventListener("click", () => {
-                const scrollPosition = timeline.children[previewItem.dataset.index].offsetLeft;
-                timeline.scrollTo({ left: scrollPosition, behavior: "smooth" });
-            });
-
-            previewSlider.appendChild(previewItem);
-        });
-    }
-
-    timeline.addEventListener("scroll", () => {
-        if (
-            timeline.scrollLeft + timeline.clientWidth >=
-            timeline.scrollWidth - 50
-        ) {
-            fetchPosts();
-        }
-    });
 
     await fetchPosts();
 });
