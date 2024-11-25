@@ -163,6 +163,18 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
     createStars();
   });
 
+    function calculateBMI() {
+  const height = parseFloat(document.getElementById("height").value) / 100; // 身長をメートルに変換
+  const weight = parseFloat(document.getElementById("weight").value);
+
+  if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+    alert("正しい身長と体重を入力してください。");
+    return;
+  }
+
+  const bmi = (weight / (height * height)).toFixed(2);
+  document.getElementById("bmiResult").textContent = `BMI: ${bmi}`;
+}
       
 
     // 星をランダムに配置
