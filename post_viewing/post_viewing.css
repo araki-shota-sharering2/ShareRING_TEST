@@ -102,10 +102,11 @@ header {
     align-items: center;
     gap: 10px;
 }
+
 .user-avatar {
     width: 40px; /* 固定幅 */
     height: 40px; /* 固定高さ */
-    border-radius: 50%; /* 円形にする */
+    border-radius: 5px; /* 四角形の角を少し丸める */
     border: 2px solid #4e5c94; /* アバター画像の枠線 */
     object-fit: cover; /* アスペクト比を維持してトリミング */
     object-position: center; /* 中央を基準にトリミング */
@@ -114,8 +115,6 @@ header {
     max-width: 40px; /* 最大幅を固定 */
     max-height: 40px; /* 最大高さを固定 */
 }
-
-
 
 .post-comment {
     margin: 5px 0;
@@ -154,6 +153,20 @@ header {
 .preview-slider img.active {
     transform: scale(1.2);
     border-color: #fff;
+}
+
+/* スクロールバー */
+.preview-slider::-webkit-scrollbar {
+    height: 8px;
+}
+
+.preview-slider::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+}
+
+.preview-slider::-webkit-scrollbar-thumb:hover {
+    background: #888;
 }
 
 /* フッター */
