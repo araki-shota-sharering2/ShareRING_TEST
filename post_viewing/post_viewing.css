@@ -53,7 +53,18 @@ header {
     width: 100%;
     text-align: center;
     padding: 10px;
-    overflow-y: auto;
+    overflow: hidden; /* 縦方向のスクロールを隠す */
+    display: flex;
+    flex-direction: row; /* 横方向に並べる */
+    gap: 10px;
+    scroll-behavior: smooth;
+}
+
+.timeline .post-frame {
+    flex: 0 0 100%;
+    max-width: 100%;
+    text-align: center;
+    display: inline-block;
 }
 
 .timeline img {
@@ -92,8 +103,8 @@ header {
 }
 
 .user-avatar {
-    width: 40px;
-    height: 40px;
+    width: auto;
+    height: auto;
     border-radius: 50%;
     border: 2px solid #4e5c94;
     object-fit: cover;
