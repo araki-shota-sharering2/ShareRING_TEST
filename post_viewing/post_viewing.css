@@ -1,174 +1,162 @@
-/* 全体のスタイル */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: #0d0d2b;
+    color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0;
-    margin: 0;
-    max-width: 375px;
-    margin: 0 auto;
-    height: 100vh;
-    overflow: hidden;
-}
-
-/* ヘッダーのスタイル */
-header {
-    background-color: #4e5c94;
-    color: white;
     width: 100%;
-    padding: 1rem;
-    text-align: center;
-    position: relative;
-}
-
-.header-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 1.2rem;
-    max-width: 80%;
+    max-width: 375px; /* スマホ向け固定幅 */
+    margin: 0 auto;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
-/* 変更アイコンのスタイル */
-#changeLocationIcon {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    vertical-align: middle;
-}
-
-/* プレビューコンテナ */
-#photoPreviewContainer {
+/* ヘッダー */
+header {
+    background-color: #394575;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    font-weight: bold;
+}
+
+/* 戻るボタン */
+#back-button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#back-button:hover {
+    color: #cccccc;
+}
+
+/* 投稿詳細エリア */
+.timeline {
     flex: 1;
     width: 100%;
-    padding: 1rem;
+    text-align: center;
+    padding: 10px;
+    overflow-y: auto;
 }
 
-/* RINGと色選択の横並び */
-.ring-and-color {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-/* RINGのプレビュー枠 */
-#ringPreview {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: #d3d3d3;
-    width: 160px;
-    height: 160px;
-    border: 5px solid #4e5c94;
-    position: relative;
-}
-
-/* 「写真を撮影する」ボタン */
-#takePhotoButton {
-    display: inline-block;
-    color: white;
-    background-color: #4e5c94;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s, transform 0.2s;
-    z-index: 1;
-    position: relative;
-}
-
-#takePhotoButton:hover {
-    background-color: #394575;
-    transform: translateY(-2px);
-}
-
-#takePhotoButton:active {
-    background-color: #283259;
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* プレビュー画像 */
-#photoPreview {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
+.timeline img {
+    width: 90%;
+    max-height: 200px; /* 高さを抑える */
     object-fit: cover;
-    position: absolute;
-    z-index: 2;
-    display: none;
+    border-radius: 10px;
+    border: 5px solid #394575; /* かっこいいフレーム */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* シャドウ追加 */
+    margin-bottom: 10px;
 }
 
-/* カラー選択部分 */
-.color-selection {
+/* 投稿の詳細エリア */
+.post-details {
+    text-align: left;
+    padding: 0 10px;
+}
+
+.post-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.post-title span {
+    font-size: 14px;
+    color: #aaa; /* 場所情報の色を薄く */
+}
+
+.post-comment {
+    margin: 5px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #ddd; /* コメントの色をやや薄めに */
+}
+
+.post-location {
+    font-size: 12px;
+    color: #888; /* 場所情報をさらに薄く */
+}
+
+/* ボタンエリア */
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.buttons button {
     display: flex;
     align-items: center;
-}
-
-.color-selection label {
-    margin-right: 0.5rem;
-}
-
-/* テキストエリア */
-textarea {
-    width: calc(100% - 2rem);
-    height: 100px;
-    margin: 1rem;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    resize: none;
-}
-
-/* シェアボタン */
-#shareButton {
-    width: calc(100% - 2rem);
-    margin: 1rem;
-    padding: 12px;
-    font-size: 1.1rem;
-    color: #fff;
-    background: linear-gradient(135deg, #ff7e5f, #feb47b, #ff7e5f);
+    background-color: #4e5c94;
+    color: white;
     border: none;
-    border-radius: 50px;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px; /* ボタンサイズを小さく */
     cursor: pointer;
-    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    gap: 5px;
+    transition: transform 0.2s;
 }
 
-#shareButton:hover {
-    background: linear-gradient(135deg, #ff9a8b, #ff6a88, #ff99ac);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+.buttons button img {
+    width: 15px;
+    height: 15px;
 }
 
-#shareButton:active {
-    background: linear-gradient(135deg, #ff6a88, #ff99ac, #ff9a8b);
-    transform: translateY(1px);
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+.buttons button:hover {
+    transform: scale(1.1);
+    background-color: #394575;
 }
 
-/* フッターのスタイル */
+/* プレビューアイコン（スライド可能） */
+.preview-slider {
+    display: flex;
+    overflow-x: scroll;
+    padding: 10px 5px;
+    background-color: #111;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0; /* フッターと分離 */
+}
+
+.preview-slider img {
+    width: 40px; /* アイコンサイズを小さく */
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #555;
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.preview-slider img.active {
+    transform: scale(1.2);
+    border-color: #fff;
+}
+
+/* フッター */
 footer {
     display: flex;
     justify-content: space-around;
@@ -189,31 +177,10 @@ footer a {
     text-align: center;
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
-}
-
-footer a.active {
-    background-color: #394575;
-    border-top: 3px solid #ffffff;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, padding 0.3s ease;
+    padding: 5px;
 }
 
 footer img {
-    width: 25px;
-    height: 25px;
-}
-
-/* 横向きレイアウト */
-@media (orientation: landscape) {
-    body {
-        flex-direction: row;
-    }
-    #photoPreviewContainer {
-        flex-direction: row;
-        justify-content: center;
-    }
-    .ring-and-color {
-        flex-direction: row;
-    }
+    width: 20px; /* アイコンサイズを小さく */
+    height: 20px;
 }
