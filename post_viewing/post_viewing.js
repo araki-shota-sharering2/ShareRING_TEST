@@ -35,8 +35,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         newPosts.forEach((post) => {
             const postFrame = document.createElement("div");
             postFrame.className = "post-frame";
+
+            const ringColor = post.ring_color || "#FFFFFF"; // NULLの場合はデフォルトの白
+
             postFrame.innerHTML = `
-                <img src="${post.image_url}" alt="投稿画像">
+                <img src="${post.image_url}" alt="投稿画像" style="border-color: ${ringColor};">
                 <div class="post-details">
                     <div class="post-title">
                         <div class="user-info">
