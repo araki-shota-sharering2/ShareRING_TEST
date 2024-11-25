@@ -3,16 +3,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     const previewSlider = document.querySelector(".preview-slider");
     let posts = [];
     let currentPage = 1;
+    const itemsPerPage = 8; // 1ページあたりの投稿数
+    const maxVisiblePreviews = 8;
 
-    // 投稿を取得
-    async function fetchPosts() {
+    // 投稿を取得してプレビューアイコンを生成
+    async function fetchPosts(page) {
         try {
-            const response = await fetch("/post-viewing-handler?page=1", {
+            const response = await fetch(`/post-viewing-handler?page=${page}`, {
                 method: "GET",
                 credentials: "include",
             });
+
             if (response.ok) {
-                posts = await response.json();
+                const data = await response.json();
+                posts = data;
                 displayPosts();
                 displayPreviewIcons();
             } else {
@@ -23,62 +27,82 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // 現在の投稿を表示
+    // 投稿詳細を表示
     function displayPosts() {
         timeline.innerHTML = "";
-        if (posts.length > 0) {
-            const post = posts[currentPage - 1];
-            timeline.innerHTML = `
-                <div class="post-frame" style="border-color: ${post.ring_color || "#4e5c94"};">
-                    <img src="${post.image_url}" alt="投稿画像">
-                </div>
-                <div class="post-details">
-                    <div class="post-title">
-                        <span>${post.username || "匿名ユーザー"}</span>
-                        <span>${post.address || "場所情報なし"}</span>
-                    </div>
-                    <p class="post-comment">${post.caption || "コメントなし"}</p>
-                    <p class="post-location">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
-                </div>`;
-        } else {
-            timeline.innerHTML = "<p>投稿がありません。</p>";
+        if (posts.length === 0) {
+            timeline.innerHTML = "<p>投稿が見つかりません</p>";
+            return;
         }
+
+        const post = posts[currentPage - 1];
+        timeline.innerHTML = `
+            <div class="post-frame" style="border-color: ${post.ring_color || "#4e5c94"};">
+                <img src="${post.image_url}" alt="投稿画像">
+            </div>
+            <div class="post-details">
+                <div class="post-title">
+                    <span>${post.username || "匿名ユーザー"}</span>
+                    <span>${post.address || "場所情報なし"}</span>
+                </div>
+                <p class="post-comment">${post.caption || "コメントなし"}</p>
+                <p class="post-location">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
+                <div class="buttons">
+                    <button>
+                        <img src="/assets/icons/navigation.svg" alt="ナビアイコン">ここへ行く
+                    </button>
+                    <button>
+                        <img src="/assets/icons/like.svg" alt="いいねアイコン">いいね
+                    </button>
+                    <button>
+                        <img src="/assets/icons/save.svg" alt="保存アイコン">Keep
+                    </button>
+                </div>
+            </div>
+        `;
     }
 
     // プレビューアイコンを表示
     function displayPreviewIcons() {
         previewSlider.innerHTML = "";
-        posts.forEach((post, index) => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + maxVisiblePreviews, posts.length);
+
+        for (let i = startIndex; i < endIndex; i++) {
             const previewItem = document.createElement("img");
-            previewItem.src = post.image_url;
+            previewItem.src = posts[i].image_url;
             previewItem.alt = "投稿プレビュー";
-            previewItem.dataset.index = index;
-            if (index === currentPage - 1) {
-                previewItem.classList.add("active");
-            }
+            previewItem.dataset.index = i;
+
+            if (i === currentPage - 1) previewItem.classList.add("active");
+
             previewItem.addEventListener("click", () => {
-                switchToPost(index);
+                switchToPost(i);
             });
+
             previewSlider.appendChild(previewItem);
-        });
+        }
     }
 
-    // 投稿切り替え
+    // 特定の投稿を表示
     function switchToPost(index) {
+        document.querySelectorAll(".preview-slider img").forEach((img) => {
+            img.classList.remove("active");
+        });
+        document.querySelector(`[data-index='${index}']`).classList.add("active");
         currentPage = index + 1;
         displayPosts();
-        displayPreviewIcons();
     }
 
-    // スワイプイベント追加
+    // スワイプイベントの追加
     function addSwipeEvents() {
         let startX = 0;
 
-        timeline.addEventListener("touchstart", (e) => {
+        previewSlider.addEventListener("touchstart", (e) => {
             startX = e.touches[0].clientX;
         });
 
-        timeline.addEventListener("touchend", (e) => {
+        previewSlider.addEventListener("touchend", (e) => {
             const endX = e.changedTouches[0].clientX;
             const diff = endX - startX;
 
@@ -94,7 +118,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // 初期化
-    await fetchPosts();
+    fetchPosts(1); // 初期ロード
     addSwipeEvents();
 });
