@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const previewSlider = document.querySelector(".preview-slider");
     let posts = [];
     let currentPage = 1;
-    let startX = 0; // スワイプ開始位置
+    let startX = 0;
 
     // 投稿データ取得
     async function fetchPosts() {
@@ -40,7 +40,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
             <div class="post-details">
                 <div class="post-title">
-                    <span>${post.username || "匿名ユーザー"}</span>
+                    <div class="user-info">
+                        <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
+                        <span>${post.username || "匿名ユーザー"}</span>
+                    </div>
                     <span>${post.address || "場所情報なし"}</span>
                 </div>
                 <p class="post-comment">${post.caption || "コメントなし"}</p>
@@ -99,12 +102,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const diff = endX - startX;
 
         if (diff > 50 && currentPage > 1) {
-            // スワイプ右: 前の投稿
             currentPage--;
             displayPosts();
             updateActivePreview(currentPage - 1);
         } else if (diff < -50 && currentPage < posts.length) {
-            // スワイプ左: 次の投稿
             currentPage++;
             displayPosts();
             updateActivePreview(currentPage - 1);

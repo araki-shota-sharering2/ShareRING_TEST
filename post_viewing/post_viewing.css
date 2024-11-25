@@ -85,6 +85,21 @@ header {
     color: #aaa;
 }
 
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* アイコンと名前の間隔 */
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #4e5c94; /* アバター画像の枠線 */
+    object-fit: cover; /* アスペクト比を維持してトリミング */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 影を追加 */
+}
+
 .post-comment {
     margin: 5px 0;
     font-size: 14px;
