@@ -53,108 +53,50 @@ header {
     width: 100%;
     text-align: center;
     padding: 10px;
-    overflow: hidden; /* 縦方向のスクロールを隠す */
+    overflow-x: auto; /* 横スクロールを有効化 */
     display: flex;
-    flex-direction: row; /* 横方向に並べる */
-    gap: 10px;
+    flex-direction: row;
+    gap: 20px;
     scroll-behavior: smooth;
 }
 
-.timeline .post-frame {
+.post-frame {
     flex: 0 0 100%;
-    max-width: 100%;
-    text-align: center;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
 }
 
-.timeline img {
-    width: 100%;
-    height: 200px; /* 高さを固定 */
-    object-fit: cover; /* アスペクト比を維持して収める */
-    border-radius: 10px;
-    border: 5px solid transparent;
+.post-frame img {
+    width: 80%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%; /* 円形にする */
+    border: 10px solid transparent;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    margin-bottom: 10px;
+    transition: border-color 0.3s;
+}
+
+.post-frame .ring {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    border: 8px solid transparent;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1; /* 背景リングにする */
 }
 
 .post-details {
-    text-align: left;
+    text-align: center;
     padding: 0 10px;
-}
-
-.post-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-.post-title span {
     font-size: 14px;
-    color: #aaa;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.user-avatar {
-    width: 40px; /* 固定幅 */
-    height: 40px; /* 固定高さ */
-    border-radius: 50%; /* 円形にする */
-    border: 2px solid #4e5c94; /* アバター画像の枠線 */
-    object-fit: cover; /* アスペクト比を維持してトリミング */
-    object-position: center; /* 中央を基準にトリミング */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 影を追加 */
-    flex-shrink: 0; /* スマホ画面で画像が縮まないようにする */
-    max-width: 40px; /* 最大幅を固定 */
-    max-height: 40px; /* 最大高さを固定 */
-}
-
-.post-comment {
-    margin: 5px 0;
-    font-size: 14px;
-    line-height: 1.4;
     color: #ddd;
-}
-
-.post-location {
-    font-size: 12px;
-    color: #888;
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
-}
-
-.buttons button {
-    display: flex;
-    align-items: center;
-    background-color: #4e5c94;
-    color: white;
-    border: none;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-    gap: 5px;
-    transition: transform 0.2s;
-}
-
-.buttons button img {
-    width: 15px;
-    height: 15px;
-}
-
-.buttons button:hover {
-    transform: scale(1.1);
-    background-color: #394575;
 }
 
 /* プレビューエリア */
@@ -166,16 +108,15 @@ header {
     width: 100%;
     justify-content: flex-start;
     gap: 10px;
-    margin: 10px 0;
     scroll-behavior: smooth;
 }
 
 .preview-slider img {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid #555;
+    border: 2px solid transparent;
     transition: transform 0.3s, border-color 0.3s;
 }
 
