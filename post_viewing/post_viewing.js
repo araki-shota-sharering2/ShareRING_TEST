@@ -43,15 +43,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <div class="user-info">
                             <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
                             <span>${post.username || "匿名ユーザー"}</span>
+                            <span class="post-address">${post.address || "住所情報なし"}</span>
                         </div>
                         <p class="post-comment">${post.caption || "コメントなし"}</p>
-                        <p class="post-location">住所: ${post.address || "情報なし"}</p>
                         <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
                     </div>
                     <div class="post-actions">
                         <button class="like-button">いいね</button>
                         <button class="keep-button">Keep</button>
-                        <textarea class="comment-box" placeholder="コメントを入力"></textarea>
                         <a href="https://www.google.com/maps?q=${encodeURIComponent(post.address || '')}" target="_blank" class="go-button">ここへ行く</a>
                     </div>
                 </div>
