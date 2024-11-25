@@ -3,19 +3,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     const previewSlider = document.querySelector(".preview-slider");
     let posts = [];
     let currentPage = 1;
-    const itemsPerPage = 8;
-    const maxVisiblePreviews = 8;
+    let startX = 0; // スワイプ開始位置
 
-    async function fetchPosts(page) {
+    // 投稿データ取得
+    async function fetchPosts() {
         try {
-            const response = await fetch(`/post-viewing-handler?page=${page}`, {
+            const response = await fetch(`/post-viewing-handler`, {
                 method: "GET",
                 credentials: "include",
             });
 
             if (response.ok) {
-                const data = await response.json();
-                posts = data;
+                posts = await response.json();
                 displayPosts();
                 displayPreviewIcons();
             } else {
@@ -26,6 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // 投稿表示
     function displayPosts() {
         timeline.innerHTML = "";
         if (posts.length === 0) {
@@ -60,59 +60,57 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
     }
 
+    // プレビュー表示
     function displayPreviewIcons() {
         previewSlider.innerHTML = "";
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = Math.min(startIndex + maxVisiblePreviews, posts.length);
-
-        for (let i = startIndex; i < endIndex; i++) {
+        posts.forEach((post, index) => {
             const previewItem = document.createElement("img");
-            previewItem.src = posts[i].image_url;
+            previewItem.src = post.image_url;
             previewItem.alt = "投稿プレビュー";
-            previewItem.dataset.index = i;
+            previewItem.dataset.index = index;
 
-            if (i === currentPage - 1) previewItem.classList.add("active");
+            if (index === currentPage - 1) previewItem.classList.add("active");
 
             previewItem.addEventListener("click", () => {
-                switchToPost(i);
+                currentPage = index + 1;
+                displayPosts();
+                updateActivePreview(index);
             });
 
             previewSlider.appendChild(previewItem);
+        });
+    }
+
+    // プレビューの選択状態を更新
+    function updateActivePreview(activeIndex) {
+        document.querySelectorAll(".preview-slider img").forEach((img, index) => {
+            img.classList.toggle("active", index === activeIndex);
+        });
+    }
+
+    // スワイプ開始位置を記録
+    timeline.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+    });
+
+    // スワイプ終了位置を記録して投稿を切り替える
+    timeline.addEventListener("touchend", (e) => {
+        const endX = e.changedTouches[0].clientX;
+        const diff = endX - startX;
+
+        if (diff > 50 && currentPage > 1) {
+            // スワイプ右: 前の投稿
+            currentPage--;
+            displayPosts();
+            updateActivePreview(currentPage - 1);
+        } else if (diff < -50 && currentPage < posts.length) {
+            // スワイプ左: 次の投稿
+            currentPage++;
+            displayPosts();
+            updateActivePreview(currentPage - 1);
         }
-    }
+    });
 
-    function switchToPost(index) {
-        document.querySelectorAll(".preview-slider img").forEach((img) => {
-            img.classList.remove("active");
-        });
-        document.querySelector(`[data-index='${index}']`).classList.add("active");
-        currentPage = index + 1;
-        displayPosts();
-    }
-
-    function addSwipeEvents() {
-        let startX = 0;
-
-        previewSlider.addEventListener("touchstart", (e) => {
-            startX = e.touches[0].clientX;
-        });
-
-        previewSlider.addEventListener("touchend", (e) => {
-            const endX = e.changedTouches[0].clientX;
-            const diff = endX - startX;
-
-            if (diff > 50 && currentPage > 1) {
-                currentPage--;
-                displayPosts();
-                displayPreviewIcons();
-            } else if (diff < -50 && currentPage < posts.length) {
-                currentPage++;
-                displayPosts();
-                displayPreviewIcons();
-            }
-        });
-    }
-
-    fetchPosts(1);
-    addSwipeEvents();
+    // 初期データ取得
+    fetchPosts();
 });
