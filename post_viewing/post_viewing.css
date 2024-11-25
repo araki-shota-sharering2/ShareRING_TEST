@@ -53,29 +53,59 @@ header {
     width: 100%;
     text-align: center;
     padding: 10px;
-    overflow: hidden;
+    overflow-x: scroll;
     display: flex;
     flex-direction: row;
-    gap: 10px;
-    scroll-behavior: smooth;
+    gap: 20px;
+    scroll-snap-type: x mandatory; /* Enables snap scrolling */
 }
 
 .timeline .post-frame {
-    flex: 0 0 100%;
-    max-width: 100%;
+    flex: 0 0 80%; /* Smaller frame */
+    max-width: 80%; /* Fit inside mobile screens */
     text-align: center;
     display: inline-block;
+    scroll-snap-align: center; /* Ensure the posts snap into place */
 }
 
 .timeline img {
     width: 100%;
     height: auto;
-    aspect-ratio: 1 / 1; /* 正方形を維持 */
+    aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-radius: 50%; /* 丸い枠を作成 */
-    border: 5px solid transparent; /* デフォルトは透明 */
+    border-radius: 50%; /* Circular frame */
+    border: 4px solid transparent; /* Default is transparent */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     margin-bottom: 10px;
+}
+
+/* 視覚的な左右スワイプの矢印 */
+.timeline::before,
+.timeline::after {
+    content: '◀';
+    position: absolute;
+    top: 50%;
+    font-size: 24px;
+    color: #fff;
+    transform: translateY(-50%);
+    pointer-events: none;
+    opacity: 0.5;
+    z-index: 10;
+    transition: opacity 0.2s;
+}
+
+.timeline::after {
+    content: '▶';
+    right: 5px;
+}
+
+.timeline::before {
+    left: 5px;
+}
+
+.timeline:hover::before,
+.timeline:hover::after {
+    opacity: 1; /* Increase visibility on hover */
 }
 
 .post-details {
@@ -104,16 +134,13 @@ header {
 }
 
 .user-avatar {
-    width: 40px; /* 固定幅 */
-    height: 40px; /* 固定高さ */
-    border-radius: 5px; /* 四角形の角を少し丸める */
-    border: 2px solid #4e5c94; /* アバター画像の枠線 */
-    object-fit: cover; /* アスペクト比を維持してトリミング */
-    object-position: center; /* 中央を基準にトリミング */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 影を追加 */
-    flex-shrink: 0; /* スマホ画面で画像が縮まないようにする */
-    max-width: 40px; /* 最大幅を固定 */
-    max-height: 40px; /* 最大高さを固定 */
+    width: 40px;
+    height: 40px;
+    border-radius: 5px; /* Square avatar with rounded corners */
+    border: 2px solid #4e5c94;
+    object-fit: cover;
+    object-position: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .post-comment {
@@ -131,7 +158,7 @@ header {
 /* プレビューエリア */
 .preview-slider {
     display: flex;
-    overflow-x: auto;
+    overflow-x: scroll;
     padding: 10px 5px;
     background-color: #111;
     width: 100%;
@@ -142,8 +169,8 @@ header {
 }
 
 .preview-slider img {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid #555;
