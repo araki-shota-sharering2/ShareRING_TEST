@@ -80,83 +80,6 @@ header {
     margin-bottom: 10px;
 }
 
-/* 視覚的な左右スワイプの矢印 */
-.timeline::before,
-.timeline::after {
-    content: '◀';
-    position: absolute;
-    top: 50%;
-    font-size: 24px;
-    color: #fff;
-    transform: translateY(-50%);
-    pointer-events: none;
-    opacity: 0.5;
-    z-index: 10;
-    transition: opacity 0.2s;
-}
-
-.timeline::after {
-    content: '▶';
-    right: 5px;
-}
-
-.timeline::before {
-    left: 5px;
-}
-
-.timeline:hover::before,
-.timeline:hover::after {
-    opacity: 1; /* ホバー時に矢印を強調表示 */
-}
-
-.post-details {
-    text-align: left;
-    padding: 0 10px;
-}
-
-.post-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-.post-title span {
-    font-size: 14px;
-    color: #aaa;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.user-avatar {
-    width: 30px; /* 幅を小さく */
-    height: 30px; /* 高さを小さく */
-    border-radius: 4px; /* 少し丸みを帯びた四角形 */
-    border: 1px solid #4e5c94; /* ボーダー幅を細く */
-    object-fit: cover;
-    object-position: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* 軽めの影に調整 */
-}
-
-
-.post-comment {
-    margin: 5px 0;
-    font-size: 14px;
-    line-height: 1.4;
-    color: #ddd;
-}
-
-.post-location {
-    font-size: 12px;
-    color: #888;
-}
-
 /* プレビューエリア */
 .preview-slider {
     display: flex;
@@ -182,20 +105,6 @@ header {
 .preview-slider img.active {
     transform: scale(1.2);
     border-color: #fff;
-}
-
-/* スクロールバー */
-.preview-slider::-webkit-scrollbar {
-    height: 8px;
-}
-
-.preview-slider::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 4px;
-}
-
-.preview-slider::-webkit-scrollbar-thumb:hover {
-    background: #888;
 }
 
 /* フッター */
