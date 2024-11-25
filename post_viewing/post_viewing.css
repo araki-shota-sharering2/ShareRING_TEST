@@ -57,9 +57,9 @@ header {
 }
 
 .timeline img {
-    width: 90%;
-    max-height: 200px;
-    object-fit: cover;
+    width: 100%;
+    height: 200px; /* 高さを固定 */
+    object-fit: cover; /* アスペクト比を維持して収める */
     border-radius: 10px;
     border: 5px solid transparent;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -88,20 +88,18 @@ header {
 .user-info {
     display: flex;
     align-items: center;
-    gap: 10px; /* アイコンと名前の間隔 */
+    gap: 10px;
 }
 
 .user-avatar {
-    width: 40px; /* 固定幅 */
-    height: 40px; /* 固定高さ */
-    border-radius: 50%; /* 円形にする */
-    border: 2px solid #4e5c94; /* アバター画像の枠線 */
-    object-fit: cover; /* アスペクト比を維持してトリミング */
-    object-position: center; /* 中央を基準にトリミング */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 影を追加 */
-    flex-shrink: 0; /* スマホ画面で画像が縮まないようにする */
-    max-width: 40px; /* 最大幅を固定 */
-    max-height: 40px; /* 最大高さを固定 */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #4e5c94;
+    object-fit: cover;
+    object-position: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
 }
 
 .post-comment {
@@ -153,7 +151,7 @@ header {
     padding: 10px 5px;
     background-color: #111;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 10px;
     margin: 10px 0;
     scroll-behavior: smooth;

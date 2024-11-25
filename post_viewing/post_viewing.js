@@ -4,10 +4,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     let posts = [];
     let currentPage = 1;
     let totalLoadedPages = 0;
-    let startX = 0;
     let isFetching = false;
 
-    // 投稿データ取得
     async function fetchPosts(page) {
         if (isFetching) return;
         isFetching = true;
@@ -23,27 +21,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                 posts = [...posts, ...newPosts];
                 totalLoadedPages = page;
                 displayPreviewIcons(newPosts);
-                isFetching = false;
-
-                if (newPosts.length === 0) {
-                    console.log("すべての投稿が読み込まれました。");
+                if (newPosts.length > 0 && currentPage <= posts.length) {
+                    displayPosts();
                 }
-            } else {
-                console.error("投稿データの取得に失敗しました");
+                isFetching = false;
             }
         } catch (error) {
-            console.error("エラーが発生しました:", error);
+            console.error("投稿データの取得中にエラーが発生しました:", error);
+            isFetching = false;
         }
     }
 
-    // 投稿表示
     function displayPosts() {
-        if (posts.length === 0) {
-            timeline.innerHTML = "<p>投稿が見つかりません</p>";
-            return;
-        }
-
         const post = posts[currentPage - 1];
+        if (!post) return;
+
         timeline.innerHTML = `
             <div class="post-frame" style="border-color: ${post.ring_color || "#4e5c94"};">
                 <img src="${post.image_url}" alt="投稿画像">
@@ -58,22 +50,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
                 <p class="post-comment">${post.caption || "コメントなし"}</p>
                 <p class="post-location">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
-                <div class="buttons">
-                    <button>
-                        <img src="/assets/icons/navigation.svg" alt="ナビアイコン">ここへ行く
-                    </button>
-                    <button>
-                        <img src="/assets/icons/like.svg" alt="いいねアイコン">いいね
-                    </button>
-                    <button>
-                        <img src="/assets/icons/save.svg" alt="保存アイコン">Keep
-                    </button>
-                </div>
             </div>
         `;
     }
 
-    // プレビュー表示
     function displayPreviewIcons(newPosts) {
         newPosts.forEach((post, index) => {
             const previewItem = document.createElement("img");
@@ -81,10 +61,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             previewItem.alt = "投稿プレビュー";
             previewItem.dataset.index = posts.length - newPosts.length + index;
 
-            if (index === currentPage - 1) previewItem.classList.add("active");
+            if (posts.length - newPosts.length + index === currentPage - 1) {
+                previewItem.classList.add("active");
+            }
 
             previewItem.addEventListener("click", () => {
-                currentPage = Number(previewItem.dataset.index) + 1;
+                currentPage = parseInt(previewItem.dataset.index) + 1;
                 displayPosts();
                 updateActivePreview(currentPage - 1);
             });
@@ -93,14 +75,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // プレビューの選択状態を更新
     function updateActivePreview(activeIndex) {
         document.querySelectorAll(".preview-slider img").forEach((img, index) => {
             img.classList.toggle("active", index === activeIndex);
         });
     }
 
-    // スクロールイベント監視
     previewSlider.addEventListener("scroll", () => {
         if (
             previewSlider.scrollLeft + previewSlider.clientWidth >=
@@ -110,7 +90,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // 初期ロード
     await fetchPosts(1);
-    displayPosts();
 });
