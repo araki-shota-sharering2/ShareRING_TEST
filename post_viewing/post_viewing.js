@@ -35,24 +35,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         newPosts.forEach((post) => {
             const postFrame = document.createElement("div");
             postFrame.className = "post-frame";
-
-            // RINGカラーを設定
-            const ring = document.createElement("div");
-            ring.className = "ring";
-            ring.style.borderColor = post.ring_color || "#394575";
-
             postFrame.innerHTML = `
                 <img src="${post.image_url}" alt="投稿画像">
                 <div class="post-details">
-                    <div class="user-info">
-                        <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
-                        <p>${post.username || "匿名ユーザー"}</p>
+                    <div class="post-title">
+                        <div class="user-info">
+                            <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
+                            <span>${post.username || "匿名ユーザー"}</span>
+                        </div>
+                        <span>${post.address || "場所情報なし"}</span>
                     </div>
-                    <p>${post.caption || "コメントなし"}</p>
-                    <p>投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
+                    <p class="post-comment">${post.caption || "コメントなし"}</p>
+                    <p class="post-location">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
                 </div>
             `;
-            postFrame.appendChild(ring);
             timeline.appendChild(postFrame);
         });
     }
