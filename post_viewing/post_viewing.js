@@ -3,10 +3,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const previewSlider = document.querySelector(".preview-slider");
     let posts = [];
     let currentPage = 1;
-    const itemsPerPage = 8; // 1ページあたりの投稿数
+    const itemsPerPage = 8;
     const maxVisiblePreviews = 8;
 
-    // 投稿を取得してプレビューアイコンを生成
     async function fetchPosts(page) {
         try {
             const response = await fetch(`/post-viewing-handler?page=${page}`, {
@@ -27,7 +26,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // 投稿詳細を表示
     function displayPosts() {
         timeline.innerHTML = "";
         if (posts.length === 0) {
@@ -62,7 +60,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
     }
 
-    // プレビューアイコンを表示
     function displayPreviewIcons() {
         previewSlider.innerHTML = "";
         const startIndex = (currentPage - 1) * itemsPerPage;
@@ -84,7 +81,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // 特定の投稿を表示
     function switchToPost(index) {
         document.querySelectorAll(".preview-slider img").forEach((img) => {
             img.classList.remove("active");
@@ -94,7 +90,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         displayPosts();
     }
 
-    // スワイプイベントの追加
     function addSwipeEvents() {
         let startX = 0;
 
@@ -118,6 +113,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    fetchPosts(1); // 初期ロード
+    fetchPosts(1);
     addSwipeEvents();
 });

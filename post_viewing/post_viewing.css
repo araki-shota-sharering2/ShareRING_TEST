@@ -12,7 +12,7 @@ body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 375px; /* スマホ向け固定幅 */
+    max-width: 375px;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -31,7 +31,6 @@ header {
     font-weight: bold;
 }
 
-/* 戻るボタン */
 #back-button {
     position: absolute;
     left: 10px;
@@ -59,15 +58,14 @@ header {
 
 .timeline img {
     width: 90%;
-    max-height: 200px; /* 高さを抑える */
+    max-height: 200px;
     object-fit: cover;
     border-radius: 10px;
-    border: 5px solid #394575; /* かっこいいフレーム */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* シャドウ追加 */
+    border: 5px solid #394575;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     margin-bottom: 10px;
 }
 
-/* 投稿の詳細エリア */
 .post-details {
     text-align: left;
     padding: 0 10px;
@@ -84,22 +82,21 @@ header {
 
 .post-title span {
     font-size: 14px;
-    color: #aaa; /* 場所情報の色を薄く */
+    color: #aaa;
 }
 
 .post-comment {
     margin: 5px 0;
     font-size: 14px;
     line-height: 1.4;
-    color: #ddd; /* コメントの色をやや薄めに */
+    color: #ddd;
 }
 
 .post-location {
     font-size: 12px;
-    color: #888; /* 場所情報をさらに薄く */
+    color: #888;
 }
 
-/* ボタンエリア */
 .buttons {
     display: flex;
     justify-content: space-around;
@@ -114,7 +111,7 @@ header {
     border: none;
     padding: 5px;
     border-radius: 5px;
-    font-size: 12px; /* ボタンサイズを小さく */
+    font-size: 12px;
     cursor: pointer;
     gap: 5px;
     transition: transform 0.2s;
@@ -130,7 +127,6 @@ header {
     background-color: #394575;
 }
 
-/* プレビューアイコン（スライド可能） */
 .preview-slider {
     display: flex;
     overflow-x: scroll;
@@ -139,11 +135,11 @@ header {
     width: 100%;
     justify-content: center;
     gap: 10px;
-    margin: 10px 0; /* フッターと分離 */
+    margin: 10px 0;
 }
 
 .preview-slider img {
-    width: 40px; /* アイコンサイズを小さく */
+    width: 40px;
     height: 40px;
     border-radius: 50%;
     cursor: pointer;
@@ -156,7 +152,6 @@ header {
     border-color: #fff;
 }
 
-/* フッター */
 footer {
     display: flex;
     justify-content: space-around;
@@ -181,6 +176,6 @@ footer a {
 }
 
 footer img {
-    width: 20px; /* アイコンサイズを小さく */
+    width: 20px;
     height: 20px;
 }
