@@ -57,15 +57,16 @@ header {
     display: flex;
     flex-direction: row;
     gap: 20px;
-    scroll-snap-type: x mandatory; /* Enables snap scrolling */
+    scroll-snap-type: x mandatory; /* スワイプ操作をスナップ動作で実現 */
+    position: relative;
 }
 
 .timeline .post-frame {
-    flex: 0 0 80%; /* Smaller frame */
-    max-width: 80%; /* Fit inside mobile screens */
+    flex: 0 0 80%; /* フレームを小さめに */
+    max-width: 80%; /* スマホ画面内に収まる幅 */
     text-align: center;
     display: inline-block;
-    scroll-snap-align: center; /* Ensure the posts snap into place */
+    scroll-snap-align: center; /* スナップ位置を中央に */
 }
 
 .timeline img {
@@ -73,8 +74,8 @@ header {
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-radius: 50%; /* Circular frame */
-    border: 4px solid transparent; /* Default is transparent */
+    border-radius: 50%; /* 丸い枠を作成 */
+    border: 4px solid transparent; /* デフォルトは透明 */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     margin-bottom: 10px;
 }
@@ -105,7 +106,7 @@ header {
 
 .timeline:hover::before,
 .timeline:hover::after {
-    opacity: 1; /* Increase visibility on hover */
+    opacity: 1; /* ホバー時に矢印を強調表示 */
 }
 
 .post-details {
@@ -136,7 +137,7 @@ header {
 .user-avatar {
     width: 40px;
     height: 40px;
-    border-radius: 5px; /* Square avatar with rounded corners */
+    border-radius: 5px; /* 四角形に設定 */
     border: 2px solid #4e5c94;
     object-fit: cover;
     object-position: center;
