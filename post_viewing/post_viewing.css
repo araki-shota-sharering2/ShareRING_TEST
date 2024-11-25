@@ -135,14 +135,15 @@ header {
 }
 
 .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 5px; /* 四角形に設定 */
-    border: 2px solid #4e5c94;
+    width: 30px; /* 幅を小さく */
+    height: 30px; /* 高さを小さく */
+    border-radius: 4px; /* 少し丸みを帯びた四角形 */
+    border: 1px solid #4e5c94; /* ボーダー幅を細く */
     object-fit: cover;
     object-position: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* 軽めの影に調整 */
 }
+
 
 .post-comment {
     margin: 5px 0;
