@@ -3,20 +3,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     const previewSlider = document.querySelector(".preview-slider");
     let posts = [];
     let currentPage = 1;
+    let totalLoadedPages = 0;
     let startX = 0;
+    let isFetching = false;
 
     // 投稿データ取得
-    async function fetchPosts() {
+    async function fetchPosts(page) {
+        if (isFetching) return;
+        isFetching = true;
+
         try {
-            const response = await fetch(`/post-viewing-handler`, {
+            const response = await fetch(`/post-viewing-handler?page=${page}`, {
                 method: "GET",
                 credentials: "include",
             });
 
             if (response.ok) {
-                posts = await response.json();
-                displayPosts();
-                displayPreviewIcons();
+                const newPosts = await response.json();
+                posts = [...posts, ...newPosts];
+                totalLoadedPages = page;
+                displayPreviewIcons(newPosts);
+                isFetching = false;
+
+                if (newPosts.length === 0) {
+                    console.log("すべての投稿が読み込まれました。");
+                }
             } else {
                 console.error("投稿データの取得に失敗しました");
             }
@@ -27,7 +38,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 投稿表示
     function displayPosts() {
-        timeline.innerHTML = "";
         if (posts.length === 0) {
             timeline.innerHTML = "<p>投稿が見つかりません</p>";
             return;
@@ -64,20 +74,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // プレビュー表示
-    function displayPreviewIcons() {
-        previewSlider.innerHTML = "";
-        posts.forEach((post, index) => {
+    function displayPreviewIcons(newPosts) {
+        newPosts.forEach((post, index) => {
             const previewItem = document.createElement("img");
             previewItem.src = post.image_url;
             previewItem.alt = "投稿プレビュー";
-            previewItem.dataset.index = index;
+            previewItem.dataset.index = posts.length - newPosts.length + index;
 
             if (index === currentPage - 1) previewItem.classList.add("active");
 
             previewItem.addEventListener("click", () => {
-                currentPage = index + 1;
+                currentPage = Number(previewItem.dataset.index) + 1;
                 displayPosts();
-                updateActivePreview(index);
+                updateActivePreview(currentPage - 1);
             });
 
             previewSlider.appendChild(previewItem);
@@ -91,27 +100,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // スワイプ開始位置を記録
-    timeline.addEventListener("touchstart", (e) => {
-        startX = e.touches[0].clientX;
-    });
-
-    // スワイプ終了位置を記録して投稿を切り替える
-    timeline.addEventListener("touchend", (e) => {
-        const endX = e.changedTouches[0].clientX;
-        const diff = endX - startX;
-
-        if (diff > 50 && currentPage > 1) {
-            currentPage--;
-            displayPosts();
-            updateActivePreview(currentPage - 1);
-        } else if (diff < -50 && currentPage < posts.length) {
-            currentPage++;
-            displayPosts();
-            updateActivePreview(currentPage - 1);
+    // スクロールイベント監視
+    previewSlider.addEventListener("scroll", () => {
+        if (
+            previewSlider.scrollLeft + previewSlider.clientWidth >=
+            previewSlider.scrollWidth - 50
+        ) {
+            fetchPosts(totalLoadedPages + 1);
         }
     });
 
-    // 初期データ取得
-    fetchPosts();
+    // 初期ロード
+    await fetchPosts(1);
+    displayPosts();
 });
