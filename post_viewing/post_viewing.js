@@ -1,5 +1,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const timeline = document.querySelector(".timeline");
+    const mapPopup = document.getElementById("map-popup");
+    const mapElement = document.getElementById("map");
+    const closeMapButton = document.getElementById("close-map");
+
+    let map;
+    let directionsService;
+    let directionsRenderer;
     let posts = [];
     let currentPage = 0;
     let isFetching = false;
@@ -51,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div class="post-actions">
                         <button class="like-button">いいね</button>
                         <button class="keep-button">Keep</button>
-                        <a href="https://www.google.com/maps?q=${encodeURIComponent(post.address || '')}" target="_blank" class="go-button">ここへ行く</a>
+                        <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
                     </div>
                 </div>
             `;
@@ -74,13 +81,50 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         postFrame.addEventListener("touchend", () => {
             if (startY - endY > 50) { // スワイプ距離が一定以上の場合
-                const goButton = postFrame.querySelector(".go-button");
-                if (goButton) {
-                    window.open(`https://www.google.com/maps?q=${encodeURIComponent(address)}`, "_blank");
-                }
+                showMapPopup(address);
             }
         });
     }
+
+    function showMapPopup(address) {
+        mapPopup.classList.remove("hidden");
+
+        if (!map) {
+            map = new google.maps.Map(mapElement, {
+                zoom: 15,
+                center: { lat: 35.6895, lng: 139.6917 }, // 東京の中心座標
+            });
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
+        }
+
+        navigator.geolocation.getCurrentPosition((position) => {
+            const origin = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            };
+
+            directionsService.route(
+                {
+                    origin: origin,
+                    destination: address,
+                    travelMode: google.maps.TravelMode.WALKING,
+                },
+                (result, status) => {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(result);
+                    } else {
+                        console.error("Directions request failed:", status);
+                    }
+                }
+            );
+        });
+    }
+
+    closeMapButton.addEventListener("click", () => {
+        mapPopup.classList.add("hidden");
+    });
 
     await fetchPosts();
 });

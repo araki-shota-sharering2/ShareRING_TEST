@@ -1,3 +1,4 @@
+/* 全体の初期設定 */
 * {
     margin: 0;
     padding: 0;
@@ -71,6 +72,7 @@ header {
     border: 1px solid #444;
     border-radius: 10px;
     background-color: #1a1a3a;
+    position: relative;
 }
 
 .post-image {
@@ -123,11 +125,6 @@ header {
     align-items: center;
     margin-top: 10px;
 }
-.post-frame.swiping-up {
-    transform: translateY(-10%);
-    transition: transform 0.3s ease;
-}
-
 
 .post-actions button,
 .go-button {
@@ -140,6 +137,67 @@ header {
     text-decoration: none;
     text-align: center;
 }
+
+.swipe-guide {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #aaa;
+    text-align: center;
+    animation: swipe-hint 2s infinite;
+}
+
+/* スワイプガイドのアニメーション */
+@keyframes swipe-hint {
+    0%, 100% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -10px);
+        opacity: 0.5;
+    }
+}
+
+/* ポップアップ */
+.map-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.map-popup.hidden {
+    display: none;
+}
+
+#map {
+    width: 90%;
+    height: 70%;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#close-map {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 /* フッター */
 footer {
     display: flex;

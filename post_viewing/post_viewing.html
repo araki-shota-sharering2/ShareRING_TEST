@@ -15,6 +15,12 @@
         <!-- 投稿の詳細が表示される領域 -->
     </main>
 
+    <!-- Google Mapsポップアップ -->
+    <div id="map-popup" class="map-popup hidden">
+        <div id="map"></div>
+        <button id="close-map">✖ 閉じる</button>
+    </div>
+
     <!-- フッター -->
     <footer>
         <a href="/home/home.html"><img src="/assets/images/footer/home.svg" alt="Home"></a>
@@ -23,7 +29,7 @@
         <a href="/ring_navi/ring_navi.html"><img src="/assets/images/footer/ring_navi.svg" alt="AI"></a>
         <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="Achievements"></a>
     </footer>
-    
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
     <script src="post_viewing.js"></script>
 </body>
-</html>
