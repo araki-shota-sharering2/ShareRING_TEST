@@ -86,6 +86,58 @@ header {
     margin-bottom: 10px;
 }
 
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid #4e5c94;
+    object-fit: cover;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.post-address {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.post-comment {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #ddd;
+}
+
+.post-date {
+    font-size: 12px;
+    color: #888;
+    margin-top: 10px;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.post-actions button,
+.go-button {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
 .swipe-guide {
     position: absolute;
     bottom: 10px;
@@ -97,6 +149,7 @@ header {
     animation: swipe-hint 2s infinite;
 }
 
+/* スワイプガイドのアニメーション */
 @keyframes swipe-hint {
     0%, 100% {
         transform: translate(-50%, 0);
@@ -134,30 +187,6 @@ header {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-#route-info {
-    margin-top: 10px;
-    text-align: center;
-    color: white;
-    font-size: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#route-info p {
-    margin: 5px 0;
-}
-
-#heading {
-    font-size: 14px;
-    color: #ddd;
-}
-
-#heading-value {
-    font-weight: bold;
-    color: #fff;
-}
-
 #close-map {
     margin-top: 20px;
     padding: 10px 20px;
@@ -167,4 +196,53 @@ header {
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
+}
+/* ポップアップの情報表示エリア */
+#route-info {
+    margin-top: 10px;
+    text-align: center;
+    color: white;
+    font-size: 16px;
+}
+
+#route-info p {
+    margin: 5px 0;
+}
+
+/* フッター */
+footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px;
+    background-color: #4e5c94;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 375px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* フッターのアイコンスタイル */
+footer a {
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+/* フッターのアクティブ状態を示す */
+footer a.active {
+    background-color: #394575;
+    border-top: 3px solid #ffffff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+footer img {
+    width: 25px;
+    height: 25px;
 }
