@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const closeMapButton = document.getElementById("close-map");
     const distanceElement = document.getElementById("distance");
     const durationElement = document.getElementById("duration");
+    const travelModeSelect = document.getElementById("travel-mode");
+    const checkInButton = document.getElementById("check-in");
     const celebrationPopup = document.getElementById("celebration-popup");
 
     let map;
@@ -16,6 +18,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     let posts = [];
     let currentPage = 0;
     let isFetching = false;
+    let destination = null;
+    const CHECK_IN_RADIUS = 50; // チェックイン可能な距離（メートル）
 
     async function fetchPosts() {
         if (isFetching) return;
@@ -92,8 +96,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    function showMapPopup(destination) {
+    function showMapPopup(destinationAddress) {
         mapPopup.classList.remove("hidden");
+
+        destination = destinationAddress;
 
         if (!map) {
             map = new google.maps.Map(mapElement, {
@@ -114,13 +120,50 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
 
-        if (destinationMarker) destinationMarker.setMap(null);
-        destinationMarker = new google.maps.Marker({
-            position: destination,
-            map: map,
-            title: "目的地",
-        });
+        updateRoute();
+        trackUserPosition();
+    }
 
+    function updateRoute() {
+        if (!destination) return;
+
+        const travelMode = travelModeSelect.value;
+
+        navigator.geolocation.getCurrentPosition((position) => {
+            const origin = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            };
+
+            directionsService.route(
+                {
+                    origin: origin,
+                    destination: destination,
+                    travelMode: google.maps.TravelMode[travelMode],
+                },
+                (result, status) => {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(result);
+
+                        const route = result.routes[0].legs[0];
+                        distanceElement.textContent = `距離: ${route.distance.text}`;
+                        durationElement.textContent = `所要時間: ${route.duration.text}`;
+
+                        // チェックイン可能か確認
+                        if (route.distance.value <= CHECK_IN_RADIUS) {
+                            checkInButton.classList.remove("hidden");
+                        } else {
+                            checkInButton.classList.add("hidden");
+                        }
+                    } else {
+                        console.error("Directions request failed:", status);
+                    }
+                }
+            );
+        });
+    }
+
+    function trackUserPosition() {
         if (currentPositionWatcher) {
             navigator.geolocation.clearWatch(currentPositionWatcher);
         }
@@ -140,29 +183,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     strokeColor: "#00f",
                 });
 
-                directionsService.route(
-                    {
-                        origin: origin,
-                        destination: destination,
-                        travelMode: google.maps.TravelMode.WALKING,
-                    },
-                    (result, status) => {
-                        if (status === "OK") {
-                            directionsRenderer.setDirections(result);
-
-                            const route = result.routes[0].legs[0];
-                            distanceElement.textContent = `距離: ${route.distance.text}`;
-                            durationElement.textContent = `所要時間: ${route.duration.text}`;
-
-                            if (route.distance.value < 10) {
-                                // 距離が10メートル未満になったら到着演出
-                                showCelebrationPopup();
-                            }
-                        } else {
-                            console.error("Directions request failed:", status);
-                        }
-                    }
-                );
+                updateRoute();
             },
             (error) => {
                 console.error("位置情報の取得に失敗しました:", error);
@@ -170,17 +191,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
     }
 
+    checkInButton.addEventListener("click", () => {
+        showCelebrationPopup();
+    });
+
     function showCelebrationPopup() {
         celebrationPopup.classList.remove("hidden");
         celebrationPopup.innerHTML = `
             <div class="celebration-content">
                 <h1>到着しました！🎉</h1>
-                <p>目的地に到着しました！素晴らしい旅でしたね。</p>
+                <p>目的地にチェックインしました！</p>
             </div>
         `;
         setTimeout(() => {
             celebrationPopup.classList.add("hidden");
-        }, 5000); // 5秒後に自動的に消える
+        }, 5000);
     }
 
     closeMapButton.addEventListener("click", () => {
@@ -189,6 +214,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             navigator.geolocation.clearWatch(currentPositionWatcher);
         }
     });
+
+    travelModeSelect.addEventListener("change", updateRoute);
 
     await fetchPosts();
 });
