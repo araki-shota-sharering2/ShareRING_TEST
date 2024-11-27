@@ -12,49 +12,137 @@ document.addEventListener("DOMContentLoaded", async () => {
     let map;
     let directionsService;
     let directionsRenderer;
-    let currentPositionWatcher;
-    let destinationMarker;
-    let compassMarker;
-    let posts = [];
-    let currentPage = 0;
-    let isFetching = false;
-    let destination = null;
     let currentLat, currentLng;
+    let destinationLat, destinationLng; // 目的地の緯度・経度
     let travelMode = "WALKING"; // デフォルトの移動手段
     const CHECK_IN_RADIUS = 50; // チェックイン可能な距離（メートル）
 
-    async function fetchPosts() {
-        if (isFetching) return;
-        isFetching = true;
+    function initializeMap() {
+        map = new google.maps.Map(mapElement, {
+            zoom: 15,
+            center: { lat: 0, lng: 0 }, // 初期値は (0, 0) に設定し、後で現在地に更新
+        });
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+        directionsRenderer.setMap(map);
+    }
 
-        try {
-            const response = await fetch(`/post-viewing-handler?page=${currentPage + 1}`, {
-                method: "GET",
-                credentials: "include",
-            });
-
-            if (response.ok) {
-                const newPosts = await response.json();
-                if (newPosts.length > 0) {
-                    posts = [...posts, ...newPosts];
-                    displayPosts(newPosts);
-                    currentPage++;
+    async function fetchCurrentLocation() {
+        return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    currentLat = position.coords.latitude;
+                    currentLng = position.coords.longitude;
+                    resolve({ lat: currentLat, lng: currentLng });
+                },
+                (error) => {
+                    console.error("現在地の取得に失敗しました:", error);
+                    reject(error);
                 }
-                isFetching = false;
-            }
+            );
+        });
+    }
+
+    async function updateMapCenter() {
+        try {
+            const currentLocation = await fetchCurrentLocation();
+            map.setCenter(currentLocation);
         } catch (error) {
-            console.error("投稿データ取得エラー:", error);
-            isFetching = false;
+            console.error("マップの中心位置の更新に失敗しました:", error);
         }
     }
 
-    function displayPosts(newPosts) {
-        newPosts.forEach((post) => {
+    function updateRoute() {
+        if (!destinationLat || !destinationLng) return;
+
+        const origin = { lat: currentLat, lng: currentLng };
+        const destination = { lat: destinationLat, lng: destinationLng };
+
+        directionsService.route(
+            {
+                origin,
+                destination,
+                travelMode: google.maps.TravelMode[travelMode],
+            },
+            (result, status) => {
+                if (status === "OK") {
+                    const route = result.routes[0].legs[0];
+                    directionsRenderer.setDirections(result);
+                    distanceElement.textContent = `距離: ${route.distance.text}`;
+                    durationElement.textContent = `所要時間: ${route.duration.text}`;
+                    updateCheckInStatus(route.distance.value);
+                } else {
+                    console.error("ルート検索に失敗しました:", status);
+                }
+            }
+        );
+    }
+
+    function updateCheckInStatus(distance) {
+        if (distance <= CHECK_IN_RADIUS) {
+            checkInButton.classList.remove("disabled");
+            checkInButton.removeAttribute("disabled");
+            checkInButton.textContent = "チェックイン可能！";
+        } else {
+            checkInButton.classList.add("disabled");
+            checkInButton.setAttribute("disabled", true);
+            checkInButton.textContent = "まだ到着していません";
+        }
+    }
+
+    async function showMapPopup(address) {
+        mapPopup.classList.remove("hidden");
+
+        // Geocoding APIで住所から緯度経度を取得
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address }, async (results, status) => {
+            if (status === "OK") {
+                const location = results[0].geometry.location;
+                destinationLat = location.lat();
+                destinationLng = location.lng();
+
+                // 現在地を取得してマップを更新
+                await updateMapCenter();
+                updateRoute();
+            } else {
+                console.error("住所のジオコーディングに失敗しました:", status);
+            }
+        });
+    }
+
+    function trackUserPosition() {
+        navigator.geolocation.watchPosition(
+            (position) => {
+                currentLat = position.coords.latitude;
+                currentLng = position.coords.longitude;
+                updateRoute();
+            },
+            (error) => {
+                console.error("位置情報の追跡に失敗しました:", error);
+            }
+        );
+    }
+
+    async function fetchPosts() {
+        try {
+            const response = await fetch(`/post-viewing-handler?page=1`, { method: "GET" });
+            if (response.ok) {
+                const posts = await response.json();
+                displayPosts(posts);
+            } else {
+                console.error("投稿データの取得に失敗しました");
+            }
+        } catch (error) {
+            console.error("投稿データの取得中にエラーが発生しました:", error);
+        }
+    }
+
+    function displayPosts(posts) {
+        posts.forEach((post) => {
             const postFrame = document.createElement("div");
             postFrame.className = "post-frame";
 
             const ringColor = post.ring_color || "#FFFFFF";
-
             postFrame.innerHTML = `
                 <div class="post-content">
                     <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
@@ -92,107 +180,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         postFrame.addEventListener("touchend", () => {
-            if (startY - endY > 50) { // スワイプ距離が一定以上の場合
+            if (startY - endY > 50) {
                 showMapPopup(address);
             }
         });
     }
 
-    function showMapPopup(destinationAddress) {
-        mapPopup.classList.remove("hidden");
-
-        destination = destinationAddress;
-
-        if (!map) {
-            map = new google.maps.Map(mapElement, {
-                zoom: 15,
-                center: { lat: 35.6895, lng: 139.6917 },
-            });
-            directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
-            directionsRenderer.setMap(map);
-
-            compassMarker = new google.maps.Marker({
-                map: map,
-                icon: {
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                    scale: 5,
-                    strokeColor: "#00f",
-                },
-            });
-        }
-
-        updateRoute();
-        trackUserPosition();
-    }
-
-    function updateRoute() {
-        if (!destination) return;
-
-        const origin = { lat: currentLat, lng: currentLng };
-
-        directionsService.route(
-            {
-                origin,
-                destination,
-                travelMode: google.maps.TravelMode[travelMode],
-            },
-            (result, status) => {
-                if (status === "OK") {
-                    const route = result.routes[0].legs[0];
-                    distanceElement.textContent = `距離: ${route.distance.text}`;
-                    durationElement.textContent = `所要時間: ${route.duration.text}`;
-                    updateCheckInStatus(route.distance.value);
-                } else {
-                    console.error("ルート取得エラー:", status);
-                }
-            }
-        );
-    }
-
-    function updateCheckInStatus(distance) {
-        if (distance <= CHECK_IN_RADIUS) {
-            checkInButton.classList.remove("disabled");
-            checkInButton.removeAttribute("disabled");
-            checkInButton.textContent = "チェックイン可能！";
-        } else {
-            checkInButton.classList.add("disabled");
-            checkInButton.setAttribute("disabled", true);
-            checkInButton.textContent = "まだ到着していません";
-        }
-    }
-
-    function trackUserPosition() {
-        if (currentPositionWatcher) {
-            navigator.geolocation.clearWatch(currentPositionWatcher);
-        }
-
-        currentPositionWatcher = navigator.geolocation.watchPosition(
-            (position) => {
-                currentLat = position.coords.latitude;
-                currentLng = position.coords.longitude;
-
-                compassMarker.setPosition({ lat: currentLat, lng: currentLng });
-                compassMarker.setIcon({
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                    scale: 5,
-                    rotation: position.coords.heading || 0,
-                    strokeColor: "#00f",
-                });
-
-                updateRoute();
-            },
-            (error) => {
-                console.error("位置情報の取得に失敗しました:", error);
-            }
-        );
-    }
-
     checkInButton.addEventListener("click", () => {
-        showCelebrationPopup();
-    });
-
-    function showCelebrationPopup() {
         celebrationPopup.classList.remove("hidden");
         celebrationPopup.innerHTML = `
             <div class="celebration-content">
@@ -203,13 +197,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         setTimeout(() => {
             celebrationPopup.classList.add("hidden");
         }, 5000);
-    }
+    });
 
     closeMapButton.addEventListener("click", () => {
         mapPopup.classList.add("hidden");
-        if (currentPositionWatcher) {
-            navigator.geolocation.clearWatch(currentPositionWatcher);
-        }
     });
 
     travelModeButtons.forEach((button) => {
@@ -221,5 +212,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
+    initializeMap();
     await fetchPosts();
 });
