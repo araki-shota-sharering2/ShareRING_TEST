@@ -9,6 +9,7 @@
 <body>
     <header>
         <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
+        <span class="route-title">徒歩でのルート案内</span>
     </header>
 
     <main class="timeline">
@@ -17,23 +18,16 @@
 
     <!-- Google Mapsポップアップ -->
     <div id="map-popup" class="map-popup hidden">
-        <div id="map-header">
-            <span id="route-header">徒歩でのルート案内</span>
-        </div>
         <div id="map"></div>
         <div id="route-info">
             <span id="distance">距離: -</span>
             <span id="duration">所要時間: -</span>
-            <button id="check-in" class="icon-button disabled" disabled>
-                <img src="/assets/images/view/check in.svg" alt="チェックイン">
-            </button>
-            <button id="test-check-in" class="icon-button">
-                <img src="/assets/images/view/test in.svg" alt="テストチェックイン">
-            </button>
-            <button id="close-route" class="icon-button">
-                <img src="/assets/images/view/close.svg" alt="閉じる">
-            </button>
         </div>
+        <div id="check-in-buttons">
+            <button id="check-in" class="disabled" disabled>チェックイン</button>
+            <button id="test-check-in">テストチェックイン</button>
+        </div>
+        <button id="close-map">閉じる</button>
     </div>
 
     <!-- 到着演出 -->
@@ -48,8 +42,7 @@
         <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="Achievements"></a>
     </footer>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&callback=initMap" defer>
-    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&callback=initMap"></script>
     <script src="post_viewing.js"></script>
 </body>
 </html>
