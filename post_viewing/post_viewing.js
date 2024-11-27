@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const closeMapButton = document.getElementById("close-map");
     const distanceElement = document.getElementById("distance");
     const durationElement = document.getElementById("duration");
-    const travelModeSelect = document.getElementById("travel-mode");
     const checkInButton = document.getElementById("check-in");
     const celebrationPopup = document.getElementById("celebration-popup");
+    const travelModeButtons = document.querySelectorAll(".travel-mode-button");
 
     let map;
     let directionsService;
@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentPage = 0;
     let isFetching = false;
     let destination = null;
+    let currentLat, currentLng;
+    let travelMode = "WALKING"; // デフォルトの移動手段
     const CHECK_IN_RADIUS = 50; // チェックイン可能な距離（メートル）
 
     async function fetchPosts() {
@@ -127,40 +129,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     function updateRoute() {
         if (!destination) return;
 
-        const travelMode = travelModeSelect.value;
+        const origin = { lat: currentLat, lng: currentLng };
 
-        navigator.geolocation.getCurrentPosition((position) => {
-            const origin = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-            };
-
-            directionsService.route(
-                {
-                    origin: origin,
-                    destination: destination,
-                    travelMode: google.maps.TravelMode[travelMode],
-                },
-                (result, status) => {
-                    if (status === "OK") {
-                        directionsRenderer.setDirections(result);
-
-                        const route = result.routes[0].legs[0];
-                        distanceElement.textContent = `距離: ${route.distance.text}`;
-                        durationElement.textContent = `所要時間: ${route.duration.text}`;
-
-                        // チェックイン可能か確認
-                        if (route.distance.value <= CHECK_IN_RADIUS) {
-                            checkInButton.classList.remove("hidden");
-                        } else {
-                            checkInButton.classList.add("hidden");
-                        }
-                    } else {
-                        console.error("Directions request failed:", status);
-                    }
+        directionsService.route(
+            {
+                origin,
+                destination,
+                travelMode: google.maps.TravelMode[travelMode],
+            },
+            (result, status) => {
+                if (status === "OK") {
+                    const route = result.routes[0].legs[0];
+                    distanceElement.textContent = `距離: ${route.distance.text}`;
+                    durationElement.textContent = `所要時間: ${route.duration.text}`;
+                    updateCheckInStatus(route.distance.value);
+                } else {
+                    console.error("ルート取得エラー:", status);
                 }
-            );
-        });
+            }
+        );
+    }
+
+    function updateCheckInStatus(distance) {
+        if (distance <= CHECK_IN_RADIUS) {
+            checkInButton.classList.remove("disabled");
+            checkInButton.removeAttribute("disabled");
+            checkInButton.textContent = "チェックイン可能！";
+        } else {
+            checkInButton.classList.add("disabled");
+            checkInButton.setAttribute("disabled", true);
+            checkInButton.textContent = "まだ到着していません";
+        }
     }
 
     function trackUserPosition() {
@@ -170,12 +169,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         currentPositionWatcher = navigator.geolocation.watchPosition(
             (position) => {
-                const origin = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                };
+                currentLat = position.coords.latitude;
+                currentLng = position.coords.longitude;
 
-                compassMarker.setPosition(origin);
+                compassMarker.setPosition({ lat: currentLat, lng: currentLng });
                 compassMarker.setIcon({
                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                     scale: 5,
@@ -215,7 +212,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    travelModeSelect.addEventListener("change", updateRoute);
+    travelModeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            travelModeButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+            travelMode = button.getAttribute("data-mode");
+            updateRoute();
+        });
+    });
 
     await fetchPosts();
 });

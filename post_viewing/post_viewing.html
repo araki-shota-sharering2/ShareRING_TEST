@@ -19,19 +19,19 @@
     <div id="map-popup" class="map-popup hidden">
         <div id="route-options">
             <label for="travel-mode">移動手段:</label>
-            <select id="travel-mode">
-                <option value="WALKING">徒歩</option>
-                <option value="DRIVING">車</option>
-                <option value="BICYCLING">自転車</option>
-                <option value="TRANSIT">公共交通機関</option>
-            </select>
+            <div id="travel-mode-options">
+                <button data-mode="WALKING" class="travel-mode-button active">徒歩</button>
+                <button data-mode="DRIVING" class="travel-mode-button">車</button>
+                <button data-mode="BICYCLING" class="travel-mode-button">自転車</button>
+                <button data-mode="TRANSIT" class="travel-mode-button">公共交通</button>
+            </div>
         </div>
         <div id="map"></div>
         <div id="route-info">
-            <p id="distance"></p>
-            <p id="duration"></p>
+            <p id="distance">距離: -</p>
+            <p id="duration">所要時間: -</p>
         </div>
-        <button id="check-in" class="hidden">チェックイン</button>
+        <button id="check-in" class="disabled" disabled>チェックイン</button>
         <button id="close-map">✖ 閉じる</button>
     </div>
 
