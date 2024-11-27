@@ -1,144 +1,68 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    const timeline = document.querySelector(".timeline");
-    const mapPopup = document.getElementById("map-popup");
-    const mapElement = document.getElementById("map");
-    const closeMapButton = document.getElementById("close-map");
-    const distanceElement = document.getElementById("distance");
-    const durationElement = document.getElementById("duration");
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("MYMAP画面が読み込まれました");
 
-    let map;
-    let directionsService;
-    let directionsRenderer;
-    let currentPositionWatcher;
-    let posts = [];
-    let currentPage = 0;
-    let isFetching = false;
-
-    async function fetchPosts() {
-        if (isFetching) return;
-        isFetching = true;
-
-        try {
-            const response = await fetch(`/post-viewing-handler?page=${currentPage + 1}`, {
-                method: "GET",
-                credentials: "include",
-            });
-
-            if (response.ok) {
-                const newPosts = await response.json();
-                if (newPosts.length > 0) {
-                    posts = [...posts, ...newPosts];
-                    displayPosts(newPosts);
-                    currentPage++;
-                }
-                isFetching = false;
-            }
-        } catch (error) {
-            console.error("投稿データ取得エラー:", error);
-            isFetching = false;
-        }
-    }
-
-    function displayPosts(newPosts) {
-        newPosts.forEach((post) => {
-            const postFrame = document.createElement("div");
-            postFrame.className = "post-frame";
-
-            const ringColor = post.ring_color || "#FFFFFF";
-
-            postFrame.innerHTML = `
-                <div class="post-content">
-                    <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
-                    <div class="post-details">
-                        <div class="user-info">
-                            <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
-                            <span>${post.username || "匿名ユーザー"}</span>
-                            <span class="post-address">${post.address || "住所情報なし"}</span>
-                        </div>
-                        <p class="post-comment">${post.caption || "コメントなし"}</p>
-                        <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="like-button">いいね</button>
-                        <button class="keep-button">Keep</button>
-                        <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
-                    </div>
-                </div>
-            `;
-            addSwipeFunctionality(postFrame, post.address);
-            timeline.appendChild(postFrame);
-        });
-    }
-
-    function addSwipeFunctionality(postFrame, address) {
-        let startY = 0;
-        let endY = 0;
-
-        postFrame.addEventListener("touchstart", (e) => {
-            startY = e.touches[0].clientY;
-        });
-
-        postFrame.addEventListener("touchmove", (e) => {
-            endY = e.touches[0].clientY;
-        });
-
-        postFrame.addEventListener("touchend", () => {
-            if (startY - endY > 50) { // スワイプ距離が一定以上の場合
-                showMapPopup(address);
-            }
-        });
-    }
-
-    function showMapPopup(destination) {
-        mapPopup.classList.remove("hidden");
-
-        if (!map) {
-            map = new google.maps.Map(mapElement, {
-                zoom: 15,
-                center: { lat: 35.6895, lng: 139.6917 }, // 東京の中心座標
-            });
-            directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
-            directionsRenderer.setMap(map);
-        }
-
-        if (currentPositionWatcher) {
-            navigator.geolocation.clearWatch(currentPositionWatcher);
-        }
-
-        currentPositionWatcher = navigator.geolocation.watchPosition((position) => {
-            const origin = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-            };
-
-            directionsService.route(
-                {
-                    origin: origin,
-                    destination: destination,
-                    travelMode: google.maps.TravelMode.WALKING,
-                },
-                (result, status) => {
-                    if (status === "OK") {
-                        directionsRenderer.setDirections(result);
-
-                        const route = result.routes[0].legs[0];
-                        distanceElement.textContent = `距離: ${route.distance.text}`;
-                        durationElement.textContent = `所要時間: ${route.duration.text}`;
-                    } else {
-                        console.error("Directions request failed:", status);
-                    }
-                }
-            );
-        });
-    }
-
-    closeMapButton.addEventListener("click", () => {
-        mapPopup.classList.add("hidden");
-        if (currentPositionWatcher) {
-            navigator.geolocation.clearWatch(currentPositionWatcher);
+    // フッターリンクの強調表示
+    const path = window.location.pathname;
+    const footerLinks = document.querySelectorAll("footer a");
+    footerLinks.forEach(link => {
+        if (link.getAttribute("href") === path) {
+            link.classList.add("active");
         }
     });
 
-    await fetchPosts();
+    // 星のランダム配置
+    const body = document.querySelector('body');
+    for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+        body.appendChild(star);
+    }
 });
+
+// Google Map 初期化関数
+function initMap() {
+    const mapOptions = {
+        center: { lat: 35.6895, lng: 139.6917 }, // 東京の初期座標
+        zoom: 12
+    };
+    const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+    // 現在位置のマーカーを設定（カスタムアイコンを使用）
+    let marker = new google.maps.Marker({
+        map: map,
+        title: "現在位置",
+        icon: {
+            url: "/assets/images/icons/current_location.svg", // 現在位置のアイコン画像パス
+            scaledSize: new google.maps.Size(40, 40) // アイコンのサイズ
+        }
+    });
+
+    // 位置情報が取得できた場合の処理
+    function updatePosition(position) {
+        const currentPos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+        marker.setPosition(currentPos);
+        map.setCenter(currentPos); // 地図の中心も更新
+    }
+
+    // 位置情報取得のエラーハンドリング
+    function handleError(error) {
+        console.error("位置情報の取得に失敗しました:", error);
+    }
+
+    // 継続的に位置情報を取得
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(updatePosition, handleError, {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 5000
+        });
+    } else {
+        alert("このブラウザでは位置情報の取得がサポートされていません");
+    }
+}
