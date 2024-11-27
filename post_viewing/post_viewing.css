@@ -195,6 +195,9 @@ header {
     text-align: center;
     color: white;
     font-size: 14px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
 /* 移動手段セクション */
@@ -231,44 +234,27 @@ header {
 }
 
 /* チェックインボタン */
-#check-in-buttons {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 300px;
+#check-in {
     margin: 10px 0;
-}
-
-#check-in-buttons button {
-    flex: 1;
+    padding: 10px 20px;
     font-size: 14px;
-    padding: 8px;
-    margin: 0 5px;
+    text-align: center;
+    background-color: #4e5c94;
+    color: white;
     border: none;
     border-radius: 5px;
-    text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-#check-in {
-    background-color: #4e5c94;
-    color: white;
+#check-in:hover {
+    background-color: #394575;
 }
 
 #check-in.disabled {
     background-color: #666;
     color: #aaa;
     cursor: not-allowed;
-}
-
-#test-check-in {
-    background-color: #394575;
-    color: white;
-}
-
-#test-check-in:hover {
-    background-color: #4e5c94;
 }
 
 /* 到着ポップアップ */
