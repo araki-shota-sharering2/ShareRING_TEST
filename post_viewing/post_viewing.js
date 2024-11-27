@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     let directionsService;
     let directionsRenderer;
     let currentPositionWatcher;
+    let destinationMarker;
+    let compassMarker;
     let posts = [];
     let currentPage = 0;
     let isFetching = false;
@@ -100,37 +102,68 @@ document.addEventListener("DOMContentLoaded", async () => {
             directionsService = new google.maps.DirectionsService();
             directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
             directionsRenderer.setMap(map);
+
+            // 現在位置を示すコンパスマーカーを初期化
+            compassMarker = new google.maps.Marker({
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    scale: 5,
+                    strokeColor: "#00f",
+                },
+            });
         }
+
+        if (destinationMarker) destinationMarker.setMap(null);
+        destinationMarker = new google.maps.Marker({
+            position: destination,
+            map: map,
+            title: "目的地",
+        });
 
         if (currentPositionWatcher) {
             navigator.geolocation.clearWatch(currentPositionWatcher);
         }
 
-        currentPositionWatcher = navigator.geolocation.watchPosition((position) => {
-            const origin = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-            };
+        currentPositionWatcher = navigator.geolocation.watchPosition(
+            (position) => {
+                const origin = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
 
-            directionsService.route(
-                {
-                    origin: origin,
-                    destination: destination,
-                    travelMode: google.maps.TravelMode.WALKING,
-                },
-                (result, status) => {
-                    if (status === "OK") {
-                        directionsRenderer.setDirections(result);
+                // ユーザーの現在地を更新
+                compassMarker.setPosition(origin);
+                compassMarker.setIcon({
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    scale: 5,
+                    rotation: position.coords.heading || 0, // 向き
+                    strokeColor: "#00f",
+                });
 
-                        const route = result.routes[0].legs[0];
-                        distanceElement.textContent = `距離: ${route.distance.text}`;
-                        durationElement.textContent = `所要時間: ${route.duration.text}`;
-                    } else {
-                        console.error("Directions request failed:", status);
+                directionsService.route(
+                    {
+                        origin: origin,
+                        destination: destination,
+                        travelMode: google.maps.TravelMode.WALKING,
+                    },
+                    (result, status) => {
+                        if (status === "OK") {
+                            directionsRenderer.setDirections(result);
+
+                            const route = result.routes[0].legs[0];
+                            distanceElement.textContent = `距離: ${route.distance.text}`;
+                            durationElement.textContent = `所要時間: ${route.duration.text}`;
+                        } else {
+                            console.error("Directions request failed:", status);
+                        }
                     }
-                }
-            );
-        });
+                );
+            },
+            (error) => {
+                console.error("位置情報の取得に失敗しました:", error);
+            }
+        );
     }
 
     closeMapButton.addEventListener("click", () => {
