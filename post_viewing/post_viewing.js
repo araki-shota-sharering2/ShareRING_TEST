@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let travelMode = "WALKING"; // デフォルトの移動手段
     const CHECK_IN_RADIUS = 50; // チェックイン可能な距離（メートル）
 
-    function initializeMap() {
+    async function initializeMap() {
         map = new google.maps.Map(mapElement, {
             zoom: 15,
             center: { lat: 0, lng: 0 }, // 初期値は (0, 0) に設定し、後で現在地に更新
@@ -25,6 +25,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         directionsService = new google.maps.DirectionsService();
         directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
         directionsRenderer.setMap(map);
+
+        // 現在地を取得してマップを初期化
+        await updateMapCenter();
     }
 
     async function fetchCurrentLocation() {
@@ -52,8 +55,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    function updateRoute() {
-        if (!destinationLat || !destinationLng) return;
+    async function updateRoute() {
+        if (!destinationLat || !destinationLng) {
+            console.error("目的地が設定されていません");
+            return;
+        }
 
         const origin = { lat: currentLat, lng: currentLng };
         const destination = { lat: destinationLat, lng: destinationLng };
@@ -78,18 +84,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
     }
 
-    function updateCheckInStatus(distance) {
-        if (distance <= CHECK_IN_RADIUS) {
-            checkInButton.classList.remove("disabled");
-            checkInButton.removeAttribute("disabled");
-            checkInButton.textContent = "チェックイン可能！";
-        } else {
-            checkInButton.classList.add("disabled");
-            checkInButton.setAttribute("disabled", true);
-            checkInButton.textContent = "まだ到着していません";
-        }
-    }
-
     async function showMapPopup(address) {
         mapPopup.classList.remove("hidden");
 
@@ -101,13 +95,25 @@ document.addEventListener("DOMContentLoaded", async () => {
                 destinationLat = location.lat();
                 destinationLng = location.lng();
 
-                // 現在地を取得してマップを更新
+                // 現在地を取得してルートを更新
                 await updateMapCenter();
                 updateRoute();
             } else {
                 console.error("住所のジオコーディングに失敗しました:", status);
             }
         });
+    }
+
+    function updateCheckInStatus(distance) {
+        if (distance <= CHECK_IN_RADIUS) {
+            checkInButton.classList.remove("disabled");
+            checkInButton.removeAttribute("disabled");
+            checkInButton.textContent = "チェックイン可能！";
+        } else {
+            checkInButton.classList.add("disabled");
+            checkInButton.setAttribute("disabled", true);
+            checkInButton.textContent = "まだ到着していません";
+        }
     }
 
     function trackUserPosition() {
@@ -212,6 +218,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
-    initializeMap();
+    await initializeMap();
     await fetchPosts();
 });
