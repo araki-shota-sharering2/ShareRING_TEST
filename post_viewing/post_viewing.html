@@ -17,22 +17,15 @@
 
     <!-- Google Mapsポップアップ -->
     <div id="map-popup" class="map-popup hidden">
-        <div id="route-options">
-            <label for="travel-mode">移動手段:</label>
-            <div id="travel-mode-options">
-                <button data-mode="WALKING" class="travel-mode-button active">徒歩</button>
-                <button data-mode="TRANSIT" class="travel-mode-button">電車</button>
-            </div>
+        <div id="travel-mode-options">
+            <button data-mode="WALKING" class="travel-mode-button active">徒歩</button>
+            <button data-mode="TRANSIT" class="travel-mode-button">電車</button>
         </div>
         <div id="map"></div>
         <div id="route-info">
-            <p id="distance">距離: -</p>
-            <p id="duration">所要時間: -</p>
+            <span id="distance">距離: -</span><span id="duration">所要時間: -</span>
         </div>
-        <div id="check-in-buttons">
-            <button id="check-in" class="disabled" disabled>チェックイン</button>
-            <button id="test-check-in">テストチェックイン</button>
-        </div>
+        <button id="check-in" class="disabled" disabled>チェックイン</button>
     </div>
 
     <!-- 到着演出 -->

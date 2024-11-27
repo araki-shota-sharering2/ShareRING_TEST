@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const distanceElement = document.getElementById("distance");
     const durationElement = document.getElementById("duration");
     const checkInButton = document.getElementById("check-in");
-    const testCheckInButton = document.getElementById("test-check-in");
     const celebrationPopup = document.getElementById("celebration-popup");
     const travelModeButtons = document.querySelectorAll(".travel-mode-button");
 
@@ -183,10 +182,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
     });
 
-    testCheckInButton.addEventListener("click", () => {
-        showCelebrationPopup("テスト成功！🎉", "テスト用チェックインが実行されました！");
-    });
-
     function showCelebrationPopup(title, message) {
         celebrationPopup.classList.remove("hidden");
         celebrationPopup.innerHTML = `
@@ -199,6 +194,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             celebrationPopup.classList.add("hidden");
         }, 5000);
     }
+
+    travelModeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            travelModeButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+            travelMode = button.getAttribute("data-mode");
+            updateRoute();
+        });
+    });
 
     await initializeMap();
     await fetchPosts();
