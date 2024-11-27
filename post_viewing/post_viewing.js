@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const durationElement = document.getElementById("duration");
     const checkInButton = document.getElementById("check-in");
     const celebrationPopup = document.getElementById("celebration-popup");
-    const closeMapButton = document.createElement("button");
     const travelModeButtons = document.querySelectorAll(".travel-mode-button");
 
     let map;
@@ -27,22 +26,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         directionsService = new google.maps.DirectionsService();
         directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
         directionsRenderer.setMap(map);
-
-        closeMapButton.textContent = "閉じる";
-        closeMapButton.style.position = "absolute";
-        closeMapButton.style.bottom = "10px";
-        closeMapButton.style.right = "10px";
-        closeMapButton.style.padding = "10px 20px";
-        closeMapButton.style.backgroundColor = "#394575";
-        closeMapButton.style.color = "white";
-        closeMapButton.style.border = "none";
-        closeMapButton.style.borderRadius = "5px";
-        closeMapButton.style.cursor = "pointer";
-        mapPopup.appendChild(closeMapButton);
-
-        closeMapButton.addEventListener("click", () => {
-            mapPopup.classList.add("hidden");
-        });
 
         await updateMapCenter();
     }
@@ -78,7 +61,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         fillColor: "#00F",
                         fillOpacity: 1,
                         strokeWeight: 2,
-                        rotation: 0, // 矢印の方向
                     },
                     title: "現在地",
                 });
