@@ -175,6 +175,11 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
   const bmi = (weight / (height * height)).toFixed(2);
   document.getElementById("bmiResult").textContent = `BMI: ${bmi}`;
 }
+    function calculateCalories() {
+  const weight = parseFloat(document.getElementById("weight").value); // 体重
+  const exerciseType = document.getElementById("exerciseType").value; // 運動タイプ
+  const exerciseTime = parseFloat(document.getElementById("exerciseTime").value); // 運動時間（分）
+
       
 
     // 星をランダムに配置
