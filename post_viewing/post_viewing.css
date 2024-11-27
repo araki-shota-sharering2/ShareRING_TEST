@@ -197,6 +197,7 @@ header {
     font-size: 16px;
     cursor: pointer;
 }
+
 /* ポップアップの情報表示エリア */
 #route-info {
     margin-top: 10px;
@@ -245,7 +246,9 @@ footer a.active {
 footer img {
     width: 25px;
     height: 25px;
-}/* 到着演出のポップアップ */
+}
+
+/* 到着演出のポップアップ */
 #celebration-popup {
     position: fixed;
     top: 0;
@@ -278,4 +281,46 @@ footer img {
         transform: scale(1);
         opacity: 1;
     }
+}
+
+/* 移動手段ボタン */
+#travel-mode-options {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.travel-mode-button {
+    padding: 8px 15px;
+    font-size: 14px;
+    border: 1px solid #4e5c94;
+    border-radius: 5px;
+    background-color: #394575;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.travel-mode-button:hover {
+    background-color: #4e5c94;
+    transform: scale(1.05);
+}
+
+.travel-mode-button.active {
+    background-color: #ffffff;
+    color: #394575;
+    border: 1px solid #ffffff;
+}
+
+.travel-mode-button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+/* チェックインボタン（無効状態） */
+#check-in.disabled {
+    background-color: #444;
+    color: #aaa;
+    cursor: not-allowed;
 }
