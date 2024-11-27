@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const distanceElement = document.getElementById("distance");
     const durationElement = document.getElementById("duration");
     const checkInButton = document.getElementById("check-in");
+    const testCheckInButton = document.getElementById("test-check-in");
+    const closeMapButton = document.getElementById("close-map");
     const celebrationPopup = document.getElementById("celebration-popup");
-    const closeMapButton = document.createElement("button");
-    const travelModeButtons = document.querySelectorAll(".travel-mode-button");
 
     let map;
     let directionsService;
@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentLat, currentLng;
     let destinationLat, destinationLng;
     let currentLocationMarker, destinationMarker;
-    let travelMode = "WALKING";
     const CHECK_IN_RADIUS = 50;
     const MIN_ROUTE_DISTANCE = 100;
 
@@ -27,22 +26,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         directionsService = new google.maps.DirectionsService();
         directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
         directionsRenderer.setMap(map);
-
-        closeMapButton.textContent = "閉じる";
-        closeMapButton.style.position = "absolute";
-        closeMapButton.style.bottom = "10px";
-        closeMapButton.style.right = "10px";
-        closeMapButton.style.padding = "10px 20px";
-        closeMapButton.style.backgroundColor = "#394575";
-        closeMapButton.style.color = "white";
-        closeMapButton.style.border = "none";
-        closeMapButton.style.borderRadius = "5px";
-        closeMapButton.style.cursor = "pointer";
-        mapPopup.appendChild(closeMapButton);
-
-        closeMapButton.addEventListener("click", () => {
-            mapPopup.classList.add("hidden");
-        });
 
         await updateMapCenter();
     }
@@ -78,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         fillColor: "#00F",
                         fillOpacity: 1,
                         strokeWeight: 2,
-                        rotation: 0, // 矢印の方向
+                        rotation: 0,
                     },
                     title: "現在地",
                 });
@@ -125,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             {
                 origin,
                 destination,
-                travelMode: google.maps.TravelMode[travelMode],
+                travelMode: google.maps.TravelMode.WALKING,
             },
             (result, status) => {
                 if (status === "OK") {
@@ -257,6 +240,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
     });
 
+    testCheckInButton.addEventListener("click", () => {
+        alert("テストチェックインが完了しました！");
+        showCelebrationPopup("テスト成功！🎉", "テストチェックインが実行されました！");
+    });
+
     function showCelebrationPopup(title, message) {
         celebrationPopup.classList.remove("hidden");
         celebrationPopup.innerHTML = `
@@ -270,13 +258,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }, 5000);
     }
 
-    travelModeButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            travelModeButtons.forEach((btn) => btn.classList.remove("active"));
-            button.classList.add("active");
-            travelMode = button.getAttribute("data-mode");
-            updateRoute();
-        });
+    closeMapButton.addEventListener("click", () => {
+        mapPopup.classList.add("hidden");
     });
 
     await initializeMap();
