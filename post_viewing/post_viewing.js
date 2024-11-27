@@ -2,11 +2,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const timeline = document.querySelector(".timeline");
     const mapPopup = document.getElementById("map-popup");
     const mapElement = document.getElementById("map");
-    const closeMapButton = document.getElementById("close-map");
     const distanceElement = document.getElementById("distance");
     const durationElement = document.getElementById("duration");
     const checkInButton = document.getElementById("check-in");
-    const testCheckInButton = document.createElement("button"); // テスト用チェックインボタン
+    const testCheckInButton = document.getElementById("test-check-in");
     const celebrationPopup = document.getElementById("celebration-popup");
     const travelModeButtons = document.querySelectorAll(".travel-mode-button");
 
@@ -17,7 +16,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     let destinationLat, destinationLng;
     let travelMode = "WALKING";
     const CHECK_IN_RADIUS = 50;
-    const MIN_ROUTE_DISTANCE = 100;
 
     async function initializeMap() {
         map = new google.maps.Map(mapElement, {
@@ -65,22 +63,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const origin = { lat: currentLat, lng: currentLng };
         const destination = { lat: destinationLat, lng: destinationLng };
 
-        const distance = calculateDistance(currentLat, currentLng, destinationLat, destinationLng);
-
-        if (distance < MIN_ROUTE_DISTANCE) {
-            distanceElement.textContent = "距離: 目的地はすぐ近くです";
-            durationElement.textContent = "所要時間: 数秒";
-            directionsRenderer.setDirections({});
-            map.setCenter(destination);
-            new google.maps.Marker({
-                position: destination,
-                map: map,
-                title: "目的地",
-            });
-            updateCheckInStatus(distance, true);
-            return;
-        }
-
         directionsService.route(
             {
                 origin,
@@ -98,25 +80,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     console.error("ルート検索に失敗しました:", status);
                     distanceElement.textContent = "距離: 不明";
                     durationElement.textContent = "所要時間: 不明";
-                    updateCheckInStatus(CHECK_IN_RADIUS - 1, true);
+                    updateCheckInStatus(CHECK_IN_RADIUS - 1);
                 }
             }
         );
-    }
-
-    function calculateDistance(lat1, lng1, lat2, lng2) {
-        const R = 6371e3;
-        const φ1 = (lat1 * Math.PI) / 180;
-        const φ2 = (lat2 * Math.PI) / 180;
-        const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-        const Δλ = ((lng2 - lng1) * Math.PI) / 180;
-
-        const a =
-            Math.sin(Δφ / 2) ** 2 +
-            Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return R * c;
     }
 
     async function showMapPopup(address) {
@@ -137,8 +104,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    function updateCheckInStatus(distance, forceEnable = false) {
-        if (forceEnable || distance <= CHECK_IN_RADIUS) {
+    function updateCheckInStatus(distance) {
+        if (distance <= CHECK_IN_RADIUS) {
             checkInButton.classList.remove("disabled");
             checkInButton.removeAttribute("disabled");
             checkInButton.textContent = "チェックイン可能！";
@@ -216,16 +183,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
     });
 
-    testCheckInButton.textContent = "テストチェックイン";
-    testCheckInButton.style.marginTop = "10px";
-    testCheckInButton.style.padding = "10px";
-    testCheckInButton.style.fontSize = "14px";
-    testCheckInButton.style.borderRadius = "5px";
-    testCheckInButton.style.backgroundColor = "#4e5c94";
-    testCheckInButton.style.color = "white";
-    testCheckInButton.style.cursor = "pointer";
-    mapPopup.appendChild(testCheckInButton);
-
     testCheckInButton.addEventListener("click", () => {
         showCelebrationPopup("テスト成功！🎉", "テスト用チェックインが実行されました！");
     });
@@ -242,19 +199,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             celebrationPopup.classList.add("hidden");
         }, 5000);
     }
-
-    closeMapButton.addEventListener("click", () => {
-        mapPopup.classList.add("hidden");
-    });
-
-    travelModeButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            travelModeButtons.forEach((btn) => btn.classList.remove("active"));
-            button.classList.add("active");
-            travelMode = button.getAttribute("data-mode");
-            updateRoute();
-        });
-    });
 
     await initializeMap();
     await fetchPosts();
