@@ -5,17 +5,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const distanceElement = document.getElementById("distance");
     const durationElement = document.getElementById("duration");
     const checkInButton = document.getElementById("check-in");
+    const testCheckInButton = document.getElementById("test-check-in");
+    const closeRouteButton = document.getElementById("close-route");
     const celebrationPopup = document.getElementById("celebration-popup");
-    const closeMapButton = document.createElement("button");
     const travelModeButtons = document.querySelectorAll(".travel-mode-button");
 
     let map;
     let directionsService;
     let directionsRenderer;
     let currentLat, currentLng;
-    let destinationLat, destinationLng;
-    let currentLocationMarker, destinationMarker;
-    let travelMode = "WALKING";
+
     const CHECK_IN_RADIUS = 50;
     const MIN_ROUTE_DISTANCE = 100;
 
@@ -24,108 +23,40 @@ document.addEventListener("DOMContentLoaded", async () => {
             zoom: 15,
             center: { lat: 0, lng: 0 },
         });
+
         directionsService = new google.maps.DirectionsService();
         directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
         directionsRenderer.setMap(map);
 
-        closeMapButton.textContent = "閉じる";
-        closeMapButton.style.position = "absolute";
-        closeMapButton.style.bottom = "10px";
-        closeMapButton.style.right = "10px";
-        closeMapButton.style.padding = "10px 20px";
-        closeMapButton.style.backgroundColor = "#394575";
-        closeMapButton.style.color = "white";
-        closeMapButton.style.border = "none";
-        closeMapButton.style.borderRadius = "5px";
-        closeMapButton.style.cursor = "pointer";
-        mapPopup.appendChild(closeMapButton);
-
-        closeMapButton.addEventListener("click", () => {
-            mapPopup.classList.add("hidden");
-        });
-
-        await updateMapCenter();
+        await updateCurrentLocation();
     }
 
-    async function fetchCurrentLocation() {
+    async function updateCurrentLocation() {
         return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     currentLat = position.coords.latitude;
                     currentLng = position.coords.longitude;
-                    resolve({ lat: currentLat, lng: currentLng });
+                    map.setCenter({ lat: currentLat, lng: currentLng });
+                    resolve();
                 },
                 (error) => {
-                    console.error("現在地の取得に失敗しました:", error);
+                    console.error("現在地を取得できませんでした:", error);
                     reject(error);
                 }
             );
         });
     }
 
-    async function updateMapCenter() {
-        try {
-            const currentLocation = await fetchCurrentLocation();
-            map.setCenter(currentLocation);
-
-            if (!currentLocationMarker) {
-                currentLocationMarker = new google.maps.Marker({
-                    position: currentLocation,
-                    map: map,
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        scale: 5,
-                        fillColor: "#00F",
-                        fillOpacity: 1,
-                        strokeWeight: 2,
-                        rotation: 0, // 矢印の方向
-                    },
-                    title: "現在地",
-                });
-            } else {
-                currentLocationMarker.setPosition(currentLocation);
-            }
-        } catch (error) {
-            console.error("マップの中心位置の更新に失敗しました:", error);
-        }
-    }
-
-    async function updateRoute() {
-        if (!destinationLat || !destinationLng) {
-            console.error("目的地が設定されていません");
-            return;
-        }
-
+    async function updateRoute(destinationLat, destinationLng) {
         const origin = { lat: currentLat, lng: currentLng };
         const destination = { lat: destinationLat, lng: destinationLng };
-
-        const distance = calculateDistance(currentLat, currentLng, destinationLat, destinationLng);
-
-        if (distance < MIN_ROUTE_DISTANCE) {
-            distanceElement.textContent = "距離: 目的地はすぐ近くです";
-            durationElement.textContent = "所要時間: 数秒";
-            directionsRenderer.setDirections({});
-            map.setCenter(destination);
-
-            if (!destinationMarker) {
-                destinationMarker = new google.maps.Marker({
-                    position: destination,
-                    map: map,
-                    title: "目的地",
-                });
-            } else {
-                destinationMarker.setPosition(destination);
-            }
-
-            updateCheckInStatus(distance, true);
-            return;
-        }
 
         directionsService.route(
             {
                 origin,
                 destination,
-                travelMode: google.maps.TravelMode[travelMode],
+                travelMode: google.maps.TravelMode.WALKING,
             },
             (result, status) => {
                 if (status === "OK") {
@@ -135,63 +66,52 @@ document.addEventListener("DOMContentLoaded", async () => {
                     durationElement.textContent = `所要時間: ${route.duration.text}`;
                     updateCheckInStatus(route.distance.value);
                 } else {
-                    console.error("ルート検索に失敗しました:", status);
-                    distanceElement.textContent = "距離: 不明";
-                    durationElement.textContent = "所要時間: 不明";
-                    updateCheckInStatus(CHECK_IN_RADIUS - 1);
+                    console.error("ルート取得失敗:", status);
                 }
             }
         );
     }
 
-    function calculateDistance(lat1, lng1, lat2, lng2) {
-        const R = 6371e3;
-        const φ1 = (lat1 * Math.PI) / 180;
-        const φ2 = (lat2 * Math.PI) / 180;
-        const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-        const Δλ = ((lng2 - lng1) * Math.PI) / 180;
-
-        const a =
-            Math.sin(Δφ / 2) ** 2 +
-            Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return R * c;
-    }
-
-    async function showMapPopup(address) {
-        mapPopup.classList.remove("hidden");
-
-        const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ address }, async (results, status) => {
-            if (status === "OK") {
-                const location = results[0].geometry.location;
-                destinationLat = location.lat();
-                destinationLng = location.lng();
-
-                await updateMapCenter();
-                updateRoute();
-            } else {
-                console.error("住所のジオコーディングに失敗しました:", status);
-            }
-        });
-    }
-
-    function updateCheckInStatus(distance, forceEnable = false) {
-        if (forceEnable || distance <= CHECK_IN_RADIUS) {
-            checkInButton.classList.remove("disabled");
+    function updateCheckInStatus(distance) {
+        if (distance <= CHECK_IN_RADIUS) {
             checkInButton.removeAttribute("disabled");
-            checkInButton.textContent = "チェックイン可能！";
+            checkInButton.classList.remove("disabled");
         } else {
-            checkInButton.classList.add("disabled");
             checkInButton.setAttribute("disabled", true);
-            checkInButton.textContent = "まだ到着していません";
+            checkInButton.classList.add("disabled");
         }
+    }
+
+    async function fetchDistanceAndDuration(postLat, postLng) {
+        const origin = { lat: currentLat, lng: currentLng };
+        const destination = { lat: postLat, lng: postLng };
+
+        return new Promise((resolve, reject) => {
+            directionsService.route(
+                {
+                    origin,
+                    destination,
+                    travelMode: google.maps.TravelMode.WALKING,
+                },
+                (result, status) => {
+                    if (status === "OK") {
+                        const route = result.routes[0].legs[0];
+                        resolve({
+                            distance: route.distance.text,
+                            duration: route.duration.text,
+                        });
+                    } else {
+                        console.error("距離・時間取得失敗:", status);
+                        reject(status);
+                    }
+                }
+            );
+        });
     }
 
     async function fetchPosts() {
         try {
-            const response = await fetch(`/post-viewing-handler?page=1`, { method: "GET" });
+            const response = await fetch(`/post-viewing-handler?page=1`);
             if (response.ok) {
                 const posts = await response.json();
                 displayPosts(posts);
@@ -199,83 +119,63 @@ document.addEventListener("DOMContentLoaded", async () => {
                 console.error("投稿データの取得に失敗しました");
             }
         } catch (error) {
-            console.error("投稿データの取得中にエラーが発生しました:", error);
+            console.error("投稿データ取得エラー:", error);
         }
     }
 
-    function displayPosts(posts) {
-        posts.forEach((post) => {
+    async function displayPosts(posts) {
+        for (const post of posts) {
             const postFrame = document.createElement("div");
             postFrame.className = "post-frame";
 
             const ringColor = post.ring_color || "#FFFFFF";
+            let distanceAndDuration = { distance: "-", duration: "-" };
+
+            if (post.location) {
+                const [postLat, postLng] = post.location.split(",").map(Number);
+                distanceAndDuration = await fetchDistanceAndDuration(postLat, postLng);
+            }
+
             postFrame.innerHTML = `
                 <div class="post-content">
                     <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
                     <div class="post-details">
                         <div class="user-info">
-                            <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
                             <span>${post.username || "匿名ユーザー"}</span>
-                            <span class="post-address">${post.address || "住所情報なし"}</span>
+                            <span class="post-date">${new Date(post.created_at).toLocaleDateString()}</span>
                         </div>
                         <p class="post-comment">${post.caption || "コメントなし"}</p>
-                        <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="like-button">いいね</button>
-                        <button class="keep-button">Keep</button>
-                        <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
+                        <p class="post-distance-duration" style="color: ${ringColor};">
+                            距離: ${distanceAndDuration.distance}, 時間: ${distanceAndDuration.duration}
+                        </p>
                     </div>
                 </div>
             `;
-            addSwipeFunctionality(postFrame, post.address);
             timeline.appendChild(postFrame);
-        });
+        }
     }
 
-    function addSwipeFunctionality(postFrame, address) {
-        let startY = 0;
-        let endY = 0;
-
-        postFrame.addEventListener("touchstart", (e) => {
-            startY = e.touches[0].clientY;
-        });
-
-        postFrame.addEventListener("touchmove", (e) => {
-            endY = e.touches[0].clientY;
-        });
-
-        postFrame.addEventListener("touchend", () => {
-            if (startY - endY > 50) {
-                showMapPopup(address);
-            }
-        });
+    function showMapPopup(postLat, postLng) {
+        mapPopup.classList.remove("hidden");
+        updateRoute(postLat, postLng);
     }
+
+    closeRouteButton.addEventListener("click", () => {
+        mapPopup.classList.add("hidden");
+    });
+
+    testCheckInButton.addEventListener("click", () => {
+        alert("テストチェックイン完了！");
+    });
 
     checkInButton.addEventListener("click", () => {
         alert("チェックインが完了しました！");
-        showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
     });
-
-    function showCelebrationPopup(title, message) {
-        celebrationPopup.classList.remove("hidden");
-        celebrationPopup.innerHTML = `
-            <div class="celebration-content">
-                <h1>${title}</h1>
-                <p>${message}</p>
-            </div>
-        `;
-        setTimeout(() => {
-            celebrationPopup.classList.add("hidden");
-        }, 5000);
-    }
 
     travelModeButtons.forEach((button) => {
         button.addEventListener("click", () => {
             travelModeButtons.forEach((btn) => btn.classList.remove("active"));
             button.classList.add("active");
-            travelMode = button.getAttribute("data-mode");
-            updateRoute();
         });
     });
 
