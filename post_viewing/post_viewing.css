@@ -123,6 +123,11 @@ header {
     align-items: center;
     margin-top: 10px;
 }
+.post-frame.swiping-up {
+    transform: translateY(-10%);
+    transition: transform 0.3s ease;
+}
+
 
 .post-actions button,
 .go-button {

@@ -55,7 +55,30 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                 </div>
             `;
+            addSwipeFunctionality(postFrame, post.address);
             timeline.appendChild(postFrame);
+        });
+    }
+
+    function addSwipeFunctionality(postFrame, address) {
+        let startY = 0;
+        let endY = 0;
+
+        postFrame.addEventListener("touchstart", (e) => {
+            startY = e.touches[0].clientY;
+        });
+
+        postFrame.addEventListener("touchmove", (e) => {
+            endY = e.touches[0].clientY;
+        });
+
+        postFrame.addEventListener("touchend", () => {
+            if (startY - endY > 50) { // スワイプ距離が一定以上の場合
+                const goButton = postFrame.querySelector(".go-button");
+                if (goButton) {
+                    window.open(`https://www.google.com/maps?q=${encodeURIComponent(address)}`, "_blank");
+                }
+            }
         });
     }
 
