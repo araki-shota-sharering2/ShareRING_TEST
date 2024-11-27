@@ -180,6 +180,8 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
   const exerciseType = document.getElementById("exerciseType").value; // 運動タイプ
   const exerciseTime = parseFloat(document.getElementById("exerciseTime").value); // 運動時間（分）
 
+    }     
+
       
 
     // 星をランダムに配置
