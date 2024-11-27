@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!map) {
             map = new google.maps.Map(mapElement, {
                 zoom: 15,
-                center: { lat: 35.6895, lng: 139.6917 }, // 東京の中心座標
+                center: { lat: 35.6895, lng: 139.6917 },
             });
             directionsService = new google.maps.DirectionsService();
             directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
