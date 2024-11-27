@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const distanceElement = document.getElementById("distance");
     const durationElement = document.getElementById("duration");
     const checkInButton = document.getElementById("check-in");
+    const testCheckInButton = document.createElement("button"); // テスト用チェックインボタン
     const celebrationPopup = document.getElementById("celebration-popup");
     const travelModeButtons = document.querySelectorAll(".travel-mode-button");
 
@@ -13,21 +14,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     let directionsService;
     let directionsRenderer;
     let currentLat, currentLng;
-    let destinationLat, destinationLng; // 目的地の緯度・経度
-    let travelMode = "WALKING"; // デフォルトの移動手段
-    const CHECK_IN_RADIUS = 50; // チェックイン可能な距離（メートル）
-    const MIN_ROUTE_DISTANCE = 100; // ルート検索が有効な最小距離（メートル）
+    let destinationLat, destinationLng;
+    let travelMode = "WALKING";
+    const CHECK_IN_RADIUS = 50;
+    const MIN_ROUTE_DISTANCE = 100;
 
     async function initializeMap() {
         map = new google.maps.Map(mapElement, {
             zoom: 15,
-            center: { lat: 0, lng: 0 }, // 初期値は (0, 0) に設定し、後で現在地に更新
+            center: { lat: 0, lng: 0 },
         });
         directionsService = new google.maps.DirectionsService();
         directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
         directionsRenderer.setMap(map);
 
-        // 現在地を取得してマップを初期化
         await updateMapCenter();
     }
 
@@ -68,17 +68,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         const distance = calculateDistance(currentLat, currentLng, destinationLat, destinationLng);
 
         if (distance < MIN_ROUTE_DISTANCE) {
-            // 距離が近すぎる場合の特別処理
             distanceElement.textContent = "距離: 目的地はすぐ近くです";
             durationElement.textContent = "所要時間: 数秒";
-            directionsRenderer.setDirections({}); // ルートをリセット
-            map.setCenter(destination); // 目的地を中心に
+            directionsRenderer.setDirections({});
+            map.setCenter(destination);
             new google.maps.Marker({
                 position: destination,
                 map: map,
                 title: "目的地",
             });
-            updateCheckInStatus(distance, true); // 強制的にチェックイン可能
+            updateCheckInStatus(distance, true);
             return;
         }
 
@@ -99,31 +98,30 @@ document.addEventListener("DOMContentLoaded", async () => {
                     console.error("ルート検索に失敗しました:", status);
                     distanceElement.textContent = "距離: 不明";
                     durationElement.textContent = "所要時間: 不明";
-                    updateCheckInStatus(CHECK_IN_RADIUS - 1, true); // デフォルトでチェックイン可能
+                    updateCheckInStatus(CHECK_IN_RADIUS - 1, true);
                 }
             }
         );
     }
 
     function calculateDistance(lat1, lng1, lat2, lng2) {
-        const R = 6371e3; // 地球の半径（メートル）
+        const R = 6371e3;
         const φ1 = (lat1 * Math.PI) / 180;
         const φ2 = (lat2 * Math.PI) / 180;
         const Δφ = ((lat2 - lat1) * Math.PI) / 180;
         const Δλ = ((lng2 - lng1) * Math.PI) / 180;
 
         const a =
-            Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-            Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            Math.sin(Δφ / 2) ** 2 +
+            Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return R * c; // 距離（メートル）
+        return R * c;
     }
 
     async function showMapPopup(address) {
         mapPopup.classList.remove("hidden");
 
-        // Geocoding APIで住所から緯度経度を取得
         const geocoder = new google.maps.Geocoder();
         geocoder.geocode({ address }, async (results, status) => {
             if (status === "OK") {
@@ -131,7 +129,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 destinationLat = location.lat();
                 destinationLng = location.lng();
 
-                // 現在地を取得してルートを更新
                 await updateMapCenter();
                 updateRoute();
             } else {
@@ -216,17 +213,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     checkInButton.addEventListener("click", () => {
+        showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
+    });
+
+    // テスト用チェックインボタンの追加
+    testCheckInButton.textContent = "テストチェックイン";
+    testCheckInButton.style.marginTop = "10px";
+    testCheckInButton.style.padding = "10px";
+    testCheckInButton.style.fontSize = "14px";
+    testCheckInButton.style.borderRadius = "5px";
+    testCheckInButton.style.backgroundColor = "#4e5c94";
+    testCheckInButton.style.color = "white";
+    testCheckInButton.style.cursor = "pointer";
+    mapPopup.appendChild(testCheckInButton);
+
+    testCheckInButton.addEventListener("click", () => {
+        showCelebrationPopup("テスト成功！🎉", "テスト用チェックインが実行されました！");
+    });
+
+    function showCelebrationPopup(title, message) {
         celebrationPopup.classList.remove("hidden");
         celebrationPopup.innerHTML = `
             <div class="celebration-content">
-                <h1>到着しました！🎉</h1>
-                <p>目的地にチェックインしました！</p>
+                <h1>${title}</h1>
+                <p>${message}</p>
             </div>
         `;
         setTimeout(() => {
             celebrationPopup.classList.add("hidden");
         }, 5000);
-    });
+    }
 
     closeMapButton.addEventListener("click", () => {
         mapPopup.classList.add("hidden");
