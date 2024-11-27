@@ -172,8 +172,9 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* 上から表示 */
     z-index: 1000;
+    padding: 10px;
 }
 
 .map-popup.hidden {
@@ -188,118 +189,57 @@ header {
 }
 
 #close-map {
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 10px;
+    padding: 8px 16px;
     background-color: #4e5c94;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
+    align-self: center;
 }
 
 /* ポップアップの情報表示エリア */
 #route-info {
-    margin-top: 10px;
-    text-align: center;
-    color: white;
-    font-size: 16px;
-}
-
-#route-info p {
     margin: 5px 0;
-}
-
-/* フッター */
-footer {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 8px;
-    background-color: #4e5c94;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    max-width: 375px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* フッターのアイコンスタイル */
-footer a {
     text-align: center;
     color: white;
-    text-decoration: none;
-    padding: 10px 15px;
+    font-size: 14px;
 }
 
-/* フッターのアクティブ状態を示す */
-footer a.active {
-    background-color: #394575;
-    border-top: 3px solid #ffffff;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, padding 0.3s ease;
-}
-
-footer img {
-    width: 25px;
-    height: 25px;
-}
-
-/* 到着演出のポップアップ */
-#celebration-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-#celebration-popup.hidden {
-    display: none;
-}
-
-#celebration-popup .celebration-content {
-    text-align: center;
-    color: #fff;
-    animation: celebration-animation 1s ease-in-out;
-}
-
-@keyframes celebration-animation {
-    0% {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* 移動手段ボタン */
-#travel-mode-options {
+/* 移動手段セクション */
+#route-options {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    gap: 10px;
+    width: 100%;
+    gap: 5px;
     margin: 10px 0;
 }
 
+#travel-mode-options {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+    flex-wrap: wrap; /* ボタンを折り返し配置 */
+    gap: 5px;
+}
+
 .travel-mode-button {
-    padding: 8px 15px;
-    font-size: 14px;
+    flex: 1 1 calc(50% - 10px); /* 幅を50%に調整 */
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
     border: 1px solid #4e5c94;
     border-radius: 5px;
     background-color: #394575;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 2px;
 }
 
 .travel-mode-button:hover {
@@ -313,14 +253,27 @@ footer img {
     border: 1px solid #ffffff;
 }
 
-.travel-mode-button:disabled {
-    background-color: #999;
-    cursor: not-allowed;
+/* チェックインボタン */
+#check-in {
+    margin-top: 10px;
+    width: 80%;
+    font-size: 14px;
+    padding: 8px;
+    text-align: center;
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-/* チェックインボタン（無効状態） */
+#check-in:hover {
+    background-color: #394575;
+}
+
 #check-in.disabled {
-    background-color: #444;
+    background-color: #666;
     color: #aaa;
     cursor: not-allowed;
 }

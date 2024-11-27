@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 map: map,
                 title: "目的地",
             });
-            updateCheckInStatus(distance);
+            updateCheckInStatus(distance, true); // 強制的にチェックイン可能
             return;
         }
 
@@ -97,6 +97,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     updateCheckInStatus(route.distance.value);
                 } else {
                     console.error("ルート検索に失敗しました:", status);
+                    distanceElement.textContent = "距離: 不明";
+                    durationElement.textContent = "所要時間: 不明";
+                    updateCheckInStatus(CHECK_IN_RADIUS - 1, true); // デフォルトでチェックイン可能
                 }
             }
         );
@@ -137,8 +140,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    function updateCheckInStatus(distance) {
-        if (distance <= CHECK_IN_RADIUS) {
+    function updateCheckInStatus(distance, forceEnable = false) {
+        if (forceEnable || distance <= CHECK_IN_RADIUS) {
             checkInButton.classList.remove("disabled");
             checkInButton.removeAttribute("disabled");
             checkInButton.textContent = "チェックイン可能！";
