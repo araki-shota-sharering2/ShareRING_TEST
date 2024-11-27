@@ -3,10 +3,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const mapPopup = document.getElementById("map-popup");
     const mapElement = document.getElementById("map");
     const closeMapButton = document.getElementById("close-map");
+    const distanceElement = document.getElementById("distance");
+    const durationElement = document.getElementById("duration");
 
     let map;
     let directionsService;
     let directionsRenderer;
+    let currentPositionWatcher;
     let posts = [];
     let currentPage = 0;
     let isFetching = false;
@@ -86,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    function showMapPopup(address) {
+    function showMapPopup(destination) {
         mapPopup.classList.remove("hidden");
 
         if (!map) {
@@ -95,11 +98,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 center: { lat: 35.6895, lng: 139.6917 }, // 東京の中心座標
             });
             directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
             directionsRenderer.setMap(map);
         }
 
-        navigator.geolocation.getCurrentPosition((position) => {
+        if (currentPositionWatcher) {
+            navigator.geolocation.clearWatch(currentPositionWatcher);
+        }
+
+        currentPositionWatcher = navigator.geolocation.watchPosition((position) => {
             const origin = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
@@ -108,12 +115,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             directionsService.route(
                 {
                     origin: origin,
-                    destination: address,
+                    destination: destination,
                     travelMode: google.maps.TravelMode.WALKING,
                 },
                 (result, status) => {
                     if (status === "OK") {
                         directionsRenderer.setDirections(result);
+
+                        const route = result.routes[0].legs[0];
+                        distanceElement.textContent = `距離: ${route.distance.text}`;
+                        durationElement.textContent = `所要時間: ${route.duration.text}`;
                     } else {
                         console.error("Directions request failed:", status);
                     }
@@ -124,6 +135,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     closeMapButton.addEventListener("click", () => {
         mapPopup.classList.add("hidden");
+        if (currentPositionWatcher) {
+            navigator.geolocation.clearWatch(currentPositionWatcher);
+        }
     });
 
     await fetchPosts();

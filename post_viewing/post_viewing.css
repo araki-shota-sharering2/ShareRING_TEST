@@ -197,6 +197,18 @@ header {
     font-size: 16px;
     cursor: pointer;
 }
+/* ポップアップの情報表示エリア */
+#route-info {
+    margin-top: 10px;
+    text-align: center;
+    color: white;
+    font-size: 16px;
+}
+
+#route-info p {
+    margin: 5px 0;
+}
+
 
 /* フッター */
 footer {
