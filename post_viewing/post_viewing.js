@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let destinationLat, destinationLng; // 目的地の緯度・経度
     let travelMode = "WALKING"; // デフォルトの移動手段
     const CHECK_IN_RADIUS = 50; // チェックイン可能な距離（メートル）
+    const MIN_ROUTE_DISTANCE = 100; // ルート検索が有効な最小距離（メートル）
 
     async function initializeMap() {
         map = new google.maps.Map(mapElement, {
@@ -64,6 +65,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         const origin = { lat: currentLat, lng: currentLng };
         const destination = { lat: destinationLat, lng: destinationLng };
 
+        const distance = calculateDistance(currentLat, currentLng, destinationLat, destinationLng);
+
+        if (distance < MIN_ROUTE_DISTANCE) {
+            // 距離が近すぎる場合の特別処理
+            distanceElement.textContent = "距離: 目的地はすぐ近くです";
+            durationElement.textContent = "所要時間: 数秒";
+            directionsRenderer.setDirections({}); // ルートをリセット
+            map.setCenter(destination); // 目的地を中心に
+            new google.maps.Marker({
+                position: destination,
+                map: map,
+                title: "目的地",
+            });
+            updateCheckInStatus(distance);
+            return;
+        }
+
         directionsService.route(
             {
                 origin,
@@ -82,6 +100,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             }
         );
+    }
+
+    function calculateDistance(lat1, lng1, lat2, lng2) {
+        const R = 6371e3; // 地球の半径（メートル）
+        const φ1 = (lat1 * Math.PI) / 180;
+        const φ2 = (lat2 * Math.PI) / 180;
+        const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+        const Δλ = ((lng2 - lng1) * Math.PI) / 180;
+
+        const a =
+            Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+            Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c; // 距離（メートル）
     }
 
     async function showMapPopup(address) {
@@ -114,19 +147,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             checkInButton.setAttribute("disabled", true);
             checkInButton.textContent = "まだ到着していません";
         }
-    }
-
-    function trackUserPosition() {
-        navigator.geolocation.watchPosition(
-            (position) => {
-                currentLat = position.coords.latitude;
-                currentLng = position.coords.longitude;
-                updateRoute();
-            },
-            (error) => {
-                console.error("位置情報の追跡に失敗しました:", error);
-            }
-        );
     }
 
     async function fetchPosts() {
