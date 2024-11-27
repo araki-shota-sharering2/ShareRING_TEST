@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const durationElement = document.getElementById("duration");
     const checkInButton = document.getElementById("check-in");
     const celebrationPopup = document.getElementById("celebration-popup");
+    const closeMapButton = document.createElement("button");
     const travelModeButtons = document.querySelectorAll(".travel-mode-button");
 
     let map;
@@ -13,8 +14,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     let directionsRenderer;
     let currentLat, currentLng;
     let destinationLat, destinationLng;
+    let currentLocationMarker, destinationMarker;
     let travelMode = "WALKING";
     const CHECK_IN_RADIUS = 50;
+    const MIN_ROUTE_DISTANCE = 100;
 
     async function initializeMap() {
         map = new google.maps.Map(mapElement, {
@@ -24,6 +27,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         directionsService = new google.maps.DirectionsService();
         directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
         directionsRenderer.setMap(map);
+
+        closeMapButton.textContent = "閉じる";
+        closeMapButton.style.position = "absolute";
+        closeMapButton.style.bottom = "10px";
+        closeMapButton.style.right = "10px";
+        closeMapButton.style.padding = "10px 20px";
+        closeMapButton.style.backgroundColor = "#394575";
+        closeMapButton.style.color = "white";
+        closeMapButton.style.border = "none";
+        closeMapButton.style.borderRadius = "5px";
+        closeMapButton.style.cursor = "pointer";
+        mapPopup.appendChild(closeMapButton);
+
+        closeMapButton.addEventListener("click", () => {
+            mapPopup.classList.add("hidden");
+        });
 
         await updateMapCenter();
     }
@@ -48,6 +67,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const currentLocation = await fetchCurrentLocation();
             map.setCenter(currentLocation);
+
+            if (!currentLocationMarker) {
+                currentLocationMarker = new google.maps.Marker({
+                    position: currentLocation,
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        scale: 5,
+                        fillColor: "#00F",
+                        fillOpacity: 1,
+                        strokeWeight: 2,
+                        rotation: 0, // 矢印の方向
+                    },
+                    title: "現在地",
+                });
+            } else {
+                currentLocationMarker.setPosition(currentLocation);
+            }
         } catch (error) {
             console.error("マップの中心位置の更新に失敗しました:", error);
         }
@@ -61,6 +98,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const origin = { lat: currentLat, lng: currentLng };
         const destination = { lat: destinationLat, lng: destinationLng };
+
+        const distance = calculateDistance(currentLat, currentLng, destinationLat, destinationLng);
+
+        if (distance < MIN_ROUTE_DISTANCE) {
+            distanceElement.textContent = "距離: 目的地はすぐ近くです";
+            durationElement.textContent = "所要時間: 数秒";
+            directionsRenderer.setDirections({});
+            map.setCenter(destination);
+
+            if (!destinationMarker) {
+                destinationMarker = new google.maps.Marker({
+                    position: destination,
+                    map: map,
+                    title: "目的地",
+                });
+            } else {
+                destinationMarker.setPosition(destination);
+            }
+
+            updateCheckInStatus(distance, true);
+            return;
+        }
 
         directionsService.route(
             {
@@ -85,6 +144,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
     }
 
+    function calculateDistance(lat1, lng1, lat2, lng2) {
+        const R = 6371e3;
+        const φ1 = (lat1 * Math.PI) / 180;
+        const φ2 = (lat2 * Math.PI) / 180;
+        const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+        const Δλ = ((lng2 - lng1) * Math.PI) / 180;
+
+        const a =
+            Math.sin(Δφ / 2) ** 2 +
+            Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c;
+    }
+
     async function showMapPopup(address) {
         mapPopup.classList.remove("hidden");
 
@@ -103,8 +177,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    function updateCheckInStatus(distance) {
-        if (distance <= CHECK_IN_RADIUS) {
+    function updateCheckInStatus(distance, forceEnable = false) {
+        if (forceEnable || distance <= CHECK_IN_RADIUS) {
             checkInButton.classList.remove("disabled");
             checkInButton.removeAttribute("disabled");
             checkInButton.textContent = "チェックイン可能！";
@@ -115,70 +189,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    async function fetchPosts() {
-        try {
-            const response = await fetch(`/post-viewing-handler?page=1`, { method: "GET" });
-            if (response.ok) {
-                const posts = await response.json();
-                displayPosts(posts);
-            } else {
-                console.error("投稿データの取得に失敗しました");
-            }
-        } catch (error) {
-            console.error("投稿データの取得中にエラーが発生しました:", error);
-        }
-    }
-
-    function displayPosts(posts) {
-        posts.forEach((post) => {
-            const postFrame = document.createElement("div");
-            postFrame.className = "post-frame";
-
-            const ringColor = post.ring_color || "#FFFFFF";
-            postFrame.innerHTML = `
-                <div class="post-content">
-                    <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
-                    <div class="post-details">
-                        <div class="user-info">
-                            <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
-                            <span>${post.username || "匿名ユーザー"}</span>
-                            <span class="post-address">${post.address || "住所情報なし"}</span>
-                        </div>
-                        <p class="post-comment">${post.caption || "コメントなし"}</p>
-                        <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="like-button">いいね</button>
-                        <button class="keep-button">Keep</button>
-                        <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
-                    </div>
-                </div>
-            `;
-            addSwipeFunctionality(postFrame, post.address);
-            timeline.appendChild(postFrame);
-        });
-    }
-
-    function addSwipeFunctionality(postFrame, address) {
-        let startY = 0;
-        let endY = 0;
-
-        postFrame.addEventListener("touchstart", (e) => {
-            startY = e.touches[0].clientY;
-        });
-
-        postFrame.addEventListener("touchmove", (e) => {
-            endY = e.touches[0].clientY;
-        });
-
-        postFrame.addEventListener("touchend", () => {
-            if (startY - endY > 50) {
-                showMapPopup(address);
-            }
-        });
-    }
-
     checkInButton.addEventListener("click", () => {
+        alert("チェックインが完了しました！");
         showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
     });
 
@@ -205,5 +217,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     await initializeMap();
-    await fetchPosts();
 });
