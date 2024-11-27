@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const distanceElement = document.getElementById("distance");
     const durationElement = document.getElementById("duration");
     const checkInButton = document.getElementById("check-in");
+    const testCheckInButton = document.createElement("button"); // テスト用チェックインボタン
     const celebrationPopup = document.getElementById("celebration-popup");
     const travelModeButtons = document.querySelectorAll(".travel-mode-button");
 
@@ -14,9 +15,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     let directionsRenderer;
     let currentLat, currentLng;
     let destinationLat, destinationLng;
-    let travelMode = "WALKING"; // デフォルトの移動手段（徒歩のみ）
-    const CHECK_IN_RADIUS = 50; // チェックイン可能な距離（メートル）
-    const MIN_ROUTE_DISTANCE = 100; // ルート検索が有効な最小距離（メートル）
+    let travelMode = "WALKING";
+    const CHECK_IN_RADIUS = 50;
+    const MIN_ROUTE_DISTANCE = 100;
 
     async function initializeMap() {
         map = new google.maps.Map(mapElement, {
@@ -148,6 +149,87 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    async function fetchPosts() {
+        try {
+            const response = await fetch(`/post-viewing-handler?page=1`, { method: "GET" });
+            if (response.ok) {
+                const posts = await response.json();
+                displayPosts(posts);
+            } else {
+                console.error("投稿データの取得に失敗しました");
+            }
+        } catch (error) {
+            console.error("投稿データの取得中にエラーが発生しました:", error);
+        }
+    }
+
+    function displayPosts(posts) {
+        posts.forEach((post) => {
+            const postFrame = document.createElement("div");
+            postFrame.className = "post-frame";
+
+            const ringColor = post.ring_color || "#FFFFFF";
+            postFrame.innerHTML = `
+                <div class="post-content">
+                    <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
+                    <div class="post-details">
+                        <div class="user-info">
+                            <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
+                            <span>${post.username || "匿名ユーザー"}</span>
+                            <span class="post-address">${post.address || "住所情報なし"}</span>
+                        </div>
+                        <p class="post-comment">${post.caption || "コメントなし"}</p>
+                        <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
+                    </div>
+                    <div class="post-actions">
+                        <button class="like-button">いいね</button>
+                        <button class="keep-button">Keep</button>
+                        <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
+                    </div>
+                </div>
+            `;
+            addSwipeFunctionality(postFrame, post.address);
+            timeline.appendChild(postFrame);
+        });
+    }
+
+    function addSwipeFunctionality(postFrame, address) {
+        let startY = 0;
+        let endY = 0;
+
+        postFrame.addEventListener("touchstart", (e) => {
+            startY = e.touches[0].clientY;
+        });
+
+        postFrame.addEventListener("touchmove", (e) => {
+            endY = e.touches[0].clientY;
+        });
+
+        postFrame.addEventListener("touchend", () => {
+            if (startY - endY > 50) {
+                showMapPopup(address);
+            }
+        });
+    }
+
+    checkInButton.addEventListener("click", () => {
+        showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
+    });
+
+    testCheckInButton.textContent = "テストチェックイン";
+    testCheckInButton.style.marginTop = "10px";
+    testCheckInButton.style.padding = "10px";
+    testCheckInButton.style.fontSize = "14px";
+    testCheckInButton.style.borderRadius = "5px";
+    testCheckInButton.style.backgroundColor = "#4e5c94";
+    testCheckInButton.style.color = "white";
+    testCheckInButton.style.cursor = "pointer";
+    mapPopup.appendChild(testCheckInButton);
+
+    testCheckInButton.addEventListener("click", () => {
+        showCelebrationPopup("テスト成功！🎉", "テスト用チェックインが実行されました！");
+    });
+
     function showCelebrationPopup(title, message) {
         celebrationPopup.classList.remove("hidden");
         celebrationPopup.innerHTML = `
@@ -160,10 +242,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             celebrationPopup.classList.add("hidden");
         }, 5000);
     }
-
-    checkInButton.addEventListener("click", () => {
-        showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
-    });
 
     closeMapButton.addEventListener("click", () => {
         mapPopup.classList.add("hidden");
@@ -179,4 +257,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     await initializeMap();
+    await fetchPosts();
 });
