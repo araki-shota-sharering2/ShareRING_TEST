@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const closeMapButton = document.getElementById("close-map");
     const distanceElement = document.getElementById("distance");
     const durationElement = document.getElementById("duration");
+    const celebrationPopup = document.getElementById("celebration-popup");
 
     let map;
     let directionsService;
@@ -103,7 +104,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
             directionsRenderer.setMap(map);
 
-            // 現在位置を示すコンパスマーカーを初期化
             compassMarker = new google.maps.Marker({
                 map: map,
                 icon: {
@@ -132,12 +132,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     lng: position.coords.longitude,
                 };
 
-                // ユーザーの現在地を更新
                 compassMarker.setPosition(origin);
                 compassMarker.setIcon({
                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                     scale: 5,
-                    rotation: position.coords.heading || 0, // 向き
+                    rotation: position.coords.heading || 0,
                     strokeColor: "#00f",
                 });
 
@@ -154,6 +153,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                             const route = result.routes[0].legs[0];
                             distanceElement.textContent = `距離: ${route.distance.text}`;
                             durationElement.textContent = `所要時間: ${route.duration.text}`;
+
+                            if (route.distance.value < 10) {
+                                // 距離が10メートル未満になったら到着演出
+                                showCelebrationPopup();
+                            }
                         } else {
                             console.error("Directions request failed:", status);
                         }
@@ -164,6 +168,19 @@ document.addEventListener("DOMContentLoaded", async () => {
                 console.error("位置情報の取得に失敗しました:", error);
             }
         );
+    }
+
+    function showCelebrationPopup() {
+        celebrationPopup.classList.remove("hidden");
+        celebrationPopup.innerHTML = `
+            <div class="celebration-content">
+                <h1>到着しました！🎉</h1>
+                <p>目的地に到着しました！素晴らしい旅でしたね。</p>
+            </div>
+        `;
+        setTimeout(() => {
+            celebrationPopup.classList.add("hidden");
+        }, 5000); // 5秒後に自動的に消える
     }
 
     closeMapButton.addEventListener("click", () => {
