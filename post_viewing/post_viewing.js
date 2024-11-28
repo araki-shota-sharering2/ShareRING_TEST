@@ -161,21 +161,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function showMapPopup(address) {
         mapPopup.classList.remove("hidden");
-
+    
         const geocoder = new google.maps.Geocoder();
         geocoder.geocode({ address }, async (results, status) => {
             if (status === "OK") {
                 const location = results[0].geometry.location;
                 destinationLat = location.lat();
                 destinationLng = location.lng();
-
+    
                 await updateMapCenter();
+                placeDestinationMarker(); // ピンを配置
                 updateRoute();
             } else {
                 console.error("住所のジオコーディングに失敗しました:", status);
             }
         });
     }
+    
 
     function updateCheckInStatus(distance, forceEnable = false) {
         if (forceEnable || distance <= CHECK_IN_RADIUS) {
@@ -274,6 +276,29 @@ document.addEventListener("DOMContentLoaded", async () => {
             celebrationPopup.classList.add("hidden");
         }, 5000);
     }
+    function placeDestinationMarker() {
+        if (destinationLat && destinationLng) {
+            const destination = { lat: destinationLat, lng: destinationLng };
+    
+            if (!destinationMarker) {
+                // 新しいピンを作成
+                destinationMarker = new google.maps.Marker({
+                    position: destination,
+                    map: map,
+                    title: "目的地",
+                    icon: {
+                        url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                    },
+                });
+            } else {
+                // 既存のピンを更新
+                destinationMarker.setPosition(destination);
+            }
+        } else {
+            console.error("目的地の情報がありません");
+        }
+    }
+    
 
     await initializeMap();
     await fetchPosts();
