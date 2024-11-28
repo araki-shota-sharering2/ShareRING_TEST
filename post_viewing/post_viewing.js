@@ -8,8 +8,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const testCheckInButton = document.getElementById("test-check-in");
     const celebrationPopup = document.getElementById("celebration-popup");
     const closeMapButton = document.createElement("button");
-    const prevPageButton = document.getElementById("prev-page");
-    const nextPageButton = document.getElementById("next-page");
 
     let map;
     let directionsService;
@@ -174,24 +172,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 destinationLng = location.lng();
 
                 await updateMapCenter();
-                placeDestinationMarker(); // ピンを配置
+                placeDestinationMarker();
                 updateRoute();
             } else {
                 console.error("住所のジオコーディングに失敗しました:", status);
             }
         });
-    }
-
-    function updateCheckInStatus(distance, forceEnable = false) {
-        if (forceEnable || distance <= CHECK_IN_RADIUS) {
-            checkInButton.classList.remove("disabled");
-            checkInButton.removeAttribute("disabled");
-            checkInButton.textContent = "チェックイン可能！";
-        } else {
-            checkInButton.classList.add("disabled");
-            checkInButton.setAttribute("disabled", true);
-            checkInButton.textContent = "まだ到着していません";
-        }
     }
 
     async function fetchPosts(page = 1) {
@@ -200,7 +186,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (response.ok) {
                 const posts = await response.json();
                 displayPosts(posts);
-                updatePaginationButtons(posts.length);
             } else {
                 console.error("投稿データの取得に失敗しました");
             }
@@ -210,108 +195,45 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function displayPosts(posts) {
-        timeline.innerHTML = ""; // 前の投稿をクリア
+        timeline.innerHTML = ""; // タイムラインの中身をクリア
+
+        // 前のページボタン
+        const prevPage = document.createElement("div");
+        prevPage.className = "pagination-item";
+        prevPage.innerHTML = `<button id="prev-page" class="pagination-button">前のページ</button>`;
+        prevPage.addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchPosts(currentPage);
+            }
+        });
+        timeline.appendChild(prevPage);
+
+        // 投稿内容を追加
         posts.forEach((post) => {
             const postFrame = document.createElement("div");
             postFrame.className = "post-frame";
 
-            const ringColor = post.ring_color || "#FFFFFF";
             postFrame.innerHTML = `
                 <div class="post-content">
-                    <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
+                    <img src="${post.image_url}" alt="投稿画像" class="post-image">
                     <div class="post-details">
-                        <div class="user-info">
-                            <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
-                            <span>${post.username || "匿名ユーザー"}</span>
-                            <span class="post-address">${post.address || "住所情報なし"}</span>
-                        </div>
-                        <p class="post-comment">${post.caption || "コメントなし"}</p>
-                        <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="like-button">いいね</button>
-                        <button class="keep-button">Keep</button>
-                        <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
+                        <p>${post.caption || "コメントなし"}</p>
                     </div>
                 </div>
             `;
-            addSwipeFunctionality(postFrame, post.address);
             timeline.appendChild(postFrame);
         });
-    }
 
-    function updatePaginationButtons(postsCount) {
-        if (postsCount < postsPerPage) {
-            nextPageButton.classList.add("disabled");
-            nextPageButton.setAttribute("disabled", true);
-        } else {
-            nextPageButton.classList.remove("disabled");
-            nextPageButton.removeAttribute("disabled");
-        }
-
-        if (currentPage === 1) {
-            prevPageButton.classList.add("disabled");
-            prevPageButton.setAttribute("disabled", true);
-        } else {
-            prevPageButton.classList.remove("disabled");
-            prevPageButton.removeAttribute("disabled");
-        }
-    }
-
-    function addSwipeFunctionality(postFrame, address) {
-        let startY = 0;
-        let endY = 0;
-
-        postFrame.addEventListener("touchstart", (e) => {
-            startY = e.touches[0].clientY;
-        });
-
-        postFrame.addEventListener("touchmove", (e) => {
-            endY = e.touches[0].clientY;
-        });
-
-        postFrame.addEventListener("touchend", () => {
-            if (startY - endY > 50) {
-                showMapPopup(address);
-            }
-        });
-    }
-
-    checkInButton.addEventListener("click", () => {
-        alert("チェックインが完了しました！");
-        showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
-    });
-
-    testCheckInButton.addEventListener("click", () => {
-        alert("テストチェックイン完了！");
-        showCelebrationPopup("テスト成功！🎉", "チェックインがシミュレーションされました！");
-    });
-
-    nextPageButton.addEventListener("click", () => {
-        if (!nextPageButton.classList.contains("disabled")) {
+        // 次のページボタン
+        const nextPage = document.createElement("div");
+        nextPage.className = "pagination-item";
+        nextPage.innerHTML = `<button id="next-page" class="pagination-button">次のページ</button>`;
+        nextPage.addEventListener("click", () => {
             currentPage++;
             fetchPosts(currentPage);
-        }
-    });
-
-    prevPageButton.addEventListener("click", () => {
-        if (!prevPageButton.classList.contains("disabled")) {
-            currentPage--;
-            fetchPosts(currentPage);
-        }
-    });
-
-    function showCelebrationPopup(title, message) {
-        celebrationPopup.classList.remove("hidden");
-        celebrationPopup.innerHTML = `
-            <div class="celebration-content">
-                <h1>${title}</h1>
-                <p>${message}</p>
-            </div>
-        `;
-        setTimeout(() => {
-            celebrationPopup.classList.add("hidden");
-        }, 5000);
+        });
+        timeline.appendChild(nextPage);
     }
 
     function placeDestinationMarker() {
