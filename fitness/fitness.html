@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShareRING</title>
     <link rel="stylesheet" href="/fitness/fitness.css">
-
+ 
     <!-- ファビコン -->
     <link rel="icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
@@ -25,19 +25,19 @@
             <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&callback=initMap"></script>
         </div>
     </header>
-
+ 
     <div class="container">
         <h1>Fitness Tracker</h1>
-        
+       
         <div class="user-info">
           <label>身長 (cm): <input type="number" id="height"></label><br>
           <label>体重 (kg): <input type="number" id="weight"></label>
           <button id="bmiButton">BMI計算</button>
           <p id="bmiResult">BMI: </p>
         </div>
-    
+   
         <div class="exercise-info">
-          <label>運動: 
+          <label>運動:
             <select id="exerciseType">
               <option value="running">ランニング</option>
               <option value="walking">ウォーキング</option>
@@ -56,8 +56,9 @@
         <a href="/ring_navi/ring_navi.html"><img src="/assets/images/footer/ring_navi.svg" alt="AI"></a>
         <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="Achievements"></a>
     </footer>
-    
+    <pre id="fitness-data"></pre>
     <script src="/assets/js/auth.js"></script>
     <script src="/fitness/fitness.js"></script>
 </body>
 </html>
+ 
