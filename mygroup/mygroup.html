@@ -3,27 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>グループ管理</title>
-    <link rel="stylesheet" href="group.css">
+    <title>MyGroup</title>
+    <link rel="stylesheet" href="mygroup.css">
 </head>
 <body>
-    <h1>グループ管理</h1>
+    <div class="container">
+        <h1>MyGroup</h1>
+        <section id="create-group">
+            <h2>グループ作成</h2>
+            <form id="groupForm" enctype="multipart/form-data">
+                <label for="groupName">グループ名:</label>
+                <input type="text" id="groupName" name="groupName" required>
 
-    <section id="create-group">
-        <h2>グループを作成</h2>
-        <form id="group-form">
-            <input type="text" id="group-name" placeholder="グループ名" required>
-            <textarea id="group-description" placeholder="説明"></textarea>
-            <input type="url" id="group-image-url" placeholder="画像URL">
-            <button type="submit">作成</button>
-        </form>
-    </section>
+                <label for="groupDescription">グループの説明:</label>
+                <textarea id="groupDescription" name="groupDescription"></textarea>
 
-    <section id="group-list">
-        <h2>参加中のグループ</h2>
-        <div id="groups"></div>
-    </section>
+                <label for="groupImage">グループ画像:</label>
+                <input type="file" id="groupImage" name="groupImage" accept="image/*" required>
 
-    <script src="group.js"></script>
+                <button type="submit">グループ作成</button>
+            </form>
+        </section>
+
+        <section id="group-list">
+            <h2>参加中のグループ</h2>
+            <div id="groups"></div>
+        </section>
+    </div>
+    <script src="mygroup.js"></script>
 </body>
 </html>

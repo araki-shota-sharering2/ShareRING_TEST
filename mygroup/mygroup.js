@@ -1,21 +1,25 @@
-document.getElementById('group-form').addEventListener('submit', async (event) => {
+document.getElementById('groupForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    const groupName = document.getElementById('group-name').value;
-    const description = document.getElementById('group-description').value;
-    const groupImageUrl = document.getElementById('group-image-url').value;
+    const formData = new FormData(event.target);
 
-    const response = await fetch('/group-create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ groupName, description, groupImageUrl }),
-    });
+    try {
+        const response = await fetch('/group-create', {
+            method: 'POST',
+            body: formData,
+        });
 
-    if (response.ok) {
-        alert("グループが作成されました！");
-        loadGroups();
-    } else {
-        alert("グループ作成に失敗しました。");
+        const result = await response.json();
+
+        if (response.ok) {
+            alert('グループ作成が成功しました！');
+            loadGroups();
+        } else {
+            alert('グループ作成に失敗しました: ' + result.message);
+        }
+    } catch (error) {
+        console.error('エラー:', error);
+        alert('グループ作成中にエラーが発生しました。');
     }
 });
 
@@ -28,8 +32,7 @@ async function loadGroups() {
         <div class="group-card">
             <h3>${group.group_name}</h3>
             <p>${group.description}</p>
-            <img src="${group.group_image_url}" alt="${group.group_name}" width="100">
-            <small>作成日: ${new Date(group.created_at).toLocaleDateString()}</small>
+            <img src="${group.group_image_url}" alt="${group.group_name}" width="100%">
         </div>
     `).join('');
 }
