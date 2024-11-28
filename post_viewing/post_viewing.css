@@ -17,6 +17,7 @@ body {
     margin: 0 auto;
     overflow-y: auto; /* 縦スクロールを有効にする */
     overflow-x: hidden; /* 横スクロールを防止 */
+    height: 100vh; /* 縦幅を抑える */
 }
 
 /* ヘッダー */
@@ -31,8 +32,9 @@ header {
     align-items: center;
     position: relative;
     font-weight: bold;
+    height: 50px; /* 高さを固定 */
+    flex-shrink: 0;
 }
-
 #back-button {
     position: absolute;
     left: 10px;
@@ -83,31 +85,32 @@ header {
     width: 100%;
     text-align: center;
     padding: 10px;
-    overflow-x: auto; /* 横スクロール可能 */
-    overflow-y: auto; /* 縦スクロールも有効 */
+    overflow-y: auto; /* 縦スクロールを有効にする */
+    overflow-x: hidden; /* 横スクロールを防止 */
     display: flex;
-    flex-direction: row;
-    gap: 20px;
-    scroll-snap-type: x mandatory;
-    position: relative;
+    flex-direction: column; /* 縦並びに変更 */
+    gap: 10px; /* 各投稿の間隔を調整 */
+    max-height: calc(100vh - 120px); /* ヘッダーとフッターを引いた高さ */
 }
 
+/* 各投稿フレーム */
 .timeline .post-frame {
-    flex: 0 0 100%;
-    max-width: 100%;
+    width: 100%;
+    max-width: 330px;
     text-align: center;
-    display: inline-block;
-    scroll-snap-align: center;
-    padding: 20px;
+    margin: 0 auto; /* 投稿を中央揃え */
+    padding: 10px; /* 余白を削減 */
     border: 1px solid #444;
     border-radius: 10px;
     background-color: #1a1a3a;
     position: relative;
 }
 
+
+/* 投稿画像サイズを調整 */
 .post-image {
-    width: 80%; /* 投稿時の画像サイズを変更 */
-    max-width: 300px; /* 画像の最大幅を設定 */
+    width: 70%; /* 画像サイズを少し縮小 */
+    max-width: 250px;
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
