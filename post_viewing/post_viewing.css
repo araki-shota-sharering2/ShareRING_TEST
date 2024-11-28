@@ -90,8 +90,9 @@ header {
 }
 
 .timeline .post-frame {
-    flex: 0 0 100%;
-    max-width: 100%;
+    flex: 0 0 90%; /* 横幅を90%に設定（以前の100%から狭める） */
+    max-width: 90%; /* 最大幅も同様に90%に設定 */
+    margin: 0 auto; /* 投稿を中央に寄せる */
     text-align: center;
     display: inline-block;
     scroll-snap-align: center;
@@ -101,6 +102,7 @@ header {
     background-color: #1a1a3a;
     position: relative;
 }
+
 
 .post-image {
     width: 80%; /* 投稿時の画像サイズを変更 */
