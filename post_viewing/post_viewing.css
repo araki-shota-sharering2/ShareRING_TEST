@@ -47,10 +47,38 @@ header {
 #back-button:hover {
     color: #cccccc;
 }
+
+/* ソートメニュー */
+#sort-controls {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#sort-options {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #4e5c94;
+    background-color: #394575;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    outline: none;
+}
+
+#sort-options:hover {
+    background-color: #4e5c94;
+}
+
+/* ページネーションコントロール */
 #pagination-controls {
     display: flex;
     gap: 10px;
-    margin-left: auto; /* ボタンを右寄せ */
+    margin-left: auto;
 }
 
 #pagination-controls button {
@@ -74,7 +102,6 @@ header {
     cursor: not-allowed;
 }
 
-
 /* 投稿詳細エリア */
 .timeline {
     flex: 1;
@@ -90,9 +117,9 @@ header {
 }
 
 .timeline .post-frame {
-    flex: 0 0 90%; /* 横幅を90%に設定（以前の100%から狭める） */
-    max-width: 90%; /* 最大幅も同様に90%に設定 */
-    margin: 0 auto; /* 投稿を中央に寄せる */
+    flex: 0 0 90%;
+    max-width: 90%;
+    margin: 0 auto;
     text-align: center;
     display: inline-block;
     scroll-snap-align: center;
@@ -103,10 +130,9 @@ header {
     position: relative;
 }
 
-
 .post-image {
-    width: 80%; /* 投稿時の画像サイズを変更 */
-    max-width: 300px; /* 画像の最大幅を設定 */
+    width: 80%;
+    max-width: 300px;
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
@@ -202,7 +228,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* 上から表示 */
+    justify-content: flex-start;
     z-index: 1000;
     padding: 10px;
 }
