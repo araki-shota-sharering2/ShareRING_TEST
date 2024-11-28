@@ -15,7 +15,8 @@ body {
     width: 100%;
     max-width: 375px;
     margin: 0 auto;
-    overflow: hidden;
+    overflow-y: auto; /* 縦スクロールを有効にする */
+    overflow-x: hidden; /* 横スクロールを防止 */
 }
 
 /* ヘッダー */
@@ -82,7 +83,8 @@ header {
     width: 100%;
     text-align: center;
     padding: 10px;
-    overflow-x: scroll;
+    overflow-x: auto; /* 横スクロール可能 */
+    overflow-y: auto; /* 縦スクロールも有効 */
     display: flex;
     flex-direction: row;
     gap: 20px;
