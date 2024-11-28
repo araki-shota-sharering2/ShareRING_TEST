@@ -76,8 +76,8 @@ header {
 }
 
 .post-image {
-    width: 80%;
-    max-width: 300px;
+    width: 80%; /* 投稿時の画像サイズを変更 */
+    max-width: 300px; /* 画像の最大幅を設定 */
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
@@ -162,43 +162,75 @@ header {
     }
 }
 
-/* 「徒歩でのルート案内」のスタイル */
-#route-header {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* ボタンを同一行に配置 */
-#route-info {
+/* ポップアップ */
+.map-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin: 10px 0;
+    justify-content: flex-start; /* 上から表示 */
+    z-index: 1000;
+    padding: 10px;
 }
 
-#test-check-in,
-#close-route {
-    background-color: #4e5c94;
+.map-popup.hidden {
+    display: none;
+}
+
+#map {
+    width: 90%;
+    height: 70%;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ポップアップの情報表示エリア */
+#route-info {
+    margin: 5px 0;
+    text-align: center;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
     font-size: 14px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
-#test-check-in:hover,
-#close-route:hover {
+/* 移動手段セクション */
+#travel-mode-options {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+    gap: 10px;
+}
+
+.travel-mode-button {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
+    border: 1px solid #4e5c94;
+    border-radius: 5px;
     background-color: #394575;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.travel-mode-button:hover {
+    background-color: #4e5c94;
+    transform: scale(1.05);
+}
+
+.travel-mode-button.active {
+    background-color: #ffffff;
+    color: #394575;
+    border: 1px solid #ffffff;
 }
 
 /* チェックインボタン */
