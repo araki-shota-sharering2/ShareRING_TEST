@@ -200,42 +200,16 @@ header {
     justify-content: center;
 }
 
-/* 移動手段セクション */
-#travel-mode-options {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 300px;
-    gap: 10px;
-}
-
-.travel-mode-button {
-    flex: 1;
-    text-align: center;
-    padding: 8px;
-    font-size: 12px;
-    border: 1px solid #4e5c94;
-    border-radius: 5px;
-    background-color: #394575;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.travel-mode-button:hover {
-    background-color: #4e5c94;
-    transform: scale(1.05);
-}
-
-.travel-mode-button.active {
-    background-color: #ffffff;
-    color: #394575;
-    border: 1px solid #ffffff;
-}
-
 /* チェックインボタン */
-#check-in {
-    margin: 10px 0;
+#check-in-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#check-in,
+#test-check-in {
     padding: 10px 20px;
     font-size: 14px;
     text-align: center;
@@ -247,7 +221,8 @@ header {
     transition: background-color 0.3s ease;
 }
 
-#check-in:hover {
+#check-in:hover,
+#test-check-in:hover {
     background-color: #394575;
 }
 
