@@ -1,12 +1,19 @@
 body {
     font-family: Arial, sans-serif;
-    line-height: 1.6;
+    margin: 20px;
 }
-#group-list {
+
+h1, h2 {
+    color: #333;
+}
+
+#groups {
     margin-top: 20px;
 }
+
 .group-card {
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 15px;
     margin: 10px 0;
+    border-radius: 8px;
 }

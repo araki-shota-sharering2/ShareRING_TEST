@@ -8,12 +8,7 @@ document.getElementById('group-form').addEventListener('submit', async (event) =
     const response = await fetch('/group-create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            groupName,
-            description,
-            groupImageUrl,
-            createdBy: 1, // 仮のuser_id、セッションから取得してください
-        }),
+        body: JSON.stringify({ groupName, description, groupImageUrl }),
     });
 
     if (response.ok) {
@@ -34,6 +29,7 @@ async function loadGroups() {
             <h3>${group.group_name}</h3>
             <p>${group.description}</p>
             <img src="${group.group_image_url}" alt="${group.group_name}" width="100">
+            <small>作成日: ${new Date(group.created_at).toLocaleDateString()}</small>
         </div>
     `).join('');
 }
