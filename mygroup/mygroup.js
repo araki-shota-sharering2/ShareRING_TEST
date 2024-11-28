@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // グループ一覧を取得
     async function fetchGroups() {
-        const response = await fetch("/functions/group-handler.js");
+        const response = await fetch("/group-handler.js");
         if (!response.ok) {
             groupList.innerHTML = "<p>グループを取得できませんでした。</p>";
             return;
