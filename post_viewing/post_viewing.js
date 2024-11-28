@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const distanceElement = document.getElementById("distance");
     const durationElement = document.getElementById("duration");
     const checkInButton = document.getElementById("check-in");
+    const testCheckInButton = document.getElementById("test-check-in");
     const celebrationPopup = document.getElementById("celebration-popup");
     const closeMapButton = document.createElement("button");
-    const travelModeButtons = document.querySelectorAll(".travel-mode-button");
 
     let map;
     let directionsService;
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentLat, currentLng;
     let destinationLat, destinationLng;
     let currentLocationMarker, destinationMarker;
-    let travelMode = "WALKING";
+    const travelMode = "WALKING"; // 徒歩のみに固定
     const CHECK_IN_RADIUS = 50;
     const MIN_ROUTE_DISTANCE = 100;
 
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         fillColor: "#00F",
                         fillOpacity: 1,
                         strokeWeight: 2,
-                        rotation: 0, // 矢印の方向
+                        rotation: 0,
                     },
                     title: "現在地",
                 });
@@ -257,6 +257,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
     });
 
+    testCheckInButton.addEventListener("click", () => {
+        alert("テストチェックイン完了！");
+        showCelebrationPopup("テスト成功！🎉", "チェックインがシミュレーションされました！");
+    });
+
     function showCelebrationPopup(title, message) {
         celebrationPopup.classList.remove("hidden");
         celebrationPopup.innerHTML = `
@@ -269,15 +274,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             celebrationPopup.classList.add("hidden");
         }, 5000);
     }
-
-    travelModeButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            travelModeButtons.forEach((btn) => btn.classList.remove("active"));
-            button.classList.add("active");
-            travelMode = button.getAttribute("data-mode");
-            updateRoute();
-        });
-    });
 
     await initializeMap();
     await fetchPosts();
