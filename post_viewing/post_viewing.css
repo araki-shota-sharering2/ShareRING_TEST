@@ -47,21 +47,19 @@ header {
 #back-button:hover {
     color: #cccccc;
 }
-
 #pagination-controls {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 10px 20px;
-    background-color: #394575;
+    gap: 10px;
+    margin-left: auto; /* ボタンを右寄せ */
 }
 
 #pagination-controls button {
     background-color: #4e5c94;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border-radius: 5px;
+    font-size: 12px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -75,6 +73,7 @@ header {
     color: #aaa;
     cursor: not-allowed;
 }
+
 
 /* 投稿詳細エリア */
 .timeline {
