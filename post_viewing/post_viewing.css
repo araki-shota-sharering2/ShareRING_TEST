@@ -48,29 +48,33 @@ header {
     color: #cccccc;
 }
 
-#pagination-controls {
+/* ページングボタン（タイムライン内の前後ボタン） */
+.pagination-item {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 10px 20px;
-    background-color: #394575;
+    justify-content: center;
+    align-items: center;
+    width: 100px; /* ボタンの幅 */
+    text-align: center;
 }
 
-#pagination-controls button {
+.pagination-button {
     background-color: #4e5c94;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 14px;
     transition: background-color 0.3s ease;
 }
 
-#pagination-controls button:hover {
+.pagination-button:hover {
     background-color: #394575;
 }
 
-#pagination-controls button.disabled {
+.pagination-button.disabled {
     background-color: #666;
     color: #aaa;
     cursor: not-allowed;
@@ -88,6 +92,7 @@ header {
     gap: 20px;
     scroll-snap-type: x mandatory;
     position: relative;
+    background-color: #0d0d2b;
 }
 
 .timeline .post-frame {
@@ -103,6 +108,7 @@ header {
     position: relative;
 }
 
+/* 投稿画像 */
 .post-image {
     width: 80%; /* 投稿時の画像サイズを変更 */
     max-width: 300px; /* 画像の最大幅を設定 */
@@ -115,6 +121,7 @@ header {
     margin-bottom: 10px;
 }
 
+/* 投稿情報 */
 .user-info {
     display: flex;
     justify-content: space-between;
@@ -167,6 +174,7 @@ header {
     text-align: center;
 }
 
+/* スワイプガイド */
 .swipe-guide {
     position: absolute;
     bottom: 10px;
@@ -190,7 +198,7 @@ header {
     }
 }
 
-/* ポップアップ */
+/* Google Mapsポップアップ */
 .map-popup {
     position: fixed;
     top: 0;
@@ -217,7 +225,7 @@ header {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* ポップアップの情報表示エリア */
+/* ポップアップ情報表示エリア */
 #route-info {
     margin: 5px 0;
     text-align: center;
@@ -260,7 +268,7 @@ header {
     cursor: not-allowed;
 }
 
-/* 到着ポップアップ */
+/* 到着演出 */
 #celebration-popup {
     position: fixed;
     top: 0;
