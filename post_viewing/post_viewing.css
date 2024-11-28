@@ -4,7 +4,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 /* 全体の初期設定 */
 body {
     font-family: Arial, sans-serif;
@@ -20,6 +19,7 @@ body {
     overflow-x: hidden;
     height: 100vh;
 }
+
 
 /* ヘッダー */
 header {
@@ -57,19 +57,19 @@ header {
 #pagination-controls {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    padding: 10px;
+    align-items: center;
+    width: 90%; /* 少し小さく幅を調整 */
+    margin: 5px auto; /* 上部に小さな余白を追加 */
+    padding: 5px 0; /* 高さを抑える */
     background-color: #394575;
-    position: relative;
-    z-index: 1;
-}
-
-#pagination-controls button {
+    border-radius: 5px; /* 角を少し丸める */
+}#pagination-controls button {
     background-color: #4e5c94;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 5px 10px; /* ボタンを小さく */
+    border-radius: 3px; /* ボタンの角を少し丸める */
+    font-size: 12px; /* フォントサイズを小さく */
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -85,6 +85,7 @@ header {
 }
 
 /* 投稿詳細エリア */
+/* 投稿詳細エリア */
 .timeline {
     flex: 1;
     width: 100%;
@@ -97,12 +98,12 @@ header {
     gap: 10px;
     scroll-snap-type: x mandatory;
     position: relative;
-    max-height: calc(100vh - 150px); /* ヘッダー + ページングボタン + マージン */
+    max-height: calc(100vh - 30px); /* ページングボタンの高さを引いた残り */
 }
 
 .timeline .post-frame {
-    flex: 0 0 90%; /* フレーム幅を広げて隣が見えるように調整 */
-    max-width: 340px;
+    flex: 0 0 92%; /* 横幅を少し広げて隣をチラ見せ */
+    max-width: 345px;
     text-align: center;
     padding: 10px;
     border: 1px solid #444;
@@ -111,10 +112,9 @@ header {
     position: relative;
     scroll-snap-align: center;
 }
-
 /* 投稿画像サイズを調整 */
 .post-image {
-    width: 85%; /* 画像を少し広げる */
+    width: 85%;
     max-width: 280px;
     height: auto;
     aspect-ratio: 1 / 1;
