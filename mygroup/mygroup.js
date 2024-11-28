@@ -1,24 +1,43 @@
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("ホーム画面が読み込まれました");
+document.addEventListener("DOMContentLoaded", async () => {
+    const groupList = document.getElementById("groupList");
+    const groupSearch = document.getElementById("groupSearch");
+    const searchButton = document.getElementById("searchButton");
 
-    // 現在のURLに基づいてフッターリンクを強調
-    const path = window.location.pathname;
-    const footerLinks = document.querySelectorAll("footer a");
-
-    footerLinks.forEach(link => {
-        if (link.getAttribute("href") === path) {
-            link.classList.add("active");
+    // グループ一覧を取得
+    async function fetchGroups() {
+        const response = await fetch("/functions/group-handler.js");
+        if (!response.ok) {
+            groupList.innerHTML = "<p>グループを取得できませんでした。</p>";
+            return;
         }
+
+        const groups = await response.json();
+        displayGroups(groups);
+    }
+
+    // グループ一覧を表示
+    function displayGroups(groups) {
+        groupList.innerHTML = ""; // 初期化
+        groups.forEach(group => {
+            const groupItem = document.createElement("div");
+            groupItem.className = "group-item";
+            groupItem.innerHTML = `
+                <h3>${group.group_name}</h3>
+                <p>${group.description || "説明がありません"}</p>
+            `;
+            groupList.appendChild(groupItem);
+        });
+    }
+
+    // 検索機能
+    searchButton.addEventListener("click", () => {
+        const query = groupSearch.value.toLowerCase();
+        const groupItems = document.querySelectorAll(".group-item");
+        groupItems.forEach(item => {
+            const groupName = item.querySelector("h3").innerText.toLowerCase();
+            item.style.display = groupName.includes(query) ? "block" : "none";
+        });
     });
 
-    // 星をランダムに配置
-    const body = document.querySelector('body');
-    for (let i = 0; i < 100; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        star.style.top = Math.random() * 100 + 'vh';
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = (Math.random() * 2 + 1) + 's';
-        body.appendChild(star);
-    }
+    await fetchGroups();
 });
