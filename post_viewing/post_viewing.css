@@ -5,6 +5,7 @@
     box-sizing: border-box;
 }
 
+/* 全体の初期設定 */
 body {
     font-family: Arial, sans-serif;
     background-color: #0d0d2b;
@@ -15,9 +16,9 @@ body {
     width: 100%;
     max-width: 375px;
     margin: 0 auto;
-    overflow-y: auto; /* 縦スクロールを有効にする */
-    overflow-x: hidden; /* 横スクロールを防止 */
-    height: 100vh; /* 縦幅を抑える */
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100vh;
 }
 
 /* ヘッダー */
@@ -32,9 +33,10 @@ header {
     align-items: center;
     position: relative;
     font-weight: bold;
-    height: 50px; /* 高さを固定 */
+    height: 50px;
     flex-shrink: 0;
 }
+
 #back-button {
     position: absolute;
     left: 10px;
@@ -51,12 +53,15 @@ header {
     color: #cccccc;
 }
 
+/* ページングボタン */
 #pagination-controls {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px;
     background-color: #394575;
+    position: relative;
+    z-index: 1;
 }
 
 #pagination-controls button {
@@ -84,33 +89,33 @@ header {
     flex: 1;
     width: 100%;
     text-align: center;
-    padding: 10px;
-    overflow-x: auto; /* 横スクロールを有効にする */
-    overflow-y: hidden; /* 縦スクロールを防止 */
+    padding: 10px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
     display: flex;
-    flex-direction: row; /* 横並びに設定 */
-    gap: 10px; /* 各投稿の間隔を調整 */
-    scroll-snap-type: x mandatory; /* スクロールスナップを有効に */
+    flex-direction: row;
+    gap: 10px;
+    scroll-snap-type: x mandatory;
     position: relative;
-    max-height: calc(100vh - 120px); /* 縦の制限を調整 */
+    max-height: calc(100vh - 150px); /* ヘッダー + ページングボタン + マージン */
 }
 
-/* 各投稿フレーム */
 .timeline .post-frame {
-    flex: 0 0 80%; /* 横幅を調整 */
-    max-width: 300px;
+    flex: 0 0 90%; /* フレーム幅を広げて隣が見えるように調整 */
+    max-width: 340px;
     text-align: center;
-    padding: 10px; /* 余白を削減 */
+    padding: 10px;
     border: 1px solid #444;
     border-radius: 10px;
     background-color: #1a1a3a;
     position: relative;
-    scroll-snap-align: center; /* スナップ位置を中央に */
+    scroll-snap-align: center;
 }
+
 /* 投稿画像サイズを調整 */
 .post-image {
-    width: 80%; /* 画像サイズを変更 */
-    max-width: 200px; /* 最大幅を設定 */
+    width: 85%; /* 画像を少し広げる */
+    max-width: 280px;
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
