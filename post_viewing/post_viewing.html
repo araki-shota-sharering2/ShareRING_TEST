@@ -9,21 +9,16 @@
 <body>
     <header>
         <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
-        <div id="sort-controls">
-            <select id="sort-options">
-                <option value="nearby">現在地から近い順</option>
-                <option value="latest" selected>最新投稿順</option>
-            </select>
-        </div>
-        <div id="pagination-controls">
-            <button id="prev-page" class="disabled">前のページ</button>
-            <button id="next-page" class="disabled">次のページ</button>
-        </div>
     </header>
 
     <main class="timeline">
         <!-- 投稿の詳細が表示される領域 -->
     </main>
+    <div id="pagination-controls">
+        <button id="prev-page" class="disabled">前のページ</button>
+        <button id="next-page" class="disabled">次のページ</button>
+    </div>
+    
 
     <!-- Google Mapsポップアップ -->
     <div id="map-popup" class="map-popup hidden">

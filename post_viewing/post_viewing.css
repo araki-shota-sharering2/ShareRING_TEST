@@ -48,46 +48,20 @@ header {
     color: #cccccc;
 }
 
-/* ソートメニュー */
-#sort-controls {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-#sort-options {
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid #4e5c94;
-    background-color: #394575;
-    color: white;
-    cursor: pointer;
-    font-size: 14px;
-    outline: none;
-}
-
-#sort-options:hover {
-    background-color: #4e5c94;
-}
-
-/* ページネーションコントロール */
 #pagination-controls {
     display: flex;
-    gap: 10px;
-    margin-left: auto;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #394575;
 }
 
 #pagination-controls button {
     background-color: #4e5c94;
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 10px 20px;
     border-radius: 5px;
-    font-size: 12px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -117,9 +91,8 @@ header {
 }
 
 .timeline .post-frame {
-    flex: 0 0 90%;
-    max-width: 90%;
-    margin: 0 auto;
+    flex: 0 0 100%;
+    max-width: 100%;
     text-align: center;
     display: inline-block;
     scroll-snap-align: center;
@@ -131,8 +104,8 @@ header {
 }
 
 .post-image {
-    width: 80%;
-    max-width: 300px;
+    width: 80%; /* 投稿時の画像サイズを変更 */
+    max-width: 300px; /* 画像の最大幅を設定 */
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
@@ -228,7 +201,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: flex-start; /* 上から表示 */
     z-index: 1000;
     padding: 10px;
 }
