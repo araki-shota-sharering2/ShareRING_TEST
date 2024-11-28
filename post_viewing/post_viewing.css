@@ -26,13 +26,17 @@ header {
     width: 100%;
     text-align: center;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     position: relative;
     font-weight: bold;
 }
 
 #back-button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     background: none;
     border: none;
     color: white;
@@ -42,12 +46,6 @@ header {
 
 #back-button:hover {
     color: #cccccc;
-}
-
-.route-title {
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
 }
 
 /* 投稿詳細エリア */
@@ -78,7 +76,7 @@ header {
 }
 
 .post-image {
-    width: 80%; /* 投稿時の画像サイズ */
+    width: 80%;
     max-width: 300px;
     height: auto;
     aspect-ratio: 1 / 1;
@@ -89,101 +87,142 @@ header {
     margin-bottom: 10px;
 }
 
-/* ポップアップ */
-.map-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    z-index: 1000;
-    padding: 10px;
-}
-
-.map-popup.hidden {
-    display: none;
-}
-
-#map {
-    width: 90%;
-    height: 60%;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-/* 距離・所要時間表示 */
-#route-info {
-    margin: 10px 0;
-    text-align: center;
-    color: white;
-    font-size: 14px;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-
-/* チェックイン・テストチェックインボタン */
-#check-in-buttons {
+.user-info {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    max-width: 300px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid #4e5c94;
+    object-fit: cover;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.post-address {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.post-comment {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #ddd;
+}
+
+.post-date {
+    font-size: 12px;
+    color: #888;
+    margin-top: 10px;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.post-actions button,
+.go-button {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
+.swipe-guide {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #aaa;
+    text-align: center;
+    animation: swipe-hint 2s infinite;
+}
+
+/* スワイプガイドのアニメーション */
+@keyframes swipe-hint {
+    0%, 100% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -10px);
+        opacity: 0.5;
+    }
+}
+
+/* 「徒歩でのルート案内」のスタイル */
+#route-header {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ボタンを同一行に配置 */
+#route-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 10px;
+    flex-wrap: wrap;
     margin: 10px 0;
 }
 
-#check-in-buttons button {
-    flex: 1;
+#test-check-in,
+#close-route {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
     font-size: 14px;
-    padding: 8px;
+}
+
+#test-check-in:hover,
+#close-route:hover {
+    background-color: #394575;
+}
+
+/* チェックインボタン */
+#check-in {
+    margin: 10px 0;
+    padding: 10px 20px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #4e5c94;
+    color: white;
     border: none;
     border-radius: 5px;
-    text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-#check-in {
-    background-color: #4e5c94;
-    color: white;
+#check-in:hover {
+    background-color: #394575;
 }
 
 #check-in.disabled {
     background-color: #666;
     color: #aaa;
     cursor: not-allowed;
-}
-
-#test-check-in {
-    background-color: #394575;
-    color: white;
-}
-
-#test-check-in:hover {
-    background-color: #4e5c94;
-}
-
-/* 閉じるボタン */
-#close-map {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #394575;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    align-self: flex-end;
-    margin-right: 10px;
-}
-
-#close-map:hover {
-    background-color: #4e5c94;
 }
 
 /* 到着ポップアップ */
@@ -219,4 +258,40 @@ header {
         transform: scale(1);
         opacity: 1;
     }
+}
+
+/* フッター */
+footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px;
+    background-color: #4e5c94;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 375px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+footer a {
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+footer a.active {
+    background-color: #394575;
+    border-top: 3px solid #ffffff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+footer img {
+    width: 25px;
+    height: 25px;
 }
