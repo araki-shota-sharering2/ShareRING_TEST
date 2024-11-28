@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const closeMapButton = document.createElement("button");
     const prevPageButton = document.getElementById("prev-page");
     const nextPageButton = document.getElementById("next-page");
+    const sortOptions = document.getElementById("sort-options");
 
     let map;
     let directionsService;
@@ -20,8 +21,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentPage = 1;
     const postsPerPage = 8; // 1ページあたりの投稿数
     const travelMode = "WALKING"; // 徒歩のみに固定
-    const CHECK_IN_RADIUS = 50;
-    const MIN_ROUTE_DISTANCE = 100;
+    const CHECK_IN_RADIUS = 50; // チェックイン可能な距離 (メートル)
+    const MIN_ROUTE_DISTANCE = 100; // 近すぎる場合の特別処理 (メートル)
 
     async function initializeMap() {
         map = new google.maps.Map(mapElement, {
@@ -149,7 +150,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function calculateDistance(lat1, lng1, lat2, lng2) {
-        const R = 6371e3;
+        const R = 6371e3; // 地球の半径（メートル）
         const φ1 = (lat1 * Math.PI) / 180;
         const φ2 = (lat2 * Math.PI) / 180;
         const Δφ = ((lat2 - lat1) * Math.PI) / 180;
@@ -163,40 +164,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         return R * c;
     }
 
-    async function showMapPopup(address) {
-        mapPopup.classList.remove("hidden");
-
-        const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ address }, async (results, status) => {
-            if (status === "OK") {
-                const location = results[0].geometry.location;
-                destinationLat = location.lat();
-                destinationLng = location.lng();
-
-                await updateMapCenter();
-                placeDestinationMarker(); // ピンを配置
-                updateRoute();
-            } else {
-                console.error("住所のジオコーディングに失敗しました:", status);
-            }
-        });
-    }
-
-    function updateCheckInStatus(distance, forceEnable = false) {
-        if (forceEnable || distance <= CHECK_IN_RADIUS) {
-            checkInButton.classList.remove("disabled");
-            checkInButton.removeAttribute("disabled");
-            checkInButton.textContent = "チェックイン可能！";
-        } else {
-            checkInButton.classList.add("disabled");
-            checkInButton.setAttribute("disabled", true);
-            checkInButton.textContent = "まだ到着していません";
-        }
-    }
-
-    async function fetchPosts(page = 1) {
+    async function fetchPosts(page = 1, sort = "nearby") {
         try {
-            const response = await fetch(`/post-viewing-handler?page=${page}`, { method: "GET" });
+            const response = await fetch(`/post-viewing-handler?page=${page}&sort=${sort}`, { method: "GET" });
             if (response.ok) {
                 const posts = await response.json();
                 displayPosts(posts);
@@ -258,6 +228,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    sortOptions.addEventListener("change", async () => {
+        const sortType = sortOptions.value; // ソートタイプを取得
+        currentPage = 1; // ページ番号をリセット
+        await fetchPosts(currentPage, sortType);
+    });
+
+    nextPageButton.addEventListener("click", () => {
+        if (!nextPageButton.classList.contains("disabled")) {
+            currentPage++;
+            fetchPosts(currentPage, sortOptions.value);
+        }
+    });
+
+    prevPageButton.addEventListener("click", () => {
+        if (!prevPageButton.classList.contains("disabled")) {
+            currentPage--;
+            fetchPosts(currentPage, sortOptions.value);
+        }
+    });
+
     function addSwipeFunctionality(postFrame, address) {
         let startY = 0;
         let endY = 0;
@@ -277,41 +267,35 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    checkInButton.addEventListener("click", () => {
-        alert("チェックインが完了しました！");
-        showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
-    });
+    async function showMapPopup(address) {
+        mapPopup.classList.remove("hidden");
 
-    testCheckInButton.addEventListener("click", () => {
-        alert("テストチェックイン完了！");
-        showCelebrationPopup("テスト成功！🎉", "チェックインがシミュレーションされました！");
-    });
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address }, async (results, status) => {
+            if (status === "OK") {
+                const location = results[0].geometry.location;
+                destinationLat = location.lat();
+                destinationLng = location.lng();
 
-    nextPageButton.addEventListener("click", () => {
-        if (!nextPageButton.classList.contains("disabled")) {
-            currentPage++;
-            fetchPosts(currentPage);
+                await updateMapCenter();
+                placeDestinationMarker();
+                updateRoute();
+            } else {
+                console.error("住所のジオコーディングに失敗しました:", status);
+            }
+        });
+    }
+
+    function updateCheckInStatus(distance, forceEnable = false) {
+        if (forceEnable || distance <= CHECK_IN_RADIUS) {
+            checkInButton.classList.remove("disabled");
+            checkInButton.removeAttribute("disabled");
+            checkInButton.textContent = "チェックイン可能！";
+        } else {
+            checkInButton.classList.add("disabled");
+            checkInButton.setAttribute("disabled", true);
+            checkInButton.textContent = "まだ到着していません";
         }
-    });
-
-    prevPageButton.addEventListener("click", () => {
-        if (!prevPageButton.classList.contains("disabled")) {
-            currentPage--;
-            fetchPosts(currentPage);
-        }
-    });
-
-    function showCelebrationPopup(title, message) {
-        celebrationPopup.classList.remove("hidden");
-        celebrationPopup.innerHTML = `
-            <div class="celebration-content">
-                <h1>${title}</h1>
-                <p>${message}</p>
-            </div>
-        `;
-        setTimeout(() => {
-            celebrationPopup.classList.add("hidden");
-        }, 5000);
     }
 
     function placeDestinationMarker() {
@@ -335,6 +319,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    checkInButton.addEventListener("click", () => {
+        alert("チェックインが完了しました！");
+        showCelebrationPopup("到着しました！🎉", "目的地にチェックインしました！");
+    });
+
+    testCheckInButton.addEventListener("click", () => {
+        alert("テストチェックイン完了！");
+        showCelebrationPopup("テスト成功！🎉", "チェックインがシミュレーションされました！");
+    });
+
+    function showCelebrationPopup(title, message) {
+        celebrationPopup.classList.remove("hidden");
+        celebrationPopup.innerHTML = `
+            <div class="celebration-content">
+                <h1>${title}</h1>
+                <p>${message}</p>
+            </div>
+        `;
+        setTimeout(() => {
+            celebrationPopup.classList.add("hidden");
+        }, 5000);
+    }
+
     await initializeMap();
-    await fetchPosts(currentPage);
+    await fetchPosts(currentPage, "nearby"); // デフォルトは現在地から近い順
 });
