@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
     for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
         star.classList.add('star');
-        star.astyle.top = Math.random() * 100 + 'vh';
+        star.style.top = Math.random() * 100 + 'vh';
         star.style.left = Math.random() * 100 + 'vw';
         star.style.animationDuration = (Math.random() * 2 + 1) + 's';
         body.appendChild(star);
@@ -51,7 +51,7 @@ async function fetchNearbySpots(genre) {
     const GOOGLE_MAPS_API_KEY = "AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8"; // あなたのAPIキーをここに記載
 
     try {
-        const response = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${userLatitude},${userLongitude}&radius=5000&type=${genre}&key=${GOOGLE_MAPS_API_KEY}`);
+        const response = await fetch(`/api/nearbysearch?location=${userLatitude},${userLongitude}&radius=5000&type=${genre}`);
         const data = await response.json();
 
         if (data.results) {
@@ -74,6 +74,11 @@ async function startSearch() {
 
     const genre = document.getElementById('genre').value;
 
+    if (!genre || !genreMap[genre]) {
+        alert("ジャンルを選択してください！");
+        return;
+    }
+
     try {
         await getCurrentLocation();
         await fetchNearbySpots(genreMap[genre]);
@@ -93,8 +98,7 @@ function displaySpots(spots) {
         listItem.innerHTML = `
             <h3>${spot.name}</h3>
             <p>住所: ${spot.vicinity || "情報なし"}</p>
-            <p>距離: 約 ${(spot.geometry.location.lat - userLatitude).toFixed(2)} km</p>
-            <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key="AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8"` : '画像なし'}" alt="${spot.name}" />
+            <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8` : '画像なし'}" alt="${spot.name}" />
             <p>営業情報: ${spot.opening_hours && spot.opening_hours.open_now ? "営業中" : "営業時間外"}</p>
             <button onclick="showRoute(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">ルートを見る</button>
         `;
