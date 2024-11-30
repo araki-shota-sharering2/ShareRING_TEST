@@ -20,6 +20,9 @@ function initializeGoogleMaps() {
     console.log("Google Maps API が正常にロードされました");
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer();
+
+    // 検索ボタンのイベントリスナーを設定
+    document.getElementById('search-button').addEventListener('click', startSearch);
 }
 
 // 現在地の取得
