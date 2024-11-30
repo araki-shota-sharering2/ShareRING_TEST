@@ -83,6 +83,7 @@ main {
     padding: 10px; /* 全体の余白を調整 */
     width: 100%;
     box-sizing: border-box;
+    justify-content: center;
 }
 
 /* 各機能のボックス */
@@ -93,12 +94,42 @@ main {
     justify-content: center;
     text-align: center;
     border-radius: 15px; /* 角を丸くする */
-    background-color: rgba(255, 255, 255, 0.1); /* 半透明の背景色 */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 陰影をつける */
-    width: 80px;
-    height: 80px;
     position: relative; /* 相対位置 */
     overflow: hidden; /* はみ出しを隠す */
+    height: 90px; /* ボックスの高さ */
+    width: 90px;
+    background-color: rgba(255, 255, 255, 0.1); /* 半透明の背景色 */
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 陰影をつける */
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.feature-box:hover {
+    transform: scale(1.1);
+}
+
+/* 背景のグラデーションとエフェクト */
+.feature-box::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* 左からスタート */
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+    animation: shine 2s linear infinite; /* 光が流れるアニメーション */
+    z-index: 1; /* 背景を前面にしない */
+}
+
+/* 光るエフェクトのアニメーション */
+@keyframes shine {
+    0% {
+        left: -200%; /* 最初は左外 */
+    }
+    100% {
+        left: 200%; /* 右外へ */
+    }
 }
 
 /* アイコンの枠 */
@@ -110,7 +141,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
