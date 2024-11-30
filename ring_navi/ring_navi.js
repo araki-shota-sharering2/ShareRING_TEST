@@ -151,7 +151,7 @@ function displaySpots(spots) {
 // Googleマップでルートを表示
 function openGoogleMapsRoute(destLatitude, destLongitude) {
     const url = `https://www.google.com/maps/dir/?api=1&origin=${userLatitude},${userLongitude}&destination=${destLatitude},${destLongitude}&travelmode=walking`;
-    window.open(url, "_blank");
+    window.location.href = url; // 現在のタブで遷移
 }
 
 // 星をランダムに配置
