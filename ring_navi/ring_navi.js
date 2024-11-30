@@ -1,31 +1,7 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // 現在のURLに基づいてフッターリンクを強調表示
-    const path = window.location.pathname.replace(/\/$/, ""); // 末尾のスラッシュを削除
-    const footerLinks = document.querySelectorAll("footer a");
-
-    footerLinks.forEach(link => {
-        const href = link.getAttribute("href").replace(/\/$/, ""); // hrefの末尾スラッシュを削除
-        if (href === path) {
-            link.classList.add("active");
-        }
-    });
-
-    // 背景の星をランダムに配置
-    const body = document.querySelector('body');
-    for (let i = 0; i < 100; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        star.style.top = Math.random() * 100 + 'vh';
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = (Math.random() * 2 + 1) + 's';
-        body.appendChild(star);
-    }
-});
-
 let userLatitude, userLongitude;
 
 // 現在地の取得
-function getCurrentLocation() {
+async function getCurrentLocation() {
     return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -36,6 +12,7 @@ function getCurrentLocation() {
                 },
                 error => {
                     console.error("現在地の取得に失敗しました:", error.message);
+                    alert("現在地を取得できませんでした。");
                     reject(error);
                 }
             );
@@ -46,10 +23,8 @@ function getCurrentLocation() {
     });
 }
 
-// Google Maps API を使用してスポット情報を取得
+// スポット情報の取得
 async function fetchNearbySpots(genre) {
-    const GOOGLE_MAPS_API_KEY = "AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8"; // あなたのAPIキーをここに記載
-
     try {
         const response = await fetch(`/nearbysearch?location=${userLatitude},${userLongitude}&radius=5000&type=${genre}`);
         const data = await response.json();
@@ -58,39 +33,35 @@ async function fetchNearbySpots(genre) {
             displaySpots(data.results);
         } else {
             console.error("スポット情報が見つかりませんでした:", data);
+            alert("スポット情報が見つかりませんでした。");
         }
     } catch (error) {
         console.error("スポット情報の取得に失敗しました:", error);
+        alert("スポット情報の取得中にエラーが発生しました。");
     }
 }
 
-// 検索ボタンが押されたときに呼び出す
+// 検索開始
 async function startSearch() {
-    const genreMap = {
-        "restaurant": "restaurant",
-        "park": "park",
-        "museum": "museum"
-    };
-
     const genre = document.getElementById('genre').value;
 
-    if (!genre || !genreMap[genre]) {
+    if (!genre) {
         alert("ジャンルを選択してください！");
         return;
     }
 
     try {
         await getCurrentLocation();
-        await fetchNearbySpots(genreMap[genre]);
+        await fetchNearbySpots(genre);
     } catch (error) {
         console.error("検索中にエラーが発生しました:", error);
     }
 }
 
-// スポット情報を表示
+// スポット情報の表示
 function displaySpots(spots) {
     const spotList = document.getElementById('spot-list');
-    spotList.innerHTML = ''; // 初期化
+    spotList.innerHTML = ''; // リストを初期化
 
     spots.forEach(spot => {
         const listItem = document.createElement('div');
@@ -106,8 +77,11 @@ function displaySpots(spots) {
     });
 }
 
-// Googleマップでルートを表示
+// ルート表示
 function showRoute(destLatitude, destLongitude) {
-    const currentUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLatitude},${userLongitude}&destination=${destLatitude},${destLongitude}`;
-    window.open(currentUrl, '_blank'); // 新しいタブでルートを表示
+    const routeUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLatitude},${userLongitude}&destination=${destLatitude},${destLongitude}`;
+    window.open(routeUrl, '_blank');
 }
+
+// イベントリスナー
+document.getElementById('search-button').addEventListener('click', startSearch);
