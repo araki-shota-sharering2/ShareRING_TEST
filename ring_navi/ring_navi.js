@@ -98,7 +98,7 @@ function displaySpots(spots) {
             <p>住所: ${spot.vicinity || "情報なし"}</p>
             <p>距離: ${distance} km</p>
             <p>評価: ${stars} (${rating} / 5, ${totalRatings}件)</p>
-            <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=YOUR_API_KEY` : '画像なし'}" alt="${spot.name}" />
+            <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8` : '画像なし'}" alt="${spot.name}" />
             <button onclick="showRoutePopup(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">ルートを見る</button>
         `;
         spotList.appendChild(listItem);
