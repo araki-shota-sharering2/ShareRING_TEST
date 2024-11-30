@@ -35,7 +35,7 @@ header {
     gap: 10px;
     margin: 10px;
     background-color: #ffffff; /* 背景色を白にして視認性を確保 */
-    padding: 10px;
+    padding: 8px; /* 縦幅を減少 */
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -68,7 +68,7 @@ header {
     background-color: #007bff;
     color: white;
     font-size: 1rem;
-    padding: 10px 20px;
+    padding: 8px 16px;
     border-radius: 30px;
     border: none;
     cursor: pointer;
@@ -140,7 +140,7 @@ header {
 }
 
 .spot-item button {
-    background-color: #007bff;
+    background-color: #28a745; /* もっと調べるボタンの色を変更 */
     color: white;
     border: none;
     padding: 8px 12px;
@@ -149,10 +149,15 @@ header {
     width: 100%;
     font-size: 0.9rem;
     transition: background-color 0.3s ease;
+    margin-bottom: 10px; /* ボタン間の余白を調整 */
+}
+
+.spot-item button:last-child {
+    background-color: #ffc107; /* ルートを見るボタンの色を変更 */
 }
 
 .spot-item button:hover {
-    background-color: #0056b3;
+    background-color: #218838;
 }
 
 /* モーダルスタイル */
