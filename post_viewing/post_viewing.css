@@ -47,33 +47,6 @@ header {
 #back-button:hover {
     color: #cccccc;
 }
-#pagination-controls {
-    display: flex;
-    gap: 10px;
-    margin-left: auto; /* ボタンを右寄せ */
-}
-
-#pagination-controls button {
-    background-color: #4e5c94;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#pagination-controls button:hover {
-    background-color: #394575;
-}
-
-#pagination-controls button.disabled {
-    background-color: #666;
-    color: #aaa;
-    cursor: not-allowed;
-}
-
 
 /* 投稿詳細エリア */
 .timeline {
@@ -90,9 +63,9 @@ header {
 }
 
 .timeline .post-frame {
-    flex: 0 0 90%; /* 横幅を90%に設定（以前の100%から狭める） */
-    max-width: 90%; /* 最大幅も同様に90%に設定 */
-    margin: 0 auto; /* 投稿を中央に寄せる */
+    flex: 0 0 90%;
+    max-width: 90%;
+    margin: 0 auto;
     text-align: center;
     display: inline-block;
     scroll-snap-align: center;
@@ -103,10 +76,9 @@ header {
     position: relative;
 }
 
-
 .post-image {
-    width: 80%; /* 投稿時の画像サイズを変更 */
-    max-width: 300px; /* 画像の最大幅を設定 */
+    width: 80%;
+    max-width: 300px;
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
@@ -156,8 +128,7 @@ header {
     margin-top: 10px;
 }
 
-.post-actions button,
-.go-button {
+.post-actions button {
     background-color: #4e5c94;
     color: white;
     border: none;
@@ -191,109 +162,32 @@ header {
     }
 }
 
-/* ポップアップ */
-.map-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
+/* もっと見るボタン */
+.load-more {
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* 上から表示 */
-    z-index: 1000;
-    padding: 10px;
-}
-
-.map-popup.hidden {
-    display: none;
-}
-
-#map {
-    width: 90%;
-    height: 70%;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-/* ポップアップの情報表示エリア */
-#route-info {
-    margin: 5px 0;
     text-align: center;
-    color: white;
-    font-size: 14px;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
+    padding: 20px 0;
 }
 
-/* チェックインボタン */
-#check-in-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-#check-in,
-#test-check-in {
-    padding: 10px 20px;
-    font-size: 14px;
-    text-align: center;
+#load-more-button {
     background-color: #4e5c94;
     color: white;
     border: none;
+    padding: 10px 20px;
+    font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-#check-in:hover,
-#test-check-in:hover {
+#load-more-button:hover {
     background-color: #394575;
 }
 
-#check-in.disabled {
+#load-more-button.disabled {
     background-color: #666;
     color: #aaa;
     cursor: not-allowed;
-}
-
-/* 到着ポップアップ */
-#celebration-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-#celebration-popup.hidden {
-    display: none;
-}
-
-#celebration-popup .celebration-content {
-    text-align: center;
-    color: #fff;
-    animation: celebration-animation 1s ease-in-out;
-}
-
-@keyframes celebration-animation {
-    0% {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
 }
 
 /* フッター */
