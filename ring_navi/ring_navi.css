@@ -66,21 +66,25 @@ header {
 /* 横スクロールスポットリスト */
 #spot-list {
     display: flex;
-    flex-direction: column; /* 縦に表示 */
+    flex-wrap: nowrap; /* 横スクロール */
+    overflow-x: auto;
     gap: 10px;
     margin: 20px;
     padding: 10px;
-    height: auto; /* 可変の高さ */
+    height: auto; /* 高さは自動調整 */
     box-sizing: border-box;
+    scroll-snap-type: x mandatory; /* スナップスクロール */
 }
 
-/* 個々のスポットカード */
 .spot-item {
+    flex: 0 0 auto; /* 横スクロール用 */
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 15px;
+    width: 250px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    scroll-snap-align: center; /* スクロール位置のスナップ */
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
