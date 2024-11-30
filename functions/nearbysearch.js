@@ -21,7 +21,6 @@ export async function onRequest(context) {
 
         const apiData = await apiResponse.json();
 
-        // 必要であればデータの一部加工をここで行える
         return new Response(JSON.stringify(apiData), {
             headers: { "Content-Type": "application/json" },
         });
