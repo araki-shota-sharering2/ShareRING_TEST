@@ -76,7 +76,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         postFrame.addEventListener("touchend", () => {
             if (startY - endY > 50) {
-                openGoogleMapsRoute(address);
+                if (!address || address.trim() === "住所情報なし") {
+                    alert("有効な場所が指定されていません。");
+                } else {
+                    openGoogleMapsRoute(address);
+                }
             }
         });
     }
@@ -85,11 +89,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const baseURL = "https://www.google.com/maps/dir/?api=1";
         const params = new URLSearchParams({
             origin: "My+Location",
-            destination: encodeURIComponent(address),
+            destination: address, // 住所のエンコードは不要。URLSearchParamsが自動エンコード
             travelmode: "walking", // 徒歩案内
-            output: "embed"
         });
-        window.location.href = `${baseURL}&${params.toString()}`; // 同じタブで開く
+        const url = `${baseURL}&${params.toString()}`;
+        console.log(`Generated Google Maps URL: ${url}`); // デバッグ用にURLを出力
+        window.location.href = url; // 同じタブで開く
     }
 
     loadMoreButton.addEventListener("click", () => {
