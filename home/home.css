@@ -65,8 +65,8 @@ header {
 /* メインコンテンツ */
 main {
     flex: 1;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -79,7 +79,7 @@ main {
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 1行に3列 */
-    gap: 10px; /* ボックス間の余白 */
+    gap: 15px; /* ボックス間の余白 */
     padding: 10px; /* 全体の余白を調整 */
     width: 100%;
     box-sizing: border-box;
@@ -92,56 +92,25 @@ main {
     align-items: center;
     justify-content: center;
     text-align: center;
-    border-radius: 10px; /* 角を丸くする */
-    position: relative; /* 相対位置 */
-    overflow: hidden; /* はみ出しを隠す */
-    height: 90px; /* ボックスの高さ */
-    color: white;
+    border-radius: 15px; /* 角を丸くする */
     background-color: rgba(255, 255, 255, 0.1); /* 半透明の背景色 */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 陰影をつける */
-}
-
-/* 各ボックスのグラデーション背景色 */
-.fitness { background-color: #43e97b; }
-.mygroup { background-color: #f857a6; }
-.mymap { background-color: #f9d423; }
-.myring { background-color: #30cfd0; }
-.ringkeeper { background-color: #a18cd1; }
-.weather { background-color: #1c92d2; }
-
-/* 光るエフェクトの設定 */
-.feature-box::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%; /* 左からスタート */
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
-    animation: shine 2s linear infinite; /* 光が流れるアニメーション */
-    z-index: 1; /* 背景を前面にしない */
-}
-
-/* 光るエフェクトのアニメーション */
-@keyframes shine {
-    0% {
-        left: -200%; /* 最初は左外 */
-    }
-    100% {
-        left: 200%; /* 右外へ */
-    }
+    width: 80px;
+    height: 80px;
+    position: relative; /* 相対位置 */
+    overflow: hidden; /* はみ出しを隠す */
 }
 
 /* アイコンの枠 */
 .icon-container {
     width: 60px;
     height: 60px;
-    background-color: rgba(255, 255, 255, 0.1); /* 半透明の背景色 */
+    background-color: rgba(255, 255, 255, 0.2); /* 半透明の背景色 */
     border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -149,16 +118,13 @@ main {
 .feature-icon img {
     width: 36px;
     height: 36px;
-    position: relative;
-    z-index: 2; /* アイコンを前面に */
 }
 
 /* テキストの位置を調整 */
 .feature-box p {
-    position: relative; /* 位置を調整 */
-    z-index: 2; /* テキストを前面に */
     margin: 0;
     font-size: 12px;
+    color: white;
     text-transform: uppercase; /* 大文字にする */
 }
 
