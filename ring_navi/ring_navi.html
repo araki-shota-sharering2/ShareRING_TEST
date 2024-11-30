@@ -7,18 +7,15 @@
     <link rel="stylesheet" href="/ring_navi/ring_navi.css">
 </head>
 <body>
-    <!-- ヘッダー -->
     <header>
         <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
     </header>
 
-    <!-- マップ領域（上部に固定） -->
     <div id="map-container"></div>
 
-    <!-- ジャンル選択と検索範囲選択 -->
     <div class="control-panel">
         <div class="genre-select">
-            <label for="genre">ジャンルを選択：</label>
+            <label for="genre">ジャンル:</label>
             <select id="genre">
                 <option value="cafe">カフェ</option>
                 <option value="restaurant">レストラン</option>
@@ -35,7 +32,7 @@
             </select>
         </div>
         <div class="range-select">
-            <label for="radius">検索範囲 (km):</label>
+            <label for="radius">範囲 (km):</label>
             <select id="radius">
                 <option value="1000">1 km</option>
                 <option value="3000">3 km</option>
@@ -46,10 +43,8 @@
         <button id="search-button">検索</button>
     </div>
 
-    <!-- 横スクロール結果表示 -->
     <div id="spot-list" class="scrollable-container"></div>
 
-    <!-- フッター -->
     <footer>
         <a href="/home/home.html"><img src="/assets/images/footer/home.svg" alt="Home"></a>
         <a href="/post_viewing/post_viewing.html"><img src="/assets/images/footer/post_viewing.svg" alt="View"></a>
@@ -57,8 +52,7 @@
         <a href="/ring_navi/ring_navi.html" class="active"><img src="/assets/images/footer/ring_navi.svg" alt="AI"></a>
         <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="Achievements"></a>
     </footer>
-    <!-- JavaScript ファイルを読み込む -->
-    <script src="/ring_navi/ring_navi.js"></script>
 
+    <script src="/ring_navi/ring_navi.js"></script>
 </body>
 </html>

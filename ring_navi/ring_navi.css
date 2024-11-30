@@ -50,6 +50,28 @@ header {
     z-index: 10; /* マップと重ならないように調整 */
 }
 
+.control-panel label {
+    font-size: 0.9rem;
+    color: #394575;
+    font-weight: bold;
+}
+
+.control-panel select {
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    background-color: #f9f9f9;
+    color: #394575;
+}
+
+.control-panel select:focus {
+    border-color: #394575;
+    box-shadow: 0 0 5px rgba(57, 69, 117, 0.5);
+}
+
+/* 横スクロールスポットリスト */
 #spot-list {
     display: flex;
     flex-wrap: nowrap; /* 横スクロール */
@@ -66,26 +88,43 @@ header {
     flex: 0 0 auto; /* 横スクロール用 */
     background-color: white;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    width: 280px;
+    border-radius: 10px;
+    padding: 15px;
+    width: 250px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     scroll-snap-align: center; /* スクロール位置のスナップ */
+    text-align: center;
 }
 
 .spot-item img {
-    max-width: 100%;
-    border-radius: 5px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* 円形にする */
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.spot-item h3 {
+    font-size: 1rem;
+    color: #394575;
+    margin-bottom: 5px;
+}
+
+.spot-item p {
+    font-size: 0.8rem;
+    color: #555;
+    margin: 5px 0;
 }
 
 .spot-item button {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 8px;
+    padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
+    font-size: 0.9rem;
 }
 
 .spot-item button:hover {
@@ -149,6 +188,7 @@ footer img {
     width: 25px;
     height: 25px;
 }
+
 /* 戻るボタン */
 #back-button {
     position: absolute;
