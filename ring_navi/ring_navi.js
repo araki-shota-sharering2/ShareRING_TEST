@@ -103,11 +103,14 @@ function displaySpots(spots) {
 function showRoutePopup(destLatitude, destLongitude) {
     const popup = document.getElementById('popup');
     const iframe = document.getElementById('popup-map');
+
     iframe.src = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&origin=${userLatitude},${userLongitude}&destination=${destLatitude},${destLongitude}&mode=walking`;
+    
+    // ポップアップを表示
     popup.classList.remove('hidden');
 }
 
-// ポップアップを閉じる
+// ポップアップを閉じるイベントリスナー
 document.getElementById('popup-close').addEventListener('click', () => {
     const popup = document.getElementById('popup');
     popup.classList.add('hidden');
