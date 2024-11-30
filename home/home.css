@@ -136,13 +136,23 @@ main {
     width: 36px;
     height: 36px;
 }
-/* メインコンテンツの文字の下線を削除 */
+
+/* テキスト装飾の修正と下線削除 */
+a {
+    text-decoration: none; /* リンクの下線を完全に削除 */
+    color: inherit; /* 親要素の色を継承 */
+}
+
+.feature-box a {
+    text-decoration: none; /* さらに再確認で削除 */
+}
+
 .feature-box p {
     margin: 0;
     font-size: 12px;
     color: white;
     text-transform: uppercase; /* 大文字に変換 */
-    text-decoration: none; /* 下線を削除 */
+    text-decoration: none !important; /* 強制的に下線を削除 */
 }
 
 /* フッター */
