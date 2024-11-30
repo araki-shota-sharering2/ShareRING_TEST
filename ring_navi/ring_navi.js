@@ -133,6 +133,7 @@ function displaySpots(spots) {
         const rating = spot.rating || 0;
         const totalRatings = spot.user_ratings_total || 0;
         const stars = "★".repeat(Math.floor(rating)) + "☆".repeat(5 - Math.floor(rating));
+        const openingHours = spot.opening_hours?.weekday_text || ["営業時間情報なし"];
 
         const listItem = document.createElement('div');
         listItem.className = 'spot-item';
@@ -141,8 +142,11 @@ function displaySpots(spots) {
             <p>住所: ${spot.vicinity || "情報なし"}</p>
             <p>距離: ${distance} km</p>
             <p>評価: ${stars} (${rating} / 5, ${totalRatings}件)</p>
+            <p>営業時間:</p>
+            <ul>${openingHours.map(day => `<li>${day}</li>`).join('')}</ul>
             <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8` : '画像なし'}" alt="${spot.name}" />
             <button onclick="openGoogleMapsRoute(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">Googleマップでルートを見る</button>
+            <button onclick="searchMore('${spot.name}')">もっと調べる</button>
         `;
         spotList.appendChild(listItem);
     });
@@ -152,6 +156,12 @@ function displaySpots(spots) {
 function openGoogleMapsRoute(destLatitude, destLongitude) {
     const url = `https://www.google.com/maps/dir/?api=1&origin=${userLatitude},${userLongitude}&destination=${destLatitude},${destLongitude}&travelmode=walking`;
     window.location.href = url; // 現在のタブで遷移
+}
+
+// 「もっと調べる」ボタンの検索
+function searchMore(name) {
+    const url = `https://www.google.com/search?q=${encodeURIComponent(name)}`;
+    window.open(url, '_blank'); // 新しいタブでGoogle検索を開く
 }
 
 // 星をランダムに配置

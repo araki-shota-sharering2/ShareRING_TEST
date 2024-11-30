@@ -14,37 +14,41 @@
 
     <!-- 検索パネル -->
     <div class="control-panel">
-        <div class="genre-select">
-            <label for="genre">ジャンル:</label>
-            <select id="genre">
-                <option value="cafe">カフェ</option>
-                <option value="restaurant">レストラン</option>
-                <option value="park">公園</option>
-                <option value="tourist_attraction">観光地</option>
-                <option value="natural_feature">自然景観</option>
-                <option value="garden">庭園</option>
-                <option value="campground">キャンプ場</option>
-                <option value="museum">博物館</option>
-                <option value="art_gallery">アートギャラリー</option>
-                <option value="landmark">ランドマーク</option>
-                <option value="zoo">動物園</option>
-                <option value="aquarium">水族館</option>
-            </select>
-        </div>
-        <div class="range-select">
-            <label for="radius">範囲 (km):</label>
-            <select id="radius">
-                <option value="1000">1 km</option>
-                <option value="3000">3 km</option>
-                <option value="5000" selected>5 km</option>
-                <option value="10000">10 km</option>
-            </select>
-        </div>
-        <button id="search-button">検索</button>
+        <form id="search-form">
+            <div class="input-group">
+                <label for="genre">ジャンル:</label>
+                <select id="genre">
+                    <option value="cafe">カフェ</option>
+                    <option value="restaurant">レストラン</option>
+                    <option value="park">公園</option>
+                    <option value="tourist_attraction">観光地</option>
+                    <option value="natural_feature">自然景観</option>
+                    <option value="garden">庭園</option>
+                    <option value="campground">キャンプ場</option>
+                    <option value="museum">博物館</option>
+                    <option value="art_gallery">アートギャラリー</option>
+                    <option value="landmark">ランドマーク</option>
+                    <option value="zoo">動物園</option>
+                    <option value="aquarium">水族館</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="radius">範囲 (km):</label>
+                <select id="radius">
+                    <option value="1000">1 km</option>
+                    <option value="3000">3 km</option>
+                    <option value="5000" selected>5 km</option>
+                    <option value="10000">10 km</option>
+                </select>
+            </div>
+            <button type="button" id="search-button">検索</button>
+        </form>
     </div>
 
     <!-- スポット情報リスト -->
-    <div id="spot-list" class="scrollable-container"></div>
+    <div id="spot-list" class="scrollable-container">
+        <!-- 動的にスポット情報が挿入されます -->
+    </div>
 
     <!-- モーダル -->
     <div id="modal" class="modal">
