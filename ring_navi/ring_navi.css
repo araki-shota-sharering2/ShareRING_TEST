@@ -21,21 +21,26 @@ header {
 #map-container {
     width: 100%;
     height: 300px; /* 固定高さ */
-    position: sticky;
-    top: 50px; /* ヘッダーの下に固定 */
-    z-index: 999;
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px; /* マップ下にスペースを追加 */
 }
 
 /* コントロールパネル */
 .control-panel {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 10px;
     margin: 10px;
+    background-color: #ffffff; /* 背景色を白にして視認性を確保 */
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 10; /* マップと重ならないように調整 */
 }
 
 #spot-list {

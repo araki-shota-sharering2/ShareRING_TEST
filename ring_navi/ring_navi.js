@@ -20,14 +20,28 @@ function initializeGoogleMaps() {
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer();
 
-    document.getElementById('search-button').addEventListener('click', startSearch);
+    // 現在地を取得して初期表示
+    getCurrentLocation()
+        .then(position => {
+            const { latitude, longitude } = position;
 
-    // マップを初期化
-    map = new google.maps.Map(document.getElementById('map-container'), {
-        center: { lat: 35.6895, lng: 139.6917 }, // 初期位置は東京
-        zoom: 14,
-    });
-    directionsRenderer.setMap(map);
+            map = new google.maps.Map(document.getElementById('map-container'), {
+                center: { lat: latitude, lng: longitude },
+                zoom: 14,
+            });
+
+            directionsRenderer.setMap(map);
+        })
+        .catch(error => {
+            console.error("現在地の取得に失敗しました:", error);
+            map = new google.maps.Map(document.getElementById('map-container'), {
+                center: { lat: 35.6895, lng: 139.6917 }, // 東京をデフォルトに設定
+                zoom: 14,
+            });
+            directionsRenderer.setMap(map);
+        });
+
+    document.getElementById('search-button').addEventListener('click', startSearch);
 }
 
 // 現在地の取得
@@ -97,7 +111,6 @@ async function startSearch() {
     }
 
     try {
-        await getCurrentLocation();
         await fetchNearbySpots(genre, radius);
     } catch (error) {
         console.error("検索中にエラーが発生しました:", error);
