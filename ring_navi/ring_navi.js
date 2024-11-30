@@ -51,7 +51,7 @@ async function fetchNearbySpots(genre) {
     const GOOGLE_MAPS_API_KEY = "AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8"; // あなたのAPIキーをここに記載
 
     try {
-        const response = await fetch(`/api/nearbysearch?location=${userLatitude},${userLongitude}&radius=5000&type=${genre}`);
+        const response = await fetch(`/nearbysearch?location=${userLatitude},${userLongitude}&radius=5000&type=${genre}`);
         const data = await response.json();
 
         if (data.results) {
