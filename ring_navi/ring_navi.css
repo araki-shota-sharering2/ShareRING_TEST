@@ -63,26 +63,28 @@ header {
     box-shadow: 0 0 5px rgba(57, 69, 117, 0.5);
 }
 
-/* 検索ボタン */
+/* 検索ボタンを範囲の右側に配置 */
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* ボタンとセレクトボックスの間の余白 */
+}
+
 #search-button {
     background-color: #007bff;
     color: white;
-    font-size: 1rem;
-    padding: 8px 16px;
-    border-radius: 30px;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 5px;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    display: block;
-    margin: 10px auto;
-    width: fit-content;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 #search-button:hover {
     background-color: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* 横スクロールスポットリスト */
