@@ -145,11 +145,23 @@ main {
     }
 }
 
+/* アイコンの枠 */
+.icon-container {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.1); /* 半透明の背景色 */
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 /* アイコンのサイズ調整 */
 .feature-icon img {
     width: 36px;
     height: 36px;
-    margin-bottom: 5px;
     position: relative;
     z-index: 2; /* アイコンを前面に */
 }
@@ -158,6 +170,8 @@ main {
 .feature-box p {
     position: relative; /* 位置を調整 */
     z-index: 2; /* テキストを前面に */
+    margin: 0;
+    font-size: 14px;
 }
 
 /* フッター */
