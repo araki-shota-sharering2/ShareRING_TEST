@@ -1,168 +1,138 @@
-let userLatitude, userLongitude, map, directionsService, directionsRenderer;
+document.addEventListener("DOMContentLoaded", async () => {
+    const mapElement = document.getElementById("map");
+    const distanceElement = document.getElementById("distance");
+    const durationElement = document.getElementById("duration");
+    const routeInfoElement = document.getElementById("route-info");
 
-// Google Maps API を動的にロード
-function loadGoogleMapsAPI(callback) {
-    if (window.google && window.google.maps) {
-        // Google Maps API がすでにロードされている場合は何もしない
-        callback();
-        return;
+    let map;
+    let directionsService;
+    let directionsRenderer;
+    let currentLat, currentLng;
+    let destinationLat, destinationLng;
+    let currentLocationMarker, destinationMarker;
+
+    // Google Maps 初期化
+    async function initializeMap() {
+        map = new google.maps.Map(mapElement, {
+            zoom: 15,
+            center: { lat: 0, lng: 0 }, // 初期位置は空
+        });
+
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+        directionsRenderer.setMap(map);
+
+        await updateMapCenter();
     }
-    const script = document.createElement('script');
-    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&libraries=places";
-    script.async = true;
-    script.defer = true;
-    script.onload = callback;
-    document.head.appendChild(script);
-}
 
-// Google Maps の初期化
-function initializeGoogleMaps() {
-    console.log("Google Maps API が正常にロードされました");
-    directionsService = new google.maps.DirectionsService();
-    directionsRenderer = new google.maps.DirectionsRenderer();
-
-    // 検索ボタンのイベントリスナーを設定
-    document.getElementById('search-button').addEventListener('click', startSearch);
-}
-
-// 現在地の取得
-async function getCurrentLocation() {
-    return new Promise((resolve, reject) => {
-        if (navigator.geolocation) {
+    // 現在地の取得
+    async function fetchCurrentLocation() {
+        return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(
-                position => {
-                    userLatitude = position.coords.latitude;
-                    userLongitude = position.coords.longitude;
-                    resolve({ latitude: userLatitude, longitude: userLongitude });
+                (position) => {
+                    currentLat = position.coords.latitude;
+                    currentLng = position.coords.longitude;
+                    resolve({ lat: currentLat, lng: currentLng });
                 },
-                error => {
-                    console.error("現在地の取得に失敗しました:", error.message);
+                (error) => {
+                    console.error("現在地の取得に失敗しました:", error);
                     alert("現在地を取得できませんでした。");
                     reject(error);
                 }
             );
-        } else {
-            alert("このブラウザは位置情報の取得に対応していません。");
-            reject(new Error("Geolocation not supported"));
-        }
-    });
-}
-
-// 距離を計算
-function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // 地球の半径 (km)
-    const dLat = (lat2 - lat1) * (Math.PI / 180);
-    const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * (Math.PI / 180)) *
-            Math.cos(lat2 * (Math.PI / 180)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-}
-
-// スポット情報の取得
-async function fetchNearbySpots(genre, radius) {
-    try {
-        const response = await fetch(`/nearbysearch?location=${userLatitude},${userLongitude}&radius=${radius}&type=${genre}`);
-        const data = await response.json();
-
-        if (data.results) {
-            const sortedSpots = data.results.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-            displaySpots(sortedSpots);
-        } else {
-            alert("スポット情報が見つかりませんでした。");
-        }
-    } catch (error) {
-        console.error("スポット情報の取得に失敗しました:", error);
-        alert("スポット情報の取得中にエラーが発生しました。");
-    }
-}
-
-// 検索開始
-async function startSearch() {
-    const genre = document.getElementById('genre').value;
-    const radius = document.getElementById('radius').value;
-
-    if (!genre) {
-        alert("ジャンルを選択してください！");
-        return;
+        });
     }
 
-    try {
-        await getCurrentLocation();
-        await fetchNearbySpots(genre, radius);
-    } catch (error) {
-        console.error("検索中にエラーが発生しました:", error);
-    }
-}
+    // 地図の中心を現在地に更新
+    async function updateMapCenter() {
+        try {
+            const currentLocation = await fetchCurrentLocation();
+            map.setCenter(currentLocation);
 
-// スポット情報の表示
-function displaySpots(spots) {
-    const spotList = document.getElementById('spot-list');
-    spotList.innerHTML = '';
-
-    spots.forEach(spot => {
-        const distance = calculateDistance(
-            userLatitude,
-            userLongitude,
-            spot.geometry.location.lat,
-            spot.geometry.location.lng
-        ).toFixed(2);
-
-        const rating = spot.rating || 0;
-        const totalRatings = spot.user_ratings_total || 0;
-        const stars = "★".repeat(Math.floor(rating)) + "☆".repeat(5 - Math.floor(rating));
-
-        const listItem = document.createElement('div');
-        listItem.className = 'spot-item';
-        listItem.innerHTML = `
-            <h3>${spot.name}</h3>
-            <p>住所: ${spot.vicinity || "情報なし"}</p>
-            <p>距離: ${distance} km</p>
-            <p>評価: ${stars} (${rating} / 5, ${totalRatings}件)</p>
-            <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8` : '画像なし'}" alt="${spot.name}" />
-            <button onclick="showRoutePopup(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">ルートを見る</button>
-        `;
-        spotList.appendChild(listItem);
-    });
-}
-
-// ポップアップでルートを表示
-function showRoutePopup(destLatitude, destLongitude) {
-    const popup = document.getElementById('popup');
-    popup.classList.remove('hidden');
-
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: userLatitude, lng: userLongitude },
-        zoom: 14,
-    });
-
-    directionsRenderer.setMap(map);
-
-    const request = {
-        origin: { lat: userLatitude, lng: userLongitude },
-        destination: { lat: destLatitude, lng: destLongitude },
-        travelMode: 'WALKING',
-    };
-
-    directionsService.route(request, (result, status) => {
-        if (status === 'OK') {
-            directionsRenderer.setDirections(result);
-        } else {
-            alert("ルートの取得に失敗しました。");
+            if (!currentLocationMarker) {
+                currentLocationMarker = new google.maps.Marker({
+                    position: currentLocation,
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        scale: 5,
+                        fillColor: "#00F",
+                        fillOpacity: 1,
+                        strokeWeight: 2,
+                    },
+                    title: "現在地",
+                });
+            } else {
+                currentLocationMarker.setPosition(currentLocation);
+            }
+        } catch (error) {
+            console.error("現在地の更新に失敗しました:", error);
         }
-    });
-}
+    }
 
-// ポップアップを閉じる
-document.getElementById('popup-close').addEventListener('click', () => {
-    const popup = document.getElementById('popup');
-    popup.classList.add('hidden');
-    document.getElementById('map').innerHTML = '';
+    // ルートの更新
+    async function updateRoute(destination) {
+        destinationLat = destination.lat;
+        destinationLng = destination.lng;
+
+        const origin = { lat: currentLat, lng: currentLng };
+        const destinationPoint = { lat: destinationLat, lng: destinationLng };
+
+        directionsService.route(
+            {
+                origin,
+                destination: destinationPoint,
+                travelMode: google.maps.TravelMode.WALKING,
+            },
+            (result, status) => {
+                if (status === "OK") {
+                    const route = result.routes[0].legs[0];
+                    directionsRenderer.setDirections(result);
+
+                    // 距離と時間を表示
+                    distanceElement.textContent = `距離: ${route.distance.text}`;
+                    durationElement.textContent = `所要時間: ${route.duration.text}`;
+
+                    // 目的地のマーカーを配置
+                    if (!destinationMarker) {
+                        destinationMarker = new google.maps.Marker({
+                            position: destinationPoint,
+                            map: map,
+                            title: "目的地",
+                            icon: {
+                                url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                            },
+                        });
+                    } else {
+                        destinationMarker.setPosition(destinationPoint);
+                    }
+                } else {
+                    console.error("ルート検索に失敗しました:", status);
+                    distanceElement.textContent = "距離: 不明";
+                    durationElement.textContent = "所要時間: 不明";
+                }
+            }
+        );
+    }
+
+    // 目的地を設定してルート案内開始
+    document.querySelectorAll(".destination-button").forEach((button) => {
+        button.addEventListener("click", async () => {
+            const destinationAddress = button.getAttribute("data-address");
+
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: destinationAddress }, async (results, status) => {
+                if (status === "OK") {
+                    const location = results[0].geometry.location;
+                    await updateRoute({ lat: location.lat(), lng: location.lng() });
+                } else {
+                    console.error("住所のジオコーディングに失敗しました:", status);
+                    alert("目的地を特定できませんでした。");
+                }
+            });
+        });
+    });
+
+    // 初期化
+    await initializeMap();
 });
-
-// Google Maps API をロードし、コールバック関数を実行
-loadGoogleMapsAPI(initializeGoogleMaps);
