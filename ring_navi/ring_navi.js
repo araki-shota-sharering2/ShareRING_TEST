@@ -3,12 +3,11 @@ let userLatitude, userLongitude, map, directionsService, directionsRenderer;
 // Google Maps API を動的にロード
 function loadGoogleMapsAPI(callback) {
     if (window.google && window.google.maps) {
-        // Google Maps API がすでにロードされている場合は何もしない
         callback();
         return;
     }
     const script = document.createElement('script');
-    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&libraries=places";
+    script.src = "https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places";
     script.async = true;
     script.defer = true;
     script.onload = callback;
@@ -21,7 +20,6 @@ function initializeGoogleMaps() {
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer();
 
-    // 検索ボタンのイベントリスナーを設定
     document.getElementById('search-button').addEventListener('click', startSearch);
 }
 
@@ -50,15 +48,12 @@ async function getCurrentLocation() {
 
 // 距離を計算
 function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // 地球の半径 (km)
+    const R = 6371;
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * (Math.PI / 180)) *
-            Math.cos(lat2 * (Math.PI / 180)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
 }
@@ -123,19 +118,16 @@ function displaySpots(spots) {
             <p>住所: ${spot.vicinity || "情報なし"}</p>
             <p>距離: ${distance} km</p>
             <p>評価: ${stars} (${rating} / 5, ${totalRatings}件)</p>
-            <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8` : '画像なし'}" alt="${spot.name}" />
-            <button onclick="showRoutePopup(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">ルートを見る</button>
+            <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=YOUR_API_KEY` : '画像なし'}" alt="${spot.name}" />
+            <button onclick="showRoute(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">ルートを見る</button>
         `;
         spotList.appendChild(listItem);
     });
 }
 
-// ポップアップでルートを表示
-function showRoutePopup(destLatitude, destLongitude) {
-    const popup = document.getElementById('popup');
-    popup.classList.remove('hidden');
-
-    map = new google.maps.Map(document.getElementById('map'), {
+// ルート表示
+function showRoute(destLatitude, destLongitude) {
+    map = new google.maps.Map(document.getElementById('map-container'), {
         center: { lat: userLatitude, lng: userLongitude },
         zoom: 14,
     });
@@ -156,13 +148,6 @@ function showRoutePopup(destLatitude, destLongitude) {
         }
     });
 }
-
-// ポップアップを閉じる
-document.getElementById('popup-close').addEventListener('click', () => {
-    const popup = document.getElementById('popup');
-    popup.classList.add('hidden');
-    document.getElementById('map').innerHTML = '';
-});
 
 // Google Maps API をロードし、コールバック関数を実行
 loadGoogleMapsAPI(initializeGoogleMaps);
