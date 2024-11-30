@@ -22,8 +22,35 @@ export async function onRequestGet(context) {
         SELECT * FROM fitness_activities WHERE user_id = ?
     `).bind(session.user_id).all();
  
-    return new Response(JSON.stringify(fitnessData.results), {
-        status: 200,
-        headers: { "Content-Type": "application/json" }
-    });
+       // フィットネスデータをHTMLテーブル形式で整形
+       let fitnessDataHtml = `
+       <html>
+       <head><title>フィットネスデータ</title></head>
+       <body>
+           <h1>フィットネスアクティビティのリスト</h1>
+           <table border="1">
+               <tr>
+                   <th>アクティビティ名</th>
+                   <th>時間</th>
+                   <th>消費カロリー</th>
+               </tr>`;
+ 
+   fitnessData.results.forEach(activity => {
+       fitnessDataHtml += `
+           <tr>
+               <td>${activity.activity_name}</td>
+               <td>${activity.duration}</td>
+               <td>${activity.calories_burned}</td>
+           </tr>`;
+   });
+ 
+   fitnessDataHtml += `
+           </table>
+       </body>
+       </html>`;
+ 
+   return new Response(fitnessDataHtml, {
+       status: 200,
+       headers: { "Content-Type": "text/html" }
+   });
 }
