@@ -9,7 +9,7 @@
 <body>
     <!-- ヘッダー -->
     <header>
-        <h1>Ring Navi</h1>
+        <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
     </header>
 
     <!-- マップ領域（上部に固定） -->
@@ -51,10 +51,14 @@
 
     <!-- フッター -->
     <footer>
-        <p>© ShareRING 2024</p>
+        <a href="/home/home.html"><img src="/assets/images/footer/home.svg" alt="Home"></a>
+        <a href="/post_viewing/post_viewing.html"><img src="/assets/images/footer/post_viewing.svg" alt="View"></a>
+        <a href="/post_creation/search_place.html"><img src="/assets/images/footer/post_creation.svg" alt="Create"></a>
+        <a href="/ring_navi/ring_navi.html"><img src="/assets/images/footer/ring_navi.svg" alt="AI"></a>
+        <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="Achievements"></a>
     </footer>
-
     <!-- JavaScript ファイルを読み込む -->
     <script src="/ring_navi/ring_navi.js"></script>
+
 </body>
 </html>

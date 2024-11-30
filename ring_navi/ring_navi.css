@@ -92,3 +92,65 @@ header {
         margin: 0 auto;
     }
 }
+/* 星のスタイル */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
+}
+
+
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+/* ヘッダー */
+header {
+    background-color: #394575;
+    color: white;
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-weight: bold;
+}
+/* フッター */
+footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px;
+    background-color: #4e5c94;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 375px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+footer a {
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+footer img {
+    width: 25px;
+    height: 25px;
+}
