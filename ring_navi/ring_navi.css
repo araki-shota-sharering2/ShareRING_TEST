@@ -94,6 +94,12 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     scroll-snap-align: center; /* スクロール位置のスナップ */
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.spot-item:hover {
+    transform: translateY(-5px); /* ホバー時に少し浮き上がる */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .spot-item img {
@@ -125,6 +131,7 @@ header {
     cursor: pointer;
     width: 100%;
     font-size: 0.9rem;
+    transition: background-color 0.3s ease;
 }
 
 .spot-item button:hover {
@@ -182,6 +189,11 @@ footer a {
     color: white;
     text-decoration: none;
     padding: 10px 15px;
+    transition: transform 0.3s ease;
+}
+
+footer a:hover {
+    transform: scale(1.1); /* ホバー時に少し拡大 */
 }
 
 footer img {
@@ -204,4 +216,5 @@ footer img {
 
 #back-button:hover {
     color: #cccccc;
+    transform: scale(1.1); /* ホバー時に少し拡大 */
 }
