@@ -1,23 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-    enforceLandscapeMode();
     displayLocationWithIcon();
     setupPhotoCapture();
     setupColorPicker();
     setupShareButton();
 });
 
-function enforceLandscapeMode() {
-    if (window.matchMedia("(orientation: landscape)").matches) {
-        console.log("Landscape mode detected");
-    } else {
-        alert("横向きモードで撮影してください！");
-    }
-    window.addEventListener("orientationchange", () => {
-        if (!window.matchMedia("(orientation: landscape)").matches) {
-            alert("横向きモードで撮影してください！");
-        }
-    });
-}
+
 
 function displayLocationWithIcon() {
     const locationData = JSON.parse(localStorage.getItem("selectedLocation"));

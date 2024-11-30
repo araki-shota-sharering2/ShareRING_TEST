@@ -22,30 +22,55 @@ body {
 header {
     background-color: #394575;
     color: white;
-    padding: 10px;
+    padding: 10px 15px;
     width: 100%;
-    text-align: center;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     position: relative;
     font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 #back-button {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
     background: none;
     border: none;
     color: white;
     font-size: 14px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s ease;
 }
 
 #back-button:hover {
     color: #cccccc;
+}
+
+#load-more-button {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+#load-more-button:hover {
+    background-color: #394575;
+    transform: scale(1.05);
+}
+
+#load-more-button.disabled {
+    background-color: #666;
+    color: #aaa;
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* 投稿詳細エリア */
@@ -160,34 +185,6 @@ header {
         transform: translate(-50%, -10px);
         opacity: 0.5;
     }
-}
-
-/* もっと見るボタン */
-.load-more {
-    width: 100%;
-    text-align: center;
-    padding: 20px 0;
-}
-
-#load-more-button {
-    background-color: #4e5c94;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#load-more-button:hover {
-    background-color: #394575;
-}
-
-#load-more-button.disabled {
-    background-color: #666;
-    color: #aaa;
-    cursor: not-allowed;
 }
 
 /* フッター */

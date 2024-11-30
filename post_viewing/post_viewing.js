@@ -85,10 +85,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const baseURL = "https://www.google.com/maps/dir/?api=1";
         const params = new URLSearchParams({
             origin: "My+Location",
-            destination: address,
+            destination: encodeURIComponent(address),
             travelmode: "walking", // 徒歩案内
+            output: "embed"
         });
-        window.open(`${baseURL}&${params.toString()}`, "_blank");
+        window.location.href = `${baseURL}&${params.toString()}`; // 同じタブで開く
     }
 
     loadMoreButton.addEventListener("click", () => {
