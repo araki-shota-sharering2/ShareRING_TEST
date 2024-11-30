@@ -2,12 +2,24 @@ let userLatitude, userLongitude, map, directionsService, directionsRenderer;
 
 // Google Maps API を動的にロード
 function loadGoogleMapsAPI(callback) {
+    if (window.google && window.google.maps) {
+        // Google Maps API がすでにロードされている場合は何もしない
+        callback();
+        return;
+    }
     const script = document.createElement('script');
     script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&libraries=places";
     script.async = true;
     script.defer = true;
     script.onload = callback;
     document.head.appendChild(script);
+}
+
+// Google Maps の初期化
+function initializeGoogleMaps() {
+    console.log("Google Maps API が正常にロードされました");
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer();
 }
 
 // 現在地の取得
@@ -120,9 +132,6 @@ function showRoutePopup(destLatitude, destLongitude) {
     const popup = document.getElementById('popup');
     popup.classList.remove('hidden');
 
-    directionsService = new google.maps.DirectionsService();
-    directionsRenderer = new google.maps.DirectionsRenderer();
-
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: userLatitude, lng: userLongitude },
         zoom: 14,
@@ -152,10 +161,5 @@ document.getElementById('popup-close').addEventListener('click', () => {
     document.getElementById('map').innerHTML = '';
 });
 
-// イベントリスナー
-document.getElementById('search-button').addEventListener('click', startSearch);
-
 // Google Maps API をロードし、コールバック関数を実行
-loadGoogleMapsAPI(() => {
-    console.log("Google Maps API が正常にロードされました");
-});
+loadGoogleMapsAPI(initializeGoogleMaps);
