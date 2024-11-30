@@ -142,29 +142,16 @@ function displaySpots(spots) {
             <p>距離: ${distance} km</p>
             <p>評価: ${stars} (${rating} / 5, ${totalRatings}件)</p>
             <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8` : '画像なし'}" alt="${spot.name}" />
-            <button onclick="showRoute(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">ルートを見る</button>
+            <button onclick="openGoogleMapsRoute(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">Googleマップでルートを見る</button>
         `;
         spotList.appendChild(listItem);
     });
 }
 
-// ルート表示
-function showRoute(destLatitude, destLongitude) {
-    map.setCenter({ lat: destLatitude, lng: destLongitude });
-
-    const request = {
-        origin: { lat: userLatitude, lng: userLongitude },
-        destination: { lat: destLatitude, lng: destLongitude },
-        travelMode: 'WALKING',
-    };
-
-    directionsService.route(request, (result, status) => {
-        if (status === 'OK') {
-            directionsRenderer.setDirections(result);
-        } else {
-            alert("ルートの取得に失敗しました。");
-        }
-    });
+// Googleマップでルートを表示
+function openGoogleMapsRoute(destLatitude, destLongitude) {
+    const url = `https://www.google.com/maps/dir/?api=1&origin=${userLatitude},${userLongitude}&destination=${destLatitude},${destLongitude}&travelmode=walking`;
+    window.open(url, "_blank");
 }
 
 // 星をランダムに配置

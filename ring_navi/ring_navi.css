@@ -3,14 +3,15 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f8ff;
+    background-color: #1a2b4c; /* 濃い青の背景色 */
     overflow: hidden; /* 全体のスクロールを防ぐ */
     max-width: 375px; /* スマートフォン画面サイズに固定 */
     margin: 0 auto; /* 中央寄せ */
+    color: white; /* デフォルトの文字色を白に */
 }
 
 header {
-    background-color: #394575; /* ダークトーンの背景 */
+    background-color: #394575; /* ヘッダー背景色 */
     color: white;
     text-align: center;
     padding: 15px;
@@ -108,6 +109,9 @@ header {
     border-radius: 50%; /* 円形にする */
     object-fit: cover;
     margin-bottom: 10px;
+    border: 5px solid #394575; /* フレームの色を付ける */
+    background-color: #e1e5f2; /* 背景色 */
+    box-shadow: 0 2px 8px rgba(57, 69, 117, 0.5);
 }
 
 .spot-item h3 {
