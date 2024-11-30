@@ -5,17 +5,24 @@ body {
     padding: 0;
     background-color: #f0f8ff;
     overflow: hidden; /* 全体のスクロールを防ぐ */
+    max-width: 375px; /* スマートフォン画面サイズに固定 */
+    margin: 0 auto; /* 中央寄せ */
 }
 
 header {
-    background-color: #007bff;
+    background-color: #394575; /* ダークトーンの背景 */
     color: white;
     text-align: center;
-    padding: 1rem;
-    font-size: 1.5rem;
+    padding: 15px;
+    font-size: 1.2rem;
     position: sticky;
     top: 0;
     z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 #map-container {
@@ -88,10 +95,11 @@ header {
 /* スマートフォン向け固定サイズ */
 @media screen and (max-width: 768px) {
     body {
-        max-width: 768px;
+        max-width: 375px; /* 画面幅を固定 */
         margin: 0 auto;
     }
 }
+
 /* 星のスタイル */
 .star {
     position: absolute;
@@ -103,7 +111,6 @@ header {
     opacity: 0.5;
 }
 
-
 /* 星の輝きアニメーション */
 @keyframes twinkle {
     0% {
@@ -113,19 +120,7 @@ header {
         opacity: 1;
     }
 }
-/* ヘッダー */
-header {
-    background-color: #394575;
-    color: white;
-    padding: 15px;
-    width: 100%;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    font-weight: bold;
-}
+
 /* フッター */
 footer {
     display: flex;
@@ -136,7 +131,7 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    max-width: 375px;
+    max-width: 375px; /* スマートフォン幅に固定 */
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
