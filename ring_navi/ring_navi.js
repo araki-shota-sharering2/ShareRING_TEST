@@ -1,5 +1,15 @@
 let userLatitude, userLongitude, map, directionsService, directionsRenderer;
 
+// Google Maps API を動的にロード
+function loadGoogleMapsAPI(callback) {
+    const script = document.createElement('script');
+    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&libraries=places";
+    script.async = true;
+    script.defer = true;
+    script.onload = callback;
+    document.head.appendChild(script);
+}
+
 // 現在地の取得
 async function getCurrentLocation() {
     return new Promise((resolve, reject) => {
@@ -144,3 +154,8 @@ document.getElementById('popup-close').addEventListener('click', () => {
 
 // イベントリスナー
 document.getElementById('search-button').addEventListener('click', startSearch);
+
+// Google Maps API をロードし、コールバック関数を実行
+loadGoogleMapsAPI(() => {
+    console.log("Google Maps API が正常にロードされました");
+});
