@@ -78,12 +78,10 @@ main {
 /* コンテンツのグリッド配置 */
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px; /* ボックス間の余白を狭める */
-    padding: 5px 15px; /* 左右の余白を減らす */
+    grid-template-columns: repeat(3, 1fr); /* 1行に3列 */
+    gap: 10px; /* ボックス間の余白 */
+    padding: 10px; /* 全体の余白を調整 */
     width: 100%;
-    max-width: 335px;
-    height: calc(100vh - 140px);
     box-sizing: border-box;
 }
 
@@ -94,24 +92,13 @@ main {
     align-items: center;
     justify-content: center;
     text-align: center;
-    border-radius: 15px;
+    border-radius: 10px; /* 角を丸くする */
     position: relative; /* 相対位置 */
     overflow: hidden; /* はみ出しを隠す */
-    height: 110px; /* 高さを少し狭める */
-    color: white; /* テキストカラー */
+    height: 90px; /* ボックスの高さ */
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1); /* 半透明の背景色 */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 陰影をつける */
-}
-
-/* 背景のアニメーションを設定 */
-.feature-box::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(170deg, transparent 85%, #fff 10%); /* 角度をつけて分割 */
-    z-index: 0; /* 背景を前面にしない */
 }
 
 /* 各ボックスのグラデーション背景色 */
@@ -171,7 +158,8 @@ main {
     position: relative; /* 位置を調整 */
     z-index: 2; /* テキストを前面に */
     margin: 0;
-    font-size: 14px;
+    font-size: 12px;
+    text-transform: uppercase; /* 大文字にする */
 }
 
 /* フッター */
@@ -196,7 +184,7 @@ footer a {
     text-align: center;
     color: white;
     text-decoration: none;
-    padding: 10px 15px; /* アイコン周囲を広げる */
+    padding: 10px 15px;
 }
 
 /* フッターのアクティブ状態を示す */
