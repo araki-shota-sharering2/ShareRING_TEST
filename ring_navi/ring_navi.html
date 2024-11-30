@@ -46,12 +46,11 @@
     <!-- 結果表示 -->
     <div id="spot-list"></div>
 
-    <!-- 地図とルート案内 -->
-    <div id="map-container">
-        <div id="map" style="width: 100%; height: 400px; margin-top: 20px;"></div>
-        <div id="route-info">
-            <p id="distance">距離: 不明</p>
-            <p id="duration">所要時間: 不明</p>
+    <!-- ポップアップ -->
+    <div id="popup" class="hidden">
+        <div class="popup-content">
+            <span id="popup-close">&times;</span>
+            <div id="map" style="width: 100%; height: 300px;"></div>
         </div>
     </div>
 
