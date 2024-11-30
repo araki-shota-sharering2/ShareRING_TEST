@@ -21,6 +21,13 @@ function initializeGoogleMaps() {
     directionsRenderer = new google.maps.DirectionsRenderer();
 
     document.getElementById('search-button').addEventListener('click', startSearch);
+
+    // マップを初期化
+    map = new google.maps.Map(document.getElementById('map-container'), {
+        center: { lat: 35.6895, lng: 139.6917 }, // 初期位置は東京
+        zoom: 14,
+    });
+    directionsRenderer.setMap(map);
 }
 
 // 現在地の取得
@@ -48,12 +55,15 @@ async function getCurrentLocation() {
 
 // 距離を計算
 function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371;
+    const R = 6371; // 地球の半径 (km)
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * (Math.PI / 180)) *
+            Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
 }
@@ -127,12 +137,7 @@ function displaySpots(spots) {
 
 // ルート表示
 function showRoute(destLatitude, destLongitude) {
-    map = new google.maps.Map(document.getElementById('map-container'), {
-        center: { lat: userLatitude, lng: userLongitude },
-        zoom: 14,
-    });
-
-    directionsRenderer.setMap(map);
+    map.setCenter({ lat: destLatitude, lng: destLongitude });
 
     const request = {
         origin: { lat: userLatitude, lng: userLongitude },

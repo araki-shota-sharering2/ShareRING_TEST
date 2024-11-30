@@ -12,6 +12,9 @@
         <h1>Ring Navi</h1>
     </header>
 
+    <!-- マップ領域（上部に固定） -->
+    <div id="map-container"></div>
+
     <!-- ジャンル選択と検索範囲選択 -->
     <div class="control-panel">
         <div class="genre-select">
@@ -43,11 +46,8 @@
         <button id="search-button">検索</button>
     </div>
 
-    <!-- 結果表示 -->
-    <div id="spot-list"></div>
-
-    <!-- マップ領域 -->
-    <div id="map-container" style="width: 100%; height: 400px; margin: 20px auto;"></div>
+    <!-- 横スクロール結果表示 -->
+    <div id="spot-list" class="scrollable-container"></div>
 
     <!-- フッター -->
     <footer>

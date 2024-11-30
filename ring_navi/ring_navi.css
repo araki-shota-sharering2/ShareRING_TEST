@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f0f8ff;
+    overflow: hidden; /* 全体のスクロールを防ぐ */
 }
 
 header {
@@ -12,31 +13,52 @@ header {
     text-align: center;
     padding: 1rem;
     font-size: 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
+#map-container {
+    width: 100%;
+    height: 300px; /* 固定高さ */
+    position: sticky;
+    top: 50px; /* ヘッダーの下に固定 */
+    z-index: 999;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* コントロールパネル */
 .control-panel {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin: 20px;
+    margin: 10px;
 }
 
 #spot-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: nowrap; /* 横スクロール */
+    overflow-x: auto;
+    gap: 10px;
     margin: 20px;
+    padding: 10px;
+    height: calc(100vh - 400px); /* 残りの画面高さを計算 */
+    box-sizing: border-box;
+    scroll-snap-type: x mandatory; /* スナップスクロール */
 }
 
 .spot-item {
+    flex: 0 0 auto; /* 横スクロール用 */
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 5px;
-    margin: 10px;
     padding: 10px;
-    width: 300px;
+    width: 280px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    scroll-snap-align: center; /* スクロール位置のスナップ */
 }
 
 .spot-item img {
@@ -51,18 +73,17 @@ header {
     padding: 8px;
     border-radius: 5px;
     cursor: pointer;
+    width: 100%;
 }
 
 .spot-item button:hover {
     background-color: #0056b3;
 }
 
-/* マップ領域 */
-#map-container {
-    width: 100%;
-    height: 400px;
-    margin: 20px auto;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+/* スマートフォン向け固定サイズ */
+@media screen and (max-width: 768px) {
+    body {
+        max-width: 768px;
+        margin: 0 auto;
+    }
 }
