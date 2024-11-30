@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #1a2b4c; /* 濃い青の背景色 */
+    background-color: #0d0d2b; /* 濃い青の背景色 */
     overflow: hidden; /* 全体のスクロールを防ぐ */
     max-width: 375px; /* スマートフォン画面サイズに固定 */
     margin: 0 auto; /* 中央寄せ */
