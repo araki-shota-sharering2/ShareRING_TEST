@@ -14,9 +14,12 @@ header {
     font-size: 1.5rem;
 }
 
-.genre-select {
+.control-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     margin: 20px;
-    text-align: center;
 }
 
 #spot-list {
@@ -62,14 +65,14 @@ header {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    display: none; /* 初期状態で非表示 */
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 1000;
 }
 
 .hidden {
-    display: none; /* hiddenクラスで非表示にする */
+    display: none;
 }
 
 .popup-content {

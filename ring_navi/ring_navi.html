@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ring Navi</title>
     <link rel="stylesheet" href="/ring_navi/ring_navi.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&libraries=places"></script>
 </head>
 <body>
     <!-- ヘッダー -->
@@ -12,21 +13,32 @@
         <h1>Ring Navi</h1>
     </header>
 
-    <!-- ジャンル選択と検索ボタン -->
-    <div class="genre-select">
-        <label for="genre">ジャンルを選択：</label>
-        <select id="genre">
-            <option value="restaurant">レストラン</option>
-            <option value="cafe">カフェ</option>
-            <option value="park">公園</option>
-            <option value="museum">博物館</option>
-            <option value="hospital">病院</option>
-            <option value="school">学校</option>
-            <option value="atm">ATM</option>
-            <option value="hotel">ホテル</option>
-            <option value="gas_station">ガソリンスタンド</option>
-            <option value="shopping_mall">ショッピングモール</option>
-        </select>
+    <!-- ジャンル選択と検索範囲選択 -->
+    <div class="control-panel">
+        <div class="genre-select">
+            <label for="genre">ジャンルを選択：</label>
+            <select id="genre">
+                <option value="restaurant">レストラン</option>
+                <option value="cafe">カフェ</option>
+                <option value="park">公園</option>
+                <option value="museum">博物館</option>
+                <option value="hospital">病院</option>
+                <option value="school">学校</option>
+                <option value="atm">ATM</option>
+                <option value="hotel">ホテル</option>
+                <option value="gas_station">ガソリンスタンド</option>
+                <option value="shopping_mall">ショッピングモール</option>
+            </select>
+        </div>
+        <div class="range-select">
+            <label for="radius">検索範囲 (km):</label>
+            <select id="radius">
+                <option value="1000">1 km</option>
+                <option value="3000">3 km</option>
+                <option value="5000" selected>5 km</option>
+                <option value="10000">10 km</option>
+            </select>
+        </div>
         <button id="search-button">検索</button>
     </div>
 
@@ -37,7 +49,7 @@
     <div id="popup" class="hidden">
         <div class="popup-content">
             <span id="popup-close">&times;</span>
-            <iframe id="popup-map" width="100%" height="300" frameborder="0" style="border:0"></iframe>
+            <div id="map" style="width: 100%; height: 300px;"></div>
         </div>
     </div>
 
