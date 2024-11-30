@@ -23,6 +23,21 @@ async function getCurrentLocation() {
     });
 }
 
+// 距離を計算
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // 地球の半径 (km)
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * (Math.PI / 180)) *
+            Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
 // スポット情報の取得
 async function fetchNearbySpots(genre, radius) {
     try {
@@ -65,11 +80,25 @@ function displaySpots(spots) {
     spotList.innerHTML = '';
 
     spots.forEach(spot => {
+        const distance = calculateDistance(
+            userLatitude,
+            userLongitude,
+            spot.geometry.location.lat,
+            spot.geometry.location.lng
+        ).toFixed(2);
+
+        const rating = spot.rating || 0;
+        const totalRatings = spot.user_ratings_total || 0;
+        const stars = "★".repeat(Math.floor(rating)) + "☆".repeat(5 - Math.floor(rating));
+
         const listItem = document.createElement('div');
         listItem.className = 'spot-item';
         listItem.innerHTML = `
             <h3>${spot.name}</h3>
             <p>住所: ${spot.vicinity || "情報なし"}</p>
+            <p>距離: ${distance} km</p>
+            <p>評価: ${stars} (${rating} / 5, ${totalRatings}件)</p>
+            <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=YOUR_API_KEY` : '画像なし'}" alt="${spot.name}" />
             <button onclick="showRoutePopup(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">ルートを見る</button>
         `;
         spotList.appendChild(listItem);
@@ -110,7 +139,7 @@ function showRoutePopup(destLatitude, destLongitude) {
 document.getElementById('popup-close').addEventListener('click', () => {
     const popup = document.getElementById('popup');
     popup.classList.add('hidden');
-    document.getElementById('map').innerHTML = ''; // マップをクリア
+    document.getElementById('map').innerHTML = '';
 });
 
 // イベントリスナー
