@@ -110,8 +110,8 @@ main {
 /* 背景のグラデーション */
 .myring { background: linear-gradient(135deg, #30cfd0, #330867); }
 /* MYKEEPの背景色を変更して見やすく */
-.mykeep { 
-    background: linear-gradient(135deg, #ff7f50, #ff4500); /* 明るいコーラルとオレンジのグラデーション */
+.ringkeeper { 
+    background: linear-gradient(135deg, #e4c1ff, #1a1a1b); /* 明るいコーラルとオレンジのグラデーション */
 }
 .mymap { background: linear-gradient(135deg, #f9d423, #ff4e50); }
 .mygroup { background: linear-gradient(135deg, #f857a6, #ff5858); }
