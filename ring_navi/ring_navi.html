@@ -8,7 +8,6 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&libraries=places">
     </script>
-
 </head>
 <body>
     <!-- ヘッダー -->
@@ -21,16 +20,23 @@
         <div class="genre-select">
             <label for="genre">ジャンルを選択：</label>
             <select id="genre">
+                <!-- 自然・風景撮影に適した場所 -->
+                <option value="park">公園</option>
+                <option value="tourist_attraction">観光地</option>
+                <option value="natural_feature">自然景観</option>
+                <option value="garden">庭園</option>
+                <option value="campground">キャンプ場</option>
+                
+                <!-- 食事系 -->
                 <option value="restaurant">レストラン</option>
                 <option value="cafe">カフェ</option>
-                <option value="park">公園</option>
+
+                <!-- 名所・観光施設 -->
                 <option value="museum">博物館</option>
-                <option value="hospital">病院</option>
-                <option value="school">学校</option>
-                <option value="atm">ATM</option>
-                <option value="hotel">ホテル</option>
-                <option value="gas_station">ガソリンスタンド</option>
-                <option value="shopping_mall">ショッピングモール</option>
+                <option value="art_gallery">アートギャラリー</option>
+                <option value="landmark">ランドマーク</option>
+                <option value="zoo">動物園</option>
+                <option value="aquarium">水族館</option>
             </select>
         </div>
         <div class="range-select">
