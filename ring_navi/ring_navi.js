@@ -7,7 +7,7 @@ function loadGoogleMapsAPI(callback) {
         return;
     }
     const script = document.createElement('script');
-    script.src = "https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places";
+    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&libraries=places";
     script.async = true;
     script.defer = true;
     script.onload = callback;
@@ -117,35 +117,6 @@ async function startSearch() {
     }
 }
 
-// モーダル制御
-const modal = document.getElementById('modal');
-const modalBody = document.getElementById('modal-body');
-const closeModal = document.getElementById('close-modal');
-
-// モーダルを開く関数
-function showModal(spot) {
-    modalBody.innerHTML = `
-        <h3>${spot.name}</h3>
-        <p>住所: ${spot.vicinity || "情報なし"}</p>
-        <p>評価: ${spot.rating || "評価なし"} / 5 (${spot.user_ratings_total || 0}件)</p>
-        <p>営業時間: ${spot.opening_hours ? spot.opening_hours.weekday_text.join('<br>') : "情報なし"}</p>
-        <button onclick="openGoogleMapsRoute(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">
-            Googleマップでルートを見る
-        </button>
-    `;
-    modal.style.display = 'flex';
-}
-
-// モーダルを閉じる
-closeModal.addEventListener('click', () => {
-    modal.style.display = 'none';
-});
-window.addEventListener('click', (event) => {
-    if (event.target === modal) {
-        modal.style.display = 'none';
-    }
-});
-
 // スポット情報の表示
 function displaySpots(spots) {
     const spotList = document.getElementById('spot-list');
@@ -159,13 +130,19 @@ function displaySpots(spots) {
             spot.geometry.location.lng
         ).toFixed(2);
 
+        const rating = spot.rating || 0;
+        const totalRatings = spot.user_ratings_total || 0;
+        const stars = "★".repeat(Math.floor(rating)) + "☆".repeat(5 - Math.floor(rating));
+
         const listItem = document.createElement('div');
         listItem.className = 'spot-item';
         listItem.innerHTML = `
             <h3>${spot.name}</h3>
             <p>住所: ${spot.vicinity || "情報なし"}</p>
             <p>距離: ${distance} km</p>
-            <button onclick="showModal(${JSON.stringify(spot).replace(/"/g, '&quot;')})">詳細を見る</button>
+            <p>評価: ${stars} (${rating} / 5, ${totalRatings}件)</p>
+            <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8` : '画像なし'}" alt="${spot.name}" />
+            <button onclick="openGoogleMapsRoute(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">Googleマップでルートを見る</button>
         `;
         spotList.appendChild(listItem);
     });
@@ -174,7 +151,7 @@ function displaySpots(spots) {
 // Googleマップでルートを表示
 function openGoogleMapsRoute(destLatitude, destLongitude) {
     const url = `https://www.google.com/maps/dir/?api=1&origin=${userLatitude},${userLongitude}&destination=${destLatitude},${destLongitude}&travelmode=walking`;
-    window.open(url, '_blank'); // 新しいタブで開く
+    window.location.href = url; // 現在のタブで遷移
 }
 
 // 星をランダムに配置
