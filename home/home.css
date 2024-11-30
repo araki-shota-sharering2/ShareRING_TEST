@@ -109,7 +109,10 @@ main {
 
 /* 背景のグラデーション */
 .myring { background: linear-gradient(135deg, #30cfd0, #330867); }
-.mykeep { background: linear-gradient(135deg, #ff69b4, #ffb6c1); } /* 明るいピンク */
+/* MYKEEPの背景色を変更して見やすく */
+.mykeep { 
+    background: linear-gradient(135deg, #ff7f50, #ff4500); /* 明るいコーラルとオレンジのグラデーション */
+}
 .mymap { background: linear-gradient(135deg, #f9d423, #ff4e50); }
 .mygroup { background: linear-gradient(135deg, #f857a6, #ff5858); }
 .weather { background: linear-gradient(135deg, #1c92d2, #f2fcfe); }
@@ -133,14 +136,13 @@ main {
     width: 36px;
     height: 36px;
 }
-
-/* テキストの位置を調整 */
+/* メインコンテンツの文字の下線を削除 */
 .feature-box p {
     margin: 0;
     font-size: 12px;
     color: white;
-    text-transform: uppercase; /* 大文字にする */
-    text-decoration: none; /* アンダーラインを削除 */
+    text-transform: uppercase; /* 大文字に変換 */
+    text-decoration: none; /* 下線を削除 */
 }
 
 /* フッター */
