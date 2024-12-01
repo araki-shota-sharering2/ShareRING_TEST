@@ -8,11 +8,15 @@ let calories = 0;
 let isRunning = false;
 
 function initMap() {
-    const initialPosition = { lat: 35.681236, lng: 139.767125 };
+    const initialPosition = { lat: 35.681236, lng: 139.767125 }; // 初期位置（例: 東京駅）
+
+    // Google Mapsの初期化
     map = new google.maps.Map(document.getElementById("map"), {
         center: initialPosition,
         zoom: 15,
     });
+
+    // 現在地を示すマーカーを作成
     marker = new google.maps.Marker({
         position: initialPosition,
         map: map,
@@ -57,14 +61,13 @@ function startTracking() {
             (position) => {
                 const { latitude, longitude } = position.coords;
                 const currentPosition = { lat: latitude, lng: longitude };
+
+                // マップの中心を現在地に設定
                 map.setCenter(currentPosition);
                 marker.setPosition(currentPosition);
 
                 if (isRunning) {
-                    distance += calculateDistance(
-                        marker.getPosition(),
-                        currentPosition
-                    );
+                    distance += calculateDistance(marker.getPosition(), currentPosition);
                     calories = calculateCalories(distance);
                     updateStats();
                 }
