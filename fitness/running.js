@@ -91,11 +91,11 @@ function stopTracking() {
 
 function calculateDistance(prevPosition, currentPosition) {
     const R = 6371; // 地球の半径 (km)
-    const dLat = ((currentPosition.lat - prevPosition.lat) * Math.PI) / 180;
-    const dLng = ((currentPosition.lng - prevPosition.lng) * Math.PI) / 180;
+    const dLat = ((currentPosition.lat - prevPosition.lat()) * Math.PI) / 180;
+    const dLng = ((currentPosition.lng - prevPosition.lng()) * Math.PI) / 180;
     const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos((prevPosition.lat * Math.PI) / 180) *
+        Math.cos((prevPosition.lat() * Math.PI) / 180) *
             Math.cos((currentPosition.lat * Math.PI) / 180) *
             Math.sin(dLng / 2) * Math.sin(dLng / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
