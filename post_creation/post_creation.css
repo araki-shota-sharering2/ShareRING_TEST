@@ -1,22 +1,20 @@
-/* 全体のスタイル */
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #2c3e50, #34495e);
-    color: #fff;
-    margin: 0;
-    padding: 0;
+    max-width: 375px;
+    margin: 0 auto;
+    background-color: #0d0d2b; /* 夜空をイメージした濃い青色 */
+    position: relative;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    max-width: 375px; /* 横幅をスマホサイズに固定 */
-    width: 100%;
-    margin: 0 auto; /* 中央揃え */
-    overflow-x: hidden; /* 横スクロール防止 */
+    align-items: center;
+    height: 100vh;
+    color: #ccc;
+    overflow: hidden;
 }
 
 /* ヘッダーのスタイル */
 header {
-    background: #1c2833;
+    background: #4e5c94;
     color: white;
     width: 100%; /* 横幅をデバイス幅に固定 */
     max-width: 375px; /* 横幅をスマホサイズに固定 */
@@ -190,7 +188,7 @@ textarea {
 
 /* フッターのスタイル */
 footer {
-    background: #1c2833;
+    background: #4e5c94;
     color: white;
     width: 100%; /* 横幅をデバイス幅に固定 */
     max-width: 375px; /* 横幅をスマホサイズに固定 */
@@ -214,6 +212,14 @@ footer a {
     flex-direction: column;
     align-items: center;
 }
+/* フッターのアクティブ状態を示す */
+footer a.active {
+    background-color: #394575; /* 選択されたときの背景色 */
+    border-top: 3px solid #ffffff; /* 選択されたときの上部バー */
+    border-radius: 5px; /* アイコン周囲に少し丸みを追加 */
+    transition: background-color 0.3s ease, padding 0.3s ease; /* なめらかな変化を追加 */
+}
+
 
 footer img {
     width: 24px;
