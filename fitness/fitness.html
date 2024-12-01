@@ -1,37 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness Tracker</title>
+    <title>FITNESS - 健康情報管理</title>
     <link rel="stylesheet" href="fitness.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&libraries=places"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Fitness Tracker</h1>
-
-        <!-- ユーザー健康情報 -->
+        <h1>FITNESS</h1>
         <div id="health-info">
-            <form id="health-form">
-                <label for="height">Height (cm):</label>
-                <input type="number" id="height" name="height" step="0.1" placeholder="Enter height">
-
-                <label for="weight">Weight (kg):</label>
-                <input type="number" id="weight" name="weight" step="0.1" placeholder="Enter weight">
-
-                <button type="submit" id="save-health-info">Save</button>
-            </form>
+            <!-- 健康情報表示領域 -->
         </div>
-
-        <!-- Googleマップ表示 -->
-        <div id="map"></div>
-        <button id="calculate-button">Calculate Distance & Calories</button>
-
-        <!-- 結果表示 -->
-        <div id="result"></div>
+        <form id="health-form" class="hidden">
+            <label for="height">身長 (cm):</label>
+            <input type="number" id="height" name="height" step="0.1" required>
+            
+            <label for="weight">体重 (kg):</label>
+            <input type="number" id="weight" name="weight" step="0.1" required>
+            
+            <button type="submit">保存</button>
+        </form>
     </div>
-
     <script src="fitness.js"></script>
 </body>
 </html>
