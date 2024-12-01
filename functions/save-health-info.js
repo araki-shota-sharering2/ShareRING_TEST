@@ -2,6 +2,7 @@ export async function onRequestPost(context) {
     const { env, request } = context;
 
     try {
+        // リクエストボディをJSONとして取得
         const data = await request.json();
         const { height, weight } = data;
 
@@ -13,14 +14,13 @@ export async function onRequestPost(context) {
         const sessionId = cookies.session_id;
 
         if (!sessionId || !height || !weight) {
-            console.error("セッションIDまたは入力データが不足しています。");
             return new Response(JSON.stringify({ message: "セッションIDまたは入力データが不足しています。" }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' },
             });
         }
 
-        // セッション情報を取得
+        // セッションテーブルからユーザーIDを取得
         const session = await env.DB.prepare(
             "SELECT user_id FROM user_sessions WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP"
         )
@@ -28,7 +28,6 @@ export async function onRequestPost(context) {
             .first();
 
         if (!session) {
-            console.error("無効なセッションです。");
             return new Response(JSON.stringify({ message: "セッションが無効または期限切れです。" }), {
                 status: 401,
                 headers: { 'Content-Type': 'application/json' },
@@ -52,7 +51,7 @@ export async function onRequestPost(context) {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {
-        console.error("エラーが発生しました:", error);
+        console.error("エラー発生:", error);
         return new Response(JSON.stringify({ message: "保存中にエラーが発生しました。", error: error.message }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
