@@ -4,12 +4,49 @@ body {
   padding: 0;
   background: linear-gradient(135deg, #1c1c1c, #444);
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
+/* ヘッダー */
+header {
+  background-color: #394575;
+  color: white;
+  padding: 15px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#back-button {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#back-button:hover {
+  color: #cccccc;
+}
+
+/* メインコンテンツ */
 .container {
-  max-width: 90%; /* 横幅をデバイス幅の90%に調整 */
-  width: 360px; /* スマホサイズに固定 */
-  margin: 50px auto;
+  max-width: 90%;
+  width: 360px;
+  margin: 100px auto 80px; /* ヘッダーとフッターの分だけ余白を確保 */
   padding: 20px;
   background: #2c2c2c;
   border-radius: 8px;
@@ -82,56 +119,6 @@ button:hover {
   background: #43a047;
 }
 
-/* スマホサイズ専用の調整 */
-@media (max-width: 480px) {
-  h1 {
-    font-size: 20px;
-  }
-
-  p {
-    font-size: 13px;
-  }
-
-  input, button {
-    font-size: 14px;
-  }
-
-  .running-link {
-    font-size: 14px;
-    padding: 10px 15px;
-  }
-}
-/* ヘッダー */
-header {
-  background-color: #394575;
-  color: white;
-  padding: 15px;
-  width: 100%;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  font-weight: bold;
-}
-
-/* 戻るボタン */
-#back-button {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-#back-button:hover {
-  color: #cccccc;
-}
-
 /* フッター */
 footer {
   display: flex;
@@ -159,4 +146,24 @@ footer a {
 footer img {
   width: 25px;
   height: 25px;
+}
+
+/* スマホサイズ専用の調整 */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 13px;
+  }
+
+  input, button {
+    font-size: 14px;
+  }
+
+  .running-link {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
 }
