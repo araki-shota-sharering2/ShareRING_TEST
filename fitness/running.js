@@ -6,25 +6,22 @@ let startTime;
 let distance = 0;
 let calories = 0;
 let isRunning = false;
-let pathCoordinates = []; // ルートの座標を保持する配列
-let polyline; // Google Maps上のルート描画用
+let pathCoordinates = [];
+let polyline;
 
 function initMap() {
     const initialPosition = { lat: 35.681236, lng: 139.767125 }; // 初期位置（例: 東京駅）
 
-    // Google Mapsの初期化
     map = new google.maps.Map(document.getElementById("map"), {
         center: initialPosition,
         zoom: 15,
     });
 
-    // 現在地を示すマーカーを作成
     marker = new google.maps.Marker({
         position: initialPosition,
         map: map,
     });
 
-    // ルートを描画するためのPolylineを作成
     polyline = new google.maps.Polyline({
         path: pathCoordinates,
         geodesic: true,
@@ -64,6 +61,8 @@ function startTimer() {
             .padStart(2, "0")}:${minutes
             .toString()
             .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
+        if (isRunning) updateStats();
     }, 1000);
 }
 
@@ -74,11 +73,9 @@ function startTracking() {
                 const { latitude, longitude } = position.coords;
                 const currentPosition = { lat: latitude, lng: longitude };
 
-                // マップの中心を現在地に設定
                 map.setCenter(currentPosition);
                 marker.setPosition(currentPosition);
 
-                // ルートを記録してPolylineを更新
                 pathCoordinates.push(currentPosition);
                 polyline.setPath(pathCoordinates);
 
@@ -128,11 +125,29 @@ function calculateCalories(distance) {
     return Math.round(distance * weight * 1.036);
 }
 
+function calculateAveragePace() {
+    const elapsedTime = new Date() - startTime; // ミリ秒単位
+    const elapsedMinutes = elapsedTime / (1000 * 60); // 分単位に変換
+
+    if (distance > 0) {
+        const pace = elapsedMinutes / distance; // 分/km
+        const minutes = Math.floor(pace);
+        const seconds = Math.round((pace - minutes) * 60);
+        return `${minutes.toString().padStart(2, "0")}:${seconds
+            .toString()
+            .padStart(2, "0")}`;
+    } else {
+        return "00:00";
+    }
+}
+
 function updateStats() {
     document.querySelector(".stats .stat:nth-child(1) .value").textContent =
         distance.toFixed(2);
     document.querySelector(".stats .stat:nth-child(2) .value").textContent =
         calories;
+    document.querySelector(".stats .stat:nth-child(3) .value").textContent =
+        calculateAveragePace();
 }
 
 async function sendRunningData() {
@@ -140,7 +155,8 @@ async function sendRunningData() {
         duration: document.querySelector(".timer").textContent,
         distance,
         calories,
-        route: pathCoordinates, // ルートデータを含める
+        averagePace: calculateAveragePace(),
+        route: pathCoordinates,
     };
 
     try {
