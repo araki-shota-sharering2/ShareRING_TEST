@@ -8,38 +8,42 @@
     <script
         async
         defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&callback=initMap"
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
     ></script>
 </head>
 <body>
     <!-- ヘッダー -->
-    <header>
+    <header class="header">
         <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
+        <h1>ランニング</h1>
     </header>
 
-    <div class="container">
-        <div class="header">
-            <div class="timer">00:00:00</div>
-            <div class="stats">
-                <div class="stat">
-                    <span class="value">0.00</span>
-                    <span class="label">距離 (km)</span>
-                </div>
-                <div class="stat">
-                    <span class="value">0</span>
-                    <span class="label">カロリー (kcal)</span>
-                </div>
-                <div class="stat">
-                    <span class="value">00:00</span>
-                    <span class="label">平均ペース (min/km)</span>
-                </div>
+    <!-- 背景地図 -->
+    <div id="map"></div>
+
+    <!-- タイマーと統計情報 -->
+    <div class="stats-container">
+        <div class="timer">00:00:00</div>
+        <div class="stats">
+            <div class="stat">
+                <span class="value">0.00</span>
+                <span class="label">距離 (km)</span>
+            </div>
+            <div class="stat">
+                <span class="value">0</span>
+                <span class="label">カロリー (kcal)</span>
+            </div>
+            <div class="stat">
+                <span class="value">00:00</span>
+                <span class="label">平均ペース (min/km)</span>
             </div>
         </div>
-        <div class="map" id="map"></div>
-        <div class="controls">
-            <button id="start-button">スタート ランニング</button>
-            <button id="stop-button" disabled>ストップ</button>
-        </div>
+    </div>
+
+    <!-- スタート/ストップボタン -->
+    <div class="controls">
+        <button id="start-button">スタート ランニング</button>
+        <button id="stop-button" disabled>ストップ</button>
     </div>
 
     <!-- フッター -->
