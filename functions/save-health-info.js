@@ -2,11 +2,10 @@ export async function onRequestPost(context) {
     const { env, request } = context;
 
     try {
-        // リクエストボディをJSONとして取得
         const data = await request.json();
         const { height, weight } = data;
 
-        // セッションIDをクッキーから取得
+        // クッキーからセッションIDを取得
         const cookieHeader = request.headers.get("Cookie");
         const cookies = Object.fromEntries(
             cookieHeader.split("; ").map((c) => c.split("=").map(decodeURIComponent))
@@ -14,13 +13,14 @@ export async function onRequestPost(context) {
         const sessionId = cookies.session_id;
 
         if (!sessionId || !height || !weight) {
-            return new Response(JSON.stringify({ message: "セッションIDまたは身長・体重が不足しています。" }), {
+            console.error("セッションIDまたは入力データが不足しています。");
+            return new Response(JSON.stringify({ message: "セッションIDまたは入力データが不足しています。" }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' },
             });
         }
 
-        // セッションテーブルからユーザーIDを取得
+        // セッション情報を取得
         const session = await env.DB.prepare(
             "SELECT user_id FROM user_sessions WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP"
         )
@@ -28,6 +28,7 @@ export async function onRequestPost(context) {
             .first();
 
         if (!session) {
+            console.error("無効なセッションです。");
             return new Response(JSON.stringify({ message: "セッションが無効または期限切れです。" }), {
                 status: 401,
                 headers: { 'Content-Type': 'application/json' },
@@ -36,7 +37,7 @@ export async function onRequestPost(context) {
 
         const userId = session.user_id;
 
-        // 健康情報を保存（既存データがあれば更新）
+        // 健康情報をデータベースに保存
         await env.DB.prepare(
             `INSERT INTO user_health_info (user_id, height, weight, updated_at)
              VALUES (?, ?, ?, CURRENT_TIMESTAMP)
@@ -51,7 +52,7 @@ export async function onRequestPost(context) {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {
-        console.error("エラー:", error);
+        console.error("エラーが発生しました:", error);
         return new Response(JSON.stringify({ message: "保存中にエラーが発生しました。", error: error.message }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
