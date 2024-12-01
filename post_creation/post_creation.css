@@ -8,9 +8,10 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    max-width: 375px;
-    margin: 0 auto;
-    overflow-x: hidden;
+    max-width: 375px; /* 横幅をスマホサイズに固定 */
+    width: 100%;
+    margin: 0 auto; /* 中央揃え */
+    overflow-x: hidden; /* 横スクロール防止 */
 }
 
 /* ヘッダーのスタイル */
@@ -59,6 +60,8 @@ main {
     margin-top: 70px; /* ヘッダーの高さ分 */
     margin-bottom: 70px; /* フッターの高さ分 */
     padding: 1rem;
+    width: 100%; /* 横幅固定 */
+    box-sizing: border-box; /* パディングを含めた幅計算 */
 }
 
 /* プレビューコンテナ */
@@ -187,10 +190,12 @@ textarea {
 footer {
     background: #1c2833;
     color: white;
-    width: 100%;
+    width: 100%; /* 横幅をデバイス幅に固定 */
+    max-width: 375px; /* 横幅をスマホサイズに固定 */
     position: fixed;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%); /* 中央揃え */
     z-index: 1000;
     display: flex;
     justify-content: space-around;
@@ -217,7 +222,7 @@ footer img {
 /* 横向きデバイス対応 */
 @media (orientation: landscape) {
     body {
-        max-width: 100%;
-        overflow-x: hidden;
+        max-width: 375px; /* 横幅をスマホサイズ固定 */
+        overflow-x: hidden; /* 横スクロール防止 */
     }
 }
