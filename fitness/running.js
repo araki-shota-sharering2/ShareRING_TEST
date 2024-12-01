@@ -47,7 +47,13 @@ document.getElementById("stop-button").addEventListener("click", async () => {
     stopTracking();
     document.getElementById("start-button").disabled = false;
     document.getElementById("stop-button").disabled = true;
-    await sendRunningData();
+
+    // ポップアップを表示
+    alert("運動お疲れさまでした！今の風景をみんなにシェアしましょう！");
+
+    // データをリセットして遷移
+    resetStats();
+    window.location.href = "/post_creation/post_creation.html";
 });
 
 function startTimer() {
@@ -107,6 +113,17 @@ function stopTracking() {
     }
 }
 
+function resetStats() {
+    distance = 0;
+    calories = 0;
+    pathCoordinates = [];
+    if (polyline) polyline.setPath([]);
+    document.querySelector(".timer").textContent = "00:00:00";
+    document.querySelector(".stats .stat:nth-child(1) .value").textContent = "0.00";
+    document.querySelector(".stats .stat:nth-child(2) .value").textContent = "0";
+    document.querySelector(".stats .stat:nth-child(3) .value").textContent = "00:00";
+}
+
 function calculateDistance(prevPosition, currentPosition) {
     const R = 6371; // 地球の半径 (km)
     const dLat = ((currentPosition.lat - prevPosition.lat) * Math.PI) / 180;
@@ -148,33 +165,4 @@ function updateStats() {
         calories;
     document.querySelector(".stats .stat:nth-child(3) .value").textContent =
         calculateAveragePace();
-}
-
-async function sendRunningData() {
-    const data = {
-        duration: document.querySelector(".timer").textContent,
-        distance,
-        calories,
-        averagePace: calculateAveragePace(),
-        route: pathCoordinates,
-    };
-
-    try {
-        const response = await fetch("/save-running-data", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-            alert("ランニングデータが保存されました！");
-        } else {
-            alert("データ保存に失敗しました。");
-        }
-    } catch (error) {
-        console.error("データ送信エラー:", error);
-        alert("データ送信中にエラーが発生しました。");
-    }
 }
