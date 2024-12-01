@@ -1,7 +1,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    color: #f5f5f5;
 }
 
 .container {
@@ -9,23 +10,36 @@ body {
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
+    padding: 20px;
+    background: #2c2c2c;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .header {
     padding: 20px;
-    background-color: #4e5c94;
-    color: #fff;
+    background-color: #1f1f1f;
+    color: #ffce00;
+    font-weight: bold;
+    font-size: 24px;
+    border-bottom: 2px solid #444;
 }
 
 .timer {
     font-size: 36px;
     font-weight: bold;
+    color: #ffce00;
+    margin-top: 20px;
 }
 
 .stats {
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+    background: #3b3b3b;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .stat {
@@ -33,21 +47,24 @@ body {
 }
 
 .stat .value {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
+    color: #fff;
 }
 
 .stat .label {
     font-size: 12px;
-    color: #ddd;
+    color: #aaa;
 }
 
 .map {
     height: 300px;
     width: 100%;
-    border: 1px solid #ccc;
-    margin-top: 10px;
+    border: 1px solid #444;
+    margin-top: 20px;
     border-radius: 8px;
+    background: #1a1a1a;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .controls {
@@ -56,29 +73,66 @@ body {
 
 button {
     padding: 10px 20px;
-    font-size: 14px;
+    font-size: 16px;
     margin: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #start-button {
     background-color: #28a745;
-    color: white;
+    color: #fff;
+}
+
+#start-button:hover {
+    background-color: #23993d;
+    transform: scale(1.05);
 }
 
 #start-button:disabled {
-    background-color: #a5d6a7;
+    background-color: #444;
     cursor: not-allowed;
 }
 
 #stop-button {
     background-color: #dc3545;
-    color: white;
+    color: #fff;
+}
+
+#stop-button:hover {
+    background-color: #b52d3a;
+    transform: scale(1.05);
 }
 
 #stop-button:disabled {
-    background-color: #f5b7b1;
+    background-color: #444;
     cursor: not-allowed;
+}
+
+/* スマホサイズ調整 */
+@media (max-width: 480px) {
+    .header {
+        font-size: 20px;
+        padding: 15px;
+    }
+
+    .timer {
+        font-size: 28px;
+    }
+
+    .stat .value {
+        font-size: 18px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+
+    .map {
+        height: 200px;
+    }
 }
