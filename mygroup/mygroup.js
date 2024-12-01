@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // グループ一覧を取得して表示
     async function fetchGroups() {
         try {
-            const response = await fetch("/functions/list-groups");
+            const response = await fetch("/list-groups");
             const groups = await response.json();
             groupsContainer.innerHTML = "";
             groups.forEach(group => {
