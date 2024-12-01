@@ -18,12 +18,14 @@ body {
 header {
     background: #1c2833;
     color: white;
-    width: 100%;
+    width: 100%; /* 横幅をデバイス幅に固定 */
+    max-width: 375px; /* 横幅をスマホサイズに固定 */
     padding: 1rem;
     text-align: center;
     position: fixed;
     top: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%); /* 中央揃え */
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -34,7 +36,7 @@ header {
     align-items: center;
 }
 
-header h1 {
+header h3 {
     margin: 0;
     font-size: 1.4rem;
     max-width: 80%;
