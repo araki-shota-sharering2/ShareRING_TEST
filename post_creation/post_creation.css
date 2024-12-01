@@ -1,7 +1,7 @@
 /* 全体のスタイル */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+    background: linear-gradient(135deg, #f5f7fa, #e4e8ed);
     color: #333;
     display: flex;
     flex-direction: column;
@@ -16,12 +16,13 @@ body {
 
 /* ヘッダーのスタイル */
 header {
-    background-color: #4e5c94;
+    background: linear-gradient(135deg, #4e5c94, #3a477e);
     color: white;
     width: 100%;
     padding: 1rem;
     text-align: center;
     position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header-content {
@@ -32,7 +33,7 @@ header {
 
 header h1 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     max-width: 80%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -44,8 +45,8 @@ header h1 {
 
 /* 変更アイコンのスタイル */
 #changeLocationIcon {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
     vertical-align: middle;
 }
@@ -57,7 +58,7 @@ header h1 {
     align-items: center;
     flex: 1;
     width: 100%;
-    padding: 1rem;
+    padding: 1.5rem;
 }
 
 /* RINGと色選択の横並び */
@@ -78,6 +79,7 @@ header h1 {
     height: 160px;
     border: 5px solid #4e5c94;
     position: relative;
+    transition: border-color 0.3s;
 }
 
 /* 「写真を撮影する」ボタン */
@@ -87,7 +89,7 @@ header h1 {
     background-color: #4e5c94;
     border: none;
     border-radius: 50px;
-    padding: 10px 20px;
+    padding: 12px 24px;
     font-size: 1rem;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -126,6 +128,8 @@ header h1 {
 
 .color-selection label {
     margin-right: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
 }
 
 /* テキストエリア */
@@ -138,6 +142,7 @@ textarea {
     border-radius: 5px;
     font-size: 1rem;
     resize: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* シェアボタン */
@@ -147,7 +152,7 @@ textarea {
     padding: 12px;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(135deg, #ff7e5f, #feb47b, #ff7e5f);
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
     border: none;
     border-radius: 50px;
     cursor: pointer;
@@ -157,13 +162,13 @@ textarea {
 }
 
 #shareButton:hover {
-    background: linear-gradient(135deg, #ff9a8b, #ff6a88, #ff99ac);
+    background: linear-gradient(135deg, #ff9a8b, #ff6a88);
     transform: translateY(-3px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 #shareButton:active {
-    background: linear-gradient(135deg, #ff6a88, #ff99ac, #ff9a8b);
+    background: linear-gradient(135deg, #ff6a88, #ff99ac);
     transform: translateY(1px);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
@@ -173,8 +178,8 @@ footer {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 8px;
-    background-color: #4e5c94;
+    padding: 10px;
+    background: linear-gradient(135deg, #4e5c94, #3a477e);
     position: fixed;
     bottom: 0;
     width: 100%;

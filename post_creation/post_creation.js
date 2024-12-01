@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setupShareButton();
 });
 
-
-
 function displayLocationWithIcon() {
     const locationData = JSON.parse(localStorage.getItem("selectedLocation"));
     const locationNameElement = document.getElementById("locationName");
@@ -87,13 +85,12 @@ function setupShareButton() {
                 body: formData,
             });
 
-            const result = await response.json();
             if (response.ok) {
                 alert("投稿が完了しました！");
                 localStorage.clear();
                 window.location.href = "/post_viewing/post_viewing.html";
             } else {
-                alert("投稿に失敗しました: " + result.message);
+                alert("投稿に失敗しました");
             }
         } catch (error) {
             console.error("投稿エラー:", error);
