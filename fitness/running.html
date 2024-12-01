@@ -12,6 +12,12 @@
     ></script>
 </head>
 <body>
+    <!-- ヘッダー -->
+    <header>
+        <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
+        ランニングモード
+    </header>
+
     <div class="container">
         <div class="header">
             <div class="timer">00:00:00</div>
@@ -36,6 +42,16 @@
             <button id="stop-button" disabled>ストップ</button>
         </div>
     </div>
+
+    <!-- フッター -->
+    <footer>
+        <a href="/home/home.html"><img src="/assets/images/footer/home.svg" alt="Home"></a>
+        <a href="/post_viewing/post_viewing.html"><img src="/assets/images/footer/post_viewing.svg" alt="View"></a>
+        <a href="/post_creation/search_place.html"><img src="/assets/images/footer/post_creation.svg" alt="Create"></a>
+        <a href="/ring_navi/ring_navi.html"><img src="/assets/images/footer/ring_navi.svg" alt="AI"></a>
+        <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="Achievements"></a>
+    </footer>
+
     <script src="running.js"></script>
 </body>
 </html>

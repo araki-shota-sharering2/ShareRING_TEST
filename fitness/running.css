@@ -3,13 +3,16 @@ body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #1a1a1a, #333);
     color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
     text-align: center;
-    width: 100%;
+    width: 90%;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 80px auto 60px; /* ヘッダーとフッター分の余白を確保 */
     padding: 20px;
     background: #2c2c2c;
     border-radius: 8px;
@@ -17,12 +20,19 @@ body {
 }
 
 .header {
-    padding: 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    max-width: 500px;
     background-color: #1f1f1f;
     color: #ffce00;
     font-weight: bold;
     font-size: 24px;
+    text-align: center;
+    padding: 15px;
+    z-index: 1000;
     border-bottom: 2px solid #444;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .timer {
@@ -112,11 +122,42 @@ button {
     cursor: not-allowed;
 }
 
+/* フッター */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 500px;
+    background-color: #1f1f1f;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    border-top: 2px solid #444;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+}
+
+footer a {
+    color: #f5f5f5;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+footer img {
+    width: 25px;
+    height: 25px;
+}
+
 /* スマホサイズ調整 */
 @media (max-width: 480px) {
     .header {
         font-size: 20px;
-        padding: 15px;
+        padding: 10px;
     }
 
     .timer {
@@ -134,5 +175,14 @@ button {
 
     .map {
         height: 200px;
+    }
+
+    footer a {
+        font-size: 12px;
+    }
+
+    footer img {
+        width: 20px;
+        height: 20px;
     }
 }

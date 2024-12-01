@@ -49,14 +49,9 @@ document.getElementById("stop-button").addEventListener("click", async () => {
     document.getElementById("stop-button").disabled = true;
 
     try {
-        // ランニングデータをDBに保存
         const success = await saveRunningData();
-
         if (success) {
-            // 保存成功時にポップアップを表示
             alert("運動お疲れさまでした！今の風景をみんなにシェアしましょう！");
-
-            // データをリセットして遷移
             resetStats();
             window.location.href = "/post_creation/search_place.html";
         } else {
