@@ -1,40 +1,84 @@
-document.getElementById('groupForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+    const createGroupBtn = document.getElementById("create-group-btn");
+    const groupList = document.getElementById("group-list");
+    const groupsContainer = document.getElementById("groups-container");
+    const groupPostsSection = document.getElementById("group-posts");
+    const postsContainer = document.getElementById("posts-container");
+    const backToGroupsBtn = document.getElementById("back-to-groups-btn");
+    const groupNameHeader = document.getElementById("group-name");
 
-    const formData = new FormData(event.target);
-
-    try {
-        const response = await fetch('/group-create', {
-            method: 'POST',
-            body: formData,
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            alert('グループ作成が成功しました！');
-            loadGroups();
-        } else {
-            alert('グループ作成に失敗しました: ' + result.message);
+    // グループ一覧を取得して表示
+    async function fetchGroups() {
+        try {
+            const response = await fetch("/functions/list-groups");
+            const groups = await response.json();
+            groupsContainer.innerHTML = "";
+            groups.forEach(group => {
+                const li = document.createElement("li");
+                li.textContent = group.group_name;
+                li.dataset.groupId = group.group_id;
+                li.addEventListener("click", () => showGroupPosts(group));
+                groupsContainer.appendChild(li);
+            });
+        } catch (error) {
+            console.error("Failed to fetch groups:", error);
         }
-    } catch (error) {
-        console.error('エラー:', error);
-        alert('グループ作成中にエラーが発生しました。');
     }
+
+    // グループの投稿を表示
+    async function showGroupPosts(group) {
+        try {
+            const response = await fetch(`/group-posts?group_id=${group.group_id}`);
+            const posts = await response.json();
+            postsContainer.innerHTML = "";
+            posts.forEach(post => {
+                const div = document.createElement("div");
+                div.textContent = post.caption || "No caption";
+                postsContainer.appendChild(div);
+            });
+            groupNameHeader.textContent = group.group_name;
+            groupList.classList.add("hidden");
+            groupPostsSection.classList.remove("hidden");
+        } catch (error) {
+            console.error("Failed to fetch group posts:", error);
+        }
+    }
+
+    // グループ作成ボタンのクリックイベント
+    createGroupBtn.addEventListener("click", () => {
+        const groupName = prompt("Enter group name:");
+        if (groupName) {
+            createGroup(groupName);
+        }
+    });
+
+    // グループを作成
+    async function createGroup(name) {
+        try {
+            const response = await fetch("/create-group", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ group_name: name }),
+            });
+            if (response.ok) {
+                alert("Group created successfully!");
+                fetchGroups();
+            } else {
+                throw new Error("Failed to create group");
+            }
+        } catch (error) {
+            console.error("Error creating group:", error);
+        }
+    }
+
+    // グループ一覧に戻る
+    backToGroupsBtn.addEventListener("click", () => {
+        groupPostsSection.classList.add("hidden");
+        groupList.classList.remove("hidden");
+    });
+
+    // 初期化
+    fetchGroups();
 });
-
-async function loadGroups() {
-    const response = await fetch('/group-list');
-    const groups = await response.json();
-
-    const groupsContainer = document.getElementById('groups');
-    groupsContainer.innerHTML = groups.map(group => `
-        <div class="group-card">
-            <h3>${group.group_name}</h3>
-            <p>${group.description}</p>
-            <img src="${group.group_image_url}" alt="${group.group_name}" width="100%">
-        </div>
-    `).join('');
-}
-
-loadGroups();

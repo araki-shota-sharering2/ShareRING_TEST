@@ -1,35 +1,34 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyGroup</title>
+    <title>My Groups</title>
     <link rel="stylesheet" href="mygroup.css">
 </head>
 <body>
-    <div class="container">
-        <h1>MyGroup</h1>
-        <section id="create-group">
-            <h2>グループ作成</h2>
-            <form id="groupForm" enctype="multipart/form-data">
-                <label for="groupName">グループ名:</label>
-                <input type="text" id="groupName" name="groupName" required>
-
-                <label for="groupDescription">グループの説明:</label>
-                <textarea id="groupDescription" name="groupDescription"></textarea>
-
-                <label for="groupImage">グループ画像:</label>
-                <input type="file" id="groupImage" name="groupImage" accept="image/*" required>
-
-                <button type="submit">グループ作成</button>
-            </form>
-        </section>
-
+    <header>
+        <h1>My Groups</h1>
+        <button id="create-group-btn">Create Group</button>
+    </header>
+    <main>
         <section id="group-list">
-            <h2>参加中のグループ</h2>
-            <div id="groups"></div>
+            <h2>Joined Groups</h2>
+            <ul id="groups-container">
+                <!-- グループ一覧がここに動的に表示されます -->
+            </ul>
         </section>
-    </div>
+        <section id="group-posts" class="hidden">
+            <h2 id="group-name"></h2>
+            <div id="posts-container">
+                <!-- 選択されたグループの投稿がここに表示されます -->
+            </div>
+            <button id="back-to-groups-btn">Back to Groups</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 ShareRING</p>
+    </footer>
     <script src="mygroup.js"></script>
 </body>
 </html>
