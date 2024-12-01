@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康情報の入力</title>
     <link rel="stylesheet" href="fitness.css">
-    <title>FITNESS - 身長&体重入力</title>
 </head>
 <body>
     <div class="container">
-        <h1>計測を始めましょう！</h1>
-        <p>運動での消費カロリー量計算をできるだけ正確に行うため、身長と体重を入力してください。</p>
+        <h1>身長と体重を入力</h1>
+        <p>正確な消費カロリー計算のため、以下に身長と体重を入力してください。</p>
         <form id="health-form">
             <div class="input-group">
-                <label for="height">身長 (cm)</label>
+                <label for="height">身長 (cm):</label>
                 <input type="number" id="height" placeholder="例: 170" required>
             </div>
             <div class="input-group">
-                <label for="weight">体重 (kg)</label>
+                <label for="weight">体重 (kg):</label>
                 <input type="number" id="weight" placeholder="例: 60" required>
             </div>
-            <button type="submit">続行</button>
+            <button type="submit">保存</button>
         </form>
+        <p id="response-message"></p>
     </div>
     <script src="fitness.js"></script>
 </body>

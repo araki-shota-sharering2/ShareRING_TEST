@@ -2,58 +2,55 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: #f9f9f9;
 }
 
 .container {
-  max-width: 600px;
+  max-width: 500px;
   margin: 50px auto;
   padding: 20px;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   font-size: 24px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 p {
-  font-size: 16px;
-  margin-bottom: 20px;
+  font-size: 14px;
   color: #666;
 }
 
 .input-group {
   margin-bottom: 15px;
-  text-align: left;
 }
 
 label {
   display: block;
   font-size: 14px;
   margin-bottom: 5px;
-  color: #333;
 }
 
 input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 button {
-  padding: 10px 20px;
+  width: 100%;
+  padding: 10px;
   background-color: #28a745;
-  color: #fff;
+  color: white;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 4px;
   font-size: 16px;
+  cursor: pointer;
 }
 
 button:hover {
