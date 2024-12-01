@@ -1,76 +1,31 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShareRING</title>
+    <title>Fitness Tracker</title>
     <link rel="stylesheet" href="fitness.css">
- 
-    <!-- ファビコン -->
-    <link rel="icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
-    <link rel="apple-touch-icon" href="/assets/images/favicon/apple-touch-icon.png">
-    <link rel="manifest" href="/assets/images/favicon/site.webmanifest">
-    <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/favicon/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/assets/images/favicon/android-chrome-512x512.png">
-    <script>
-    function initMap() {
-      const mapOptions = {
-        center: { lat: 35.6895, lng: 139.6917 }, // 東京の初期位置
-        zoom: 15
-      };
-      const map = new google.maps.Map(document.getElementById("map"),mapOptions);
-    }
-      </script>
 </head>
 <body>
-    <!-- ヘッダー -->
-    <header>
-        <div class="header-logo"><img src="../assets/images/header/sharering_logo.svg" alt="logo"></div>
-        <div class="header-icons">
-            <a href="/notice/notice.html"><img src="../assets/images/header/notifications.svg" alt="Notifications"></a>
-            <a href="/mypage/mypage.html"><img src="../assets/images/header/my_page.svg" alt="My Page"></a>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&callback=initMap"  async defer></script>
-        </div>
-    </header>
- 
     <div class="container">
         <h1>Fitness Tracker</h1>
-       
-        <div class="user-info">
-          <label>身長 (cm): <input type="number" id="height"></label><br>
-          <label>体重 (kg): <input type="number" id="weight"></label>
-          <button id="bmiButton">BMI計算</button>
-          <p id="bmiResult">BMI: </p>
-        </div>
-   
-        <div class="exercise-info">
-          <label>運動:
-            <select id="exerciseType">
-              <option value="running">ランニング</option>
-              <option value="walking">ウォーキング</option>
+        <form id="fitness-form">
+            <label for="destination">Destination:</label>
+            <input type="text" id="destination" name="destination" placeholder="Enter destination" required>
+            
+            <label for="distance">Distance (km):</label>
+            <input type="number" id="distance" name="distance" step="0.1" required>
+            
+            <label for="activity-type">Activity Type:</label>
+            <select id="activity-type" name="activity-type" required>
+                <option value="running">Running</option>
+                <option value="walking">Walking</option>
             </select>
-          </label><br>
-          <label>時間 (分): <input type="number" id="exerciseTime"></label>
-          <button id="caloriesButton">消費カロリーを計算</button>
-          <p id="caloriesResult">消費カロリー: </p>
-        </div>
- 
-        <div id="map" style="height: 300px; width: 100%;"></div>
-      </div>
-    <!-- フッター -->
-    <footer>
-        <a href="/home/home.html"><img src="../assets/images/footer/home.svg" alt="Home"></a>
-        <a href="/post_viewing/post_viewing.html"><img src="../assets/images/footer/post_viewing.svg" alt="View"></a>
-        <a href="/post_creation/search_place.html"><img src="../assets/images/footer/post_creation.svg" alt="Create"></a>
-        <a href="/ring_navi/ring_navi.html"><img src="../assets/images/footer/ring_navi.svg" alt="AI"></a>
-        <a href="/achievements/achievements.html"><img src="../assets/images/footer/achievements.svg" alt="Achievements"></a>
-    </footer>
-    <pre id="fitness-data"></pre>
-    <script src="../assets/js/auth.js"></script>
-    <script type="module" src="../functions/handler.js"></script>
+            
+            <button type="submit">Calculate Calories</button>
+        </form>
+        <div id="result"></div>
+    </div>
     <script src="fitness.js"></script>
 </body>
 </html>
- 
