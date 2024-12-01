@@ -7,7 +7,8 @@ body {
 }
 
 .container {
-  max-width: 500px;
+  max-width: 90%; /* 横幅をデバイス幅の90%に調整 */
+  width: 360px; /* スマホサイズに固定 */
   margin: 50px auto;
   padding: 20px;
   background: #2c2c2c;
@@ -79,4 +80,83 @@ button:hover {
 
 .running-link:hover {
   background: #43a047;
+}
+
+/* スマホサイズ専用の調整 */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 13px;
+  }
+
+  input, button {
+    font-size: 14px;
+  }
+
+  .running-link {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}
+/* ヘッダー */
+header {
+  background-color: #394575;
+  color: white;
+  padding: 15px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-weight: bold;
+}
+
+/* 戻るボタン */
+#back-button {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#back-button:hover {
+  color: #cccccc;
+}
+
+/* フッター */
+footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px;
+  background-color: #4e5c94;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 375px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+footer a {
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+}
+
+footer img {
+  width: 25px;
+  height: 25px;
 }
