@@ -2,11 +2,9 @@ export async function onRequestPost(context) {
     const { env, request } = context;
 
     try {
-        // リクエストボディをJSONとして取得
         const data = await request.json();
         const { height, weight } = data;
 
-        // クッキーからセッションIDを取得
         const cookieHeader = request.headers.get("Cookie");
         const cookies = Object.fromEntries(
             cookieHeader.split("; ").map((c) => c.split("=").map(decodeURIComponent))
@@ -20,7 +18,6 @@ export async function onRequestPost(context) {
             });
         }
 
-        // セッションテーブルからユーザーIDを取得
         const session = await env.DB.prepare(
             "SELECT user_id FROM user_sessions WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP"
         )
