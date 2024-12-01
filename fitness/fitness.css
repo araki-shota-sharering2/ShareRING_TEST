@@ -4,6 +4,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 /* 星のスタイル */
 .star {
   position: absolute;
@@ -15,16 +16,16 @@
   opacity: 0.5;
 }
 
-
 /* 星の輝きアニメーション */
 @keyframes twinkle {
   0% {
-      opacity: 0.3;
+    opacity: 0.3;
   }
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
+
 body {
   font-family: Arial, sans-serif;
   margin: 0 auto;
@@ -35,6 +36,19 @@ body {
   flex-direction: column;
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* 星の背景 */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('stars.svg') repeat;
+  z-index: -1;
 }
 
 /* ヘッダー */
@@ -130,98 +144,6 @@ button:hover {
   background-color: #e5b800;
 }
 
-.link-container {
-  margin-top: 20px;
-}
-
-.running-link {
-  display: inline-block;
-  padding: 10px 20px;
-  background: #4caf50;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 4px;
-}
-
-.running-link:hover {
-  background: #43a047;
-}
-
-/* タイムライン */
-.timeline {
-  padding: 10px;
-  overflow-y: auto;
-  height: calc(100vh - 140px); /* ヘッダーとフッターの高さを差し引く */
-  width: 100%;
-  box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* タイムラインアイテム */
-.timeline-item {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 20px;
-  position: relative;
-  padding-bottom: 10px;
-}
-
-.timeline-marker {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 4px solid #cccccc;
-  overflow: hidden;
-  margin-right: 15px;
-  background-color: #fff;
-}
-
-.timeline-content {
-  flex: 1;
-  border-left: 2px solid #555;
-  padding-left: 10px;
-}
-
-.timeline-title {
-  font-weight: bold;
-  font-size: 14px;
-  color: #fff;
-}
-
-.timeline-address,
-.timeline-date {
-  font-size: 12px;
-  color: #aaa;
-  margin-top: 4px;
-}
-
-/* モーダル */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 90%;
-  width: 350px;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
 /* フッター */
 footer {
   display: flex;
@@ -254,19 +176,15 @@ footer img {
 /* スマホサイズ専用の調整 */
 @media (max-width: 480px) {
   h1 {
-      font-size: 20px;
+    font-size: 20px;
   }
 
   p {
-      font-size: 13px;
+    font-size: 13px;
   }
 
-  input, button {
-      font-size: 14px;
-  }
-
-  .running-link {
-      font-size: 14px;
-      padding: 10px 15px;
+  input,
+  button {
+    font-size: 14px;
   }
 }
