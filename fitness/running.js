@@ -6,6 +6,8 @@ let startTime;
 let distance = 0;
 let calories = 0;
 let isRunning = false;
+let pathCoordinates = []; // ルートの座標を保持する配列
+let polyline; // Google Maps上のルート描画用
 
 function initMap() {
     const initialPosition = { lat: 35.681236, lng: 139.767125 }; // 初期位置（例: 東京駅）
@@ -21,6 +23,16 @@ function initMap() {
         position: initialPosition,
         map: map,
     });
+
+    // ルートを描画するためのPolylineを作成
+    polyline = new google.maps.Polyline({
+        path: pathCoordinates,
+        geodesic: true,
+        strokeColor: "#FF0000",
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+    });
+    polyline.setMap(map);
 }
 
 document.getElementById("start-button").addEventListener("click", () => {
@@ -66,8 +78,14 @@ function startTracking() {
                 map.setCenter(currentPosition);
                 marker.setPosition(currentPosition);
 
-                if (isRunning) {
-                    distance += calculateDistance(marker.getPosition(), currentPosition);
+                // ルートを記録してPolylineを更新
+                pathCoordinates.push(currentPosition);
+                polyline.setPath(pathCoordinates);
+
+                if (isRunning && pathCoordinates.length > 1) {
+                    const previousPosition =
+                        pathCoordinates[pathCoordinates.length - 2];
+                    distance += calculateDistance(previousPosition, currentPosition);
                     calories = calculateCalories(distance);
                     updateStats();
                 }
@@ -94,15 +112,15 @@ function stopTracking() {
 
 function calculateDistance(prevPosition, currentPosition) {
     const R = 6371; // 地球の半径 (km)
-    const dLat = ((currentPosition.lat - prevPosition.lat()) * Math.PI) / 180;
-    const dLng = ((currentPosition.lng - prevPosition.lng()) * Math.PI) / 180;
+    const dLat = ((currentPosition.lat - prevPosition.lat) * Math.PI) / 180;
+    const dLng = ((currentPosition.lng - prevPosition.lng) * Math.PI) / 180;
     const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos((prevPosition.lat() * Math.PI) / 180) *
+        Math.cos((prevPosition.lat * Math.PI) / 180) *
             Math.cos((currentPosition.lat * Math.PI) / 180) *
             Math.sin(dLng / 2) * Math.sin(dLng / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+    return R * c; // 距離 (km)
 }
 
 function calculateCalories(distance) {
@@ -122,6 +140,7 @@ async function sendRunningData() {
         duration: document.querySelector(".timer").textContent,
         distance,
         calories,
+        route: pathCoordinates, // ルートデータを含める
     };
 
     try {
