@@ -53,7 +53,7 @@ document.getElementById("stop-button").addEventListener("click", async () => {
 
     // データをリセットして遷移
     resetStats();
-    window.location.href = "/post_creation/post_creation.html";
+    window.location.href = "/post_creation/search_place.html";
 });
 
 function startTimer() {
