@@ -4,10 +4,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // サーバーから健康情報を取得
   fetch("/get_health_info")
-      .then(response => response.json())
+      .then(response => {
+          if (!response.ok) {
+              throw new Error("Failed to fetch health info");
+          }
+          return response.json();
+      })
       .then(data => {
           if (data.height && data.weight) {
-              // 健康情報が存在する場合の表示
               healthInfoDiv.innerHTML = `
                   <p>身長: ${data.height} cm</p>
                   <p>体重: ${data.weight} kg</p>
@@ -21,10 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
                   document.getElementById("weight").value = data.weight;
               });
           } else {
-              // 健康情報が存在しない場合
               healthInfoDiv.innerHTML = "<p>健康情報が未登録です。</p>";
               healthForm.classList.remove("hidden");
           }
+      })
+      .catch(error => {
+          console.error("Error fetching health info:", error);
       });
 
   // 健康情報を保存
@@ -38,7 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ height, weight }),
       })
-          .then(response => response.json())
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error("Failed to save health info");
+              }
+              return response.json();
+          })
           .then(data => {
               if (data.success) {
                   alert("健康情報を保存しました！");
@@ -46,6 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
               } else {
                   alert("保存に失敗しました。");
               }
+          })
+          .catch(error => {
+              console.error("Error saving health info:", error);
           });
   });
 });
