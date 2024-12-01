@@ -10,17 +10,6 @@ body {
     overflow: hidden;
 }
 
-.container {
-    text-align: center;
-    width: 90%;
-    max-width: 375px; /* スマホサイズに固定 */
-    margin: 100px auto 80px; /* ヘッダーとフッター分の余白を確保 */
-    padding: 20px;
-    background: #2c2c2c;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
 .header {
     position: fixed;
     top: 0;
@@ -37,11 +26,23 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+.container {
+    text-align: center;
+    width: 90%;
+    max-width: 375px; /* スマホサイズに固定 */
+    margin: calc(15px + 15px + 10px) auto 80px; /* ヘッダー高さを考慮して調整 */
+    padding: 20px;
+    background: #2c2c2c;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* その他の要素 */
 .timer {
     font-size: 36px;
     font-weight: bold;
     color: #ffce00;
-    margin: 20px 0;
+    margin-top: 20px;
 }
 
 .stats {
@@ -92,36 +93,6 @@ button {
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#start-button {
-    background-color: #28a745;
-    color: #fff;
-}
-
-#start-button:hover {
-    background-color: #23993d;
-    transform: scale(1.05);
-}
-
-#start-button:disabled {
-    background-color: #444;
-    cursor: not-allowed;
-}
-
-#stop-button {
-    background-color: #dc3545;
-    color: #fff;
-}
-
-#stop-button:hover {
-    background-color: #b52d3a;
-    transform: scale(1.05);
-}
-
-#stop-button:disabled {
-    background-color: #444;
-    cursor: not-allowed;
 }
 
 /* フッター */
