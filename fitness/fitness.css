@@ -38,48 +38,35 @@ body {
   overflow-x: hidden;
   position: relative;
 }
-
-/* 星の背景 */
-body::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('stars.svg') repeat;
-  z-index: -1;
-}
-
 /* ヘッダー */
 header {
-  background-color: #394575;
-  color: white;
-  padding: 15px;
-  width: 100%;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  font-weight: bold;
+    background-color: #394575;
+    color: white;
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-weight: bold;
 }
 
 /* 戻るボタン */
 #back-button {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
 }
 
 #back-button:hover {
-  color: #cccccc;
+    color: #cccccc;
 }
 
 /* メインコンテンツ */
@@ -97,7 +84,7 @@ header {
 h1 {
   font-size: 24px;
   margin-bottom: 20px;
-  color: #ffce00;
+  color: #ffdb4d;
 }
 
 p {
@@ -127,19 +114,42 @@ input {
   color: #fff;
 }
 
+/* 保存ボタン */
 button {
   width: 100%;
   padding: 10px;
-  background-color: #ffce00;
+  background: linear-gradient(135deg, #ffdb4d, #e8b800);
   color: #1c1c1c;
   border: none;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 button:hover {
-  background-color: #e5b800;
+  background: linear-gradient(135deg, #e8b800, #d1a200);
+}
+
+/* ランニングリンクボタン */
+.link-container {
+  margin-top: 20px;
+}
+
+.running-link {
+  display: inline-block;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #4caf50, #388e3c);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.running-link:hover {
+  background: linear-gradient(135deg, #43a047, #357a38);
 }
 
 /* フッター */
@@ -184,5 +194,10 @@ footer img {
   input,
   button {
     font-size: 14px;
+  }
+
+  .running-link {
+    font-size: 14px;
+    padding: 10px 15px;
   }
 }
