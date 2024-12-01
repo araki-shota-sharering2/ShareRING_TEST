@@ -48,12 +48,19 @@ document.getElementById("stop-button").addEventListener("click", async () => {
     document.getElementById("start-button").disabled = false;
     document.getElementById("stop-button").disabled = true;
 
-    // ポップアップを表示
-    alert("運動お疲れさまでした！今の風景をみんなにシェアしましょう！");
+    // ランニングデータをDBに保存
+    const success = await saveRunningData();
 
-    // データをリセットして遷移
-    resetStats();
-    window.location.href = "/post_creation/search_place.html";
+    if (success) {
+        // ポップアップを表示
+        alert("運動お疲れさまでした！今の風景をみんなにシェアしましょう！");
+
+        // データをリセットして遷移
+        resetStats();
+        window.location.href = "/post_creation/search_place.html";
+    } else {
+        alert("データ保存中にエラーが発生しました。もう一度お試しください。");
+    }
 });
 
 function startTimer() {
@@ -165,4 +172,29 @@ function updateStats() {
         calories;
     document.querySelector(".stats .stat:nth-child(3) .value").textContent =
         calculateAveragePace();
+}
+
+async function saveRunningData() {
+    const data = {
+        duration: document.querySelector(".timer").textContent,
+        distance,
+        calories,
+        averagePace: calculateAveragePace(),
+        route: pathCoordinates,
+    };
+
+    try {
+        const response = await fetch("/save-running-data", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        return response.ok;
+    } catch (error) {
+        console.error("データ送信エラー:", error);
+        return false;
+    }
 }
