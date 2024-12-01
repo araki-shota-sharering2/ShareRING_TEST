@@ -48,18 +48,23 @@ document.getElementById("stop-button").addEventListener("click", async () => {
     document.getElementById("start-button").disabled = false;
     document.getElementById("stop-button").disabled = true;
 
-    // ランニングデータをDBに保存
-    const success = await saveRunningData();
+    try {
+        // ランニングデータをDBに保存
+        const success = await saveRunningData();
 
-    if (success) {
-        // ポップアップを表示
-        alert("運動お疲れさまでした！今の風景をみんなにシェアしましょう！");
+        if (success) {
+            // 保存成功時にポップアップを表示
+            alert("運動お疲れさまでした！今の風景をみんなにシェアしましょう！");
 
-        // データをリセットして遷移
-        resetStats();
-        window.location.href = "/post_creation/search_place.html";
-    } else {
-        alert("データ保存中にエラーが発生しました。もう一度お試しください。");
+            // データをリセットして遷移
+            resetStats();
+            window.location.href = "/post_creation/search_place.html";
+        } else {
+            alert("データ保存中にエラーが発生しました。もう一度お試しください。");
+        }
+    } catch (error) {
+        console.error("ランニングデータ保存中のエラー:", error);
+        alert("エラーが発生しました。インターネット接続を確認してください。");
     }
 });
 
