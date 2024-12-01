@@ -15,7 +15,6 @@ function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         center: initialPosition,
         zoom: 15,
-        disableDefaultUI: true, // UI要素を非表示にしてシンプルに
     });
 
     marker = new google.maps.Marker({
