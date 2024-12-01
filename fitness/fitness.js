@@ -1,28 +1,42 @@
+document.addEventListener("DOMContentLoaded", async () => {
+    // 健康情報を取得しフォームに反映
+    try {
+        const response = await fetch("/get-health-info", { method: "GET" });
+        if (response.ok) {
+            const { height, weight } = await response.json();
+            if (height) document.getElementById("height").value = height;
+            if (weight) document.getElementById("weight").value = weight;
+        }
+    } catch (error) {
+        console.error("健康情報取得エラー:", error);
+    }
+});
+
 document.getElementById("health-form").addEventListener("submit", async function (event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  const height = document.getElementById("height").value;
-  const weight = document.getElementById("weight").value;
+    const height = document.getElementById("height").value;
+    const weight = document.getElementById("weight").value;
 
-  try {
-      const response = await fetch("/save-health-info", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ height, weight }),
-      });
+    try {
+        const response = await fetch("/save-health-info", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ height, weight }),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (response.ok) {
-          document.getElementById("response-message").textContent = "健康情報が保存されました！";
-      } else {
-          console.error("サーバーエラー:", result);
-          document.getElementById("response-message").textContent = `エラー: ${result.message}`;
-      }
-  } catch (error) {
-      console.error("クライアントエラー:", error);
-      document.getElementById("response-message").textContent = "送信中にエラーが発生しました。";
-  }
+        if (response.ok) {
+            document.getElementById("response-message").textContent = "健康情報が保存されました！";
+        } else {
+            console.error("サーバーエラー:", result);
+            document.getElementById("response-message").textContent = `エラー: ${result.message}`;
+        }
+    } catch (error) {
+        console.error("クライアントエラー:", error);
+        document.getElementById("response-message").textContent = "送信中にエラーが発生しました。";
+    }
 });
