@@ -1,12 +1,20 @@
-body {
-  font-family: 'Arial', sans-serif;
+/* リセットと基本設定 */
+* {
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #1c1c1c, #444);
-  color: #fff;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0 auto;
+  max-width: 375px; /* デザイン幅をスマホに最適化 */
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  color: #f5f5f5;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* ヘッダー */
@@ -44,9 +52,9 @@ header {
 
 /* メインコンテンツ */
 .container {
-  max-width: 90%;
-  width: 360px;
-  margin: 100px auto 80px; /* ヘッダーとフッターの分だけ余白を確保 */
+  width: 90%;
+  max-width: 360px;
+  margin: 80px auto 80px; /* ヘッダーとフッターの分を考慮 */
   padding: 20px;
   background: #2c2c2c;
   border-radius: 8px;
@@ -119,6 +127,81 @@ button:hover {
   background: #43a047;
 }
 
+/* タイムライン */
+.timeline {
+  padding: 10px;
+  overflow-y: auto;
+  height: calc(100vh - 140px); /* ヘッダーとフッターの高さを差し引く */
+  width: 100%;
+  box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* タイムラインアイテム */
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.timeline-marker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid #cccccc;
+  overflow: hidden;
+  margin-right: 15px;
+  background-color: #fff;
+}
+
+.timeline-content {
+  flex: 1;
+  border-left: 2px solid #555;
+  padding-left: 10px;
+}
+
+.timeline-title {
+  font-weight: bold;
+  font-size: 14px;
+  color: #fff;
+}
+
+.timeline-address,
+.timeline-date {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 4px;
+}
+
+/* モーダル */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 90%;
+  width: 350px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
 /* フッター */
 footer {
   display: flex;
@@ -151,49 +234,19 @@ footer img {
 /* スマホサイズ専用の調整 */
 @media (max-width: 480px) {
   h1 {
-    font-size: 20px;
+      font-size: 20px;
   }
 
   p {
-    font-size: 13px;
+      font-size: 13px;
   }
 
   input, button {
-    font-size: 14px;
+      font-size: 14px;
   }
 
   .running-link {
-    font-size: 14px;
-    padding: 10px 15px;
+      font-size: 14px;
+      padding: 10px 15px;
   }
-}
-/* ヘッダー */
-header {
-  background-color: #394575;
-  color: white;
-  padding: 15px;
-  width: 100%;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  font-weight: bold;
-}
-
-/* 戻るボタン */
-#back-button {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-#back-button:hover {
-  color: #cccccc;
 }
