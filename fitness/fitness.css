@@ -52,7 +52,7 @@ header {
 .container {
   width: 90%;
   max-width: 360px;
-  margin: 40px auto 40px; /* 縦幅を調整 */
+  margin: 20px auto; /* 縦幅を調整 */
   padding: 20px;
   background: #2c2c2c;
   border-radius: 8px;
@@ -68,7 +68,7 @@ h1 {
 
 p {
   font-size: 14px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 /* 身長・体重・保存を1行に配置 */
@@ -77,7 +77,7 @@ p {
   justify-content: space-between;
   align-items: flex-end; /* ラベルや入力欄の高さを揃える */
   gap: 10px; /* 各項目の間隔 */
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .input-group {
@@ -89,17 +89,6 @@ p {
   font-size: 12px; /* 少し小さめにして省スペース */
   color: #ccc;
   margin-bottom: 5px;
-}
-.save-button {
-  padding: 10px 15px;
-  background: linear-gradient(135deg, #ffdb4d, #e8b800);
-  color: #1c1c1c;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  align-self: stretch; /* 高さを他の入力フィールドに揃える */
 }
 
 input {
@@ -113,38 +102,34 @@ input {
 }
 
 /* 保存ボタン */
-button {
-  width: 100%;
-  padding: 10px;
+.save-button {
+  padding: 8px 12px; /* 小さく調整 */
   background: linear-gradient(135deg, #ffdb4d, #e8b800);
   color: #1c1c1c;
   border: none;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
-button:hover {
-  background: linear-gradient(135deg, #e8b800, #d1a200);
-}
 .save-button:hover {
   background: linear-gradient(135deg, #e8b800, #d1a200);
 }
 
 /* ランニングリンクボタン */
 .link-container {
-  margin-top: 20px;
+  margin-top: 10px; /* 上部余白を調整 */
 }
 
 .running-link {
   display: inline-block;
-  padding: 12px 20px;
+  padding: 10px 15px; /* コンパクトに調整 */
   background: linear-gradient(135deg, #4caf50, #388e3c);
   color: white;
   text-decoration: none;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 14px;
   transition: background 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
@@ -158,31 +143,28 @@ button:hover {
   background: linear-gradient(135deg, #66bb6a, #43a047); /* 緑ベースのグラデーション */
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 15px; /* コンパクトに調整 */
   border-radius: 15px;
-  margin: 20px 15px; /* 縦幅を減らす */
+  margin: 15px auto; /* 縦幅を調整 */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .stats-container {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start; /* 要素を上揃え */
 }
 
 .stat h2 {
-  font-size: 20px; /* 少し小さく調整 */
+  font-size: 18px; /* 小さく調整 */
   margin: 0;
 }
 
-.stat p {
-  font-size: 13px; /* コンパクトに調整 */
-  margin: 5px 0;
-}
-
 .stat span {
-  font-size: 14px; /* 見やすさを考慮し小さめに */
+  font-size: 14px; /* 見やすさを考慮し調整 */
   font-weight: bold;
+  display: block; /* 改行を追加 */
+  margin-top: 5px;
 }
 
 /* 詳細ボタン */
@@ -190,11 +172,11 @@ button:hover {
   background-color: #43a047;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 8px 12px; /* 小さく調整 */
   font-size: 14px;
   border-radius: 5px;
   cursor: pointer;
-  margin: 15px auto;
+  margin: 10px auto;
   display: block;
 }
 
@@ -204,8 +186,8 @@ button:hover {
 
 /* 結果一覧 */
 .results-container {
-  margin-top: 15px;
-  padding: 10px 15px;
+  margin-top: 10px; /* 上部余白を縮小 */
+  padding: 10px;
   display: none; /* 初期状態では非表示 */
 }
 
@@ -233,7 +215,7 @@ li .date {
 li .details {
   font-size: 12px;
   color: #fff;
-  margin-top: 10px;
+  margin-top: 5px; /* 縦幅を縮小 */
   line-height: 1.5;
 }
 
