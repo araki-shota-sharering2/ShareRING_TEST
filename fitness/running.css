@@ -4,13 +4,12 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: Arial, sans-serif;
     margin: 0 auto;
     max-width: 375px; /* スマホ幅に固定 */
-    background: linear-gradient(135deg, #1a1a1a, #333);
-    color: #f5f5f5;
+    background: linear-gradient(135deg, #ffffff, #f7f7f7); /* 白ベースのグラデーション背景 */
+    color: #333; /* テキストを濃いグレーに */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -34,6 +33,7 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+/* バックボタン */
 #back-button {
     position: absolute;
     left: 10px;
@@ -44,105 +44,12 @@ body {
     color: #fff;
     font-size: 16px;
     cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 #back-button:hover {
     color: #cccccc;
-}
-
-/* タイマーと統計情報 */
-.stats-container {
-    margin-top: 80px; /* ヘッダー分のスペースを確保 */
-    width: 100%;
-    max-width: 375px;
-    text-align: center;
-}
-
-.timer {
-    font-size: 36px;
-    font-weight: bold;
-    color: #ffce00;
-    margin-bottom: 20px;
-}
-
-.stats {
-    display: flex;
-    justify-content: space-around;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.stat {
-    text-align: center;
-}
-
-.stat .value {
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-}
-
-.stat .label {
-    font-size: 12px;
-    color: #aaa;
-}
-
-/* 地図 */
-#map {
-    margin-top: 20px;
-    height: 300px;
-    width: 100%;
-    border: 1px solid #444;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-/* スタート・ストップボタン */
-.controls {
-    margin-top: 20px;
-    width: 100%;
-    text-align: center;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#start-button {
-    background-color: #28a745;
-    color: white;
-}
-
-#start-button:hover {
-    background-color: #218838;
-}
-
-#start-button:disabled {
-    background-color: #444;
-    cursor: not-allowed;
-}
-
-#stop-button {
-    background-color: #dc3545;
-    color: white;
-}
-
-#stop-button:hover {
-    background-color: #c82333;
-}
-
-#stop-button:disabled {
-    background-color: #444;
-    cursor: not-allowed;
+    transform: scale(1.1); /* ホバー時に少し拡大 */
 }
 
 /* フッター */
@@ -151,7 +58,7 @@ footer {
     bottom: 0;
     width: 100%;
     max-width: 375px; /* スマホ幅に固定 */
-    background-color: rgba(31, 31, 31, 0.9);
+    background-color: rgba(31, 31, 31, 0.9); /* 背景を透過気味に */
     padding: 10px 0;
     display: flex;
     justify-content: space-around;
@@ -167,6 +74,13 @@ footer a {
     text-align: center;
 }
 
+footer a.active {
+    background-color: #394575; /* 選択されたときの背景色 */
+    border-top: 3px solid #ffffff; /* 選択されたときの上部バー */
+    border-radius: 5px; /* アイコン周囲に少し丸みを追加 */
+    transition: background-color 0.3s ease, padding 0.3s ease; /* なめらかな変化 */
+}
+
 footer img {
     width: 25px;
     height: 25px;
@@ -179,21 +93,8 @@ footer img {
         padding: 10px;
     }
 
-    .timer {
-        font-size: 28px;
-    }
-
-    .stat .value {
-        font-size: 16px;
-    }
-
-    button {
+    #back-button {
         font-size: 14px;
-        padding: 8px 15px;
-    }
-
-    #map {
-        height: 200px;
     }
 
     footer img {
