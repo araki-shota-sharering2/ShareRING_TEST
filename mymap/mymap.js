@@ -2,15 +2,14 @@
 window.initMap = async function () {
     console.log("MYMAP画面が読み込まれました");
 
-    // Google Map オプション
     const mapOptions = {
-        zoom: 12,
+        zoom: 12, // 地図の初期ズームレベル
     };
 
     // 地図を初期化（現在位置は後で設定）
     const map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-    // ユーザーの現在位置を取得
+    // 現在位置を取得
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -20,7 +19,7 @@ window.initMap = async function () {
                 };
                 map.setCenter(userLocation);
 
-                // 現在位置にマーカーを追加
+                // 現在位置を示すマーカーを追加
                 new google.maps.Marker({
                     position: userLocation,
                     map: map,
@@ -79,6 +78,7 @@ window.initMap = async function () {
 
                 // 中央に投稿画像を描画
                 const img = new Image();
+                img.crossOrigin = "anonymous"; // クロスオリジン設定
                 img.src = post.image_url;
                 img.onload = () => {
                     context.save();
@@ -97,7 +97,7 @@ window.initMap = async function () {
                             url: iconCanvas.toDataURL(),
                             scaledSize: new google.maps.Size(40, 40),
                         },
-                    }).addListener("click", () => {
+                    }).addListener("click", function () {
                         // 情報ウィンドウを表示
                         const infoWindow = new google.maps.InfoWindow({
                             content: `
@@ -111,6 +111,10 @@ window.initMap = async function () {
                         infoWindow.open(map, this);
                     });
                 };
+
+                img.onerror = () => {
+                    console.error("画像の読み込みに失敗しました:", post.image_url);
+                };
             } catch (error) {
                 console.error("位置データのパースに失敗しました:", post.location, error);
             }
@@ -119,3 +123,8 @@ window.initMap = async function () {
         console.error("エラー:", error);
     }
 };
+
+// DOMContentLoadedイベントリスナーで初期化
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("DOMが読み込まれました");
+});
