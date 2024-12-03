@@ -1,17 +1,27 @@
 export async function onRequestGet(context) {
-    const { env } = context;
+    const { env, request } = context;
 
     try {
-        const sessionId = context.request.headers.get("Cookie").match(/session_id=([^;]+)/)?.[1];
-        if (!sessionId) return new Response("Unauthorized", { status: 401 });
+        // CookieからセッションIDを取得
+        const cookieHeader = request.headers.get("Cookie");
+        const cookies = new Map(cookieHeader?.split("; ").map((c) => c.split("=")));
+        const sessionId = cookies.get("session_id");
 
-        const sessionQuery = `
-            SELECT user_id FROM user_sessions WHERE session_id = ?;
-        `;
+        if (!sessionId) {
+            return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { "Content-Type": "application/json" } });
+        }
+
+        // セッションからユーザーIDを取得
+        const sessionQuery = `SELECT user_id FROM user_sessions WHERE session_id = ?;`;
         const sessionResult = await env.DB.prepare(sessionQuery).bind(sessionId).first();
-        if (!sessionResult) return new Response("Unauthorized", { status: 401 });
+
+        if (!sessionResult) {
+            return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { "Content-Type": "application/json" } });
+        }
 
         const userId = sessionResult.user_id;
+
+        // 投稿データを取得
         const postsQuery = `
             SELECT 
                 post_id, 
@@ -36,6 +46,6 @@ export async function onRequestGet(context) {
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
-        return new Response(error.message || "Internal Server Error", { status: 500 });
+        return new Response(JSON.stringify({ error: error.message || "Internal Server Error" }), { status: 500, headers: { "Content-Type": "application/json" } });
     }
 }

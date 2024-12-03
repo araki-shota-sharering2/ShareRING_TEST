@@ -1,27 +1,33 @@
 let map;
 
 async function initMap() {
-    const response = await fetch('/mymap-handler');
-    const data = await response.json();
+    try {
+        const response = await fetch('/mymap-handler');
+        if (!response.ok) throw new Error('Failed to fetch map data');
 
-    const center = { lat: data.center.lat, lng: data.center.lng };
-    map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 12,
-        center: center,
-    });
+        const data = await response.json();
+        const center = { lat: data.center.lat, lng: data.center.lng };
 
-    data.posts.forEach(post => {
-        const marker = new google.maps.Marker({
-            position: { lat: post.location.lat, lng: post.location.lng },
-            map,
-            icon: {
-                url: post.image_url,
-                scaledSize: new google.maps.Size(50, 50),
-            },
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: center,
         });
 
-        marker.addListener('click', () => showPopup(post));
-    });
+        data.posts.forEach(post => {
+            const marker = new google.maps.Marker({
+                position: { lat: post.location.lat, lng: post.location.lng },
+                map,
+                icon: {
+                    url: post.image_url,
+                    scaledSize: new google.maps.Size(50, 50),
+                },
+            });
+
+            marker.addListener('click', () => showPopup(post));
+        });
+    } catch (error) {
+        console.error("Error loading map:", error.message);
+    }
 }
 
 function showPopup(post) {
