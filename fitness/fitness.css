@@ -291,3 +291,10 @@ footer img {
       padding: 12px 20px;
   }
 }
+/* ボタン内アイコンのスタイル */
+.button-icon {
+  width: 20px; /* アイコンの幅 */
+  height: 20px; /* アイコンの高さ */
+  margin-right: 8px; /* テキストとの間隔 */
+  vertical-align: middle; /* アイコンとテキストを中央揃え */
+}
