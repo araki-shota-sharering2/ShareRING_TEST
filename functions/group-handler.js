@@ -54,8 +54,8 @@ export async function onRequestPost(context) {
             headers: { "Content-Type": groupImage.type },
         });
 
-        const groupImageUrl = `https://${env.MY_R2_BUCKET.id}.r2.dev/${r2Key}`;
-
+        // pub- から始まるURLを生成
+        const groupImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
         // データベースにグループ情報を保存
         const createGroupQuery = `
             INSERT INTO user_groups (group_name, description, group_image_url, created_by)
