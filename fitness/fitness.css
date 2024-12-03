@@ -52,7 +52,7 @@ header {
 .container {
   width: 90%;
   max-width: 360px;
-  margin: 20px auto; /* 縦幅を調整 */
+  margin: 10px auto; /* 縦幅をギリギリまで調整 */
   padding: 20px;
   background: #2c2c2c;
   border-radius: 8px;
@@ -62,33 +62,33 @@ header {
 
 h1 {
   font-size: 22px;
-  margin-bottom: 15px;
+  margin-bottom: 10px; /* コンパクトに */
   color: #ffdb4d;
 }
 
 p {
-  font-size: 14px;
-  margin-bottom: 10px;
+  font-size: 13px;
+  margin-bottom: 8px;
 }
 
 /* 身長・体重・保存を1行に配置 */
 .input-row {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end; /* ラベルや入力欄の高さを揃える */
-  gap: 10px; /* 各項目の間隔 */
-  margin-bottom: 10px;
+  align-items: flex-end;
+  gap: 8px; /* 各項目の間隔をさらに縮小 */
+  margin-bottom: 8px;
 }
 
 .input-group {
-  flex: 1; /* 均等にスペースを割り当てる */
+  flex: 1;
 }
 
 .input-group label {
   display: block;
-  font-size: 12px; /* 少し小さめにして省スペース */
+  font-size: 12px;
   color: #ccc;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
 }
 
 input {
@@ -103,7 +103,7 @@ input {
 
 /* 保存ボタン */
 .save-button {
-  padding: 8px 12px; /* 小さく調整 */
+  padding: 8px 12px;
   background: linear-gradient(135deg, #ffdb4d, #e8b800);
   color: #1c1c1c;
   border: none;
@@ -119,51 +119,53 @@ input {
 
 /* ランニングリンクボタン */
 .link-container {
-  margin-top: 10px; /* 上部余白を調整 */
+  margin-top: 8px;
 }
 
 .running-link {
   display: inline-block;
-  padding: 10px 15px; /* コンパクトに調整 */
-  background: linear-gradient(135deg, #4caf50, #388e3c);
+  padding: 15px 20px; /* ボタンを大きく調整 */
+  background: linear-gradient(135deg, #4caf50, #1e7d22); /* 目を引く濃い緑のグラデーション */
   color: white;
   text-decoration: none;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: background 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 6px; /* 角丸を少し強調 */
+  font-size: 16px; /* 大きく目立たせる */
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .running-link:hover {
-  background: linear-gradient(135deg, #43a047, #357a38);
+  background: linear-gradient(135deg, #43a047, #1b5e20);
+  transform: translateY(-3px); /* ホバー時の浮き上がり効果 */
 }
 
 /* 運動概要 */
 .activity-summary {
-  background: linear-gradient(135deg, #66bb6a, #43a047); /* 緑ベースのグラデーション */
+  background: linear-gradient(135deg, #80deea, #4dd0e1); /* 洗練された緑ベースのグラデーション */
   color: white;
   text-align: center;
-  padding: 15px; /* コンパクトに調整 */
+  padding: 15px;
   border-radius: 15px;
-  margin: 15px auto; /* 縦幅を調整 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  margin: 10px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .stats-container {
   display: flex;
   justify-content: space-around;
-  align-items: flex-start; /* 要素を上揃え */
+  align-items: flex-start;
 }
 
 .stat h2 {
-  font-size: 18px; /* 小さく調整 */
+  font-size: 18px;
   margin: 0;
 }
 
 .stat span {
-  font-size: 14px; /* 見やすさを考慮し調整 */
+  font-size: 14px;
   font-weight: bold;
-  display: block; /* 改行を追加 */
+  display: block;
   margin-top: 5px;
 }
 
@@ -172,7 +174,7 @@ input {
   background-color: #43a047;
   color: white;
   border: none;
-  padding: 8px 12px; /* 小さく調整 */
+  padding: 8px 12px;
   font-size: 14px;
   border-radius: 5px;
   cursor: pointer;
@@ -186,9 +188,9 @@ input {
 
 /* 結果一覧 */
 .results-container {
-  margin-top: 10px; /* 上部余白を縮小 */
+  margin-top: 8px; /* 上部余白をさらに縮小 */
   padding: 10px;
-  display: none; /* 初期状態では非表示 */
+  display: none;
 }
 
 ul {
@@ -199,7 +201,7 @@ ul {
 
 li {
   background: rgba(255, 255, 255, 0.1);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -215,7 +217,7 @@ li .date {
 li .details {
   font-size: 12px;
   color: #fff;
-  margin-top: 5px; /* 縦幅を縮小 */
+  margin-top: 5px;
   line-height: 1.5;
 }
 
@@ -285,7 +287,7 @@ footer img {
   }
 
   .running-link {
-      font-size: 14px;
-      padding: 10px 15px;
+      font-size: 15px;
+      padding: 12px 20px;
   }
 }
