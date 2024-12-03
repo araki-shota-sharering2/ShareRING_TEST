@@ -24,10 +24,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // 各投稿にピンを表示
             posts.forEach(post => {
+                const location = post.location.split(",").map(Number); // 緯度と経度を分割して数値に変換
                 new google.maps.Marker({
                     position: {
-                        lat: parseFloat(post.location.split(",")[0]),
-                        lng: parseFloat(post.location.split(",")[1])
+                        lat: location[0],
+                        lng: location[1]
                     },
                     map: map,
                     title: post.caption || "投稿",
