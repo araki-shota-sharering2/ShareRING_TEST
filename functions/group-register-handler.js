@@ -2,7 +2,6 @@ export async function onRequestPost(context) {
     const { env, request } = context;
 
     try {
-        // クッキーからセッションIDを取得
         const cookieHeader = request.headers.get("Cookie");
         const cookies = Object.fromEntries(
             cookieHeader?.split("; ").map((c) => c.split("=").map(decodeURIComponent)) || []
@@ -16,7 +15,6 @@ export async function onRequestPost(context) {
             });
         }
 
-        // セッションからユーザーIDを取得
         const session = await env.DB.prepare(
             "SELECT user_id FROM user_sessions WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP"
         ).bind(sessionId).first();
@@ -30,7 +28,6 @@ export async function onRequestPost(context) {
 
         const userId = session.user_id;
 
-        // フォームデータからグループIDを取得
         const formData = await request.formData();
         const groupId = formData.get("groupId");
 
@@ -41,13 +38,11 @@ export async function onRequestPost(context) {
             });
         }
 
-        // グループに作成者をメンバーとして登録
         try {
             const addMemberQuery = `
                 INSERT INTO user_group_members (group_id, user_id)
                 VALUES (?, ?)
             `;
-            console.log("Executing Query:", addMemberQuery, "with groupId:", groupId, "and userId:", userId);
             await env.DB.prepare(addMemberQuery).bind(groupId, userId).run();
         } catch (error) {
             console.error("メンバー登録クエリエラー:", error);

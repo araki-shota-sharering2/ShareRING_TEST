@@ -2,7 +2,6 @@ export async function onRequestPost(context) {
     const { env, request } = context;
 
     try {
-        // クッキーからセッションIDを取得
         const cookieHeader = request.headers.get("Cookie");
         const cookies = Object.fromEntries(
             cookieHeader?.split("; ").map((c) => c.split("=").map(decodeURIComponent)) || []
@@ -16,7 +15,6 @@ export async function onRequestPost(context) {
             });
         }
 
-        // セッションからユーザーIDを取得
         const session = await env.DB.prepare(
             "SELECT user_id FROM user_sessions WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP"
         ).bind(sessionId).first();
@@ -30,7 +28,6 @@ export async function onRequestPost(context) {
 
         const userId = session.user_id;
 
-        // フォームデータの取得
         const formData = await request.formData();
         const groupName = formData.get("groupName");
         const description = formData.get("description") || "";
@@ -43,7 +40,6 @@ export async function onRequestPost(context) {
             });
         }
 
-        // 画像をCloudflare R2にアップロード
         const timestamp = Date.now();
         const uniqueFileName = `group-${timestamp}-${groupImage.name}`;
         const r2Key = `group_images/${uniqueFileName}`;
@@ -62,7 +58,6 @@ export async function onRequestPost(context) {
 
         const groupImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
 
-        // データベースにグループ情報を保存
         let groupId;
         try {
             const createGroupQuery = `
@@ -73,7 +68,6 @@ export async function onRequestPost(context) {
                 .bind(groupName, description, groupImageUrl, userId)
                 .run();
             groupId = result.lastInsertRowId;
-            console.log("Group created with ID:", groupId);
         } catch (error) {
             console.error("グループ作成エラー:", error);
             return new Response(JSON.stringify({ message: "グループ作成に失敗しました。" }), {

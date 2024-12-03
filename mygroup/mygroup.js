@@ -16,7 +16,6 @@ document.getElementById("group-form").addEventListener("submit", async (event) =
     formData.append("groupImage", groupImage);
 
     try {
-        // グループ作成リクエスト
         const response = await fetch("/group-create-handler", {
             method: "POST",
             body: formData,
@@ -27,7 +26,6 @@ document.getElementById("group-form").addEventListener("submit", async (event) =
         if (response.ok) {
             const groupId = result.groupId;
 
-            // メンバー登録リクエスト
             const registerResponse = await fetch("/group-register-handler", {
                 method: "POST",
                 body: new URLSearchParams({ groupId }),
