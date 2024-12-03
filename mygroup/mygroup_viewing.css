@@ -1,0 +1,256 @@
+/* 全体の初期設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0d0d2b;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 375px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* ヘッダー */
+header {
+    background-color: #394575;
+    color: white;
+    padding: 10px 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#back-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s ease;
+}
+
+#back-button:hover {
+    color: #cccccc;
+}
+
+#load-more-button {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+#load-more-button:hover {
+    background-color: #394575;
+    transform: scale(1.05);
+}
+
+#load-more-button.disabled {
+    background-color: #666;
+    color: #aaa;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 投稿詳細エリア */
+.timeline {
+    flex: 1;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    overflow-x: scroll;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    scroll-snap-type: x mandatory;
+    position: relative;
+}
+
+.timeline .post-frame {
+    flex: 0 0 90%;
+    max-width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    display: inline-block;
+    scroll-snap-align: center;
+    padding: 20px;
+    border: 1px solid #444;
+    border-radius: 10px;
+    background-color: #1a1a3a;
+    position: relative;
+}
+
+.post-image {
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    aspect-ratio: 1 / 1; /* 正方形を維持 */
+    object-fit: cover; /* 画像全体が収まるように調整 */
+    border-radius: 50%; /* 円形にする */
+    border: 4px solid transparent; /* 枠線を保持 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* 影を追加 */
+    margin-bottom: 10px;
+    position: relative; /* Keep画像を配置するため */
+}
+
+
+/* Keep画像のスタイル */
+.keep-image {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 5px; /* 投稿画像の右上に配置 */
+    right: 5px;
+    background: url('/assets/images/main/ring_keeper.svg') no-repeat center center;
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.keep-image:hover {
+    transform: scale(1.1); /* ホバー時に少し拡大 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid #4e5c94;
+    object-fit: cover;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.post-address {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.post-comment {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #ddd;
+}
+
+.post-date {
+    font-size: 12px;
+    color: #888;
+    margin-top: 10px;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* スワイプガイド */
+.swipe-guide {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #aaa;
+    text-align: center;
+    animation: swipe-hint 2s infinite;
+}
+
+/* スワイプガイドのアニメーション */
+@keyframes swipe-hint {
+    0%, 100% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -10px);
+        opacity: 0.5;
+    }
+}
+
+/* フッター */
+footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px;
+    background-color: #4e5c94;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 375px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+footer a {
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+footer a.active {
+    background-color: #394575;
+    border-top: 3px solid #ffffff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+footer img {
+    width: 25px;
+    height: 25px;
+}
+
+/* 星のスタイル */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
+}
+
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
