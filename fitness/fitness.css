@@ -5,31 +5,10 @@
   box-sizing: border-box;
 }
 
-/* 星のスタイル */
-.star {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
-  animation: twinkle 2s infinite ease-in-out alternate;
-  opacity: 0.5;
-}
-
-/* 星の輝きアニメーション */
-@keyframes twinkle {
-  0% {
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 body {
   font-family: Arial, sans-serif;
   margin: 0 auto;
-  max-width: 375px; /* デザイン幅をスマホに最適化 */
+  max-width: 375px; /* スマホ幅に固定 */
   background: linear-gradient(135deg, #0d0d2b, #333);
   color: #f5f5f5;
   display: flex;
@@ -38,35 +17,35 @@ body {
   overflow-x: hidden;
   position: relative;
 }
+
 /* ヘッダー */
 header {
-    background-color: #394575;
-    color: white;
-    padding: 15px;
-    width: 100%;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    font-weight: bold;
+  background-color: #394575;
+  color: white;
+  padding: 15px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-weight: bold;
 }
 
-/* 戻るボタン */
 #back-button {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 #back-button:hover {
-    color: #cccccc;
+  color: #cccccc;
 }
 
 /* メインコンテンツ */
@@ -152,6 +131,111 @@ button:hover {
   background: linear-gradient(135deg, #43a047, #357a38);
 }
 
+/* 運動概要 */
+.activity-summary {
+  background: linear-gradient(135deg, #ff7eb3, #ff758c);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 15px;
+  margin: 100px 15px 15px; /* ヘッダーの高さ分の余白を追加 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stat h2 {
+  font-size: 30px;
+  margin: 0;
+}
+
+.stat p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.stat span {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 詳細ボタン */
+#details-button {
+  background-color: #ff758c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 15px auto;
+  display: block;
+}
+
+#details-button:hover {
+  background-color: #ff576d;
+}
+
+/* 結果一覧 */
+.results-container {
+  margin-top: 15px;
+  padding: 10px 15px;
+  display: none; /* 初期状態では非表示 */
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+li .date {
+  font-size: 14px;
+  color: #ccc;
+}
+
+li .details {
+  font-size: 12px;
+  color: #fff;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* 星のスタイル */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: twinkle 2s infinite ease-in-out alternate;
+  opacity: 0.5;
+}
+
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+  0% {
+      opacity: 0.3;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
 /* フッター */
 footer {
   display: flex;
@@ -184,20 +268,20 @@ footer img {
 /* スマホサイズ専用の調整 */
 @media (max-width: 480px) {
   h1 {
-    font-size: 20px;
+      font-size: 20px;
   }
 
   p {
-    font-size: 13px;
+      font-size: 13px;
   }
 
   input,
   button {
-    font-size: 14px;
+      font-size: 14px;
   }
 
   .running-link {
-    font-size: 14px;
-    padding: 10px 15px;
+      font-size: 14px;
+      padding: 10px 15px;
   }
 }
