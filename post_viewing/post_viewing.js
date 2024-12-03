@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
                     </div>
                     <div class="post-actions">
-                        <button class="like-button">いいね</button>
                         <button class="keep-button">Keep</button>
                         <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
                     </div>
