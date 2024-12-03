@@ -47,6 +47,39 @@ body {
     color: #cccccc;
 }
 
+/* 運動概要 */
+.activity-summary {
+    background: linear-gradient(135deg, #ff7eb3, #ff758c);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.stat h2 {
+    font-size: 40px;
+    margin: 0;
+}
+
+.stat p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.stat span {
+    font-size: 20px;
+    font-weight: bold;
+    animation: glow 2s infinite alternate;
+}
+
 /* 結果一覧 */
 .results-container {
     margin-top: 80px; /* ヘッダー分のスペース */
@@ -62,20 +95,36 @@ ul {
 li {
     background: rgba(255, 255, 255, 0.1);
     margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 15px;
+    border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
 }
 
 li .date {
     font-size: 14px;
     color: #ccc;
-    margin-bottom: 5px;
 }
 
 li .details {
     font-size: 16px;
     color: #fff;
+    margin-top: 10px;
+    line-height: 1.5;
+}
+
+/* アニメーション */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px #ff7eb3, 0 0 20px #ff758c;
+    }
+    50% {
+        box-shadow: 0 0 20px #ff7eb3, 0 0 40px #ff758c;
+    }
+    100% {
+        box-shadow: 0 0 10px #ff7eb3, 0 0 20px #ff758c;
+    }
 }
 
 /* フッター */

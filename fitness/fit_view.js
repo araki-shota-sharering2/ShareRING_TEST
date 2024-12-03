@@ -13,29 +13,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function displayActivities(activities) {
+    const totalCalories = activities.reduce((sum, a) => sum + a.calories_burned, 0).toFixed(1);
+    const totalDistance = activities.reduce((sum, a) => sum + (a.distance || 0), 0).toFixed(2);
+    const totalDuration = activities.reduce((sum, a) => sum + a.duration, 0);
+
+    document.getElementById("total-calories").textContent = `${totalCalories} kcal`;
+    document.getElementById("total-distance").textContent = `${totalDistance} km`;
+    document.getElementById("total-duration").textContent = `${totalDuration} 分`;
+
     const resultsList = document.getElementById("results-list");
     resultsList.innerHTML = "";
 
     activities.forEach((activity) => {
         const listItem = document.createElement("li");
 
-        // 日付
         const date = document.createElement("div");
         date.className = "date";
         date.textContent = `日付: ${new Date(activity.recorded_at).toLocaleDateString()}`;
 
-        // 運動内容
         const details = document.createElement("div");
         details.className = "details";
-
-        // 詳細表示
-        const formattedDetails = `
+        details.innerHTML = `
             種類: ${activity.activity_type}<br>
             時間: ${activity.duration} 分<br>
             距離: ${activity.distance ? activity.distance.toFixed(2) + " km" : "データなし"}<br>
             カロリー: ${activity.calories_burned.toFixed(1)} kcal
         `;
-        details.innerHTML = formattedDetails;
 
         listItem.appendChild(date);
         listItem.appendChild(details);
