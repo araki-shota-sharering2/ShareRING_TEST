@@ -78,11 +78,18 @@ window.initMap = async function () {
 
                 // マーカークリック用にイベントを設定
                 markerDiv.addEventListener("click", () => {
+                    // 現在表示中の情報ウィンドウを閉じる（必要に応じて追加）
+                    if (window.currentInfoWindow) {
+                        window.currentInfoWindow.close();
+                    }
+                    // 新しい情報ウィンドウを開く
                     infoWindow.open({
                         anchor: marker,
                         map,
                         shouldFocus: false,
                     });
+                    // 現在の情報ウィンドウを記録
+                    window.currentInfoWindow = infoWindow;
                 });
             } catch (error) {
                 console.error("位置データのパースに失敗しました:", post.location, error);
