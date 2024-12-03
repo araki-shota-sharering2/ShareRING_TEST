@@ -153,7 +153,7 @@ async function shareToGroup(groupId) {
     formData.append("group_id", groupId);
 
     try {
-        const response = await fetch("/post_to_group-handler", {
+        const response = await fetch("/post-to-group-handler", {
             method: "POST",
             body: formData,
         });
