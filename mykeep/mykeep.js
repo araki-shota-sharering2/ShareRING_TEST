@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function fetchKeeps() {
         try {
-            const response = await fetch("/functions/mykeep-handler", { method: "GET" });
+            const response = await fetch("/mykeep-handler", { method: "GET" });
             if (response.ok) {
                 const posts = await response.json();
                 displayKeeps(posts);
