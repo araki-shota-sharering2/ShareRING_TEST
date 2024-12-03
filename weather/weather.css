@@ -38,27 +38,23 @@ body {
         opacity: 1;
     }
 }
-/* ヘッダー */
+
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #4e5c94;
+    background-color: #394575; /* ヘッダー背景色 */
     color: white;
-    width: 100%;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.header-logo img {
-    width: 100px;
-}
-
-.header-icons img {
-    width: 24px;
-    height: 24px;
-    margin-left: 10px;
-}
 
 /* 天気情報コンテナ */
 .weather-container {
@@ -155,4 +151,21 @@ footer {
 footer img {
     width: 25px;
     height: 25px;
+}
+/* 戻るボタン */
+#back-button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#back-button:hover {
+    color: #cccccc;
+    transform: scale(1.1); /* ホバー時に少し拡大 */
 }
