@@ -58,16 +58,19 @@ export async function onRequestPost(context) {
 
         const groupImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
 
+        // 7桁のランダムなグループIDを生成
+        const randomGroupId = Math.floor(1000000 + Math.random() * 9000000);
+
         let groupId;
         try {
             const createGroupQuery = `
-                INSERT INTO user_groups (group_name, description, group_image_url, created_by)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO user_groups (group_id, group_name, description, group_image_url, created_by)
+                VALUES (?, ?, ?, ?, ?)
             `;
             const result = await env.DB.prepare(createGroupQuery)
-                .bind(groupName, description, groupImageUrl, userId)
+                .bind(randomGroupId, groupName, description, groupImageUrl, userId)
                 .run();
-            groupId = result.lastInsertRowId;
+            groupId = randomGroupId;
         } catch (error) {
             console.error("グループ作成エラー:", error);
             return new Response(JSON.stringify({ message: "グループ作成に失敗しました。" }), {
