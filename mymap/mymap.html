@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Map</title>
-    <link rel="stylesheet" href="mymap.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Maps with User Posts</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+  <link rel="stylesheet" href="mymap.css">
 </head>
 <body>
-    <div id="map"></div>
-    <div id="image-popup" class="hidden">
-        <img id="popup-image" src="" alt="Post Image">
-        <p id="popup-caption"></p>
-        <p id="popup-date"></p>
-        <p id="popup-comment"></p>
-        <button id="close-popup">Close</button>
-    </div>
-    <script src="mymap.js"></script>
+  <div id="map"></div>
+  <div id="details-panel" class="hidden">
+    <img id="details-image" src="" alt="Post Image">
+    <p id="post-caption"></p>
+    <p id="post-date"></p>
+    <button id="close-details">閉じる</button>
+  </div>
+  <script src="mymap.js"></script>
 </body>
 </html>

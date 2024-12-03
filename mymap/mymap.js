@@ -1,51 +1,49 @@
 let map;
 
 async function initMap() {
-    try {
-        const response = await fetch('/mymap-handler');
-        if (!response.ok) throw new Error('Failed to fetch map data');
+  try {
+    const response = await fetch('/mymap-handler');
+    if (!response.ok) throw new Error('Failed to fetch map data');
 
-        const data = await response.json();
-        const center = { lat: data.center.lat, lng: data.center.lng };
+    const data = await response.json();
 
-        map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 12,
-            center: center,
-        });
+    const center = { lat: data.center.lat, lng: data.center.lng };
+    map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 12,
+      center: center,
+    });
 
-        data.posts.forEach(post => {
-            const marker = new google.maps.Marker({
-                position: { lat: post.location.lat, lng: post.location.lng },
-                map,
-                icon: {
-                    url: post.image_url,
-                    scaledSize: new google.maps.Size(50, 50),
-                },
-            });
+    data.posts.forEach(post => {
+      const marker = new google.maps.Marker({
+        position: { lat: post.location.lat, lng: post.location.lng },
+        map,
+        icon: {
+          url: post.image_url,
+          scaledSize: new google.maps.Size(50, 50),
+        },
+      });
 
-            marker.addListener('click', () => showPopup(post));
-        });
-    } catch (error) {
-        console.error("Error loading map:", error.message);
-    }
+      marker.addListener('click', () => showPostDetails(post));
+    });
+  } catch (error) {
+    console.error("Error loading map:", error.message);
+  }
 }
 
-function showPopup(post) {
-    const popup = document.getElementById('image-popup');
-    const popupImage = document.getElementById('popup-image');
-    const popupCaption = document.getElementById('popup-caption');
-    const popupDate = document.getElementById('popup-date');
-    const popupComment = document.getElementById('popup-comment');
+function showPostDetails(post) {
+  const detailsPanel = document.getElementById('details-panel');
+  const detailsImage = document.getElementById('details-image');
+  const postCaption = document.getElementById('post-caption');
+  const postDate = document.getElementById('post-date');
 
-    popupImage.src = post.image_url;
-    popupCaption.textContent = `Caption: ${post.caption || 'No caption'}`;
-    popupDate.textContent = `Date: ${new Date(post.created_at).toLocaleString()}`;
-    popupComment.textContent = `Comment: ${post.comment || 'No comment'}`;
-    popup.classList.remove('hidden');
+  detailsImage.src = post.image_url;
+  postCaption.textContent = `キャプション: ${post.caption || 'なし'}`;
+  postDate.textContent = `投稿日: ${new Date(post.created_at).toLocaleString()}`;
+  detailsPanel.classList.remove('hidden');
 }
 
-document.getElementById('close-popup').addEventListener('click', () => {
-    document.getElementById('image-popup').classList.add('hidden');
+document.getElementById('close-details').addEventListener('click', () => {
+  document.getElementById('details-panel').classList.add('hidden');
 });
 
 initMap();
