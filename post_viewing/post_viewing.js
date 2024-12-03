@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
                     </div>
                     <div class="post-actions">
-                        <button class="keep-button">Keep</button>
+                    <img src="/assets/images/main/ring_keeper.svg" alt="Keep画像" class="keep-image">
                         <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
                     </div>
                 </div>

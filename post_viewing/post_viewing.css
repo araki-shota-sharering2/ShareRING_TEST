@@ -148,22 +148,22 @@ header {
 
 .post-actions {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-top: 10px;
 }
 
-.post-actions button {
-    background-color: #4e5c94;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
+/* Keep画像のスタイル */
+.keep-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
 }
 
+/* スワイプガイド */
 .swipe-guide {
     position: absolute;
     bottom: 10px;
@@ -222,6 +222,7 @@ footer img {
     width: 25px;
     height: 25px;
 }
+
 /* 星のスタイル */
 .star {
     position: absolute;
