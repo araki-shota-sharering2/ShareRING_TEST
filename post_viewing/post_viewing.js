@@ -28,7 +28,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             const ringColor = post.ring_color || "#FFFFFF";
             postFrame.innerHTML = `
                 <div class="post-content">
-                    <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
+                    <div class="post-frame-wrapper">
+                        <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
+                        <img src="/assets/images/main/ring_keeper.svg" alt="Keep画像" class="keep-image"> <!-- Keep画像を右上に配置 -->
+                    </div>
                     <div class="post-details">
                         <div class="user-info">
                             <img class="user-avatar" src="${post.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像">
@@ -39,7 +42,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
                     </div>
                     <div class="post-actions">
-                    <img src="/assets/images/main/ring_keeper.svg" alt="Keep画像" class="keep-image">
                         <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
                     </div>
                 </div>
@@ -102,15 +104,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             fetchPosts(currentPage);
         }
     });
-        // 星をランダムに配置
-        const body = document.querySelector('body');
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.animationDuration = (Math.random() * 2 + 1) + 's';
-            body.appendChild(star);
+
+    // 星をランダムに配置
+    const body = document.querySelector("body");
+    for (let i = 0; i < 100; i++) {
+        const star = document.createElement("div");
+        star.classList.add("star");
+        star.style.top = Math.random() * 100 + "vh";
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.animationDuration = Math.random() * 2 + 1 + "s";
+        body.appendChild(star);
         }
 
     await fetchPosts(currentPage);
