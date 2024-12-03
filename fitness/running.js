@@ -10,26 +10,66 @@ let pathCoordinates = [];
 let polyline;
 
 function initMap() {
-    const initialPosition = { lat: 35.681236, lng: 139.767125 }; // 初期位置（例: 東京駅）
+    // 現在位置を取得
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const initialPosition = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
 
-    map = new google.maps.Map(document.getElementById("map"), {
-        center: initialPosition,
-        zoom: 15,
-    });
+                // 地図の初期化
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: initialPosition,
+                    zoom: 15,
+                });
 
-    marker = new google.maps.Marker({
-        position: initialPosition,
-        map: map,
-    });
+                // 現在位置にマーカーを配置
+                marker = new google.maps.Marker({
+                    position: initialPosition,
+                    map: map,
+                });
 
-    polyline = new google.maps.Polyline({
-        path: pathCoordinates,
-        geodesic: true,
-        strokeColor: "#FF0000",
-        strokeOpacity: 1.0,
-        strokeWeight: 3,
-    });
-    polyline.setMap(map);
+                // ポリラインを初期化
+                polyline = new google.maps.Polyline({
+                    path: pathCoordinates,
+                    geodesic: true,
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3,
+                });
+                polyline.setMap(map);
+            },
+            (error) => {
+                console.error("現在位置を取得できませんでした:", error);
+                alert("現在位置を取得できませんでした。初期位置は東京駅になります。");
+                // エラー時の初期位置（東京駅）
+                const fallbackPosition = { lat: 35.681236, lng: 139.767125 };
+
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: fallbackPosition,
+                    zoom: 15,
+                });
+
+                marker = new google.maps.Marker({
+                    position: fallbackPosition,
+                    map: map,
+                });
+
+                polyline = new google.maps.Polyline({
+                    path: pathCoordinates,
+                    geodesic: true,
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3,
+                });
+                polyline.setMap(map);
+            }
+        );
+    } else {
+        alert("位置情報が利用できません。");
+    }
 }
 
 document.getElementById("start-button").addEventListener("click", () => {
@@ -212,4 +252,3 @@ for (let i = 0; i < 100; i++) {
     star.style.animationDuration = (Math.random() * 2 + 1) + 's';
     body.appendChild(star);
 }
-
