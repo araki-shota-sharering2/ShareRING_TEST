@@ -56,16 +56,10 @@ window.initMap = async function () {
 
                 // カスタムHTMLを作成
                 const markerDiv = document.createElement("div");
-                markerDiv.style.width = "60px";
-                markerDiv.style.height = "60px";
-                markerDiv.style.borderRadius = "50%"; // 丸くする
-                markerDiv.style.overflow = "hidden";
-                markerDiv.style.border = "3px solid #4e5c94"; // フレーム色
+                markerDiv.classList.add("marker-frame");
                 markerDiv.style.backgroundImage = `url(${post.image_url})`;
-                markerDiv.style.backgroundSize = "cover";
-                markerDiv.style.backgroundPosition = "center";
 
-                // AdvancedMarkerElementを使用
+                // カスタムマーカーを作成
                 const marker = new google.maps.marker.AdvancedMarkerElement({
                     position: location,
                     map: map,
@@ -83,7 +77,7 @@ window.initMap = async function () {
                 });
 
                 // マーカーをクリックしたときに情報ウィンドウを表示
-                markerDiv.addEventListener("click", () => {
+                marker.addListener("click", () => {
                     infoWindow.open(map, marker);
                 });
             } catch (error) {
