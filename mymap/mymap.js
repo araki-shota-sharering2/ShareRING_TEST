@@ -1,8 +1,8 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     console.log("MYMAP画面が読み込まれました");
 
     // Google Map 初期化関数
-    window.initMap = async function() {
+    window.initMap = async function () {
         const mapOptions = {
             center: { lat: 35.6895, lng: 139.6917 }, // 初期位置（東京）
             zoom: 12

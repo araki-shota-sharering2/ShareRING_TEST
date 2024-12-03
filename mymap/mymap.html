@@ -39,38 +39,7 @@
     </footer>
 
     <!-- JavaScriptファイルの読み込み -->
-    <script>
-        // initMap関数をグローバルスコープで定義
-        window.initMap = function() {
-            const mapOptions = {
-                center: { lat: 35.6895, lng: 139.6917 }, // 東京の初期位置
-                zoom: 12
-            };
-            const map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-            // マップにピンを表示
-            fetch("/functions/mymap-handler", { method: "GET", credentials: "include" })
-                .then(response => {
-                    if (!response.ok) throw new Error("投稿データの取得に失敗しました");
-                    return response.json();
-                })
-                .then(posts => {
-                    posts.forEach(post => {
-                        const location = post.location.split(",").map(Number);
-                        new google.maps.Marker({
-                            position: { lat: location[0], lng: location[1] },
-                            map: map,
-                            title: post.caption || "投稿",
-                            icon: {
-                                url: post.image_url,
-                                scaledSize: new google.maps.Size(40, 40)
-                            }
-                        });
-                    });
-                })
-                .catch(error => console.error("エラー:", error));
-        };
-    </script>
+    <script src="/mymap/mymap.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&callback=initMap"></script>
 </body>
 </html>
