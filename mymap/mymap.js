@@ -76,9 +76,13 @@ window.initMap = async function () {
                     `,
                 });
 
-                // マーカーをクリックしたときに情報ウィンドウを表示
-                marker.addListener("click", () => {
-                    infoWindow.open(map, marker);
+                // マーカークリック用にイベントを設定
+                markerDiv.addEventListener("click", () => {
+                    infoWindow.open({
+                        anchor: marker,
+                        map,
+                        shouldFocus: false,
+                    });
                 });
             } catch (error) {
                 console.error("位置データのパースに失敗しました:", post.location, error);
