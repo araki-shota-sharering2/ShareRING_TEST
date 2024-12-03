@@ -20,7 +20,6 @@ function initializeGoogleMaps() {
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer();
 
-    // 現在地を取得して初期表示
     getCurrentLocation()
         .then(position => {
             const { latitude, longitude } = position;
@@ -35,7 +34,7 @@ function initializeGoogleMaps() {
         .catch(error => {
             console.error("現在地の取得に失敗しました:", error);
             map = new google.maps.Map(document.getElementById('map-container'), {
-                center: { lat: 35.6895, lng: 139.6917 }, // 東京をデフォルトに設定
+                center: { lat: 35.6895, lng: 139.6917 },
                 zoom: 14,
             });
             directionsRenderer.setMap(map);
@@ -67,9 +66,18 @@ async function getCurrentLocation() {
     });
 }
 
+// UUIDを生成
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
+}
+
 // 距離を計算
 function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // 地球の半径 (km)
+    const R = 6371;
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
     const a =
@@ -123,6 +131,7 @@ function displaySpots(spots) {
     spotList.innerHTML = '';
 
     spots.forEach(spot => {
+        const spotId = generateUUID(); // 各スポットにランダムなIDを生成
         const distance = calculateDistance(
             userLatitude,
             userLongitude,
@@ -138,28 +147,61 @@ function displaySpots(spots) {
         const listItem = document.createElement('div');
         listItem.className = 'spot-item';
         listItem.innerHTML = `
-            <h3>${spot.name}</h3>
-            <p>住所: ${spot.vicinity || "情報なし"}</p>
-            <p>距離: ${distance} km</p>
-            <p>評価: ${stars} (${rating} / 5, ${totalRatings}件)</p>
-            <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8` : '画像なし'}" alt="${spot.name}" />
-            <button onclick="openGoogleMapsRoute(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">Googleマップでルートを見る</button>
-            <button onclick="searchMore('${spot.name}')">もっと調べる</button>
+            <div class="spot-content">
+                <h3>${spot.name}</h3>
+                <p>住所: ${spot.vicinity || "情報なし"}</p>
+                <p>距離: ${distance} km</p>
+                <p>評価: ${stars} (${rating} / 5, ${totalRatings}件)</p>
+                <img src="${spot.photos && spot.photos[0] ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${spot.photos[0].photo_reference}&key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8` : '画像なし'}" alt="${spot.name}" />
+                <button class="keep-button" data-id="${spotId}" data-name="${spot.name}" data-address="${spot.vicinity || "情報なし"}">キープ</button>
+                <button onclick="openGoogleMapsRoute(${spot.geometry.location.lat}, ${spot.geometry.location.lng})">Googleマップでルートを見る</button>
+                <button onclick="searchMore('${spot.name}')">もっと調べる</button>
+            </div>
         `;
+
+        listItem.querySelector('.keep-button').addEventListener('click', (e) => {
+            const id = e.target.getAttribute('data-id');
+            const name = e.target.getAttribute('data-name');
+            const address = e.target.getAttribute('data-address');
+            handleKeepSpot(id, name, address);
+        });
+
         spotList.appendChild(listItem);
     });
+}
+
+// Keepボタンの処理
+async function handleKeepSpot(id, name, address) {
+    try {
+        const response = await fetch('/keep-handler', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id, name, address }),
+        });
+
+        if (response.ok) {
+            alert(`${name} をキープしました！`);
+        } else {
+            alert("キープに失敗しました");
+        }
+    } catch (error) {
+        console.error("キープ処理中にエラー:", error);
+        alert("キープ処理中に問題が発生しました");
+    }
 }
 
 // Googleマップでルートを表示
 function openGoogleMapsRoute(destLatitude, destLongitude) {
     const url = `https://www.google.com/maps/dir/?api=1&origin=${userLatitude},${userLongitude}&destination=${destLatitude},${destLongitude}&travelmode=walking`;
-    window.location.href = url; // 現在のタブで遷移
+    window.location.href = url;
 }
 
 // 「もっと調べる」ボタンの検索
 function searchMore(name) {
     const url = `https://www.google.com/search?q=${encodeURIComponent(name)}`;
-    window.location.href = url; // 現在のタブで遷移
+    window.location.href = url;
 }
 
 // 星をランダムに配置
