@@ -54,16 +54,15 @@ window.initMap = async function () {
             try {
                 const location = parseLocation(post.location); // POINT形式をパース
 
-                // カスタムHTMLを作成
-                const markerDiv = document.createElement("div");
-                markerDiv.classList.add("marker-frame");
-                markerDiv.style.backgroundImage = `url(${post.image_url})`;
-
-                // カスタムマーカーを作成
-                const marker = new google.maps.marker.AdvancedMarkerElement({
+                // 標準マーカーを作成
+                const marker = new google.maps.Marker({
                     position: location,
                     map: map,
-                    content: markerDiv,
+                    title: post.caption || "投稿",
+                    icon: {
+                        url: post.image_url, // 投稿画像をアイコンとして利用
+                        scaledSize: new google.maps.Size(50, 50), // サイズを調整
+                    },
                 });
 
                 // 情報ウィンドウを作成
@@ -77,7 +76,7 @@ window.initMap = async function () {
                 });
 
                 // マーカークリック用にイベントを設定
-                markerDiv.addEventListener("click", () => {
+                marker.addListener("click", () => {
                     // 現在表示中の情報ウィンドウを閉じる（必要に応じて追加）
                     if (window.currentInfoWindow) {
                         window.currentInfoWindow.close();
