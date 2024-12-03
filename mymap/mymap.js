@@ -49,21 +49,34 @@ window.initMap = async function () {
 
         const posts = await response.json();
 
-        // 各投稿にカスタムマーカーを追加
+        // 各投稿にカスタム円形マーカーを追加
         posts.forEach((post) => {
             try {
                 const location = parseLocation(post.location); // POINT形式をパース
 
-                // 標準マーカーを作成
-                const marker = new google.maps.Marker({
-                    position: location,
-                    map: map,
-                    title: post.caption || "投稿",
-                    icon: {
-                        url: post.image_url, // 投稿画像をアイコンとして利用
-                        scaledSize: new google.maps.Size(50, 50), // サイズを調整
-                    },
-                });
+                // カスタムHTML要素を作成
+                const markerDiv = document.createElement("div");
+                markerDiv.classList.add("custom-marker");
+                markerDiv.style.backgroundImage = `url(${post.image_url})`;
+
+                // オーバーレイを作成
+                const overlay = new google.maps.OverlayView();
+                overlay.onAdd = function () {
+                    const layer = this.getPanes().overlayMouseTarget;
+                    layer.appendChild(markerDiv);
+                };
+
+                overlay.onRemove = function () {
+                    markerDiv.parentNode.removeChild(markerDiv);
+                };
+
+                overlay.draw = function () {
+                    const point = this.getProjection().fromLatLngToDivPixel(new google.maps.LatLng(location));
+                    markerDiv.style.left = `${point.x - 25}px`; // 中心を調整
+                    markerDiv.style.top = `${point.y - 25}px`; // 中心を調整
+                };
+
+                overlay.setMap(map);
 
                 // 情報ウィンドウを作成
                 const infoWindow = new google.maps.InfoWindow({
@@ -75,19 +88,15 @@ window.initMap = async function () {
                     `,
                 });
 
-                // マーカークリック用にイベントを設定
-                marker.addListener("click", () => {
-                    // 現在表示中の情報ウィンドウを閉じる（必要に応じて追加）
+                // カスタムマーカーのクリックイベント
+                markerDiv.addEventListener("click", () => {
+                    // 現在表示中の情報ウィンドウを閉じる
                     if (window.currentInfoWindow) {
                         window.currentInfoWindow.close();
                     }
                     // 新しい情報ウィンドウを開く
-                    infoWindow.open({
-                        anchor: marker,
-                        map,
-                        shouldFocus: false,
-                    });
-                    // 現在の情報ウィンドウを記録
+                    infoWindow.setPosition(location);
+                    infoWindow.open(map);
                     window.currentInfoWindow = infoWindow;
                 });
             } catch (error) {
