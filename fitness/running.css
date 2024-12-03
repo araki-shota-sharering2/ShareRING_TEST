@@ -38,28 +38,19 @@ body {
     100% {
         opacity: 1;
     }
-}
-
-/* ヘッダー */
+}/* ヘッダー */
 header {
-    width: 100%; /* ヘッダーの横幅を画面幅いっぱいに設定 */
-    max-width: 375px; /* スマホ幅に固定 */
-    background-color: #394575; /* ヘッダー背景色 */
+    background-color: #394575;
     color: white;
-    text-align: center;
     padding: 15px;
-    font-size: 1.2rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    width: 100%;
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
     font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 0 auto; /* 中央揃え */
 }
-
 
 /* 戻るボタン */
 #back-button {
@@ -76,9 +67,7 @@ header {
 
 #back-button:hover {
     color: #cccccc;
-    transform: scale(1.1); /* ホバー時に少し拡大 */
 }
-
 /* タイマーと統計情報 */
 .stats-container {
     margin-top: 80px; /* ヘッダー分のスペースを確保 */
