@@ -173,7 +173,7 @@ function displaySpots(spots) {
 // Keepボタンの処理
 async function handleKeepSpot(id, name, address) {
     try {
-        const response = await fetch('/keep-handler', {
+        const response = await fetch('/keep-post-handler', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
