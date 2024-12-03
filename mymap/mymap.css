@@ -42,42 +42,42 @@ header {
     margin: 0 10px;
 }
 
-/* フッターのスタイル */
+/* フッター */
 footer {
-    width: 100%;
-    max-width: 375px;
-    background-color: #4e5c94; /* 濃い青紫色 */
-    color: white;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 8px;
+    background-color: #4e5c94;
     position: fixed;
     bottom: 0;
+    width: 100%;
+    max-width: 375px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 軽い影効果 */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* フッターリンクのスタイル */
+/* フッターのアイコンスタイル */
 footer a {
+    text-align: center;
     color: white;
     text-decoration: none;
-    text-align: center;
     padding: 10px 15px;
+}
+
+/* フッターのアクティブ状態を示す */
+footer a.active {
+    background-color: #394575;
+    border-top: 3px solid #ffffff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, padding 0.3s ease;
 }
 
 footer img {
     width: 25px;
     height: 25px;
-}
-
-footer a.active {
-    background-color: #394575; /* アクティブリンクの背景色 */
-    border-top: 3px solid #ffffff;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, padding 0.3s ease;
 }
 
 /* マップ表示エリアのスタイル */
@@ -166,4 +166,37 @@ footer a.active {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 影を追加 */
     position: absolute;
     cursor: pointer;
+}
+/* 戻るボタン */
+#back-button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#back-button:hover {
+    color: #cccccc;
+    transform: scale(1.1); /* ホバー時に少し拡大 */
+}
+
+header {
+    background-color: #394575; /* ヘッダー背景色 */
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
