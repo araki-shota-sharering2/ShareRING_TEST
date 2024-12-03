@@ -121,7 +121,7 @@ header {
     position: absolute;
     top: 5px; /* 投稿画像の右上に配置 */
     right: 5px;
-    background: url('/assets/images/main/ring_keeper.svg') no-repeat center center;
+    background: url('/assets/images/keep/delete.svg') no-repeat center center;
     background-size: cover;
     border: none;
     cursor: pointer;
