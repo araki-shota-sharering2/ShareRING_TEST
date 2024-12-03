@@ -64,57 +64,30 @@ window.initMap = async function () {
             try {
                 const location = parseLocation(post.location); // POINT形式をパース
 
-                // カスタムアイコンを作成（円形フレーム）
-                const iconCanvas = document.createElement("canvas");
-                const context = iconCanvas.getContext("2d");
-                iconCanvas.width = 60;
-                iconCanvas.height = 60;
+                // マーカーを追加（直接画像を使用）
+                const marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    title: post.caption || "投稿",
+                    icon: {
+                        url: post.image_url, // 画像URLをそのまま使用
+                        scaledSize: new google.maps.Size(40, 40), // サイズ調整
+                    },
+                });
 
-                // 円フレームを描画
-                context.beginPath();
-                context.arc(30, 30, 29, 0, 2 * Math.PI); // 外側の円
-                context.fillStyle = post.ring_color || "#ff0000"; // フレーム色
-                context.fill();
-
-                // 中央に投稿画像を描画
-                const img = new Image();
-                img.crossOrigin = "anonymous"; // クロスオリジン設定
-                img.src = post.image_url;
-                img.onload = () => {
-                    context.save();
-                    context.beginPath();
-                    context.arc(30, 30, 25, 0, 2 * Math.PI); // 内側の円
-                    context.clip();
-                    context.drawImage(img, 5, 5, 50, 50); // 中央に表示
-                    context.restore();
-
-                    // マーカーを追加
-                    new google.maps.Marker({
-                        position: location,
-                        map: map,
-                        title: post.caption || "投稿",
-                        icon: {
-                            url: iconCanvas.toDataURL(),
-                            scaledSize: new google.maps.Size(40, 40),
-                        },
-                    }).addListener("click", function () {
-                        // 情報ウィンドウを表示
-                        const infoWindow = new google.maps.InfoWindow({
-                            content: `
-                                <div>
-                                    <h3>${post.caption || "投稿"}</h3>
-                                    <p>日時: ${new Date(post.created_at).toLocaleString()}</p>
-                                    <p>${post.address || "住所情報なし"}</p>
-                                </div>
-                            `,
-                        });
-                        infoWindow.open(map, this);
+                // ピンをクリックしたときの情報ウィンドウ
+                marker.addListener("click", function () {
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `
+                            <div>
+                                <h3>${post.caption || "投稿"}</h3>
+                                <p>日時: ${new Date(post.created_at).toLocaleString()}</p>
+                                <p>${post.address || "住所情報なし"}</p>
+                            </div>
+                        `,
                     });
-                };
-
-                img.onerror = () => {
-                    console.error("画像の読み込みに失敗しました:", post.image_url);
-                };
+                    infoWindow.open(map, marker);
+                });
             } catch (error) {
                 console.error("位置データのパースに失敗しました:", post.location, error);
             }
