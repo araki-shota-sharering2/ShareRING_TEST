@@ -22,9 +22,12 @@ export async function onRequestGet(context) {
 
         const userId = sessionResult.user_id;
 
-        // FITNESSアクティビティテーブルから運動データを取得
+        // FITNESSアクティビティテーブルから運動データを取得（歩数を除外）
         const activitiesResult = await env.DB.prepare(
-            "SELECT activity_type, duration, distance, calories_burned, steps, recorded_at FROM fitness_activities WHERE user_id = ? ORDER BY recorded_at DESC"
+            `SELECT activity_type, duration, distance, calories_burned, recorded_at 
+             FROM fitness_activities 
+             WHERE user_id = ? 
+             ORDER BY recorded_at DESC`
         ).bind(userId).all();
 
         return new Response(JSON.stringify(activitiesResult.results), {

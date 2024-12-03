@@ -19,13 +19,23 @@ function displayActivities(activities) {
     activities.forEach((activity) => {
         const listItem = document.createElement("li");
 
+        // 日付
         const date = document.createElement("div");
         date.className = "date";
         date.textContent = `日付: ${new Date(activity.recorded_at).toLocaleDateString()}`;
 
+        // 運動内容
         const details = document.createElement("div");
         details.className = "details";
-        details.textContent = `種類: ${activity.activity_type} | 時間: ${activity.duration}分 | 距離: ${activity.distance} km | カロリー: ${activity.calories_burned} kcal | 歩数: ${activity.steps}`;
+
+        // 詳細表示
+        const formattedDetails = `
+            種類: ${activity.activity_type}<br>
+            時間: ${activity.duration} 分<br>
+            距離: ${activity.distance ? activity.distance.toFixed(2) + " km" : "データなし"}<br>
+            カロリー: ${activity.calories_burned.toFixed(1)} kcal
+        `;
+        details.innerHTML = formattedDetails;
 
         listItem.appendChild(date);
         listItem.appendChild(details);
