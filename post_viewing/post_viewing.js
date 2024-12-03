@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const postId = event.target.getAttribute("data-post-id");
 
             try {
-                const response = await fetch("/keep-handler", {
+                const response = await fetch("/keep-post-handler", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
