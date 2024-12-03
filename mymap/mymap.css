@@ -100,3 +100,15 @@ footer a {
         height: calc(100vh - 100px); /* ヘッダーとフッターを除いた高さ */
     }
 }
+/* 円形マーカーのスタイル */
+.custom-marker {
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%; /* 円形にする */
+    border: 2px solid #fff; /* 白い枠線 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 影を追加 */
+    position: absolute;
+    cursor: pointer;
+}
