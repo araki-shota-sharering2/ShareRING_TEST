@@ -2,18 +2,25 @@ let map;
 
 async function initMap() {
   try {
-    const response = await fetch('/mymap-handler');
+    const response = await fetch('/mymap-handler'); // ハンドラーからデータを取得
     if (!response.ok) throw new Error('Failed to fetch map data');
 
-    const data = await response.json();
+    const posts = await response.json();
 
-    const center = { lat: data.center.lat, lng: data.center.lng };
+    if (!posts.length) {
+      alert('投稿が見つかりませんでした。');
+      return;
+    }
+
+    // 初期の地図の中心を最初の投稿に設定
+    const center = { lat: posts[0].location.lat, lng: posts[0].location.lng };
     map = new google.maps.Map(document.getElementById("map"), {
       zoom: 12,
       center: center,
     });
 
-    data.posts.forEach(post => {
+    // 各投稿を地図上に表示
+    posts.forEach(post => {
       const marker = new google.maps.Marker({
         position: { lat: post.location.lat, lng: post.location.lng },
         map,
@@ -46,4 +53,5 @@ document.getElementById('close-details').addEventListener('click', () => {
   document.getElementById('details-panel').classList.add('hidden');
 });
 
+// 地図を初期化
 initMap();
