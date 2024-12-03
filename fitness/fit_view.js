@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await fetch("/get-fitness-activities");
         if (response.ok) {
             const activities = await response.json();
-            displayActivities(activities);
+            displaySummary(activities);
+            setupDetailsButton(activities);
         } else {
             console.error("データ取得エラー:", response.status);
         }
@@ -26,18 +27,27 @@ function formatDuration(minutes) {
     return `${hours}時間${remainingMinutes}分${seconds}秒`;
 }
 
-function displayActivities(activities) {
-    // 合計値の計算
+function displaySummary(activities) {
     const totalCalories = activities.reduce((sum, a) => sum + a.calories_burned, 0).toFixed(1);
     const totalDistance = activities.reduce((sum, a) => sum + (a.distance || 0), 0).toFixed(2);
     const totalDuration = activities.reduce((sum, a) => sum + parseDuration(a.duration), 0);
 
-    // サマリーの表示
     document.getElementById("total-calories").textContent = `${totalCalories} kcal`;
     document.getElementById("total-distance").textContent = `${totalDistance} km`;
     document.getElementById("total-duration").textContent = formatDuration(totalDuration);
+}
 
-    // アクティビティ一覧の表示
+function setupDetailsButton(activities) {
+    const detailsButton = document.getElementById("details-button");
+    detailsButton.addEventListener("click", () => {
+        const resultsContainer = document.querySelector(".results-container");
+        resultsContainer.style.display = "block";
+        detailsButton.style.display = "none";
+        displayActivities(activities);
+    });
+}
+
+function displayActivities(activities) {
     const resultsList = document.getElementById("results-list");
     resultsList.innerHTML = "";
 
