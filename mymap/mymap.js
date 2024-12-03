@@ -34,18 +34,6 @@ window.initMap = async function () {
         console.error("ブラウザが位置情報取得をサポートしていません");
     }
 
-    // POINT形式を緯度と経度に変換する関数
-    function parseLocation(pointString) {
-        const match = pointString.match(/POINT\(([\d.-]+) ([\d.-]+)\)/);
-        if (match) {
-            return {
-                lng: parseFloat(match[1]), // 経度
-                lat: parseFloat(match[2]), // 緯度
-            };
-        }
-        throw new Error("無効なPOINT形式のデータです: " + pointString);
-    }
-
     // サーバーから投稿データを取得
     try {
         const response = await fetch("/mymap-handler", {
@@ -59,24 +47,31 @@ window.initMap = async function () {
 
         const posts = await response.json();
 
-        // 各投稿にピンを表示
+        // 各投稿にカスタムマーカーを追加
         posts.forEach((post) => {
             try {
                 const location = parseLocation(post.location); // POINT形式をパース
 
-                // マーカーを追加（直接画像を使用）
-                const marker = new google.maps.Marker({
+                // カスタムHTMLを作成
+                const markerDiv = document.createElement("div");
+                markerDiv.style.width = "60px";
+                markerDiv.style.height = "60px";
+                markerDiv.style.borderRadius = "50%"; // 丸くする
+                markerDiv.style.overflow = "hidden";
+                markerDiv.style.border = "3px solid #4e5c94"; // フレーム色
+                markerDiv.style.backgroundImage = `url(${post.image_url})`;
+                markerDiv.style.backgroundSize = "cover";
+                markerDiv.style.backgroundPosition = "center";
+
+                // AdvancedMarkerElementを使用
+                const marker = new google.maps.marker.AdvancedMarkerElement({
                     position: location,
                     map: map,
-                    title: post.caption || "投稿",
-                    icon: {
-                        url: post.image_url, // フレーム付き画像を直接使用
-                        scaledSize: new google.maps.Size(60, 60), // サイズ調整
-                    },
+                    content: markerDiv, // カスタムHTMLをマーカーに設定
                 });
 
-                // ピンをクリックしたときの情報ウィンドウ
-                marker.addListener("click", function () {
+                // マーカーをクリックしたときの情報ウィンドウ
+                markerDiv.addEventListener("click", function () {
                     const infoWindow = new google.maps.InfoWindow({
                         content: `
                             <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
@@ -98,9 +93,16 @@ window.initMap = async function () {
     } catch (error) {
         console.error("エラー:", error);
     }
-};
 
-// DOMContentLoadedイベントリスナーで初期化
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOMが読み込まれました");
-});
+    // POINT形式を緯度と経度に変換する関数
+    function parseLocation(pointString) {
+        const match = pointString.match(/POINT\(([\d.-]+) ([\d.-]+)\)/);
+        if (match) {
+            return {
+                lng: parseFloat(match[1]), // 経度
+                lat: parseFloat(match[2]), // 緯度
+            };
+        }
+        throw new Error("無効なPOINT形式のデータです: " + pointString);
+    }
+};

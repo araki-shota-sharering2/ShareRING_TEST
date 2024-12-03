@@ -74,13 +74,15 @@ footer a {
     color: #555; /* サブ情報を濃いグレーに */
 }
 
-/* マーカー画像のフレーム */
+/* カスタムマーカーのフレーム */
 .marker-frame {
-    border: 3px solid #4e5c94; /* 青紫のフレーム */
-    border-radius: 50%; /* 丸くする */
-    overflow: hidden;
-    width: 60px; /* フレームのサイズ */
+    width: 60px; /* サイズを指定 */
     height: 60px;
+    border: 3px solid #4e5c94; /* フレームの色を青紫色に */
+    border-radius: 50%; /* 丸くする */
+    overflow: hidden; /* フレームの外側を隠す */
+    background-size: cover; /* 背景画像を中央に調整 */
+    background-position: center; /* 背景を中央に配置 */
 }
 
 /* スマホ向けのレスポンシブ調整 */
