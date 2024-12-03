@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("MYMAP画面が読み込まれました");
 
-    // Google Map 初期化関数
+    // Google Map 初期化関数をグローバルスコープで定義
     window.initMap = async function () {
         const mapOptions = {
             center: { lat: 35.6895, lng: 139.6917 }, // 初期位置（東京）
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // 各投稿にピンを表示
             posts.forEach(post => {
-                const location = post.location.split(",").map(Number); // 緯度と経度を分割して数値に変換
+                const location = post.location.split(",").map(Number);
                 new google.maps.Marker({
                     position: {
                         lat: location[0],
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     map: map,
                     title: post.caption || "投稿",
                     icon: {
-                        url: post.image_url, // 投稿画像をアイコンに設定
+                        url: post.image_url,
                         scaledSize: new google.maps.Size(40, 40)
                     }
                 });
