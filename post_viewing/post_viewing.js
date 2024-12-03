@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="post-content">
                     <div class="post-frame-wrapper">
                         <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
-                        <img src="/assets/images/main/ring_keeper.svg" alt="Keep画像" class="keep-image"> <!-- Keep画像を右上に配置 -->
+                        <img src="/assets/images/main/ring_keeper.svg" alt="Keep画像" class="keep-image" data-post-id="${post.post_id}">
                     </div>
                     <div class="post-details">
                         <div class="user-info">
@@ -47,7 +47,36 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             `;
             addSwipeFunctionality(postFrame, post.address);
+            setupKeepFeature(postFrame); // Keep機能をセットアップ
             timeline.appendChild(postFrame);
+        });
+    }
+
+    function setupKeepFeature(postFrame) {
+        const keepImage = postFrame.querySelector(".keep-image");
+        keepImage.addEventListener("click", async (event) => {
+            const postId = event.target.getAttribute("data-post-id");
+
+            try {
+                const response = await fetch("/keep-handler", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ postId }),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(result.message || "投稿をKeepしました！");
+                } else {
+                    const errorResult = await response.json();
+                    alert(errorResult.error || "Keepに失敗しました");
+                }
+            } catch (error) {
+                console.error("Keep処理中のエラー:", error);
+                alert("サーバーエラーが発生しました。もう一度お試しください。");
+            }
         });
     }
 
@@ -90,12 +119,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const baseURL = "https://www.google.com/maps/dir/?api=1";
         const params = new URLSearchParams({
             origin: "My+Location",
-            destination: address, // 住所のエンコードは不要。URLSearchParamsが自動エンコード
-            travelmode: "walking", // 徒歩案内
+            destination: address,
+            travelmode: "walking",
         });
         const url = `${baseURL}&${params.toString()}`;
-        console.log(`Generated Google Maps URL: ${url}`); // デバッグ用にURLを出力
-        window.location.href = url; // 同じタブで開く
+        console.log(`Generated Google Maps URL: ${url}`);
+        window.location.href = url;
     }
 
     loadMoreButton.addEventListener("click", () => {
@@ -114,7 +143,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         star.style.left = Math.random() * 100 + "vw";
         star.style.animationDuration = Math.random() * 2 + 1 + "s";
         body.appendChild(star);
-        }
+    }
 
     await fetchPosts(currentPage);
 });
