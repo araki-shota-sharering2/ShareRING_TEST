@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function fetchKeeps(page = 1) {
         try {
-            const response = await fetch(`/functions/mykeep-handler?page=${page}`, {
+            const response = await fetch(`/mykeep-handler?page=${page}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });
