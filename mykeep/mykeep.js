@@ -1,24 +1,34 @@
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("ホーム画面が読み込まれました");
+document.addEventListener("DOMContentLoaded", async () => {
+    const keepList = document.querySelector(".keep-list");
 
-    // 現在のURLに基づいてフッターリンクを強調
-    const path = window.location.pathname;
-    const footerLinks = document.querySelectorAll("footer a");
-
-    footerLinks.forEach(link => {
-        if (link.getAttribute("href") === path) {
-            link.classList.add("active");
+    async function fetchKeeps() {
+        try {
+            const response = await fetch("/functions/mykeep-handler", { method: "GET" });
+            if (response.ok) {
+                const posts = await response.json();
+                displayKeeps(posts);
+            } else {
+                console.error("キープ投稿の取得に失敗しました");
+            }
+        } catch (error) {
+            console.error("キープ投稿の取得中にエラーが発生しました:", error);
         }
-    });
-
-    // 星をランダムに配置
-    const body = document.querySelector('body');
-    for (let i = 0; i < 100; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        star.style.top = Math.random() * 100 + 'vh';
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = (Math.random() * 2 + 1) + 's';
-        body.appendChild(star);
     }
+
+    function displayKeeps(posts) {
+        posts.forEach((post) => {
+            const postFrame = document.createElement("div");
+            postFrame.className = "post-frame";
+
+            postFrame.innerHTML = `
+                <img src="${post.image_url}" alt="投稿画像">
+                <p>${post.caption || "コメントなし"}</p>
+                <p>投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
+                <p>場所: ${post.address || "不明"}</p>
+            `;
+            keepList.appendChild(postFrame);
+        });
+    }
+
+    await fetchKeeps();
 });
