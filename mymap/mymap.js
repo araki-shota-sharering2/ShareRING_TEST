@@ -1,57 +1,44 @@
-let map;
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("MYMAP画面が読み込まれました");
 
-async function initMap() {
-    try {
-        const response = await fetch('/mymap-handler'); // サーバーハンドラーからデータを取得
-        if (!response.ok) throw new Error('投稿データの取得に失敗しました');
+    // Google Map 初期化関数
+    window.initMap = async function() {
+        const mapOptions = {
+            center: { lat: 35.6895, lng: 139.6917 }, // 初期位置（東京）
+            zoom: 12
+        };
+        const map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-        const posts = await response.json();
-
-        if (!posts.length) {
-            alert('投稿データがありません');
-            return;
-        }
-
-        // 初期地図の中心を最初の投稿の位置に設定
-        const center = { lat: posts[0].location.lat, lng: posts[0].location.lng };
-        map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 12,
-            center: center,
-        });
-
-        // 地図に投稿データを表示
-        posts.forEach(post => {
-            const marker = new google.maps.Marker({
-                position: { lat: post.location.lat, lng: post.location.lng },
-                map,
-                icon: {
-                    url: post.image_url,
-                    scaledSize: new google.maps.Size(50, 50),
-                },
+        // サーバーから投稿データを取得
+        try {
+            const response = await fetch("/mymap-handler", {
+                method: "GET",
+                credentials: "include" // セッション情報を送信
             });
 
-            marker.addListener('click', () => showPostDetails(post));
-        });
-    } catch (error) {
-        console.error("地図の読み込みエラー:", error.message);
-    }
-}
+            if (!response.ok) {
+                throw new Error("投稿データの取得に失敗しました");
+            }
 
-function showPostDetails(post) {
-    const detailsPanel = document.getElementById('details-panel');
-    const detailsImage = document.getElementById('details-image');
-    const postCaption = document.getElementById('post-caption');
-    const postDate = document.getElementById('post-date');
+            const posts = await response.json();
 
-    detailsImage.src = post.image_url;
-    postCaption.textContent = `キャプション: ${post.caption || 'なし'}`;
-    postDate.textContent = `投稿日: ${new Date(post.created_at).toLocaleString()}`;
-    detailsPanel.classList.remove('hidden');
-}
-
-document.getElementById('close-details').addEventListener('click', () => {
-    document.getElementById('details-panel').classList.add('hidden');
+            // 各投稿にピンを表示
+            posts.forEach(post => {
+                new google.maps.Marker({
+                    position: {
+                        lat: parseFloat(post.location.split(",")[0]),
+                        lng: parseFloat(post.location.split(",")[1])
+                    },
+                    map: map,
+                    title: post.caption || "投稿",
+                    icon: {
+                        url: post.image_url, // 投稿画像をアイコンに設定
+                        scaledSize: new google.maps.Size(40, 40)
+                    }
+                });
+            });
+        } catch (error) {
+            console.error("エラー:", error);
+        }
+    };
 });
-
-// 地図を初期化
-initMap();

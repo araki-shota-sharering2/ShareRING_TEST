@@ -1,37 +1,48 @@
-#map {
-    width: 100%;
+/* リセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    max-width: 375px;
+    margin: 0 auto;
+    background-color: #0d0d2b;
+    color: #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: 100vh;
-  }
-  
-  #details-panel {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    text-align: center;
-    z-index: 1000;
-  }
-  
-  #details-panel img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  #close-details {
-    padding: 10px 20px;
-    background-color: #007bff;
+    overflow: hidden;
+}
+
+header, footer {
+    width: 100%;
+    max-width: 375px;
+    background-color: #4e5c94;
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header img, footer img {
+    width: 24px;
+    height: 24px;
+}
+
+#map {
+    flex: 1;
+    width: 100%;
+    height: 400px;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
