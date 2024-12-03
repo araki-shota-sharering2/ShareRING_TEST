@@ -57,28 +57,36 @@ export async function onRequestPost(context) {
         }
 
         const groupImageUrl = `https://pub-ae948fe5f8c746a298df11804f9d8839.r2.dev/${r2Key}`;
-// 7桁のランダムなグループIDを生成
-const randomGroupId = Math.floor(1000000 + Math.random() * 9000000);
 
-// groupIdを整数として処理
-let groupId;
-try {
-    const createGroupQuery = `
-        INSERT INTO user_groups (group_id, group_name, description, group_image_url, created_by)
-        VALUES (?, ?, ?, ?, ?)
-    `;
-    const result = await env.DB.prepare(createGroupQuery)
-        .bind(randomGroupId, groupName, description, groupImageUrl, userId)
-        .run();
-    groupId = randomGroupId;
-} catch (error) {
-    console.error("グループ作成エラー:", error);
-    return new Response(JSON.stringify({ message: "グループ作成に失敗しました。" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-    });
-}
+        // 7桁のランダムな英字IDを生成
+        const generateRandomGroupId = () => {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            let result = '';
+            for (let i = 0; i < 7; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        };
 
+        const randomGroupId = generateRandomGroupId();
+
+        let groupId;
+        try {
+            const createGroupQuery = `
+                INSERT INTO user_groups (group_id, group_name, description, group_image_url, created_by)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+            const result = await env.DB.prepare(createGroupQuery)
+                .bind(randomGroupId, groupName, description, groupImageUrl, userId)
+                .run();
+            groupId = randomGroupId;
+        } catch (error) {
+            console.error("グループ作成エラー:", error);
+            return new Response(JSON.stringify({ message: "グループ作成に失敗しました。" }), {
+                status: 500,
+                headers: { "Content-Type": "application/json" },
+            });
+        }
 
         return new Response(JSON.stringify({ message: "グループが正常に作成されました", groupId }), {
             status: 200,
