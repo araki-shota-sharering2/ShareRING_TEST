@@ -5,7 +5,7 @@ window.initMap = async function () {
     const mapOptions = {
         center: { lat: 35.6895, lng: 139.6917 }, // 東京
         zoom: 12, // 地図の初期ズームレベル
-        mapId: "175ab0da53e477c", // 修正済みのマップID
+        mapId: "175ab0da53e477c", // マップID
     };
 
     // 地図を初期化
@@ -65,11 +65,34 @@ window.initMap = async function () {
                 markerDiv.style.backgroundSize = "cover";
                 markerDiv.style.backgroundPosition = "center";
 
-                // カスタムマーカーを追加
-                new google.maps.marker.AdvancedMarkerElement({
+                // カスタムマーカーを作成
+                const marker = new google.maps.marker.AdvancedMarkerElement({
                     position: location,
                     map: map,
                     content: markerDiv,
+                });
+
+                // 情報ウィンドウを作成
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
+                            <h3 style="margin: 0; font-size: 16px; font-weight: bold; color: #4e5c94;">
+                                ${post.caption || "投稿"}
+                            </h3>
+                            <p style="margin: 5px 0; font-size: 14px; color: #555;">
+                                日時: ${new Date(post.created_at).toLocaleString()}
+                            </p>
+                        </div>
+                    `,
+                });
+
+                // マーカーをクリックしたときに情報ウィンドウを表示
+                markerDiv.addEventListener("click", () => {
+                    infoWindow.open({
+                        anchor: marker,
+                        map,
+                        shouldFocus: false,
+                    });
                 });
             } catch (error) {
                 console.error("位置データのパースに失敗しました:", post.location, error);
