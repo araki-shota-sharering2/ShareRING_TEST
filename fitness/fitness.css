@@ -71,21 +71,40 @@ p {
   margin-bottom: 15px;
 }
 
-.input-group {
+/* 身長・体重・保存を1行に配置 */
+.input-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* ラベルや入力欄の高さを揃える */
+  gap: 10px; /* 各項目の間隔 */
   margin-bottom: 15px;
-  text-align: left;
 }
 
-label {
+.input-group {
+  flex: 1; /* 均等にスペースを割り当てる */
+}
+
+.input-group label {
   display: block;
-  font-size: 14px;
-  margin-bottom: 5px;
+  font-size: 12px; /* 少し小さめにして省スペース */
   color: #ccc;
+  margin-bottom: 5px;
+}
+.save-button {
+  padding: 10px 15px;
+  background: linear-gradient(135deg, #ffdb4d, #e8b800);
+  color: #1c1c1c;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  align-self: stretch; /* 高さを他の入力フィールドに揃える */
 }
 
 input {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   font-size: 14px;
   border: 1px solid #555;
   border-radius: 4px;
@@ -107,6 +126,9 @@ button {
 }
 
 button:hover {
+  background: linear-gradient(135deg, #e8b800, #d1a200);
+}
+.save-button:hover {
   background: linear-gradient(135deg, #e8b800, #d1a200);
 }
 

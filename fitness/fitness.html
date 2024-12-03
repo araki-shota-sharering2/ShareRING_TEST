@@ -13,11 +13,10 @@
         <h1>健康情報と運動結果</h1>
     </header>
 
-    <!-- 健康情報入力部分 -->
     <div class="container">
         <h2>健康情報の管理</h2>
         <p>以下に身長と体重を入力してください。既存のデータがあれば表示されます。</p>
-        <form id="health-form">
+        <form id="health-form" class="input-row">
             <div class="input-group">
                 <label for="height">身長 (cm):</label>
                 <input type="number" id="height" placeholder="例: 170" required>
@@ -26,10 +25,11 @@
                 <label for="weight">体重 (kg):</label>
                 <input type="number" id="weight" placeholder="例: 60" required>
             </div>
-            <button type="submit">保存</button>
+            <button type="submit" class="save-button">保存</button>
         </form>
         <p id="response-message"></p>
     </div>
+    
 
     <!-- ランニング開始部分 -->
     <div class="container">
