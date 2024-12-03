@@ -76,11 +76,11 @@ async function fetchGroups() {
             li.appendChild(img);
             li.appendChild(name);
 
-            // クリックイベントを追加してグループIDを渡す
-            li.addEventListener("click", () => {
-                // mygroup_viewing ページにグループIDを渡して遷移
-                window.location.href = `/mygroup_viewing?groupId=${group.group_id}`;
-            });
+// クリックイベントを追加してグループIDを渡す
+li.addEventListener("click", () => {
+    // mygroup_viewing.html ページにグループIDを渡して遷移
+    window.location.href = `/mygroup/mygroup_viewing.html?groupId=${group.group_id}`;
+});
 
             // リストにアイテムを追加
             groupList.appendChild(li);
