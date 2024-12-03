@@ -73,6 +73,7 @@ export async function onRequestPost(context) {
                 .bind(groupName, description, groupImageUrl, userId)
                 .run();
             groupId = result.lastInsertRowId;
+            console.log("Group created with ID:", groupId);
         } catch (error) {
             console.error("グループ作成エラー:", error);
             return new Response(JSON.stringify({ message: "グループ作成に失敗しました。" }), {
@@ -86,7 +87,7 @@ export async function onRequestPost(context) {
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
-        console.error("エラー:", error);
+        console.error("全体エラー:", error);
         return new Response(JSON.stringify({ message: "グループ作成に失敗しました。", error: error.message }), {
             status: 500,
             headers: { "Content-Type": "application/json" },

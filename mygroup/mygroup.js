@@ -35,10 +35,10 @@ document.getElementById("group-form").addEventListener("submit", async (event) =
 
             if (registerResponse.ok) {
                 alert("グループが正常に作成され、メンバー登録が完了しました");
-                // グループリストを更新
                 fetchGroups();
             } else {
                 const registerError = await registerResponse.json();
+                console.error("メンバー登録エラー:", registerError);
                 alert(`メンバー登録エラー: ${registerError.message}`);
             }
         } else {

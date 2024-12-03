@@ -47,9 +47,10 @@ export async function onRequestPost(context) {
                 INSERT INTO user_group_members (group_id, user_id)
                 VALUES (?, ?)
             `;
+            console.log("Executing Query:", addMemberQuery, "with groupId:", groupId, "and userId:", userId);
             await env.DB.prepare(addMemberQuery).bind(groupId, userId).run();
         } catch (error) {
-            console.error("メンバー追加エラー:", error);
+            console.error("メンバー登録クエリエラー:", error);
             return new Response(JSON.stringify({ message: "グループメンバー登録に失敗しました。" }), {
                 status: 500,
                 headers: { "Content-Type": "application/json" },
@@ -61,7 +62,7 @@ export async function onRequestPost(context) {
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
-        console.error("エラー:", error);
+        console.error("全体エラー:", error);
         return new Response(JSON.stringify({ message: "グループメンバー登録に失敗しました。", error: error.message }), {
             status: 500,
             headers: { "Content-Type": "application/json" },
