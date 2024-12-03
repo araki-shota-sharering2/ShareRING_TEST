@@ -105,14 +105,15 @@ header {
     width: 80%;
     max-width: 300px;
     height: auto;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 4px solid transparent;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    aspect-ratio: 1 / 1; /* 正方形を維持 */
+    object-fit: cover; /* 画像全体が収まるように調整 */
+    border-radius: 50%; /* 円形にする */
+    border: 4px solid transparent; /* 枠線を保持 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* 影を追加 */
     margin-bottom: 10px;
-    position: relative; /* Keep画像を右上に配置するための相対位置指定 */
+    position: relative; /* Keep画像を配置するため */
 }
+
 
 /* Keep画像のスタイル */
 .keep-image {
