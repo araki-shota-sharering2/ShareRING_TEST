@@ -19,8 +19,8 @@ body {
     overflow: hidden;
 }
 
-/* ヘッダーとフッターのスタイル */
-header, footer {
+/* ヘッダーのスタイル */
+header {
     width: 100%;
     max-width: 375px;
     background-color: #4e5c94; /* 濃い青紫色 */
@@ -32,10 +32,52 @@ header, footer {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 軽い影効果 */
 }
 
-/* ヘッダーとフッターのアイコンサイズ */
-header img, footer img {
+.header-logo img {
+    width: 120px; /* ロゴのサイズ調整 */
+}
+
+.header-icons img {
     width: 24px;
     height: 24px;
+    margin: 0 10px;
+}
+
+/* フッターのスタイル */
+footer {
+    width: 100%;
+    max-width: 375px;
+    background-color: #4e5c94; /* 濃い青紫色 */
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 軽い影効果 */
+}
+
+/* フッターリンクのスタイル */
+footer a {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 10px 15px;
+}
+
+footer img {
+    width: 25px;
+    height: 25px;
+}
+
+footer a.active {
+    background-color: #394575; /* アクティブリンクの背景色 */
+    border-top: 3px solid #ffffff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, padding 0.3s ease;
 }
 
 /* マップ表示エリアのスタイル */
@@ -45,13 +87,6 @@ header img, footer img {
     height: calc(100vh - 120px); /* ヘッダーとフッターを除いた高さ */
     background-color: #e0e0e0; /* ロード中に表示される背景色 */
     border: 1px solid #ccc; /* 薄い境界線 */
-}
-
-/* フッターリンクのスタイル */
-footer a {
-    color: white;
-    text-decoration: none;
-    text-align: center;
 }
 
 /* 情報ウィンドウのスタイル */
@@ -100,6 +135,7 @@ footer a {
         height: calc(100vh - 100px); /* ヘッダーとフッターを除いた高さ */
     }
 }
+
 /* 円形マーカーのスタイル */
 .custom-marker {
     width: 50px;
