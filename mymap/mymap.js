@@ -3,10 +3,12 @@ window.initMap = async function () {
     console.log("MYMAP画面が読み込まれました");
 
     const mapOptions = {
+        center: { lat: 35.6895, lng: 139.6917 }, // 東京
         zoom: 12, // 地図の初期ズームレベル
+        mapId: "175ab0da53e477c", // 修正済みのマップID
     };
 
-    // 地図を初期化（現在位置は後で設定）
+    // 地図を初期化
     const map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
     // 現在位置を取得
@@ -63,35 +65,18 @@ window.initMap = async function () {
                 markerDiv.style.backgroundSize = "cover";
                 markerDiv.style.backgroundPosition = "center";
 
-                // AdvancedMarkerElementを使用
-                const marker = new google.maps.marker.AdvancedMarkerElement({
+                // カスタムマーカーを追加
+                new google.maps.marker.AdvancedMarkerElement({
                     position: location,
                     map: map,
-                    content: markerDiv, // カスタムHTMLをマーカーに設定
-                });
-
-                // マーカーをクリックしたときの情報ウィンドウ
-                markerDiv.addEventListener("click", function () {
-                    const infoWindow = new google.maps.InfoWindow({
-                        content: `
-                            <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
-                                <h3 style="margin: 0; font-size: 16px; font-weight: bold; color: #4e5c94;">
-                                    ${post.caption || "投稿"}
-                                </h3>
-                                <p style="margin: 5px 0; font-size: 14px; color: #555;">
-                                    日時: ${new Date(post.created_at).toLocaleString()}
-                                </p>
-                            </div>
-                        `,
-                    });
-                    infoWindow.open(map, marker);
+                    content: markerDiv,
                 });
             } catch (error) {
                 console.error("位置データのパースに失敗しました:", post.location, error);
             }
         });
     } catch (error) {
-        console.error("エラー:", error);
+        console.error("投稿データの取得に失敗:", error);
     }
 
     // POINT形式を緯度と経度に変換する関数
