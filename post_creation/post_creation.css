@@ -180,7 +180,8 @@ textarea {
 }
 
 /* シェアボタン */
-#shareButton {
+#shareButton,
+#groupShareButton {
     width: calc(100% - 2rem);
     margin: 1rem;
     padding: 12px;
@@ -195,16 +196,47 @@ textarea {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#shareButton:hover {
+#shareButton:hover,
+#groupShareButton:hover {
     background: linear-gradient(135deg, #ff9a8b, #ff6a88);
     transform: translateY(-3px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-#shareButton:active {
+#shareButton:active,
+#groupShareButton:active {
     background: linear-gradient(135deg, #ff6a88, #ff99ac);
     transform: translateY(1px);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* グループ選択セクション */
+#groupSelection {
+    margin: 1rem;
+    padding: 1rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: none;
+}
+
+#groupList {
+    list-style: none;
+    padding: 0;
+}
+
+#groupList li {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#groupList li:hover {
+    background-color: #f0f0f0;
+    transform: translateX(5px);
 }
 
 /* フッター */
@@ -234,10 +266,10 @@ footer a {
 
 /* フッターのアクティブ状態を示す */
 footer a.active {
-    background-color: #394575; /* 選択されたときの背景色 */
-    border-top: 3px solid #ffffff; /* 選択されたときの上部バー */
-    border-radius: 5px; /* アイコン周囲に少し丸みを追加 */
-    transition: background-color 0.3s ease, padding 0.3s ease; /* なめらかな変化を追加 */
+    background-color: #394575;
+    border-top: 3px solid #ffffff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, padding 0.3s ease;
 }
 
 footer img {
@@ -245,11 +277,10 @@ footer img {
     height: 25px;
 }
 
-
 /* 横向きデバイス対応 */
 @media (orientation: landscape) {
     body {
-        max-width: 375px; /* 横幅をスマホサイズ固定 */
-        overflow-x: hidden; /* 横スクロール防止 */
+        max-width: 375px;
+        overflow-x: hidden;
     }
 }
