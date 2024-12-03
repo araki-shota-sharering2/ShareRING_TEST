@@ -28,23 +28,31 @@ export async function onRequestGet(context) {
         }
 
         const userId = sessionResult.user_id;
+        const url = new URL(request.url);
+        const page = parseInt(url.searchParams.get("page")) || 1;
+        const postsPerPage = 8;
+        const offset = (page - 1) * postsPerPage;
 
-        // Fetch keep posts for the user
         const keepQuery = `
-            SELECT p.post_id, p.image_url, p.caption, p.address, p.created_at
-            FROM post_keeps pk
-            INNER JOIN user_posts p ON pk.post_id = p.post_id
-            WHERE pk.user_id = ?
+            SELECT 
+                p.post_id, p.image_url, p.caption, p.location, p.created_at, p.ring_color, p.address, 
+                u.username, u.profile_image
+            FROM post_keeps k
+            JOIN user_posts p ON k.post_id = p.post_id
+            JOIN user_accounts u ON p.user_id = u.user_id
+            WHERE k.user_id = ?
+            ORDER BY p.created_at DESC
+            LIMIT ? OFFSET ?
         `;
-        const keeps = await env.DB.prepare(keepQuery).bind(userId).all();
+        const keeps = await env.DB.prepare(keepQuery).bind(userId, postsPerPage, offset).all();
 
-        return new Response(JSON.stringify(keeps), {
+        return new Response(JSON.stringify(keeps.results), {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
-        console.error("Error retrieving keeps:", error);
-        return new Response(JSON.stringify({ error: "サーバーエラーが発生しました" }), {
+        console.error("Error in mykeep-handler:", error);
+        return new Response(JSON.stringify({ error: "サーバーエラーが発生しました。" }), {
             status: 500,
             headers: { "Content-Type": "application/json" },
         });
