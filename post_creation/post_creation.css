@@ -180,44 +180,45 @@ textarea {
 }
 
 /* シェアボタン */
-#shareButton,
-#groupShareButton {
-    width: calc(100% - 2rem);
-    margin: 1rem;
-    padding: 12px;
-    font-size: 1.1rem;
-    color: #fff;
-    background: linear-gradient(135deg, #ff7e5f, #feb47b);
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+#shareButton {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); /* オレンジ系 */
 }
 
-#shareButton:hover,
-#groupShareButton:hover {
+#shareButton:hover {
     background: linear-gradient(135deg, #ff9a8b, #ff6a88);
     transform: translateY(-3px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-#shareButton:active,
-#groupShareButton:active {
+#shareButton:active {
     background: linear-gradient(135deg, #ff6a88, #ff99ac);
     transform: translateY(1px);
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* グループシェアボタン */
+#groupShareButton {
+    background: linear-gradient(135deg, #4e94a7, #3c7684); /* 青緑系 */
+}
+
+#groupShareButton:hover {
+    background: linear-gradient(135deg, #63b9c5, #4e94a7);
+    transform: translateY(-3px);
+}
+
+#groupShareButton:active {
+    background: linear-gradient(135deg, #3c7684, #4e94a7);
+    transform: translateY(1px);
 }
 
 /* グループ選択セクション */
 #groupSelection {
     margin: 1rem;
     padding: 1rem;
-    background: #fff;
+    background: #f8f8f8; /* 薄いグレー背景 */
     border: 1px solid #ddd;
     border-radius: 5px;
     display: none;
+    color: #333; /* テキスト色を濃くする */
+    font-size: 1rem;
 }
 
 #groupList {
@@ -232,10 +233,12 @@ textarea {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
+    color: #333; /* テキスト色を濃くする */
+    font-size: 1rem;
 }
 
 #groupList li:hover {
-    background-color: #f0f0f0;
+    background-color: #e6e6e6; /* 明るい背景 */
     transform: translateX(5px);
 }
 
