@@ -5,17 +5,42 @@
     box-sizing: border-box;
 }
 
+/* ボディのスタイル */
 body {
     font-family: Arial, sans-serif;
+    max-width: 375px; /* スマホ画面幅を想定 */
     margin: 0 auto;
-    max-width: 375px; /* スマホ幅に固定 */
-    background: linear-gradient(135deg, #ffffff, #f7f7f7); /* 白ベースのグラデーション背景 */
-    color: #333; /* テキストを濃いグレーに */
+    background-color: #0d0d2b; /* 背景を濃い青紫色に設定 */
+    color: #ccc; /* 標準の文字色を薄いグレーに設定 */
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    align-items: center;
+    height: 100vh;
     overflow: hidden;
 }
+
+/* 星のスタイル */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
+}
+
+/* 星の輝きアニメーション */
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ヘッダー */
 header {
     background-color: #394575; /* ヘッダー背景色 */
     color: white;
@@ -31,6 +56,8 @@ header {
     font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+/* 戻るボタン */
 #back-button {
     position: absolute;
     left: 10px;
@@ -38,13 +65,14 @@ header {
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: #fff;
-    font-size: 16px;
+    color: white;
+    font-size: 14px;
     cursor: pointer;
 }
 
 #back-button:hover {
     color: #cccccc;
+    transform: scale(1.1); /* ホバー時に少し拡大 */
 }
 
 /* タイマーと統計情報 */
@@ -142,7 +170,6 @@ button {
     cursor: not-allowed;
 }
 
-
 /* フッター */
 footer {
     display: flex;
@@ -178,25 +205,6 @@ footer img {
     width: 25px;
     height: 25px;
 }
-
-/* 戻るボタン */
-#back-button {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-#back-button:hover {
-    color: #cccccc;
-    transform: scale(1.1); /* ホバー時に少し拡大 */
-}
-
 
 /* スマホサイズ調整 */
 @media (max-width: 480px) {
