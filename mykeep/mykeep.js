@@ -50,18 +50,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             `;
             addSwipeFunctionality(postFrame, post.address);
-            setupKeepFeature(postFrame); // Setup Keep feature
+            setupUnkeepFeature(postFrame); // Setup Unkeep feature
             timeline.appendChild(postFrame);
         });
     }
 
-    function setupKeepFeature(postFrame) {
+    function setupUnkeepFeature(postFrame) {
         const keepImage = postFrame.querySelector(".keep-image");
         keepImage.addEventListener("click", async (event) => {
             const postId = event.target.getAttribute("data-post-id");
 
             try {
-                const response = await fetch("/keep-post-handler", {
+                const response = await fetch("/unkeep-post-handler", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -71,13 +71,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (response.ok) {
                     const result = await response.json();
-                    alert(result.message || "投稿をKeepしました！");
+                    alert(result.message || "投稿をKeepから削除しました！");
+                    postFrame.remove(); // Remove the post frame from the DOM
                 } else {
                     const errorResult = await response.json();
-                    alert(errorResult.error || "Keepに失敗しました");
+                    alert(errorResult.error || "Keepの削除に失敗しました");
                 }
             } catch (error) {
-                console.error("Error during Keep operation:", error);
+                console.error("Error during Unkeep operation:", error);
                 alert("サーバーエラーが発生しました。もう一度お試しください。");
             }
         });
