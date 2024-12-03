@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupPhotoCapture();
     setupColorPicker();
     setupShareButton();
+    setupGroupShareButton(); // グループシェアボタンのセットアップ
     displayRunningData(); // ランニングデータをキャプションに表示
 });
 
@@ -98,16 +99,75 @@ function setupShareButton() {
             alert("投稿に失敗しました。");
         }
     });
+}
 
-    // 星をランダムに配置
-    const body = document.querySelector('body');
-    for (let i = 0; i < 100; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        star.style.top = Math.random() * 100 + 'vh';
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = (Math.random() * 2 + 1) + 's';
-        body.appendChild(star);
+function setupGroupShareButton() {
+    const groupShareButton = document.getElementById("groupShareButton");
+    const groupSelection = document.getElementById("groupSelection");
+    const groupList = document.getElementById("groupList");
+
+    groupShareButton.addEventListener("click", async () => {
+        groupSelection.style.display = "block";
+
+        try {
+            const response = await fetch("/groups-handler");
+            if (response.ok) {
+                const groups = await response.json();
+                groupList.innerHTML = "";
+                groups.forEach(group => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = group.group_name;
+                    listItem.addEventListener("click", () => {
+                        shareToGroup(group.group_id);
+                    });
+                    groupList.appendChild(listItem);
+                });
+            } else {
+                alert("グループ情報の取得に失敗しました。");
+            }
+        } catch (error) {
+            console.error("グループ情報取得エラー:", error);
+        }
+    });
+}
+
+async function shareToGroup(groupId) {
+    const caption = document.getElementById("captionInput").value;
+    const locationData = JSON.parse(localStorage.getItem("selectedLocation"));
+    const ringColor = localStorage.getItem("ringColor");
+    const imageDataUrl = localStorage.getItem("capturedPhoto");
+
+    if (!imageDataUrl) {
+        alert("写真がありません。撮影してください。");
+        return;
+    }
+
+    const response = await fetch(imageDataUrl);
+    const imageBlob = await response.blob();
+
+    const formData = new FormData();
+    formData.append("caption", caption);
+    formData.append("location", JSON.stringify(locationData));
+    formData.append("ring_color", ringColor);
+    formData.append("image", imageBlob, "post-image.jpg");
+    formData.append("group_id", groupId);
+
+    try {
+        const response = await fetch("/post_to_group-handler", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            alert("グループ投稿が完了しました！");
+            localStorage.clear();
+            window.location.href = "/post_viewing/post_viewing.html";
+        } else {
+            alert("グループ投稿に失敗しました");
+        }
+    } catch (error) {
+        console.error("投稿エラー:", error);
+        alert("投稿に失敗しました。");
     }
 }
 
