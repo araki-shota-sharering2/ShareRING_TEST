@@ -177,11 +177,14 @@ function updateStats() {
 async function saveRunningData() {
     const data = {
         duration: document.querySelector(".timer").textContent,
-        distance,
+        distance: distance.toFixed(2),
         calories,
         averagePace: calculateAveragePace(),
         route: pathCoordinates,
     };
+
+    // ローカルストレージに保存
+    localStorage.setItem("runningData", JSON.stringify(data));
 
     try {
         const response = await fetch("/save-running-data", {
