@@ -24,6 +24,7 @@
         </div>
     </header>
 
+
     <!-- マップ表示エリア -->
     <div id="map"></div>
 
@@ -38,6 +39,11 @@
 
     <!-- JavaScriptファイルの読み込み -->
     <script src="/mymap/mymap.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&callback=initMap"></script>
+    <script 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIbW8SaZBjgKXB3yt7ig0OYnzD0TIi2h8&callback=initMap" 
+        async 
+        defer 
+        loading="lazy">
+    </script>
 </body>
 </html>
