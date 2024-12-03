@@ -84,6 +84,7 @@ window.initMap = async function () {
                         <div class="info-window">
                             <h3>${post.caption || "投稿"}</h3>
                             <p>日時: ${new Date(post.created_at).toLocaleString()}</p>
+                            <button class="route-button" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}', '_blank')">ルート案内</button>
                         </div>
                     `,
                 });

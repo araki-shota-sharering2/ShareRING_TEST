@@ -109,6 +109,25 @@ footer a.active {
     color: #555; /* サブ情報を濃いグレーに */
 }
 
+/* ルート案内ボタン */
+.route-button {
+    display: inline-block;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: white;
+    background-color: #4e5c94;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.route-button:hover {
+    background-color: #394575;
+}
+
 /* カスタムマーカーのフレーム */
 .marker-frame {
     width: 60px; /* サイズを指定 */
