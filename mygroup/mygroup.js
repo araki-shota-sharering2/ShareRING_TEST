@@ -59,6 +59,7 @@ async function fetchGroups() {
         groups.forEach((group) => {
             // グループのリストアイテムを作成
             const li = document.createElement("li");
+            li.classList.add("group-item");
 
             // グループ画像を表示する要素を作成
             const img = document.createElement("img");
@@ -74,6 +75,12 @@ async function fetchGroups() {
             // 要素をリストアイテムに追加
             li.appendChild(img);
             li.appendChild(name);
+
+            // クリックイベントを追加してグループIDを渡す
+            li.addEventListener("click", () => {
+                // mygroup_viewing ページにグループIDを渡して遷移
+                window.location.href = `/mygroup_viewing?groupId=${group.group_id}`;
+            });
 
             // リストにアイテムを追加
             groupList.appendChild(li);
