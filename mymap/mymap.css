@@ -5,12 +5,13 @@
     box-sizing: border-box;
 }
 
+/* ボディのスタイル */
 body {
     font-family: Arial, sans-serif;
-    max-width: 375px;
+    max-width: 375px; /* スマホ画面幅を想定 */
     margin: 0 auto;
-    background-color: #0d0d2b;
-    color: #ccc;
+    background-color: #0d0d2b; /* 背景を濃い青紫色に設定 */
+    color: #ccc; /* 標準の文字色を薄いグレーに設定 */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,31 +19,82 @@ body {
     overflow: hidden;
 }
 
+/* ヘッダーとフッターのスタイル */
 header, footer {
     width: 100%;
     max-width: 375px;
-    background-color: #4e5c94;
+    background-color: #4e5c94; /* 濃い青紫色 */
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 軽い影効果 */
 }
 
+/* ヘッダーとフッターのアイコンサイズ */
 header img, footer img {
     width: 24px;
     height: 24px;
 }
 
+/* マップ表示エリアのスタイル */
 #map {
     flex: 1;
     width: 100%;
-    height: 400px;
+    height: calc(100vh - 120px); /* ヘッダーとフッターを除いた高さ */
+    background-color: #e0e0e0; /* ロード中に表示される背景色 */
+    border: 1px solid #ccc; /* 薄い境界線 */
 }
 
+/* フッターリンクのスタイル */
 footer a {
     color: white;
     text-decoration: none;
     text-align: center;
+}
+
+/* 情報ウィンドウのスタイル */
+.info-window {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: #333; /* 濃いグレー */
+}
+
+.info-window h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #4e5c94; /* タイトルを濃い青紫色に */
+}
+
+.info-window p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555; /* サブ情報を濃いグレーに */
+}
+
+/* マーカー画像のフレーム */
+.marker-frame {
+    border: 3px solid #4e5c94; /* 青紫のフレーム */
+    border-radius: 50%; /* 丸くする */
+    overflow: hidden;
+    width: 60px; /* フレームのサイズ */
+    height: 60px;
+}
+
+/* スマホ向けのレスポンシブ調整 */
+@media (max-width: 768px) {
+    header, footer {
+        padding: 5px;
+    }
+
+    footer a img {
+        width: 20px;
+        height: 20px;
+    }
+
+    #map {
+        height: calc(100vh - 100px); /* ヘッダーとフッターを除いた高さ */
+    }
 }

@@ -70,8 +70,8 @@ window.initMap = async function () {
                     map: map,
                     title: post.caption || "投稿",
                     icon: {
-                        url: post.image_url, // 画像URLをそのまま使用
-                        scaledSize: new google.maps.Size(40, 40), // サイズ調整
+                        url: post.image_url, // フレーム付き画像を直接使用
+                        scaledSize: new google.maps.Size(60, 60), // サイズ調整
                     },
                 });
 
@@ -79,10 +79,13 @@ window.initMap = async function () {
                 marker.addListener("click", function () {
                     const infoWindow = new google.maps.InfoWindow({
                         content: `
-                            <div>
-                                <h3>${post.caption || "投稿"}</h3>
-                                <p>日時: ${new Date(post.created_at).toLocaleString()}</p>
-                                <p>${post.address || "住所情報なし"}</p>
+                            <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
+                                <h3 style="margin: 0; font-size: 16px; font-weight: bold; color: #4e5c94;">
+                                    ${post.caption || "投稿"}
+                                </h3>
+                                <p style="margin: 5px 0; font-size: 14px; color: #555;">
+                                    日時: ${new Date(post.created_at).toLocaleString()}
+                                </p>
                             </div>
                         `,
                     });
