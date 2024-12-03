@@ -52,7 +52,7 @@ header {
 .container {
   width: 90%;
   max-width: 360px;
-  margin: 80px auto 80px; /* ヘッダーとフッターの分を考慮 */
+  margin: 40px auto 40px; /* 縦幅を調整 */
   padding: 20px;
   background: #2c2c2c;
   border-radius: 8px;
@@ -61,14 +61,14 @@ header {
 }
 
 h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 22px;
+  margin-bottom: 15px;
   color: #ffdb4d;
 }
 
 p {
   font-size: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .input-group {
@@ -133,12 +133,12 @@ button:hover {
 
 /* 運動概要 */
 .activity-summary {
-  background: linear-gradient(135deg, #ff7eb3, #ff758c);
+  background: linear-gradient(135deg, #66bb6a, #43a047); /* 緑ベースのグラデーション */
   color: white;
   text-align: center;
   padding: 20px;
   border-radius: 15px;
-  margin: 100px 15px 15px; /* ヘッダーの高さ分の余白を追加 */
+  margin: 20px 15px; /* 縦幅を減らす */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -149,23 +149,23 @@ button:hover {
 }
 
 .stat h2 {
-  font-size: 30px;
+  font-size: 20px; /* 少し小さく調整 */
   margin: 0;
 }
 
 .stat p {
-  font-size: 14px;
+  font-size: 13px; /* コンパクトに調整 */
   margin: 5px 0;
 }
 
 .stat span {
-  font-size: 16px;
+  font-size: 14px; /* 見やすさを考慮し小さめに */
   font-weight: bold;
 }
 
 /* 詳細ボタン */
 #details-button {
-  background-color: #ff758c;
+  background-color: #43a047;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -177,7 +177,7 @@ button:hover {
 }
 
 #details-button:hover {
-  background-color: #ff576d;
+  background-color: #388e3c;
 }
 
 /* 結果一覧 */
@@ -204,7 +204,7 @@ li {
 }
 
 li .date {
-  font-size: 14px;
+  font-size: 13px;
   color: #ccc;
 }
 
