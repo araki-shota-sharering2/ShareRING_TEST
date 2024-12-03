@@ -57,14 +57,35 @@ async function fetchGroups() {
         groupList.innerHTML = "";
 
         groups.forEach((group) => {
+            // グループのリストアイテムを作成
             const li = document.createElement("li");
-            li.textContent = group.group_name;
+
+            // グループ画像を表示する要素を作成
+            const img = document.createElement("img");
+            img.src = group.group_image_url || "default-image.jpg"; // デフォルト画像を設定
+            img.alt = group.group_name;
+            img.classList.add("group-image");
+
+            // グループ名を表示する要素を作成
+            const name = document.createElement("p");
+            name.textContent = group.group_name;
+            name.classList.add("group-name");
+
+            // 要素をリストアイテムに追加
+            li.appendChild(img);
+            li.appendChild(name);
+
+            // リストにアイテムを追加
             groupList.appendChild(li);
         });
     } catch (error) {
         console.error("グループ取得エラー:", error);
     }
 }
+
+// 初期化時にグループを取得
+fetchGroups();
+
 
 // 初期化時にグループを取得
 fetchGroups();

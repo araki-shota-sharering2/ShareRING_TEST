@@ -42,11 +42,31 @@ button:hover {
 #groups {
     list-style: none;
     padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
 }
 
 #groups li {
-    padding: 10px;
+    text-align: center;
     border: 1px solid #ccc;
     margin-bottom: 10px;
     border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.group-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.group-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
 }
