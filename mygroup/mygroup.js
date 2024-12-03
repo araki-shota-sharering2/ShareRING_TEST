@@ -16,7 +16,8 @@ document.getElementById("group-form").addEventListener("submit", async (event) =
     formData.append("groupImage", groupImage);
 
     try {
-        const response = await fetch("/group-handler", {
+        // グループ作成リクエスト
+        const response = await fetch("/group-create-handler", {
             method: "POST",
             body: formData,
         });
@@ -24,9 +25,22 @@ document.getElementById("group-form").addEventListener("submit", async (event) =
         const result = await response.json();
 
         if (response.ok) {
-            alert("グループが正常に作成されました");
-            // グループリストを更新
-            fetchGroups();
+            const groupId = result.groupId;
+
+            // メンバー登録リクエスト
+            const registerResponse = await fetch("/group-register-handler", {
+                method: "POST",
+                body: new URLSearchParams({ groupId }),
+            });
+
+            if (registerResponse.ok) {
+                alert("グループが正常に作成され、メンバー登録が完了しました");
+                // グループリストを更新
+                fetchGroups();
+            } else {
+                const registerError = await registerResponse.json();
+                alert(`メンバー登録エラー: ${registerError.message}`);
+            }
         } else {
             alert(`エラー: ${result.message}`);
         }
