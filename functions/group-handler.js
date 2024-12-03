@@ -33,10 +33,11 @@ export async function onRequestGet(context) {
         // ユーザーが参加しているグループの取得
         try {
             const groupsQuery = `
-                SELECT g.group_id, g.group_name
-                FROM user_groups g
-                JOIN user_group_members m ON g.group_id = m.group_id
-                WHERE m.user_id = ?
+ SELECT g.group_id, g.group_name, g.group_image_url
+FROM user_groups g
+JOIN user_group_members m ON g.group_id = m.group_id
+WHERE m.user_id = ?
+
             `;
             const groups = await env.DB.prepare(groupsQuery).bind(userId).all();
 
