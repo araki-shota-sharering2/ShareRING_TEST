@@ -323,24 +323,33 @@ footer img {
     z-index: 1000;
 }
 
-/* モーダル内容 */
 .modal-content {
-    background-color: #fff;
-    padding: 20px;
+    background-color: #2c2c53;
     border-radius: 10px;
-    max-width: 300px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    color: white;
     text-align: center;
 }
 
 .modal-content button {
-    background-color: #394575;
+    background-color: #4e5c94;
     color: white;
     border: none;
-    padding: 10px;
-    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 .modal-content button:hover {
-    background-color: #4e5c94;
+    background-color: #394575;
+}
+
+/* 非表示状態のためのhiddenクラス */
+.hidden {
+    display: none;
 }
