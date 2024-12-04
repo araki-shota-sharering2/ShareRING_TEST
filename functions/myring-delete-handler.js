@@ -12,48 +12,42 @@ export async function onRequestPost(context) {
     }
 
     try {
-        // リクエストボディから postId を取得
         const { postId } = await request.json();
 
         if (!postId) {
             return new Response(JSON.stringify({ message: "Invalid post ID" }), { status: 400 });
         }
 
-        // セッションを確認してユーザーIDを取得
         const session = await env.DB.prepare(`
-            SELECT user_id FROM user_sessions 
-            WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP
-        `)
-            .bind(sessionId)
-            .first();
+            SELECT user_id FROM user_sessions WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP
+        `).bind(sessionId).first();
 
         if (!session) {
             console.error("Unauthorized access: Invalid session");
             return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
         }
 
-        // 投稿を削除（ユーザーIDと関連付けられているか確認）
         const deleteResult = await env.DB.prepare(`
             DELETE FROM user_posts WHERE post_id = ? AND user_id = ?
-        `)
-            .bind(postId, session.user_id)
-            .run();
+        `).bind(postId, session.user_id).run();
 
-        if (deleteResult.changes === 0) {
-            return new Response(JSON.stringify({ message: "Post not found or unauthorized" }), {
-                status: 404,
-            });
+        const deleteResultFromGroups = await env.DB.prepare(`
+            DELETE FROM group_posts WHERE group_post_id = ? AND user_id = ?
+        `).bind(postId, session.user_id).run();
+
+        if (deleteResult.changes === 0 && deleteResultFromGroups.changes === 0) {
+            return new Response(JSON.stringify({ message: "Post not found or unauthorized" }), { status: 404 });
         }
 
         return new Response(JSON.stringify({ message: "Post deleted successfully" }), {
             status: 200,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" }
         });
     } catch (error) {
         console.error("Error deleting post:", error);
         return new Response(JSON.stringify({ message: "Internal Server Error", error: error.message }), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" }
         });
     }
 }

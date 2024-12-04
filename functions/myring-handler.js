@@ -21,13 +21,16 @@ export async function onRequestGet(context) {
     const itemsPerPage = 10;
     const offset = (page - 1) * itemsPerPage;
 
+    // user_posts と group_posts 両方の投稿を取得
     const posts = await env.DB.prepare(`
         SELECT post_id, image_url, caption, location, created_at, ring_color, address
-        FROM user_posts
-        WHERE user_id = ?
+        FROM user_posts WHERE user_id = ? 
+        UNION ALL
+        SELECT group_post_id as post_id, image_url, caption, location, created_at, ring_color, address
+        FROM group_posts WHERE user_id = ?
         ORDER BY created_at DESC
         LIMIT ? OFFSET ?
-    `).bind(session.user_id, itemsPerPage, offset).all();
+    `).bind(session.user_id, session.user_id, itemsPerPage, offset).all();
 
     return new Response(JSON.stringify(posts.results), {
         status: 200,

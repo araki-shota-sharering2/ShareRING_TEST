@@ -4,6 +4,7 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 /* 星のスタイル */
 .star {
     position: absolute;
@@ -14,7 +15,6 @@
     animation: twinkle 2s infinite ease-in-out alternate;
     opacity: 0.5;
 }
-
 
 /* 星の輝きアニメーション */
 @keyframes twinkle {
