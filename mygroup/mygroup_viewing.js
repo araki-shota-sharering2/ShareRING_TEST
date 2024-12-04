@@ -77,6 +77,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <p class="post-comment">${post.caption || "コメントなし"}</p>
                         <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
                     </div>
+                    <div class="post-actions">
+                        <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
+                    </div>
                 </div>
             `;
             addSwipeFunctionality(postFrame, post.address);
