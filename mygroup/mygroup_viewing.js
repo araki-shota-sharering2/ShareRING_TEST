@@ -214,18 +214,17 @@ function displayMemberList(members) {
         });
     }
 
-    // Googleマップでルート案内を開始
-    function openGoogleMapsRoute(address) {
-        const baseURL = "https://www.google.com/maps/dir/?api=1";
-        const params = new URLSearchParams({
-            origin: "My+Location",
-            destination: address,
-            travelmode: "walking",
-        });
-        const url = `${baseURL}&${params.toString()}`;
-        console.log(`Generated Google Maps URL: ${url}`);
-        window.open(url, "_blank");
-    }
+        // Google Maps ルート案内を同じタブで開く修正版関数
+        function openGoogleMapsRoute(address) {
+            const baseURL = "https://www.google.com/maps/dir/?api=1";
+            const params = new URLSearchParams({
+                origin: "My+Location",
+                destination: encodeURIComponent(address),
+                travelmode: "walking",
+                output: "embed"
+            });
+            window.location.href = `${baseURL}&${params.toString()}`;
+        }
 
     // 初期化処理
     fetchGroupName();
