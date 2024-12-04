@@ -29,6 +29,8 @@
         <!-- 投稿の詳細が表示される領域 -->
     </main>
 
+    <button id="load-more-button" class="load-more">もっと見る</button>
+
     <!-- フッター -->
     <footer>
         <a href="/home/home.html">
@@ -47,21 +49,6 @@
             <img src="/assets/images/footer/achievements.svg" alt="Achievements">
         </a>
     </footer>
-
-    <script>
-        // ハンバーガーメニューのトグル機能
-        document.getElementById("hamburger-menu").addEventListener("click", () => {
-            const menuOverlay = document.getElementById("menu-overlay");
-            menuOverlay.classList.toggle("hidden");
-        });
-
-        // メニューオーバーレイを閉じる
-        document.getElementById("menu-overlay").addEventListener("click", (e) => {
-            if (e.target === e.currentTarget) {
-                e.target.classList.add("hidden");
-            }
-        });
-    </script>
 
     <script src="/mygroup/mygroup_viewing.js"></script>
 </body>

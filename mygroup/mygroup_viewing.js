@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // 投稿データを取得して表示
     async function fetchPosts(page = 1) {
         try {
             const response = await fetch(`/group-post-viewing-handler?groupId=${groupId}&page=${page}`, { method: "GET" });
@@ -49,7 +50,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // 投稿を表示
     function displayPosts(posts) {
+        if (!posts.length) {
+            alert("表示する投稿がありません。");
+            return;
+        }
+
         posts.forEach((post) => {
             const postFrame = document.createElement("div");
             postFrame.className = "post-frame";
@@ -70,9 +77,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <p class="post-comment">${post.caption || "コメントなし"}</p>
                         <p class="post-date">投稿日: ${new Date(post.created_at).toLocaleDateString()}</p>
                     </div>
-                    <div class="post-actions">
-                        <div class="swipe-guide">↑ スワイプしてルート案内を開始</div>
-                    </div>
                 </div>
             `;
             addSwipeFunctionality(postFrame, post.address);
@@ -81,6 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    // Keepボタンの機能をセットアップ
     function setupKeepFeature(postFrame) {
         const keepImage = postFrame.querySelector(".keep-image");
         keepImage.addEventListener("click", async (event) => {
@@ -109,6 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    // もっと見るボタンの状態を更新
     function updateLoadMoreButton(postsCount) {
         if (postsCount < postsPerPage) {
             loadMoreButton.classList.add("disabled");
@@ -121,6 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // スワイプしてGoogleマップに移動
     function addSwipeFunctionality(postFrame, address) {
         let startY = 0;
         let endY = 0;
@@ -144,6 +151,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    // Googleマップでルート案内を開始
     function openGoogleMapsRoute(address) {
         const baseURL = "https://www.google.com/maps/dir/?api=1";
         const params = new URLSearchParams({
@@ -156,6 +164,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = url;
     }
 
+    // もっと見るボタンのクリックイベント
     loadMoreButton.addEventListener("click", () => {
         if (!loadMoreButton.classList.contains("disabled")) {
             currentPage++;
@@ -174,6 +183,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         body.appendChild(star);
     }
 
+    // 初期データを読み込み
     await fetchGroupName();
     await fetchPosts(currentPage);
 });
