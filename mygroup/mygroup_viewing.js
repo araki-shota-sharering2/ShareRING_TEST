@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ postId }),
+                    body: JSON.stringify({ postId })
                 });
 
                 if (response.ok) {
