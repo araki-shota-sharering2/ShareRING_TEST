@@ -30,13 +30,10 @@ body::before {
 
 /* 星空アニメーションのキーフレーム */
 @keyframes stars {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 100% 100%;
-    }
+    0% { background-position: 0 0; }
+    100% { background-position: 100% 100%; }
 }
+
 /* 戻るボタン */
 #back-button {
     position: absolute;
@@ -46,21 +43,22 @@ body::before {
     background: none;
     border: none;
     color: white;
-    font-size: 14px;
+    font-size: 12px; /* 小さめのフォント */
     cursor: pointer;
 }
 
 #back-button:hover {
     color: #cccccc;
-    transform: scale(1.1); /* ホバー時に少し拡大 */
+    transform: scale(1.1);
 }
 
+/* ヘッダー */
 header {
-    background-color: #394575; /* ヘッダー背景色 */
+    background-color: #394575;
     color: white;
     text-align: center;
-    padding: 15px;
-    font-size: 1.2rem;
+    padding: 10px; /* パディングを小さく */
+    font-size: 1rem; /* フォントサイズを少し縮小 */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -73,19 +71,19 @@ header {
 
 /* メインコンテンツのデザイン */
 main {
-    margin-top: 60px;
-    margin-bottom: 60px;
-    padding: 30px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 15px; /* パディングを縮小 */
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 20px; /* セクション間のギャップを削減 */
     overflow-y: auto;
 }
 
 /* グループリストセクション */
 #group-list {
     background-color: white;
-    padding: 20px;
+    padding: 15px; /* パディングを小さく */
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
@@ -94,15 +92,15 @@ main {
 }
 
 #group-list h2 {
-    font-size: 1.8em;
+    font-size: 1.2em; /* 見出しフォントを小さく */
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 10px; /* 下余白を削減 */
 }
 
 /* グループカード（横スワイプ対応） */
 #groups {
     display: flex;
-    gap: 15px;
+    gap: 10px; /* カード間のギャップを縮小 */
     padding: 10px 0;
     margin: 0;
     overflow-x: auto;
@@ -111,11 +109,11 @@ main {
 
 .group-item {
     flex: 0 0 auto; /* 横方向のスワイプ対応 */
-    width: 200px;
-    border-radius: 12px;
+    width: 160px; /* カードの幅を縮小 */
+    border-radius: 8px;
     border: 1px solid #ddd;
     background-color: #fff;
-    padding: 15px;
+    padding: 10px; /* パディングを小さく */
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
@@ -129,32 +127,25 @@ main {
 
 /* グループ画像（正方形） */
 .group-image {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px; /* サイズを小さく */
     object-fit: cover; /* 画像を正方形にトリミング */
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 8px; /* 下余白を縮小 */
 }
 
 /* グループ名 */
 .group-name {
-    font-size: 1.2em;
+    font-size: 1em; /* フォントサイズを縮小 */
     font-weight: bold;
     color: #333;
-    margin: 10px 0;
-}
-
-/* グループ説明 */
-.group-description {
-    font-size: 0.9em;
-    color: #666;
-    text-align: center;
+    margin: 5px 0; /* 上下余白を縮小 */
 }
 
 /* グループ作成フォーム */
 #create-group {
     background-color: white;
-    padding: 30px;
+    padding: 20px; /* パディングを小さく */
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -162,17 +153,12 @@ main {
 #group-form input,
 #group-form textarea,
 #group-form button {
-    padding: 12px;
-    margin-bottom: 20px;
-    font-size: 1em;
+    padding: 10px; /* フォーム要素の高さを抑える */
+    margin-bottom: 15px; /* フォーム間の余白を縮小 */
+    font-size: 0.9em; /* フォントサイズを小さく */
     border: 1px solid #ddd;
     border-radius: 8px;
     width: 100%;
-}
-
-#group-form input,
-#group-form textarea {
-    background-color: #fafafa;
 }
 
 #group-form button {
@@ -186,7 +172,6 @@ main {
 #group-form button:hover {
     background-color: #34495E;
 }
-
 
 /* フッター */
 footer {
@@ -209,49 +194,29 @@ footer a {
     text-align: center;
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
+    padding: 8px 10px; /* パディングを小さく */
+}
+
+footer img {
+    width: 20px; /* アイコンサイズを縮小 */
+    height: 20px;
 }
 
 footer a.active {
     background-color: #394575;
-    border-top: 3px solid #ffffff;
-    border-radius: 5px;
+    border-top: 2px solid #ffffff; /* アクティブ表示を調整 */
+    border-radius: 3px;
     transition: background-color 0.3s ease, padding 0.3s ease;
 }
 
-footer img {
-    width: 25px;
-    height: 25px;
-}
-
-
 /* スマホ対応のレスポンシブデザイン */
 @media (max-width: 768px) {
-    #groups {
-        gap: 10px;
-    }
-
     .group-item {
-        width: 160px;
+        width: 140px;
     }
 
     .group-image {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
-}
-/* 星のスタイル */
-.star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    animation: twinkle 2s infinite ease-in-out alternate;
-    opacity: 0.5;
-}
-
-@keyframes twinkle {
-    0% { opacity: 0.3; }
-    100% { opacity: 1; }
 }
