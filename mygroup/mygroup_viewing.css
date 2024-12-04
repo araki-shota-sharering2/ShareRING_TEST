@@ -143,6 +143,7 @@ header {
     position: relative;
 }
 
+
 .post-image {
     width: 80%;
     max-width: 300px;
@@ -214,7 +215,6 @@ header {
     align-items: center;
     margin-top: 10px;
 }
-
 /* スワイプガイド */
 .swipe-guide {
     position: absolute;
@@ -226,6 +226,7 @@ header {
     text-align: center;
     animation: swipe-hint 2s infinite;
 }
+
 
 /* スワイプガイドのアニメーション */
 @keyframes swipe-hint {
