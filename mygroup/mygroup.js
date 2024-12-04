@@ -1,108 +1,161 @@
-document.getElementById("group-form").addEventListener("submit", async (event) => {
-    event.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+    // グループ作成フォームの処理
+    document.getElementById("group-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-    const groupName = document.getElementById("group-name").value;
-    const description = document.getElementById("group-description").value;
-    const groupImage = document.getElementById("group-image").files[0];
+        const groupName = document.getElementById("group-name").value;
+        const description = document.getElementById("group-description").value;
+        const groupImage = document.getElementById("group-image").files[0];
 
-    if (!groupName || !groupImage) {
-        alert("グループ名と画像は必須です");
-        return;
-    }
+        if (!groupName || !groupImage) {
+            alert("グループ名と画像は必須です");
+            return;
+        }
 
-    const formData = new FormData();
-    formData.append("groupName", groupName);
-    formData.append("description", description);
-    formData.append("groupImage", groupImage);
+        const formData = new FormData();
+        formData.append("groupName", groupName);
+        formData.append("description", description);
+        formData.append("groupImage", groupImage);
 
-    try {
-        const response = await fetch("/group-create-handler", {
-            method: "POST",
-            body: formData,
-        });
+        try {
+            const response = await fetch("/group-create-handler", {
+                method: "POST",
+                body: formData,
+            });
 
-        const result = await response.json();
+            const result = await response.json();
 
-        if (response.ok) {
-            const groupId = result.groupId;
+            if (response.ok) {
+                alert("グループが作成されました");
+                fetchGroups();
+            } else {
+                alert(`エラー: ${result.message}`);
+            }
+        } catch (error) {
+            console.error("グループ作成エラー:", error);
+            alert("グループ作成中にエラーが発生しました");
+        }
+    });
 
-            const registerResponse = await fetch("/group-register-handler", {
+    // グループ参加フォームの処理
+    document.getElementById("join-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const groupId = document.getElementById("group-id").value;
+
+        if (!groupId) {
+            alert("グループIDを入力してください");
+            return;
+        }
+
+        try {
+            const response = await fetch("/group-join-handler", {
                 method: "POST",
                 body: new URLSearchParams({ groupId }),
             });
 
-            if (registerResponse.ok) {
-                alert("グループが正常に作成され、メンバー登録が完了しました");
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("グループに参加しました");
                 fetchGroups();
             } else {
-                const registerError = await registerResponse.json();
-                console.error("メンバー登録エラー:", registerError);
-                alert(`メンバー登録エラー: ${registerError.message}`);
+                alert(`エラー: ${result.message}`);
             }
-        } else {
-            alert(`エラー: ${result.message}`);
+        } catch (error) {
+            console.error("グループ参加エラー:", error);
+            alert("グループ参加中にエラーが発生しました");
         }
-    } catch (error) {
-        console.error("グループ作成エラー:", error);
-        alert("グループ作成中にエラーが発生しました");
-    }
-});
+    });
 
-async function fetchGroups() {
-    try {
-        const response = await fetch("/group-handler");
-        const groups = await response.json();
+    // QRコードスキャン機能の処理
+    const qrVideo = document.getElementById("qr-video");
+    const scanResult = document.getElementById("scan-result");
+    const scannedGroupId = document.getElementById("scanned-group-id");
 
-        const groupList = document.getElementById("groups");
-        groupList.innerHTML = "";
+    document.getElementById("scan-qr-button").addEventListener("click", () => {
+        qrVideo.hidden = false;
+        scanResult.hidden = true;
 
-        groups.forEach((group) => {
-            // グループのリストアイテムを作成
-            const li = document.createElement("li");
-            li.classList.add("group-item");
+        const html5QrCode = new Html5Qrcode("qr-video");
 
-            // グループ画像を表示する要素を作成
-            const img = document.createElement("img");
-            img.src = group.group_image_url || "default-image.jpg"; // デフォルト画像を設定
-            img.alt = group.group_name;
-            img.classList.add("group-image");
+        html5QrCode.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: 250 },
+            (decodedText) => {
+                scannedGroupId.textContent = decodedText;
+                scanResult.hidden = false;
+                qrVideo.hidden = true;
 
-            // グループ名を表示する要素を作成
-            const name = document.createElement("p");
-            name.textContent = group.group_name;
-            name.classList.add("group-name");
+                html5QrCode.stop();
 
-            // 要素をリストアイテムに追加
-            li.appendChild(img);
-            li.appendChild(name);
+                // グループ参加処理を呼び出す
+                joinGroupById(decodedText);
+            },
+            (errorMessage) => {
+                console.warn("QRコードスキャンエラー:", errorMessage);
+            }
+        );
+    });
 
-// クリックイベントを追加してグループIDを渡す
-li.addEventListener("click", () => {
-    // mygroup_viewing.html ページにグループIDを渡して遷移
-    window.location.href = `/mygroup/mygroup_viewing.html?groupId=${group.group_id}`;
-});
+    // グループIDから参加
+    async function joinGroupById(groupId) {
+        try {
+            const response = await fetch("/group-join-handler", {
+                method: "POST",
+                body: new URLSearchParams({ groupId }),
+            });
 
-            // リストにアイテムを追加
-            groupList.appendChild(li);
-        });
-    } catch (error) {
-        console.error("グループ取得エラー:", error);
-    }
-}
-        // 星をランダムに配置
-        const body = document.querySelector('body');
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.animationDuration = (Math.random() * 2 + 1) + 's';
-            body.appendChild(star);
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("QRコードからグループに参加しました");
+                fetchGroups();
+            } else {
+                alert(`エラー: ${result.message}`);
+            }
+        } catch (error) {
+            console.error("QRコードでのグループ参加エラー:", error);
+            alert("グループ参加中にエラーが発生しました");
         }
+    }
 
-// 初期化時にグループを取得
-fetchGroups();
+    // グループ一覧を取得して表示
+    async function fetchGroups() {
+        try {
+            const response = await fetch("/group-handler");
+            const groups = await response.json();
 
+            const groupList = document.getElementById("groups");
+            groupList.innerHTML = "";
 
-// 初期化時にグループを取得
-fetchGroups();
+            groups.forEach((group) => {
+                const li = document.createElement("li");
+                li.classList.add("group-item");
+
+                const img = document.createElement("img");
+                img.src = group.group_image_url || "default-image.jpg";
+                img.alt = group.group_name;
+                img.classList.add("group-image");
+
+                const name = document.createElement("p");
+                name.textContent = group.group_name;
+                name.classList.add("group-name");
+
+                li.appendChild(img);
+                li.appendChild(name);
+
+                li.addEventListener("click", () => {
+                    window.location.href = `/mygroup/mygroup_viewing.html?groupId=${group.group_id}`;
+                });
+
+                groupList.appendChild(li);
+            });
+        } catch (error) {
+            console.error("グループ取得エラー:", error);
+        }
+    }
+
+    // 初期化時にグループを取得
+    fetchGroups();
+});

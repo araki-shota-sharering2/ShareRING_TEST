@@ -16,12 +16,15 @@
 
     <!-- メインコンテンツ -->
     <main>
+        <!-- 参加中のグループ表示 -->
         <section id="group-list">
+            <h2>参加中のグループ</h2>
             <ul id="groups">
-                <!-- JSでカードを動的に追加 -->
+                <!-- JavaScriptでグループを動的に追加 -->
             </ul>
         </section>
 
+        <!-- グループ作成フォーム -->
         <section id="create-group">
             <h2>グループを作成</h2>
             <form id="group-form">
@@ -30,6 +33,21 @@
                 <input type="file" id="group-image" accept="image/*" required>
                 <button type="submit">作成</button>
             </form>
+        </section>
+
+        <!-- グループ参加フォーム -->
+        <section id="join-group">
+            <h2>グループに参加</h2>
+            <form id="join-form">
+                <input type="text" id="group-id" placeholder="グループIDを入力" required>
+                <button type="submit">参加</button>
+            </form>
+            <div id="qr-code-scanner">
+                <h3>QRコードで参加</h3>
+                <button id="scan-qr-button">QRコードをスキャン</button>
+                <video id="qr-video" hidden></video>
+                <p id="scan-result" hidden>スキャン結果: <span id="scanned-group-id"></span></p>
+            </div>
         </section>
     </main>
 
@@ -41,6 +59,8 @@
         <a href="/ring_navi/ring_navi.html"><img src="/assets/images/footer/ring_navi.svg" alt="ナビ"></a>
         <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="実績"></a>
     </footer>
+
     <script src="mygroup.js"></script>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script> <!-- QRコード用ライブラリ -->
 </body>
 </html>
