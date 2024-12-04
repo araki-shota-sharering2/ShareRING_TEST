@@ -138,13 +138,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // メンバーリストを表示
     function displayMemberList(members) {
         const memberListHtml = members
-            .map(
-                (member) => ` 
-                <div class="member-item">
-                    <img src="${member.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像" class="member-avatar">
-                    <span>${member.username || "匿名ユーザー"}</span>
-                </div>`
-            )
+        .map((member) => `<li>${member.username || "匿名ユーザー"}</li>`)
+
             .join("");
         alert(`メンバーリスト:\n${memberListHtml}`);
     }
