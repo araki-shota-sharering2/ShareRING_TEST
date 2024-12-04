@@ -64,6 +64,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function setupKeepFeature(postFrame) {
         const keepImage = postFrame.querySelector(".keep-image");
+        if (!keepImage) return;
+
         keepImage.addEventListener("click", async (event) => {
             const postId = event.target.getAttribute("data-post-id");
 
@@ -129,8 +131,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         const baseURL = "https://www.google.com/maps/dir/?api=1";
         const params = new URLSearchParams({
             origin: "My+Location",
-            destination: address,
+            destination: encodeURIComponent(address),
             travelmode: "walking",
+            output: "embed"
         });
         const url = `${baseURL}&${params.toString()}`;
         console.log(`Generated Google Maps URL: ${url}`);
