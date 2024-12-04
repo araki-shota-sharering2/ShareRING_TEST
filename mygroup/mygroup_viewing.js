@@ -229,15 +229,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         const url = `${baseURL}&${params.toString()}`;
         console.log(`Generated Google Maps URL: ${url}`);
-        window.location.href = url;
+        window.open(url, "_blank");
     }
+
+    // 初期化処理
+    fetchGroupName();
+    fetchPosts(currentPage);
 
     // もっと見るボタンのクリックイベント
     loadMoreButton.addEventListener("click", () => {
         currentPage++;
         fetchPosts(currentPage);
     });
-
-    fetchGroupName(); // グループ名を取得
-    fetchPosts(currentPage); // 最初の投稿を取得
 });
