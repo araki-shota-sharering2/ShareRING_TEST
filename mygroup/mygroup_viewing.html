@@ -7,25 +7,15 @@
     <link rel="stylesheet" href="/mygroup/mygroup_viewing.css">
 </head>
 <body>
-    <!-- ヘッダー -->
     <header>
-        <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
-        <h1 id="group-name">グループ名を取得中...</h1>
-        <button id="hamburger-menu-button">&#9776;</button>
+        <button id="back-button" onclick="window.location.href='/home/home.html'">
+            ← 戻る
+        </button>
+        <button id="load-more-button">もっと見る</button>
     </header>
 
-    <!-- ハンバーガーメニュー -->
-    <nav id="hamburger-menu">
-        <ul>
-            <li><button onclick="addMember()">メンバー追加</button></li>
-            <li><button onclick="viewMembers()">メンバー一覧</button></li>
-            <li><button onclick="leaveGroup()">退出</button></li>
-        </ul>
-    </nav>
-
-    <!-- 投稿タイムライン -->
     <main class="timeline">
-        <!-- 投稿の詳細がここに追加されます -->
+        <!-- 投稿の詳細が表示される領域 -->
     </main>
 
     <!-- フッター -->
@@ -46,6 +36,20 @@
             <img src="/assets/images/footer/achievements.svg" alt="Achievements">
         </a>
     </footer>
+
+    <script>
+        // Google Maps ルート案内を同じタブで開く修正版関数
+        function openGoogleMapsRoute(address) {
+            const baseURL = "https://www.google.com/maps/dir/?api=1";
+            const params = new URLSearchParams({
+                origin: "My+Location",
+                destination: encodeURIComponent(address),
+                travelmode: "walking",
+                output: "embed"
+            });
+            window.location.href = `${baseURL}&${params.toString()}`;
+        }
+    </script>
 
     <script src="/mygroup/mygroup_viewing.js"></script>
 </body>
