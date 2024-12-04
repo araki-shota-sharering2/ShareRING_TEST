@@ -329,48 +329,20 @@ footer img {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    width: 80%;
-    max-width: 400px;
 }
 
-/* メンバーリスト */
-.member-list {
-    margin-top: 20px;
-    padding: 10px;
-    border-top: 1px solid #ccc;
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.member-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    transition: background-color 0.3s ease;
-}
-
-.member-item:hover {
-    background-color: #ececec;
-}
-
-.member-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.member-name {
-    font-size: 14px;
+.modal-content button {
+    background-color: #4e5c94;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
     font-weight: bold;
-    color: #333;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.member-role {
-    font-size: 12px;
-    color: #888;
+.modal-content button:hover {
+    background-color: #394575;
+    transform: scale(1.05);
 }
-
