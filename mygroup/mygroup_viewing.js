@@ -236,7 +236,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     fetchGroupName();
     fetchPosts(currentPage);
 
-    // もっと見るボタンのクリックイベント
     loadMoreButton.addEventListener("click", () => {
         currentPage++;
         fetchPosts(currentPage);

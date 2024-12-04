@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>投稿閲覧</title>
     <link rel="stylesheet" href="/mygroup/mygroup_viewing.css">
 </head>
+
 <body>
     <header>
         <button id="back-button" onclick="window.location.href='/mygroup/mygroup.html'">
@@ -28,6 +30,15 @@
     <main class="timeline">
         <!-- 投稿の詳細が表示される領域 -->
     </main>
+
+    <!-- メンバーリストのポップアップ -->
+    <div id="member-list-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>メンバー一覧</h3>
+            <div id="member-list-container"></div>
+            <button id="close-member-list">閉じる</button>
+        </div>
+    </div>
 
     <button id="load-more-button" class="load-more">もっと見る</button>
 
@@ -52,4 +63,5 @@
 
     <script src="/mygroup/mygroup_viewing.js"></script>
 </body>
+
 </html>
