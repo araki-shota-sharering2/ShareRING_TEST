@@ -1,26 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const timeline = document.querySelector(".timeline");
     const loadMoreButton = document.getElementById("load-more-button");
-    const groupNameElement = document.getElementById("group-name");
 
     let currentPage = 1;
     const postsPerPage = 8; // 1ページあたりの投稿数
 
-    // グループ名を取得して表示
-    try {
-        const response = await fetch('/get-group-name');
-        if (response.ok) {
-            const data = await response.json();
-            groupNameElement.textContent = data.groupName || "グループ名未設定";
-        } else {
-            groupNameElement.textContent = "グループ名取得エラー";
-        }
-    } catch (error) {
-        console.error("グループ名取得エラー:", error);
-        groupNameElement.textContent = "エラー";
-    }
-
-    // 投稿データをフェッチ
     async function fetchPosts(page = 1) {
         try {
             const response = await fetch(`/post-viewing-handler?page=${page}`, { method: "GET" });
@@ -36,7 +20,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // 投稿を表示
     function displayPosts(posts) {
         posts.forEach((post) => {
             const postFrame = document.createElement("div");
@@ -69,7 +52,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Keep機能の設定
     function setupKeepFeature(postFrame) {
         const keepImage = postFrame.querySelector(".keep-image");
         keepImage.addEventListener("click", async (event) => {
@@ -98,7 +80,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // 投稿の読み込みボタン更新
     function updateLoadMoreButton(postsCount) {
         if (postsCount < postsPerPage) {
             loadMoreButton.classList.add("disabled");
@@ -111,7 +92,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // スワイプ案内の機能追加
     function addSwipeFunctionality(postFrame, address) {
         let startY = 0;
         let endY = 0;
@@ -135,7 +115,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Google Mapsルート案内
     function openGoogleMapsRoute(address) {
         const baseURL = "https://www.google.com/maps/dir/?api=1";
         const params = new URLSearchParams({
@@ -148,7 +127,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = url;
     }
 
-    // 投稿読み込みボタンのクリックイベント
     loadMoreButton.addEventListener("click", () => {
         if (!loadMoreButton.classList.contains("disabled")) {
             currentPage++;
@@ -156,7 +134,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // 背景に星をランダム配置
+    // 星をランダムに配置
     const body = document.querySelector("body");
     for (let i = 0; i < 100; i++) {
         const star = document.createElement("div");

@@ -11,15 +11,7 @@
         <button id="back-button" onclick="window.location.href='/home/home.html'">
             ← 戻る
         </button>
-        <span id="group-name">グループ名を取得中...</span>
-        <div id="hamburger-menu">
-            <div class="hamburger-icon" onclick="toggleMenu()">☰</div>
-            <div id="menu-options" class="hidden">
-                <button onclick="showMemberList()">メンバー一覧</button>
-                <button onclick="inviteMember()">メンバー招待</button>
-                <button onclick="leaveGroup()">退出</button>
-            </div>
-        </div>
+        <button id="load-more-button">もっと見る</button>
     </header>
 
     <main class="timeline">
@@ -46,43 +38,19 @@
     </footer>
 
     <script>
-        // グループ名を取得し表示
-        document.addEventListener("DOMContentLoaded", async () => {
-            const groupNameElement = document.getElementById("group-name");
-            try {
-                const response = await fetch('/get-group-name');
-                if (response.ok) {
-                    const data = await response.json();
-                    groupNameElement.textContent = data.groupName || "グループ名未設定";
-                } else {
-                    groupNameElement.textContent = "グループ名取得エラー";
-                }
-            } catch (error) {
-                console.error("グループ名取得エラー:", error);
-                groupNameElement.textContent = "エラー";
-            }
-        });
-
-        // ハンバーガーメニューの開閉
-        function toggleMenu() {
-            const menuOptions = document.getElementById("menu-options");
-            menuOptions.classList.toggle("hidden");
-        }
-
-        // メンバー一覧を表示
-        function showMemberList() {
-            alert("メンバー一覧を表示する機能が未実装です。");
-        }
-
-        // メンバー招待
-        function inviteMember() {
-            alert("メンバー招待機能が未実装です。");
-        }
-
-        // グループ退出
-        function leaveGroup() {
-            alert("グループ退出機能が未実装です。");
+        // Google Maps ルート案内を同じタブで開く修正版関数
+        function openGoogleMapsRoute(address) {
+            const baseURL = "https://www.google.com/maps/dir/?api=1";
+            const params = new URLSearchParams({
+                origin: "My+Location",
+                destination: encodeURIComponent(address),
+                travelmode: "walking",
+                output: "embed"
+            });
+            window.location.href = `${baseURL}&${params.toString()}`;
         }
     </script>
+
+    <script src="post_viewing.js"></script>
 </body>
 </html>
