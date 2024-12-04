@@ -70,6 +70,19 @@ header {
     color: #cccccc;
 }
 
+/* ヘッダー内ボタンの画像 */
+#header-buttons button {
+    background: none;
+    border: none;
+    padding: 5px;
+}
+
+#header-buttons img {
+    width: 24px;  /* 画像のサイズを24pxに設定 */
+    height: 24px; /* 高さを24pxに設定 */
+    object-fit: contain; /* 画像が歪まないように調整 */
+}
+
 /* メニューオーバーレイ */
 #menu-overlay {
     position: fixed;
