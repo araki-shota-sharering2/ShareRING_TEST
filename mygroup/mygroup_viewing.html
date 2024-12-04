@@ -11,8 +11,19 @@
         <button id="back-button" onclick="window.location.href='/home/home.html'">
             ← 戻る
         </button>
-        <button id="load-more-button">もっと見る</button>
+        <span id="group-name">グループ名</span>
+        <button id="hamburger-menu" aria-label="メニューを開く">
+            ☰
+        </button>
     </header>
+
+    <div id="menu-overlay" class="hidden">
+        <div class="menu-content">
+            <button id="member-list-button">メンバー一覧</button>
+            <button id="invite-member-button">メンバー招待</button>
+            <button id="leave-group-button">退出</button>
+        </div>
+    </div>
 
     <main class="timeline">
         <!-- 投稿の詳細が表示される領域 -->
@@ -38,17 +49,18 @@
     </footer>
 
     <script>
-        // Google Maps ルート案内を同じタブで開く修正版関数
-        function openGoogleMapsRoute(address) {
-            const baseURL = "https://www.google.com/maps/dir/?api=1";
-            const params = new URLSearchParams({
-                origin: "My+Location",
-                destination: encodeURIComponent(address),
-                travelmode: "walking",
-                output: "embed"
-            });
-            window.location.href = `${baseURL}&${params.toString()}`;
-        }
+        // ハンバーガーメニューのトグル機能
+        document.getElementById("hamburger-menu").addEventListener("click", () => {
+            const menuOverlay = document.getElementById("menu-overlay");
+            menuOverlay.classList.toggle("hidden");
+        });
+
+        // メニューオーバーレイを閉じる
+        document.getElementById("menu-overlay").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) {
+                e.target.classList.add("hidden");
+            }
+        });
     </script>
 
     <script src="/mygroup/mygroup_viewing.js"></script>

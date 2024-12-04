@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const timeline = document.querySelector(".timeline");
     const loadMoreButton = document.getElementById("load-more-button");
+    const groupNameElement = document.getElementById("group-name");
 
     let currentPage = 1;
     const postsPerPage = 8; // 1ページあたりの投稿数
@@ -12,6 +13,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("グループIDが指定されていません。");
         alert("グループIDが指定されていません。");
         return;
+    }
+
+    // グループ名を取得して表示
+    async function fetchGroupName() {
+        try {
+            const response = await fetch(`/group-name-handler?groupId=${groupId}`);
+            if (response.ok) {
+                const data = await response.json();
+                groupNameElement.textContent = data.groupName || "グループ名不明";
+            } else {
+                console.error("グループ名の取得に失敗しました");
+                groupNameElement.textContent = "取得エラー";
+            }
+        } catch (error) {
+            console.error("グループ名取得中にエラーが発生しました:", error);
+            groupNameElement.textContent = "エラー";
+        }
     }
 
     async function fetchPosts(page = 1) {
@@ -156,5 +174,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         body.appendChild(star);
     }
 
+    await fetchGroupName();
     await fetchPosts(currentPage);
 });

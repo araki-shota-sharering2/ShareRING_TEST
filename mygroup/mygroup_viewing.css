@@ -32,6 +32,28 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+#group-name {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    margin: 0 10px;
+    color: #ffffff;
+}
+
+#hamburger-menu {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#hamburger-menu:hover {
+    color: #cccccc;
+}
+
 #back-button {
     background: none;
     border: none;
@@ -48,29 +70,49 @@ header {
     color: #cccccc;
 }
 
-#load-more-button {
+/* メニューオーバーレイ */
+#menu-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#menu-overlay.hidden {
+    display: none;
+}
+
+.menu-content {
+    background-color: #394575;
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.menu-content button {
     background-color: #4e5c94;
     color: white;
     border: none;
-    padding: 8px 15px;
+    padding: 10px 15px;
     font-size: 14px;
     font-weight: bold;
     border-radius: 5px;
+    margin: 10px 0;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    text-align: center;
 }
 
-#load-more-button:hover {
+.menu-content button:hover {
     background-color: #394575;
     transform: scale(1.05);
-}
-
-#load-more-button.disabled {
-    background-color: #666;
-    color: #aaa;
-    cursor: not-allowed;
-    transform: none;
 }
 
 /* 投稿詳細エリア */
@@ -113,7 +155,6 @@ header {
     margin-bottom: 10px;
     position: relative; /* Keep画像を配置するため */
 }
-
 
 /* Keep画像のスタイル */
 .keep-image {
