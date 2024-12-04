@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Groups</title>
+    <title>ShareRING - グループ管理</title>
     <link rel="stylesheet" href="mygroup.css">
+    <link rel="icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <header>
-        <h1>グループ管理</h1>
-    </header>
-    <main>
 
+    <!-- ヘッダー -->
+    <header>
+        <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main>
         <section id="group-list">
             <h2>参加中のグループ</h2>
-            <ul id="groups"></ul>
+            <ul id="groups">
+                <!-- JSでカードを動的に追加 -->
+            </ul>
         </section>
 
         <section id="create-group">
@@ -26,9 +32,16 @@
                 <button type="submit">作成</button>
             </form>
         </section>
-
-        
     </main>
+
+    <!-- フッター -->
+    <footer>
+        <a href="/home/home.html"><img src="/assets/images/footer/home.svg" alt="ホーム"></a>
+        <a href="/post_viewing/post_viewing.html"><img src="/assets/images/footer/post_viewing.svg" alt="投稿を見る"></a>
+        <a href="/post_creation/search_place.html" class="active"><img src="/assets/images/footer/post_creation.svg" alt="投稿作成"></a>
+        <a href="/ring_navi/ring_navi.html"><img src="/assets/images/footer/ring_navi.svg" alt="ナビ"></a>
+        <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="実績"></a>
+    </footer>
     <script src="mygroup.js"></script>
 </body>
 </html>
