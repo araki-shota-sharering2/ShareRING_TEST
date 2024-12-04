@@ -37,30 +37,38 @@ body::before {
         background-position: 100% 100%;
     }
 }
-
-/* ヘッダー */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #2C3E50;
+/* 戻るボタン */
+#back-button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
     color: white;
-    width: 100%;
-    position: fixed;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#back-button:hover {
+    color: #cccccc;
+    transform: scale(1.1); /* ホバー時に少し拡大 */
+}
+
+header {
+    background-color: #394575; /* ヘッダー背景色 */
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.2rem;
+    position: sticky;
     top: 0;
     z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.header-logo img {
-    width: 120px;
-}
-
-.header-icons img {
-    width: 24px;
-    height: 24px;
-    margin: 0 10px;
 }
 
 /* メインコンテンツのデザイン */
