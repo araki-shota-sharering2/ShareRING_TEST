@@ -35,6 +35,9 @@ main {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
 }
 
 #group-list h2 {
@@ -43,46 +46,55 @@ main {
     margin-bottom: 20px;
 }
 
-/* グループリストアイテム */
+/* グループカード（横スワイプ対応） */
 #groups {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+    margin: 0;
+    overflow-x: auto;
     list-style: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
 }
 
 .group-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    flex: 0 0 auto; /* 横方向のスワイプ対応 */
+    width: 200px;
     border-radius: 12px;
     border: 1px solid #ddd;
     background-color: #fff;
+    padding: 15px;
+    text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .group-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
+/* グループ画像 */
 .group-image {
-    width: 120px;
+    width: 100%;
     height: 120px;
     object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
+/* グループ名 */
 .group-name {
     font-size: 1.2em;
-    font-weight: 500;
+    font-weight: bold;
     color: #333;
-    margin-bottom: 10px;
+    margin: 10px 0;
+}
+
+/* グループ説明（必要なら） */
+.group-description {
+    font-size: 0.9em;
+    color: #666;
     text-align: center;
 }
 
@@ -122,18 +134,13 @@ main {
     background-color: #34495E;
 }
 
-#group-form input[type="file"] {
-    padding: 0;
-    margin-bottom: 15px;
-}
-
-/* スマホ向けのレスポンシブデザイン */
+/* スマホ対応のレスポンシブデザイン */
 @media (max-width: 768px) {
     #groups {
-        grid-template-columns: 1fr 1fr;
+        gap: 10px;
     }
 
     .group-item {
-        padding: 15px;
+        width: 160px;
     }
 }
