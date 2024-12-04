@@ -117,6 +117,71 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    // メンバーリストボタンのクリックイベント
+    const memberListButton = document.getElementById("member-list-button");
+    memberListButton.addEventListener("click", async () => {
+        try {
+            const response = await fetch(`/member-list-handler?groupId=${groupId}`);
+            if (response.ok) {
+                const members = await response.json();
+                displayMemberList(members);
+            } else {
+                console.error("メンバーリストの取得に失敗しました");
+                alert("メンバーリストの取得に失敗しました");
+            }
+        } catch (error) {
+            console.error("メンバーリスト取得中にエラーが発生しました:", error);
+            alert("メンバーリスト取得中にエラーが発生しました。");
+        }
+    });
+
+    // メンバーリストを表示
+    function displayMemberList(members) {
+        const memberListHtml = members
+            .map(
+                (member) => `
+                <div class="member-item">
+                    <img src="${member.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像" class="member-avatar">
+                    <span>${member.username || "匿名ユーザー"}</span>
+                </div>`
+            )
+            .join("");
+        alert(`メンバーリスト:\n${memberListHtml}`);
+    }
+
+    // 招待メンバーボタンのクリックイベント
+    const inviteMemberButton = document.getElementById("invite-member-button");
+    inviteMemberButton.addEventListener("click", () => {
+        alert(`このグループのIDは: ${groupId}`);
+    });
+
+    // グループ退出ボタンのクリックイベント
+    const leaveGroupButton = document.getElementById("leave-group-button");
+    leaveGroupButton.addEventListener("click", async () => {
+        const confirmLeave = confirm("本当にこのグループを退出しますか？");
+        if (!confirmLeave) return;
+
+        try {
+            const response = await fetch(`/leave-group-handler`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ groupId }),
+            });
+            if (response.ok) {
+                alert("グループを退出しました。");
+                window.location.href = "/mygroup/mygroup.html";
+            } else {
+                console.error("グループ退出に失敗しました");
+                alert("グループ退出に失敗しました");
+            }
+        } catch (error) {
+            console.error("グループ退出処理中にエラーが発生しました:", error);
+            alert("グループ退出処理中にエラーが発生しました。");
+        }
+    });
+
     // もっと見るボタンの状態を更新
     function updateLoadMoreButton(postsCount) {
         if (postsCount < postsPerPage) {
