@@ -12,19 +12,19 @@
             ← 戻る
         </button>
         <span id="group-name">グループ名</span>
-        <button id="hamburger-menu" aria-label="メニューを開く">
-            ☰
-        </button>
+        <div id="header-buttons">
+            <button id="member-list-button">
+                <img src="/assets/images/header/member_list.svg" alt="メンバー一覧">
+            </button>
+            <button id="invite-member-button">
+                <img src="/assets/images/header/invite_member.svg" alt="メンバー招待">
+            </button>
+            <button id="leave-group-button">
+                <img src="/assets/images/header/leave_group.svg" alt="グループ退出">
+            </button>
+        </div>
     </header>
 
-    <div id="menu-overlay" class="hidden">
-        <div class="menu-content">
-            <button id="member-list-button">メンバー一覧</button>
-            <button id="invite-member-button">メンバー招待</button>
-            <button id="leave-group-button">退出</button>
-        </div>
-    </div>
-    
     <main class="timeline">
         <!-- 投稿の詳細が表示される領域 -->
     </main>
