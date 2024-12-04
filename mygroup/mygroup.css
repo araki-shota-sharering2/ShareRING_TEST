@@ -74,11 +74,11 @@ main {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* グループ画像 */
+/* グループ画像（正方形） */
 .group-image {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
+    width: 120px;
+    height: 120px; /* 正方形に設定 */
+    object-fit: cover; /* 縦横比を保ちながら画像をトリミング */
     border-radius: 5px;
     margin-bottom: 10px;
 }
@@ -142,5 +142,10 @@ main {
 
     .group-item {
         width: 160px;
+    }
+
+    .group-image {
+        width: 100px;
+        height: 100px; /* 小さい正方形に変更 */
     }
 }
