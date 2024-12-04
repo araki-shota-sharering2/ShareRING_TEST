@@ -135,14 +135,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // メンバーリストを表示
-    function displayMemberList(members) {
-        const memberListHtml = members
-        .map((member) => `<li>${member.username || "匿名ユーザー"}</li>`)
+// メンバーリストを表示
+function displayMemberList(members) {
+    const memberListHtml = members
+        .map((member) => member.username || "匿名ユーザー")  // ユーザー名を取得
+        .join("\n");  // 改行でつなげる
 
-            .join("");
-        alert(`メンバーリスト:\n${memberListHtml}`);
-    }
+    alert(`メンバーリスト:\n${memberListHtml}`);  // アラートで表示
+}
 
     // 招待メンバーボタンのクリックイベント
     const inviteMemberButton = document.getElementById("invite-member-button");
