@@ -94,6 +94,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         keepImage.addEventListener("click", async (event) => {
             const postId = event.target.getAttribute("data-post-id");
 
+            // グループ機能での制限
+            if (groupId) { // グループIDが存在する場合
+                alert("グループ機能では利用できません");
+                return;
+            }
+
             try {
                 const response = await fetch("/keep-post-handler", {
                     method: "POST",
@@ -135,14 +141,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-// メンバーリストを表示
-function displayMemberList(members) {
-    const memberListHtml = members
-        .map((member) => member.username || "匿名ユーザー")  // ユーザー名を取得
-        .join("\n");  // 改行でつなげる
+    // メンバーリストを表示
+    function displayMemberList(members) {
+        const memberListHtml = members
+            .map((member) => member.username || "匿名ユーザー")  // ユーザー名を取得
+            .join("\n");  // 改行でつなげる
 
-    alert(`メンバーリスト:\n${memberListHtml}`);  // アラートで表示
-}
+        alert(`メンバーリスト:\n${memberListHtml}`);  // アラートで表示
+    }
 
     // 招待メンバーボタンのクリックイベント
     const inviteMemberButton = document.getElementById("invite-member-button");
@@ -213,7 +219,6 @@ function displayMemberList(members) {
             }
         });
     }
-
 
     function openGoogleMapsRoute(address) {
         const baseURL = "https://www.google.com/maps/dir/?api=1";
