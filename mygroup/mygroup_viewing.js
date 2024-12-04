@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function displayMemberList(members) {
         const memberListHtml = members
             .map(
-                (member) => `
+                (member) => ` 
                 <div class="member-item">
                     <img src="${member.profile_image || '/assets/images/default-avatar.png'}" alt="ユーザー画像" class="member-avatar">
                     <span>${member.username || "匿名ユーザー"}</span>
