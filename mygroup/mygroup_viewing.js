@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="post-content">
                     <div class="post-frame-wrapper">
                         <img src="${post.image_url}" alt="投稿画像" class="post-image" style="border-color: ${ringColor};">
-                        
+                        <img src="/assets/images/main/ring_keeper.svg" alt="Keep画像" class="keep-image" data-post-id="${post.group_post_id}">
                     </div>
                     <div class="post-details">
                         <div class="user-info">

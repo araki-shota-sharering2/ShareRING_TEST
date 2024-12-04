@@ -169,6 +169,19 @@ header {
     position: relative; /* Keep画像を配置するため */
 }
 
+/* Keep画像のスタイル */
+.keep-image {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 5px; /* 投稿画像の右上に配置 */
+    right: 5px;
+    background: url('/assets/images/main/ring_keeper.svg') no-repeat center center;
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
 
 .keep-image:hover {
     transform: scale(1.1); /* ホバー時に少し拡大 */
