@@ -68,36 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // QRコードスキャン機能の処理
-    const qrVideo = document.getElementById("qr-video");
-    const scanResult = document.getElementById("scan-result");
-    const scannedGroupId = document.getElementById("scanned-group-id");
-
-    document.getElementById("scan-qr-button").addEventListener("click", () => {
-        qrVideo.hidden = false;
-        scanResult.hidden = true;
-
-        const html5QrCode = new Html5Qrcode("qr-video");
-
-        html5QrCode.start(
-            { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
-            (decodedText) => {
-                scannedGroupId.textContent = decodedText;
-                scanResult.hidden = false;
-                qrVideo.hidden = true;
-
-                html5QrCode.stop();
-
-                // グループ参加処理を呼び出す
-                joinGroupById(decodedText);
-            },
-            (errorMessage) => {
-                console.warn("QRコードスキャンエラー:", errorMessage);
-            }
-        );
-    });
-
     // グループIDから参加
     async function joinGroupById(groupId) {
         try {
@@ -109,13 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const result = await response.json();
 
             if (response.ok) {
-                alert("QRコードからグループに参加しました");
+                alert("グループに参加しました");
                 fetchGroups();
             } else {
                 alert(`エラー: ${result.message}`);
             }
         } catch (error) {
-            console.error("QRコードでのグループ参加エラー:", error);
+            console.error("グループ参加エラー:", error);
             alert("グループ参加中にエラーが発生しました");
         }
     }
