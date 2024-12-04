@@ -308,3 +308,69 @@ footer img {
         opacity: 1;
     }
 }
+
+/* モーダル背景 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* モーダル内容 */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+}
+
+/* メンバーリスト */
+.member-list {
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+}
+
+.member-item:hover {
+    background-color: #ececec;
+}
+
+.member-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.member-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.member-role {
+    font-size: 12px;
+    color: #888;
+}
+
