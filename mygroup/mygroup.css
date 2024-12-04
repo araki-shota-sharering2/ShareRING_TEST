@@ -73,17 +73,17 @@ header {
 main {
     margin-top: 50px;
     margin-bottom: 50px;
-    padding: 5px; /* パディングを縮小 */
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 20px; /* セクション間のギャップを削減 */
+    gap: 20px;
     overflow-y: auto;
 }
 
 /* グループリストセクション */
 #group-list {
     background-color: white;
-    padding: 5px; /* パディングを小さく */
+    padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
@@ -92,15 +92,15 @@ main {
 }
 
 #group-list h2 {
-    font-size: 1.2em; /* 見出しフォントを小さく */
+    font-size: 1.2em;
     font-weight: bold;
-    margin-bottom: 10px; /* 下余白を削減 */
+    margin-bottom: 10px;
 }
 
 /* グループカード（横スワイプ対応） */
 #groups {
     display: flex;
-    gap: 10px; /* カード間のギャップを縮小 */
+    gap: 10px;
     padding: 10px 0;
     margin: 0;
     overflow-x: auto;
@@ -108,12 +108,12 @@ main {
 }
 
 .group-item {
-    flex: 0 0 auto; /* 横方向のスワイプ対応 */
-    width: 160px; /* カードの幅を縮小 */
+    flex: 0 0 auto;
+    width: 160px;
     border-radius: 8px;
     border: 1px solid #ddd;
     background-color: #fff;
-    padding: 10px; /* パディングを小さく */
+    padding: 10px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
@@ -128,40 +128,47 @@ main {
 /* グループ画像（正方形） */
 .group-image {
     width: 100px;
-    height: 100px; /* サイズを小さく */
-    object-fit: cover; /* 画像を正方形にトリミング */
+    height: 100px;
+    object-fit: cover;
     border-radius: 5px;
-    margin-bottom: 8px; /* 下余白を縮小 */
+    margin-bottom: 8px;
 }
 
 /* グループ名 */
 .group-name {
-    font-size: 1em; /* フォントサイズを縮小 */
+    font-size: 1em;
     font-weight: bold;
     color: #333;
-    margin: 5px 0; /* 上下余白を縮小 */
+    margin: 5px 0;
 }
 
-/* グループ作成フォーム */
-#create-group {
+/* 共通フォームセクション */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
     background-color: white;
-    padding: 20px; /* パディングを小さく */
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-#group-form input,
-#group-form textarea,
-#group-form button {
-    padding: 10px; /* フォーム要素の高さを抑える */
-    margin-bottom: 15px; /* フォーム間の余白を縮小 */
-    font-size: 0.9em; /* フォントサイズを小さく */
+form input,
+form textarea,
+form button {
+    padding: 10px;
+    font-size: 0.9em;
     border: 1px solid #ddd;
     border-radius: 8px;
     width: 100%;
 }
 
-#group-form button {
+form input,
+form textarea {
+    background-color: #fafafa;
+}
+
+form button {
     background-color: #2C3E50;
     color: white;
     cursor: pointer;
@@ -169,8 +176,44 @@ main {
     transition: background-color 0.3s ease;
 }
 
-#group-form button:hover {
+form button:hover {
     background-color: #34495E;
+}
+
+/* QRコードスキャンセクション */
+#qr-code-scanner {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#qr-code-scanner h3 {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+#qr-code-scanner button {
+    padding: 10px;
+    font-size: 0.9em;
+    background-color: #2C3E50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#qr-code-scanner button:hover {
+    background-color: #34495E;
+}
+
+#qr-video {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
 }
 
 /* フッター */
@@ -194,17 +237,17 @@ footer a {
     text-align: center;
     color: white;
     text-decoration: none;
-    padding: 8px 10px; /* パディングを小さく */
+    padding: 8px 10px;
 }
 
 footer img {
-    width: 20px; /* アイコンサイズを縮小 */
+    width: 20px;
     height: 20px;
 }
 
 footer a.active {
     background-color: #394575;
-    border-top: 2px solid #ffffff; /* アクティブ表示を調整 */
+    border-top: 2px solid #ffffff;
     border-radius: 3px;
     transition: background-color 0.3s ease, padding 0.3s ease;
 }

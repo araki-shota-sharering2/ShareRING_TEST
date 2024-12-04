@@ -8,15 +8,15 @@
     <link rel="icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
 </head>
 <body>
-
     <!-- ヘッダー -->
     <header>
         <button id="back-button" onclick="window.location.href='/home/home.html'">← 戻る</button>
+        <h1>グループ管理</h1>
     </header>
 
     <!-- メインコンテンツ -->
     <main>
-        <!-- 参加中のグループ表示 -->
+        <!-- 参加中のグループ一覧 -->
         <section id="group-list">
             <h2>参加中のグループ</h2>
             <ul id="groups">
@@ -42,6 +42,7 @@
                 <input type="text" id="group-id" placeholder="グループIDを入力" required>
                 <button type="submit">参加</button>
             </form>
+
             <div id="qr-code-scanner">
                 <h3>QRコードで参加</h3>
                 <button id="scan-qr-button">QRコードをスキャン</button>
@@ -60,7 +61,8 @@
         <a href="/achievements/achievements.html"><img src="/assets/images/footer/achievements.svg" alt="実績"></a>
     </footer>
 
+    <!-- QRコードライブラリ -->
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
     <script src="mygroup.js"></script>
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script> <!-- QRコード用ライブラリ -->
 </body>
 </html>
