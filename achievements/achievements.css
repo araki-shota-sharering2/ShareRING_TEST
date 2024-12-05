@@ -22,7 +22,7 @@ main {
 
 /* アチーブメントカード */
 .achievement-card {
-    width: 150px;
+    width: 200px;
     margin: 15px;
     text-align: center;
     background-color: #fff;
@@ -32,8 +32,8 @@ main {
 }
 
 .achievement-image {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     margin: 10px auto 5px;
     border-radius: 50%;
     overflow: hidden;
@@ -50,7 +50,7 @@ main {
 }
 
 .achievement-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     margin: 10px 0;
 }
@@ -59,4 +59,23 @@ main {
     font-size: 14px;
     color: #555;
     padding: 0 10px 10px;
+}
+
+/* 進捗バー */
+.progress-container {
+    width: 90%;
+    margin: 0 auto 10px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 20px;
+    background-color: #4CAF50;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    line-height: 20px;
+    border-radius: 10px;
 }

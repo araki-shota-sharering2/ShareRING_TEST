@@ -1,9 +1,9 @@
 // アチーブメントデータを取得
 async function fetchAchievements() {
     try {
-        const response = await fetch('/achievements', {
+        const response = await fetch('/achievements-handler', {
             method: 'GET',
-            credentials: 'include'
+            credentials: 'include',
         });
 
         if (!response.ok) {
@@ -49,10 +49,25 @@ async function fetchAchievements() {
             description.className = 'achievement-description';
             description.textContent = achievement.description;
 
+            // 進捗バー
+            const progressContainer = document.createElement('div');
+            progressContainer.className = 'progress-container';
+
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+
+            // 進捗率の計算 (進捗値 / 目標値 * 100)
+            const progressPercentage = Math.min((achievement.progress / achievement.goal) * 100, 100);
+            progressBar.style.width = `${progressPercentage}%`;
+            progressBar.textContent = `${Math.floor(progressPercentage)}%`;
+
+            progressContainer.appendChild(progressBar);
+
             // 各要素をカードに追加
             card.appendChild(imageContainer);
             card.appendChild(title);
             card.appendChild(description);
+            card.appendChild(progressContainer);
 
             // コンテナにカードを追加
             container.appendChild(card);

@@ -29,20 +29,23 @@ export async function onRequestGet(context) {
 
         const userId = sessionResult.user_id;
 
-        // アチーブメント情報を取得
+        // アチーブメント情報と進捗状況を取得
         const achievementsQuery = `
-            SELECT a.name, a.description, a.image_url
+            SELECT a.name, a.description, a.image_url, a.goal, 
+                   COALESCE(uap.progress, 0) as progress
             FROM awards a
-            INNER JOIN user_award_progress uap ON a.award_id = uap.award_id
-            WHERE uap.user_id = ?
+            LEFT JOIN user_award_progress uap 
+            ON a.award_id = uap.award_id AND uap.user_id = ?
         `;
         const achievements = await env.DB.prepare(achievementsQuery).bind(userId).all();
 
-        return new Response(JSON.stringify(achievements), {
-            headers: { "Content-Type": "application/json" },
-        });
+        return new Response(
+            JSON.stringify({ success: true, results: achievements }),
+            { headers: { "Content-Type": "application/json" } }
+        );
     } catch (error) {
-        return new Response(JSON.stringify({ error: "エラーが発生しました" }), {
+        console.error("エラーが発生しました:", error);
+        return new Response(JSON.stringify({ error: "サーバーエラーが発生しました" }), {
             status: 500,
             headers: { "Content-Type": "application/json" },
         });
