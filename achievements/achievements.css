@@ -56,9 +56,9 @@ main {
 }
 
 .award-card .award-name {
-    font-size: 0.4; /* 文字サイズをさらに小さく */
+    font-size: 0.4rem; /* 文字サイズをさらに小さく */
     font-weight: bold;
-    margin: 0.2rem 0; /* 余白も少し小さく調整 */
+    margin: 0.3rem 0; /* 余白も少し小さく調整 */
 }
 
 
