@@ -1,22 +1,32 @@
 // アチーブメントデータを取得
 async function fetchAchievements() {
     try {
-        // APIエンドポイントからデータを取得
-        const response = await fetch('/achievements');
-        const data = await response.json();
+        const response = await fetch('/achievements', {
+            method: 'GET',
+            credentials: 'include'
+        });
 
-        // データ形式を確認
-        if (!Array.isArray(data)) {
-            console.error('取得したデータは配列ではありません:', data);
-            alert('アチーブメントデータの形式が正しくありません。');
+        if (!response.ok) {
+            console.error("アチーブメントデータの取得に失敗しました:", response.status);
+            alert("アチーブメントデータの取得に失敗しました。");
             return;
         }
 
+        const data = await response.json();
+
+        // データ形式を確認し、results配列を取得
+        if (!data.success || !Array.isArray(data.results)) {
+            console.error("取得したデータは正しい形式ではありません:", data);
+            alert("アチーブメントデータの形式が正しくありません。");
+            return;
+        }
+
+        const achievements = data.results;
         const container = document.getElementById('achievement-container');
         container.innerHTML = ''; // コンテナをクリア
 
-        data.forEach((achievement) => {
-            // カードを作成
+        achievements.forEach((achievement) => {
+            // アチーブメントカードを作成
             const card = document.createElement('div');
             card.className = 'achievement-card';
 
@@ -44,14 +54,17 @@ async function fetchAchievements() {
             card.appendChild(title);
             card.appendChild(description);
 
-            // カードをコンテナに追加
+            // コンテナにカードを追加
             container.appendChild(card);
         });
     } catch (error) {
-        console.error('アチーブメントデータの取得に失敗しました:', error);
-        alert('アチーブメントの取得中にエラーが発生しました。');
+        console.error("アチーブメントデータの取得中にエラーが発生しました:", error);
+        alert("アチーブメントデータの取得中にエラーが発生しました。");
     }
 }
 
-// 初期化処理
-fetchAchievements();
+// DOMが読み込まれたらアチーブメントデータを取得
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("アチーブメント画面が読み込まれました");
+    fetchAchievements();
+});
