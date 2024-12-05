@@ -1,19 +1,21 @@
 // アチーブメントデータを取得
 async function fetchAchievements() {
     try {
-        // APIエンドポイント (/achievements) からデータを取得
+        // APIエンドポイントからデータを取得
         const response = await fetch('/achievements');
-        const achievements = await response.json();
+        const data = await response.json();
 
-        if (achievements.error) {
-            alert(achievements.error);
+        // データ形式を確認
+        if (!Array.isArray(data)) {
+            console.error('取得したデータは配列ではありません:', data);
+            alert('アチーブメントデータの形式が正しくありません。');
             return;
         }
 
         const container = document.getElementById('achievement-container');
         container.innerHTML = ''; // コンテナをクリア
 
-        achievements.forEach((achievement) => {
+        data.forEach((achievement) => {
             // カードを作成
             const card = document.createElement('div');
             card.className = 'achievement-card';
