@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const userId = await getUserId();
         
         // アチーブメントデータを取得
-        const awardsData = await fetch('/achievements-handler.js', {
+        const awardsData = await fetch('/achievements-handler', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ user_id: userId }),
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // 修正されたgetUserId関数
 async function getUserId() {
     try {
-        const response = await fetch('/session-handler.js');
+        const response = await fetch('/session-handler');
         const data = await response.json();
         return data.user_id;
     } catch (error) {
