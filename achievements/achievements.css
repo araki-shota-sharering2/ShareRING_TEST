@@ -24,14 +24,14 @@ header {
     align-items: center;
     font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    height: 60px; /* ヘッダーの高さを設定 */
 }
+
 
 main {
     display: flex;
     justify-content: center;
     padding: 1rem;
-    margin-top: 60px; /* ヘッダー分の余白を確保 */
+    margin-top: 30px; /* ヘッダー分の余白を確保 */
     margin-bottom: 60px; /* フッター分の余白を確保 */
 }
 
