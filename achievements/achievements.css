@@ -56,10 +56,11 @@ main {
 }
 
 .award-card .award-name {
-    font-size: 0.8rem;
+    font-size: 0.6rem; /* 文字サイズをさらに小さく */
     font-weight: bold;
-    margin: 0.5rem 0;
+    margin: 0.3rem 0; /* 余白も少し小さく調整 */
 }
+
 
 /* ロックされたカードのデザイン */
 .award-card.locked img {
