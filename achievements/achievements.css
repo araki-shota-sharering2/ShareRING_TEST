@@ -4,10 +4,10 @@ body {
     margin: 0;
     padding: 0;
     background-color: #0d0d2b; /* 濃い青の背景色 */
-    overflow: hidden; /* 全体のスクロールを防ぐ */
     max-width: 375px; /* スマートフォン画面サイズに固定 */
     margin: 0 auto; /* 中央寄せ */
     color: white; /* デフォルトの文字色を白に */
+    overflow-y: auto; /* 縦スクロールを有効にする */
 }
 
 header {
@@ -24,15 +24,16 @@ header {
     align-items: center;
     font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: 60px; /* ヘッダーの高さを設定 */
 }
-
 
 main {
     display: flex;
     justify-content: center;
     padding: 1rem;
-    margin-top: 30px; /* ヘッダー分の余白を確保 */
+    margin-top: 60px; /* ヘッダー分の余白を確保 */
     margin-bottom: 60px; /* フッター分の余白を確保 */
+    width: 100%;
 }
 
 #awards-container {
