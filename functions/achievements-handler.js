@@ -4,111 +4,7 @@ export async function onRequestPost(context) {
 
     // アチーブメント一覧（達成条件と計算ロジックを定義）
     const achievements = [
-        {
-            id: 1,
-            name: "投稿デビュー",
-            description: "初めて投稿を行う。",
-            goal: 1,
-            query: `SELECT COUNT(*) as progress FROM user_posts WHERE user_id = ?`
-        },
-        {
-            id: 2,
-            name: "投稿ベテラン",
-            description: "累計30件の投稿を作成。",
-            goal: 30,
-            query: `SELECT COUNT(*) as progress FROM user_posts WHERE user_id = ?`
-        },
-        {
-            id: 3,
-            name: "投稿マスター",
-            description: "累計50件の投稿を作成。",
-            goal: 50,
-            query: `SELECT COUNT(*) as progress FROM user_posts WHERE user_id = ?`
-        },
-        {
-            id: 4,
-            name: "散歩好き",
-            description: "累計10kmを歩行。",
-            goal: 10,
-            query: `SELECT IFNULL(SUM(distance), 0) as progress FROM fitness_activities WHERE user_id = ?`
-        },
-        {
-            id: 5,
-            name: "街歩きマスター",
-            description: "累計50kmを歩行。",
-            goal: 50,
-            query: `SELECT IFNULL(SUM(distance), 0) as progress FROM fitness_activities WHERE user_id = ?`
-        },
-        {
-            id: 6,
-            name: "歩行の達人",
-            description: "累計100kmを歩行。",
-            goal: 100,
-            query: `SELECT IFNULL(SUM(distance), 0) as progress FROM fitness_activities WHERE user_id = ?`
-        },
-        {
-            id: 7,
-            name: "カロリーカッター",
-            description: "累計500kcalを消費。",
-            goal: 500,
-            query: `SELECT IFNULL(SUM(calories_burned), 0) as progress FROM fitness_activities WHERE user_id = ?`
-        },
-        {
-            id: 8,
-            name: "カロリーバーナー",
-            description: "累計2000kcalを消費。",
-            goal: 2000,
-            query: `SELECT IFNULL(SUM(calories_burned), 0) as progress FROM fitness_activities WHERE user_id = ?`
-        },
-        {
-            id: 9,
-            name: "カロリーマスター",
-            description: "累計5000kcalを消費。",
-            goal: 5000,
-            query: `SELECT IFNULL(SUM(calories_burned), 0) as progress FROM fitness_activities WHERE user_id = ?`
-        },
-        {
-            id: 10,
-            name: "グループ参加者",
-            description: "グループに1件投稿。",
-            goal: 1,
-            query: `SELECT COUNT(*) as progress FROM group_posts WHERE user_id = ?`
-        },
-        {
-            id: 11,
-            name: "グループ活性化員",
-            description: "グループに3件投稿。",
-            goal: 3,
-            query: `SELECT COUNT(*) as progress FROM group_posts WHERE user_id = ?`
-        },
-        {
-            id: 12,
-            name: "コミュニティリーダー",
-            description: "グループに10件投稿。",
-            goal: 10,
-            query: `SELECT COUNT(*) as progress FROM group_posts WHERE user_id = ?`
-        },
-        {
-            id: 13,
-            name: "グループ初心者",
-            description: "1グループを作成。",
-            goal: 1,
-            query: `SELECT COUNT(*) as progress FROM user_groups WHERE created_by = ?`
-        },
-        {
-            id: 14,
-            name: "グループリーダー",
-            description: "3グループを作成。",
-            goal: 3,
-            query: `SELECT COUNT(*) as progress FROM user_groups WHERE created_by = ?`
-        },
-        {
-            id: 15,
-            name: "グループマスター",
-            description: "5グループを作成。",
-            goal: 5,
-            query: `SELECT COUNT(*) as progress FROM user_groups WHERE created_by = ?`
-        },
+        // ログイン関連
         {
             id: 16,
             name: "ログインスターター",
@@ -138,6 +34,121 @@ export async function onRequestPost(context) {
                 SELECT COUNT(DISTINCT DATE(created_at)) as progress 
                 FROM user_sessions WHERE user_id = ?
             `
+        },
+
+        // 投稿関連
+        {
+            id: 1,
+            name: "投稿デビュー",
+            description: "初めて投稿を行う。",
+            goal: 1,
+            query: `SELECT COUNT(*) as progress FROM user_posts WHERE user_id = ?`
+        },
+        {
+            id: 2,
+            name: "投稿ベテラン",
+            description: "累計30件の投稿を作成。",
+            goal: 30,
+            query: `SELECT COUNT(*) as progress FROM user_posts WHERE user_id = ?`
+        },
+        {
+            id: 3,
+            name: "投稿マスター",
+            description: "累計50件の投稿を作成。",
+            goal: 50,
+            query: `SELECT COUNT(*) as progress FROM user_posts WHERE user_id = ?`
+        },
+
+        // グループ作成関連
+        {
+            id: 13,
+            name: "グループ初心者",
+            description: "1グループを作成。",
+            goal: 1,
+            query: `SELECT COUNT(*) as progress FROM user_groups WHERE created_by = ?`
+        },
+        {
+            id: 14,
+            name: "グループリーダー",
+            description: "3グループを作成。",
+            goal: 3,
+            query: `SELECT COUNT(*) as progress FROM user_groups WHERE created_by = ?`
+        },
+        {
+            id: 15,
+            name: "グループマスター",
+            description: "5グループを作成。",
+            goal: 5,
+            query: `SELECT COUNT(*) as progress FROM user_groups WHERE created_by = ?`
+        },
+
+        // グループ投稿関連
+        {
+            id: 10,
+            name: "グループ参加者",
+            description: "グループに1件投稿。",
+            goal: 1,
+            query: `SELECT COUNT(*) as progress FROM group_posts WHERE user_id = ?`
+        },
+        {
+            id: 11,
+            name: "グループ活性化員",
+            description: "グループに3件投稿。",
+            goal: 3,
+            query: `SELECT COUNT(*) as progress FROM group_posts WHERE user_id = ?`
+        },
+        {
+            id: 12,
+            name: "コミュニティリーダー",
+            description: "グループに10件投稿。",
+            goal: 10,
+            query: `SELECT COUNT(*) as progress FROM group_posts WHERE user_id = ?`
+        },
+
+        // カロリー関連
+        {
+            id: 7,
+            name: "カロリーカッター",
+            description: "累計500kcalを消費。",
+            goal: 500,
+            query: `SELECT IFNULL(SUM(calories_burned), 0) as progress FROM fitness_activities WHERE user_id = ?`
+        },
+        {
+            id: 8,
+            name: "カロリーバーナー",
+            description: "累計2000kcalを消費。",
+            goal: 2000,
+            query: `SELECT IFNULL(SUM(calories_burned), 0) as progress FROM fitness_activities WHERE user_id = ?`
+        },
+        {
+            id: 9,
+            name: "カロリーマスター",
+            description: "累計5000kcalを消費。",
+            goal: 5000,
+            query: `SELECT IFNULL(SUM(calories_burned), 0) as progress FROM fitness_activities WHERE user_id = ?`
+        },
+
+        // 散歩関連
+        {
+            id: 4,
+            name: "散歩好き",
+            description: "累計10kmを歩行。",
+            goal: 10,
+            query: `SELECT IFNULL(SUM(distance), 0) as progress FROM fitness_activities WHERE user_id = ?`
+        },
+        {
+            id: 5,
+            name: "街歩きマスター",
+            description: "累計50kmを歩行。",
+            goal: 50,
+            query: `SELECT IFNULL(SUM(distance), 0) as progress FROM fitness_activities WHERE user_id = ?`
+        },
+        {
+            id: 6,
+            name: "歩行の達人",
+            description: "累計100kmを歩行。",
+            goal: 100,
+            query: `SELECT IFNULL(SUM(distance), 0) as progress FROM fitness_activities WHERE user_id = ?`
         }
     ];
 
