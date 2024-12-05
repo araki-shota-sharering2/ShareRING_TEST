@@ -16,7 +16,7 @@ header {
     text-align: center;
     padding: 15px;
     font-size: 1.2rem;
-    position: sticky;
+    position: fixed; /* 固定配置 */
     top: 0;
     z-index: 1000;
     display: flex;
@@ -24,14 +24,18 @@ header {
     align-items: center;
     font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%; /* ヘッダーの横幅を画面全体に */
+    max-width: 375px; /* スマートフォン幅 */
+    left: 50%;
+    transform: translateX(-50%);
+    height: 60px; /* ヘッダーの高さを固定 */
 }
-
 
 main {
     display: flex;
     justify-content: center;
     padding: 1rem;
-    margin-top: 20px; /* ヘッダー分の余白を確保 */
+    margin-top: 60px; /* ヘッダー分の余白を確保 */
     margin-bottom: 60px; /* フッター分の余白を確保 */
     width: 100%;
 }
@@ -158,15 +162,15 @@ footer {
     align-items: center;
     padding: 8px;
     background-color: #4e5c94;
-    position: fixed;
+    position: fixed; /* 固定配置 */
     bottom: 0;
-    width: 100%;
-    max-width: 375px;
+    width: 100%; /* フッターの横幅を画面全体に */
+    max-width: 375px; /* スマートフォン幅 */
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    height: 60px; /* フッターの高さを設定 */
+    height: 60px; /* フッターの高さを固定 */
 }
 
 footer a {
