@@ -12,18 +12,18 @@ header {
     padding: 1rem;
     background: #007bff;
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     letter-spacing: 1px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 main {
+    padding: 1rem;
     display: flex;
     flex-wrap: wrap; /* 横並びに対応 */
     justify-content: space-between; /* 均等配置 */
     gap: 1rem; /* カード間の余白 */
-    padding: 1rem;
 }
 
 /* アチーブメントカードのスタイル */
@@ -45,16 +45,16 @@ main {
 }
 
 .award-card img {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
 
 .award-card .award-name {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
-    margin: 0.5rem 0;
+    margin: 0.3rem 0;
 }
 
 /* ロックされたカードのデザイン */
