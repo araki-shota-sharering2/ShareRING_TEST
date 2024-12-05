@@ -23,17 +23,19 @@ main {
     flex-wrap: wrap;
     justify-content: center;
     padding: 1rem;
+    gap: 1rem;
 }
 
 /* アチーブメントカードのスタイル */
 .award-card {
-    width: calc(33.33% - 2rem);
-    margin: 1rem;
+    flex: 0 1 calc(33.33% - 1rem); /* 横3つに調整 */
+    margin: 0;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
+    padding: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .award-card:hover {
@@ -45,19 +47,19 @@ main {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    margin: 1rem 0;
+    margin-bottom: 0.5rem;
+}
+
+.award-card .award-name {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
 }
 
 /* ロックされたカードのデザイン */
 .award-card.locked img {
     filter: grayscale(100%);
     opacity: 0.5;
-}
-
-/* 行の改行 */
-.line-break {
-    width: 100%;
-    height: 1px;
 }
 
 /* ポップアップのスタイル */

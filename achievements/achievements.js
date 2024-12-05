@@ -13,16 +13,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }).then(res => res.json());
 
         // アチーブメントカードを生成
-        awardsData.forEach((award, index) => {
+        awardsData.forEach((award) => {
             const awardCard = document.createElement('div');
             awardCard.classList.add('award-card');
             if (!award.achieved_at) {
                 awardCard.classList.add('locked');
             }
 
-            // カード内容を画像のみに
+            // カード内容を画像と名前のみに
             awardCard.innerHTML = `
                 <img src="${award.image_url || '/default-image.png'}" alt="${award.name}" class="award-image">
+                <h3 class="award-name">${award.name}</h3>
             `;
 
             // クリックイベントで詳細ポップアップを表示
@@ -31,13 +32,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             awardsContainer.appendChild(awardCard);
-
-            // 改行（3つごとに新しい行を開始）
-            if ((index + 1) % 3 === 0) {
-                const lineBreak = document.createElement('div');
-                lineBreak.classList.add('line-break');
-                awardsContainer.appendChild(lineBreak);
-            }
         });
     } catch (error) {
         console.error('Error loading achievements:', error);
