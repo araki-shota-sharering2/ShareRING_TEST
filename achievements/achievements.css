@@ -20,15 +20,15 @@ header {
 
 main {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: wrap; /* 横並びに対応 */
+    justify-content: space-between; /* 均等配置 */
+    gap: 1rem; /* カード間の余白 */
     padding: 1rem;
-    gap: 1rem;
 }
 
 /* アチーブメントカードのスタイル */
 .award-card {
-    flex: 0 1 calc(33.33% - 1rem); /* 横3つに調整 */
+    flex: 0 1 calc(33.33% - 1rem); /* 横3つに対応 */
     margin: 0;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
@@ -36,6 +36,7 @@ main {
     cursor: pointer;
     padding: 1rem;
     transition: transform 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
 }
 
 .award-card:hover {
@@ -60,6 +61,19 @@ main {
 .award-card.locked img {
     filter: grayscale(100%);
     opacity: 0.5;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .award-card {
+        flex: 0 1 calc(50% - 1rem); /* タブレットでは横2列 */
+    }
+}
+
+@media (max-width: 480px) {
+    .award-card {
+        flex: 0 1 100%; /* スマホでは1列 */
+    }
 }
 
 /* ポップアップのスタイル */
