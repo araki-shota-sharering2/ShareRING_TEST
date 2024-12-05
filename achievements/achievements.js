@@ -28,27 +28,46 @@ document.addEventListener('DOMContentLoaded', async () => {
                 awardCard.classList.add('locked');
             }
 
+            // カード内容を画像のみに
             awardCard.innerHTML = `
-                <img src="${award.image_url || '/default-image.png'}" alt="${award.name}">
-                <h3>${award.name}</h3>
-                <p>${award.description}</p>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" style="width: ${(award.progress / award.goal) * 100}%"></div>
-                </div>
+                <img src="${award.image_url || '/default-image.png'}" alt="${award.name}" class="award-image">
             `;
             rowDiv.appendChild(awardCard);
+
+            // クリックイベントで詳細ポップアップを表示
+            awardCard.addEventListener('click', () => {
+                showPopup(award);
+            });
         });
-
-        // スマホ向けに横並び幅を調整
-        adjustCardLayout();
-
-        // 画面サイズ変更時にレイアウトを再調整
-        window.addEventListener('resize', adjustCardLayout);
-
     } catch (error) {
         console.error('Error loading achievements:', error);
     }
 });
+
+// ポップアップ表示関数
+function showPopup(award) {
+    const popup = document.getElementById('popup');
+    const popupContent = document.getElementById('popup-content');
+
+    // ポップアップに詳細情報を表示
+    popupContent.innerHTML = `
+        <h3>${award.name}</h3>
+        <p>${award.description}</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar" style="width: ${(award.progress / award.goal) * 100}%"></div>
+        </div>
+        <button id="close-popup">閉じる</button>
+    `;
+
+    // ポップアップを表示
+    popup.style.display = 'block';
+
+    // 閉じるボタンの処理
+    const closeButton = document.getElementById('close-popup');
+    closeButton.addEventListener('click', () => {
+        popup.style.display = 'none';
+    });
+}
 
 // ユーザーIDを取得
 async function getUserId() {
@@ -60,20 +79,4 @@ async function getUserId() {
         console.error('Error fetching user ID:', error);
         throw error;
     }
-}
-
-// 横並びのカード幅を調整（スマホ対応）
-function adjustCardLayout() {
-    const rows = document.querySelectorAll('.row');
-    rows.forEach(row => {
-        const cards = row.querySelectorAll('.award-card');
-        const rowWidth = row.offsetWidth;
-
-        // 3列固定でカード幅を計算
-        const cardWidth = `${100 / 3 - 2}%`; // カード間の余白を考慮
-        cards.forEach(card => {
-            card.style.width = cardWidth;
-            card.style.margin = '1%'; // カード間の余白を確保
-        });
-    });
 }
