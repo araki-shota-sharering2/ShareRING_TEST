@@ -1,24 +1,55 @@
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("ホーム画面が読み込まれました");
+// アチーブメントデータを取得
+async function fetchAchievements() {
+    try {
+        // APIエンドポイント (/achievements) からデータを取得
+        const response = await fetch('/achievements');
+        const achievements = await response.json();
 
-    // 現在のURLに基づいてフッターリンクを強調
-    const path = window.location.pathname;
-    const footerLinks = document.querySelectorAll("footer a");
-
-    footerLinks.forEach(link => {
-        if (link.getAttribute("href") === path) {
-            link.classList.add("active");
+        if (achievements.error) {
+            alert(achievements.error);
+            return;
         }
-    });
 
-    // 星をランダムに配置
-    const body = document.querySelector('body');
-    for (let i = 0; i < 100; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        star.style.top = Math.random() * 100 + 'vh';
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = (Math.random() * 2 + 1) + 's';
-        body.appendChild(star);
+        const container = document.getElementById('achievement-container');
+        container.innerHTML = ''; // コンテナをクリア
+
+        achievements.forEach((achievement) => {
+            // カードを作成
+            const card = document.createElement('div');
+            card.className = 'achievement-card';
+
+            // 画像セクション
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'achievement-image';
+
+            const image = document.createElement('img');
+            image.src = achievement.image_url;
+            image.alt = achievement.name;
+            imageContainer.appendChild(image);
+
+            // タイトル
+            const title = document.createElement('div');
+            title.className = 'achievement-title';
+            title.textContent = achievement.name;
+
+            // 説明
+            const description = document.createElement('div');
+            description.className = 'achievement-description';
+            description.textContent = achievement.description;
+
+            // 各要素をカードに追加
+            card.appendChild(imageContainer);
+            card.appendChild(title);
+            card.appendChild(description);
+
+            // カードをコンテナに追加
+            container.appendChild(card);
+        });
+    } catch (error) {
+        console.error('アチーブメントデータの取得に失敗しました:', error);
+        alert('アチーブメントの取得中にエラーが発生しました。');
     }
-});
+}
+
+// 初期化処理
+fetchAchievements();
