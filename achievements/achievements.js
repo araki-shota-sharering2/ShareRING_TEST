@@ -13,7 +13,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }).then(res => res.json());
 
         // アチーブメントカードを生成
-        awardsData.forEach(award => {
+        let rowDiv = null;
+        awardsData.forEach((award, index) => {
+            // 新しい行を作成（3つ目のカード後に改行）
+            if (index % 3 === 0) {
+                rowDiv = document.createElement('div');
+                rowDiv.classList.add('row');
+                awardsContainer.appendChild(rowDiv);
+            }
+
             const awardCard = document.createElement('div');
             awardCard.classList.add('award-card');
             if (!award.achieved_at) {
@@ -28,11 +36,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="progress-bar" style="width: ${(award.progress / award.goal) * 100}%"></div>
                 </div>
             `;
-            awardsContainer.appendChild(awardCard);
+            rowDiv.appendChild(awardCard);
         });
 
-        // スマホ向けに横幅を固定（デバイス幅に応じてカード幅調整）
+        // スマホ向けに横並び幅を調整
         adjustCardLayout();
+
+        // 画面サイズ変更時にレイアウトを再調整
         window.addEventListener('resize', adjustCardLayout);
 
     } catch (error) {
@@ -52,24 +62,18 @@ async function getUserId() {
     }
 }
 
-// カードレイアウトを調整（画面幅に応じて列数を変更）
+// 横並びのカード幅を調整（スマホ対応）
 function adjustCardLayout() {
-    const awardsContainer = document.getElementById('awards-container');
-    const cards = awardsContainer.querySelectorAll('.award-card');
-    const containerWidth = awardsContainer.offsetWidth;
+    const rows = document.querySelectorAll('.row');
+    rows.forEach(row => {
+        const cards = row.querySelectorAll('.award-card');
+        const rowWidth = row.offsetWidth;
 
-    let columns = 1; // デフォルトは1列
-    if (containerWidth >= 600) {
-        columns = 2; // タブレット以上で2列
-    }
-    if (containerWidth >= 1024) {
-        columns = 3; // デスクトップ以上で3列
-    }
-
-    const cardWidth = `${100 / columns - 2}%`; // カード幅を調整（余白を考慮）
-
-    cards.forEach(card => {
-        card.style.width = cardWidth;
-        card.style.margin = '1%'; // カード間の余白を確保
+        // 3列固定でカード幅を計算
+        const cardWidth = `${100 / 3 - 2}%`; // カード間の余白を考慮
+        cards.forEach(card => {
+            card.style.width = cardWidth;
+            card.style.margin = '1%'; // カード間の余白を確保
+        });
     });
 }
