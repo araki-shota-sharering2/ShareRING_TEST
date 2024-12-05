@@ -28,7 +28,7 @@ header {
     max-width: 375px; /* スマートフォン幅 */
     left: 50%;
     transform: translateX(-50%);
-    height: 60px; /* ヘッダーの高さを固定 */
+    height: 20px; /* ヘッダーの高さを固定 */
 }
 
 main {
