@@ -13,15 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }).then(res => res.json());
 
         // アチーブメントカードを生成
-        let rowDiv = null;
         awardsData.forEach((award, index) => {
-            // 新しい行を作成（3つ目のカード後に改行）
-            if (index % 3 === 0) {
-                rowDiv = document.createElement('div');
-                rowDiv.classList.add('row');
-                awardsContainer.appendChild(rowDiv);
-            }
-
             const awardCard = document.createElement('div');
             awardCard.classList.add('award-card');
             if (!award.achieved_at) {
@@ -32,12 +24,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             awardCard.innerHTML = `
                 <img src="${award.image_url || '/default-image.png'}" alt="${award.name}" class="award-image">
             `;
-            rowDiv.appendChild(awardCard);
 
             // クリックイベントで詳細ポップアップを表示
             awardCard.addEventListener('click', () => {
                 showPopup(award);
             });
+
+            awardsContainer.appendChild(awardCard);
+
+            // 改行（3つごとに新しい行を開始）
+            if ((index + 1) % 3 === 0) {
+                const lineBreak = document.createElement('div');
+                lineBreak.classList.add('line-break');
+                awardsContainer.appendChild(lineBreak);
+            }
         });
     } catch (error) {
         console.error('Error loading achievements:', error);
@@ -60,7 +60,7 @@ function showPopup(award) {
     `;
 
     // ポップアップを表示
-    popup.style.display = 'block';
+    popup.style.display = 'flex';
 
     // 閉じるボタンの処理
     const closeButton = document.getElementById('close-popup');
