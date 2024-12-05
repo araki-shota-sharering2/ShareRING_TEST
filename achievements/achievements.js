@@ -14,7 +14,7 @@ async function fetchAchievements() {
 
         const data = await response.json();
 
-        // データ形式を確認し、results配列を取得
+        // データ形式を確認し、resultsが配列かをチェック
         if (!data.success || !Array.isArray(data.results)) {
             console.error("取得したデータは正しい形式ではありません:", data);
             alert("アチーブメントデータの形式が正しくありません。");
