@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             awardCard.innerHTML = `
-                <img src="${award.image_url}" alt="${award.name}">
+                <img src="${award.image_url || '/default-image.png'}" alt="${award.name}">
                 <h3>${award.name}</h3>
                 <p>${award.description}</p>
                 <div class="progress-bar-container">

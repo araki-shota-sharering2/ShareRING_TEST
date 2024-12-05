@@ -145,9 +145,15 @@ export async function onRequestPost(context) {
 
     try {
         for (const achievement of achievements) {
+            // 各アチーブメントの進捗を計算
             const progressResult = await db.prepare(achievement.query).bind(user_id).first();
             const progress = progressResult ? progressResult.progress : 0;
             const achieved_at = progress >= achievement.goal ? new Date().toISOString() : null;
+
+            // `awards`テーブルから対応する画像URLを取得
+            const imageResult = await db.prepare(
+                `SELECT image_url FROM awards WHERE name = ?`
+            ).bind(achievement.name).first();
 
             results.push({
                 name: achievement.name,
@@ -155,7 +161,7 @@ export async function onRequestPost(context) {
                 goal: achievement.goal,
                 progress: progress,
                 achieved_at: achieved_at,
-                image_url: `https://example.com/images/awards/${achievement.id}.png` // アワード画像
+                image_url: imageResult ? imageResult.image_url : '/default-image.png' // デフォルト画像を設定
             });
         }
 
