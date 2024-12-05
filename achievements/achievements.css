@@ -24,12 +24,15 @@ header {
     align-items: center;
     font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: 60px; /* ヘッダーの高さを設定 */
 }
 
 main {
     display: flex;
     justify-content: center;
     padding: 1rem;
+    margin-top: 60px; /* ヘッダー分の余白を確保 */
+    margin-bottom: 60px; /* フッター分の余白を確保 */
 }
 
 #awards-container {
@@ -68,7 +71,6 @@ main {
     font-weight: bold;
     margin: 0.3rem 0; /* 余白も少し小さく調整 */
 }
-
 
 /* ロックされたカードのデザイン */
 .award-card.locked img {
@@ -137,6 +139,7 @@ main {
 #popup-content button:hover {
     background-color: #0056b3;
 }
+
 /* 星の輝きアニメーション */
 @keyframes twinkle {
     0% {
@@ -162,6 +165,7 @@ footer {
     transform: translateX(-50%);
     z-index: 1000;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    height: 60px; /* フッターの高さを設定 */
 }
 
 footer a {
@@ -199,4 +203,15 @@ footer img {
 #back-button:hover {
     color: #cccccc;
     transform: scale(1.1); /* ホバー時に少し拡大 */
+}
+
+/* 星のスタイル */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate;
+    opacity: 0.5;
 }
