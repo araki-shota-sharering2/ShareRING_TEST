@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const userId = await getUserId();
         
         // アチーブメントデータを取得
-        const awardsData = await fetch('/functions/achievements-handler.js', {
+        const awardsData = await fetch('/achievements-handler.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ user_id: userId }),
