@@ -410,6 +410,7 @@ footer img {
     overflow: hidden; /* フレームの外側を隠す */
     background-size: cover; /* 背景画像を中央に調整 */
     background-position: center; /* 背景を中央に配置 */
+    z-index: 1000; /* 他の要素より前面に表示 */
 }
 
 /* 円形マーカーのスタイル */
@@ -423,6 +424,7 @@ footer img {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 影を追加 */
     position: absolute;
     cursor: pointer;
+    z-index: 1000; /* 他の要素より前面に表示 */
 }
 
 /* スマホ向けのレスポンシブ調整 */
