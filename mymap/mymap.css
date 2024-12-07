@@ -1,11 +1,8 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-#map {
-  height: 100%;
-  width: 100%;
+/* リセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* ボディのスタイル */
@@ -112,293 +109,23 @@ footer img {
     color: #555; /* サブ情報を濃いグレーに */
 }
 
-/* ハンバーガーメニュー */
-.menu {
-  position: absolute;
-  top: 10%;
-  left: 5%;
-  z-index: 1000; /* 他の要素より前面に表示 */
-}
-.hamburger {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 30px;
-  height: 25px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-.hamburger div {
-    width: 30px;
-    height: 4px;
-    background-color: #333;
-    border-radius: 2px;
-}
-.menuItems {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0 0;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: block; /* ここを変更 */
-  flex-direction: row; /* ここを追加 */
-  position: absolute;
-  z-index: 1000; /* メニュー項目も前面に表示 */
-  width: 150px; /* メニュー全体の横幅を設定 */
-  box-sizing: border-box; /* パディングとボーダーを含めて幅を計算 */
-}
-.menuItems li {
-  padding: 10px 15px;
-  border-bottom: 1px solid #ddd;
-  cursor: pointer;
-  width: 100%; /* メニュー項目の横幅を親要素に合わせる */
-  box-sizing: border-box; /* パディングとボーダーを含めて幅を計算 */
-}
-.menuItems li:last-child {
-  border-bottom: none;
-}
-/* 天気情報 */
-.weather {
-  position: absolute;
-  top: 10%;
-  right: 5%;
-  background: white;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 4px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.weather.hidden {
-  display: none;
-}
-/* 天気ボタン */
-.weather-button {
-  position: absolute;
-  top: 110px;
-  right: 10px;
-  width: 40px;
-  height: 40px;
-  background-color: #000000;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-/* カメラボタン */
-.camera-button {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 45px;
-  height: 45px;
-  background-color: #000000;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-/* みんなの投稿ボタン */
-.minna-button {
-  position: fixed;
-  bottom: 20px;
-  left: 25px;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 40px;
-  background-color: #000000;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.weather-button i,
-.minna-button i,
-.camera-button i {
-  font-size: 25px;
-  color: white;
-}
-.hidden {
-  display: none;
-}
-/* トラベルモードパネル */
-#travel-mode-panel {
-  position: fixed;
-  top: 5px;
-  left: 570px;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.95);
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 15px;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-.travel-mode-button {
-  width: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #ff7e5f, #feb47b);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 25px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.travel-mode-button i {
-  margin-right: 8px;
-  font-size: 18px;
-}
-.travel-mode-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(135deg, #feb47b, #ff7e5f);
-}
-.travel-mode-button:active {
-  transform: translateY(1px);
-  box-shadow: none;
-}
-#route-info {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #333;
-}
-/* アクションパネル */
-#action-panel {
-  position: fixed;
-  top: 60px;
-  left: 140px;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.9);
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  display: none;
-  gap: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.action-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.action-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 25px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-.action-button i {
-  margin-right: 8px;
-  font-size: 18px;
-}
-.action-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(135deg, #a777e3, #6e8efb);
-}
-.action-button:active {
-  transform: translateY(1px);
-  box-shadow: none;
-}
-/* 詳細情報パネル */
-#details-panel {
-  position: relative;
-  top: 150px;
-  left: 20px;
-  background: white;
-  padding: 15px;
-  border: 1px solid #000;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 600px; /* パネルの幅を設定 */
-  overflow-y: auto; /* 内容が多い場合スクロール可能に */
-  max-height: 400px; /* 最大高さを設定 */
-}
-.reviews-container {
-  margin-top: 10px;
-}
-.review {
-  border: 1px solid #eee;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #f9f9f9;
-}
-.review p {
-  margin: 0 0 5px;
-  line-height: 1.5;
-}
-.review-author {
-  display: block;
-  text-align: right;
-  font-size: 0.9em;
-  color: #555;
-}
-.photos-container img {
-  margin-bottom: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.no-style-link {
-  color: inherit;
-  text-decoration: none;
+/* ルート案内ボタン */
+.route-button {
+    display: inline-block;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: white;
+    background-color: #4e5c94;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
 }
 
-/* カメラプレビュー */
-#cameraFeed {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  width: 200px;
-  height: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: none;
-}
-
-#captureButton {
-  position: absolute;
-  bottom: 10px;
-  left: 220px;
-  display: none;
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
+.route-button:hover {
+    background-color: #394575;
 }
 
 /* カスタムマーカーのフレーム */
@@ -410,21 +137,6 @@ footer img {
     overflow: hidden; /* フレームの外側を隠す */
     background-size: cover; /* 背景画像を中央に調整 */
     background-position: center; /* 背景を中央に配置 */
-    z-index: 1000; /* 他の要素より前面に表示 */
-}
-
-/* 円形マーカーのスタイル */
-.custom-marker {
-    width: 50px;
-    height: 50px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 50%; /* 円形にする */
-    border: 2px solid #fff; /* 白い枠線 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 影を追加 */
-    position: absolute;
-    cursor: pointer;
-    z-index: 1000; /* 他の要素より前面に表示 */
 }
 
 /* スマホ向けのレスポンシブ調整 */
@@ -443,6 +155,18 @@ footer img {
     }
 }
 
+/* 円形マーカーのスタイル */
+.custom-marker {
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%; /* 円形にする */
+    border: 2px solid #fff; /* 白い枠線 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 影を追加 */
+    position: absolute;
+    cursor: pointer;
+}
 /* 戻るボタン */
 #back-button {
     position: absolute;
