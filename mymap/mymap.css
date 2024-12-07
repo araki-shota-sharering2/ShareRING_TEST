@@ -433,3 +433,35 @@ footer img {
   border-radius: 4px;
   cursor: pointer;
 }
+
+/* スマホ向けのレスポンシブ調整 */
+@media (max-width: 768px) {
+    header, footer {
+        padding: 5px;
+    }
+
+    footer a img {
+        width: 20px;
+        height: 20px;
+    }
+
+    #map {
+        height: calc(100vh - 100px); /* ヘッダーとフッターを除いた高さ */
+    }
+}
+
+header {
+    background-color: #394575; /* ヘッダー背景色 */
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
