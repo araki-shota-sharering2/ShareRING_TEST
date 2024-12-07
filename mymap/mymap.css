@@ -434,11 +434,19 @@ footer img {
   cursor: pointer;
 }
 
-/* スマートフォン向け固定サイズ */
-@media screen and (max-width: 768px) {
-    body {
-        max-width: 375px; /* 画面幅を固定 */
-        margin: 0 auto;
+/* スマホ向けのレスポンシブ調整 */
+@media (max-width: 768px) {
+    header, footer {
+        padding: 5px;
+    }
+
+    footer a img {
+        width: 20px;
+        height: 20px;
+    }
+
+    #map {
+        height: calc(100vh - 100px); /* ヘッダーとフッターを除いた高さ */
     }
 }
 
@@ -453,6 +461,11 @@ footer img {
     color: white;
     font-size: 14px;
     cursor: pointer;
+}
+
+#back-button:hover {
+    color: #cccccc;
+    transform: scale(1.1); /* ホバー時に少し拡大 */
 }
 
 header {
