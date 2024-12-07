@@ -284,5 +284,5 @@ window.onload = initMap;
 
 function navigateToPostViewing() {
   // post_viewing.html に遷移
-  window.location.href = "post_viewing/post_viewing.html";
+  window.location.href = "/post_viewing/post_viewing.html";
 }
