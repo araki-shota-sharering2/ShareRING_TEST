@@ -401,6 +401,30 @@ footer img {
   cursor: pointer;
 }
 
+/* カスタムマーカーのフレーム */
+.marker-frame {
+    width: 60px; /* サイズを指定 */
+    height: 60px;
+    border: 3px solid #4e5c94; /* フレームの色を青紫色に */
+    border-radius: 50%; /* 丸くする */
+    overflow: hidden; /* フレームの外側を隠す */
+    background-size: cover; /* 背景画像を中央に調整 */
+    background-position: center; /* 背景を中央に配置 */
+}
+
+/* 円形マーカーのスタイル */
+.custom-marker {
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%; /* 円形にする */
+    border: 2px solid #fff; /* 白い枠線 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 影を追加 */
+    position: absolute;
+    cursor: pointer;
+}
+
 /* スマホ向けのレスポンシブ調整 */
 @media (max-width: 768px) {
     header, footer {
