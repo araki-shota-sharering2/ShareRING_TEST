@@ -115,7 +115,7 @@ footer img {
 /* ハンバーガーメニュー */
 .menu {
   position: absolute;
-  top: 100px;
+  top: 10px;
   left: 200px;
   z-index: 1000; /* 他の要素より前面に表示 */
 }
@@ -165,7 +165,7 @@ footer img {
 .weather {
   position: absolute;
   top: 100px;
-  right: 200px;
+  right: 10px;
   background: white;
   border: 1px solid #ddd;
   padding: 10px;
